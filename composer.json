@@ -1,0 +1,33 @@
+{
+	"name": "matze/core",
+	"description": "Framework core",
+	"minimum-stability": "dev",
+	"version": "1.0.0",
+	"authors": [
+		{
+			"name": "Matze",
+			"email": "matze@mdoetsch.de"
+		}
+	],
+	"autoload": {
+		"psr-0": {
+			"Matze\\Core": "src/"
+		}
+	},
+	"repositories": [
+		{
+			"type": "composer",
+			"url": "http://satis.mdoetsch.de"
+		}
+	],
+	"require": {
+		"symfony/dependency-injection": "2.4.*",
+		"symfony/config": "2.4.*",
+		"symfony/console": "2.4.*",
+		"twig/twig": "1.6.*",
+		"predis/predis": "0.8.*",
+		"monolog/monolog": "1.7.*",
+		"silex/silex": "1.1.*",
+		"matze/annotations": "dev-master"
+	}
+}
