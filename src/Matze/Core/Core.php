@@ -2,6 +2,8 @@
 
 namespace Matze\Core;
 
+define('CORE_ROOT', __DIR__);
+
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Matze\Annotations\Loader\AnnotationLoader;
@@ -56,6 +58,7 @@ class Core {
 		$container_builder = new ContainerBuilder();
 		$annotation_loader = new AnnotationLoader($container_builder);
 		$annotation_loader->load('src/');
+		$annotation_loader->load(CORE_ROOT . '/../');
 
 		$loader = new XmlFileLoader($container_builder, new FileLocator('config'));
 		$loader->load('services.xml');
