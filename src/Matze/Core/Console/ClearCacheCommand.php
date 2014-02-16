@@ -19,9 +19,7 @@ class ClearCacheCommand extends Command {
 	 * {@inheritdoc}
 	 */
 	protected function configure() {
-		$this
-			->setName('cache:clear')
-			->setDescription('Clears the local cache');
+		$this->setName('cache:clear')->setDescription('Clears the local cache');
 	}
 
 	/**

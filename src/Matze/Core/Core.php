@@ -51,7 +51,7 @@ class Core {
 	public static function rebuildDIC() {
 		$class_loader = include ROOT . '/vendor/autoload.php';
 
-		AnnotationRegistry::registerLoader(function($class) use ($class_loader) {
+		AnnotationRegistry::registerLoader(function ($class) use ($class_loader) {
 			return $class_loader->loadClass($class);
 		});
 
