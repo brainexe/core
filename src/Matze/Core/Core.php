@@ -61,6 +61,8 @@ class Core {
 		$annotation_loader->load(CORE_ROOT . '/../');
 
 		$loader = new XmlFileLoader($container_builder, new FileLocator('config'));
+		$loader->load(CORE_ROOT . '/../../../config/services.xml');
+		$loader->load(CORE_ROOT . '/../../../config/config.default.xml');
 		$loader->load('services.xml');
 		$loader->load('config.default.xml');
 		if (file_exists('config/config.xml')) {
