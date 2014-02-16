@@ -1,6 +1,6 @@
 <?php
 
-namespace Matze\Core;
+namespace Matze\Core\EventDispatcher;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 

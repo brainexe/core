@@ -2,6 +2,8 @@
 
 namespace Matze\Core;
 
+define('CORE_ROOT', __DIR__);
+
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Matze\Annotations\Loader\AnnotationLoader;
@@ -49,15 +51,18 @@ class Core {
 	public static function rebuildDIC() {
 		$class_loader = include ROOT . '/vendor/autoload.php';
 
-		AnnotationRegistry::registerLoader(function($class) use ($class_loader) {
+		AnnotationRegistry::registerLoader(function ($class) use ($class_loader) {
 			return $class_loader->loadClass($class);
 		});
 
 		$container_builder = new ContainerBuilder();
 		$annotation_loader = new AnnotationLoader($container_builder);
 		$annotation_loader->load('src/');
+		$annotation_loader->load(CORE_ROOT . '/../');
 
 		$loader = new XmlFileLoader($container_builder, new FileLocator('config'));
+		$loader->load(CORE_ROOT . '/../../../config/services.xml');
+		$loader->load(CORE_ROOT . '/../../../config/config.default.xml');
 		$loader->load('services.xml');
 		$loader->load('config.default.xml');
 		if (file_exists('config/config.xml')) {
