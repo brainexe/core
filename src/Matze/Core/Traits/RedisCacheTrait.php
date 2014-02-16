@@ -2,22 +2,11 @@
 
 namespace Matze\Core\Traits;
 
-use Predis\Client;
 use Matze\Annotations\Annotations as DI;
 
 trait RedisCacheTrait {
 
-	/**
-	 * @var Client
-	 */
-	private $_predis;
-
-	/**
-	 * @DI\Inject("@Predis")
-	 */
-	public function setPredis(Client $client) {
-		$this->_predis = $client;
-	}
+	use RedisTrait;
 
 	/**
 	 * @param string $key
@@ -39,7 +28,12 @@ trait RedisCacheTrait {
 		return $value;
 	}
 
+	/**
+	 * @param string $key
+	 */
 	protected function invalidate($key) {
 		$this->_predis->DEL($key);
 	}
+
+
 }

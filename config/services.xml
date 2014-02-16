@@ -14,6 +14,7 @@
             <argument type="collection">
                 <argument key="read_write_timeout">0</argument>
                 <argument key="host">%redis.host%</argument>
+                <argument key="prefix">%application.name%:</argument>
             </argument>
         </service>
 
