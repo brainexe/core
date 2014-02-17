@@ -8,7 +8,7 @@ use Matze\Annotations\Annotations as DI;
 use Matze\Core\Traits\RedisTrait;
 
 /**
- * @DI\Service(tags={{"name" = "event_subscriber"}})
+ * @DI\EventListener(public = false)
  */
 class MessageQueueListener extends AbstractEventListener {
 
