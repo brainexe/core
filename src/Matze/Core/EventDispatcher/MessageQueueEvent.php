@@ -6,6 +6,8 @@ use Symfony\Component\EventDispatcher\Event;
 
 class MessageQueueEvent extends Event {
 
+	const NAME = 'message_queue';
+
 	/**
 	 * @var string
 	 */
@@ -32,5 +34,4 @@ class MessageQueueEvent extends Event {
 		$this->service_id = $service_id;
 	}
 
-
-} 
+}

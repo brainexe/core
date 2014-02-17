@@ -19,6 +19,18 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 class Core {
 
 	/**
+	 * @var Container
+	 */
+	private static $service_container;
+
+	/**
+	 * @return Container
+	 */
+	public static function getServiceContainer() {
+		return self::$service_container;
+	}
+
+	/**
 	 * @return Container
 	 */
 	public static function boot() {
@@ -27,22 +39,22 @@ class Core {
 		date_default_timezone_set('Europe/Berlin');
 
 		/** @var Container $dic */
-		$dic = null;
 		if (file_exists('cache/dic.php')) {
 			include 'cache/dic.php';
-			$dic = new \DIC();
+			self::$service_container = new \DIC();
 		} else {
-			$dic = self::rebuildDIC();
+			self::$service_container = self::rebuildDIC();
 		}
 		/** @var Logger $logger */
-		$logger = $dic->get('Monolog.Logger');
+		$logger = self::$service_container->get('Monolog.Logger');
 
-		$error_handler = new ErrorHandler($logger);
-		$error_handler->registerErrorHandler();
-		$error_handler->registerExceptionHandler();
-		$error_handler->registerFatalHandler();
+		// TODO fix error handler
+//		$error_handler = new ErrorHandler($logger);
+//		$error_handler->registerErrorHandler();
+//		$error_handler->registerExceptionHandler();
+//		$error_handler->registerFatalHandler();
 
-		return $dic;
+		return self::$service_container;
 	}
 
 	/**

@@ -25,7 +25,7 @@
 		"symfony/config": "2.4.*",
 		"symfony/console": "2.4.*",
 		"symfony/process": "2.4.*",
-		"twig/twig": "1.6.*",
+		"twig/twig": "1.15.*",
 		"predis/predis": "0.8.*",
 		"monolog/monolog": "1.7.*",
 		"silex/silex": "1.1.*",
