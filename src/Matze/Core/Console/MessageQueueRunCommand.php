@@ -12,7 +12,7 @@ use Symfony\Component\Process\ProcessBuilder;
 use Matze\Annotations\Annotations as DI;
 
 /**
- * @DI\Service(public=false, tags={{"name" = "console"}})
+ * @DI\Command
  */
 class MessageQueueRunCommand extends Command {
 

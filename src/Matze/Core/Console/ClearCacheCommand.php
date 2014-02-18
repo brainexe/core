@@ -11,7 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
- * @DI\Service(public=false, tags={{"name" = "console"}})
+ * @DI\Command
  */
 class ClearCacheCommand extends Command {
 
