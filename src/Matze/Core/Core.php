@@ -4,11 +4,13 @@ namespace Matze\Core;
 
 define('CORE_ROOT', __DIR__);
 
-use Doctrine\Common\Annotations\AnnotationReader;
+if (defined('ROOT')) {
+	define('ROOT', CORE_ROOT . '/../../../');
+}
+
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Matze\Annotations\Loader\AnnotationLoader;
 use Matze\Core\DependencyInjection\GlobalCompilerPass;
-use Monolog\ErrorHandler;
 use Monolog\Logger;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Container;
@@ -70,11 +72,11 @@ class Core {
 		$container_builder = new ContainerBuilder();
 		$annotation_loader = new AnnotationLoader($container_builder);
 		$annotation_loader->load('src/');
-		$annotation_loader->load(CORE_ROOT . '/../');
+		$annotation_loader->load(CORE_ROOT . '/../../');
 
 		$loader = new XmlFileLoader($container_builder, new FileLocator('config'));
-		$loader->load(CORE_ROOT . '/../../../config/services.xml');
-		$loader->load(CORE_ROOT . '/../../../config/config.default.xml');
+		$loader->load(ROOT . '/config/services.xml');
+		$loader->load(ROOT . '/config/config.default.xml');
 		$loader->load('services.xml');
 		$loader->load('config.default.xml');
 		if (file_exists('config/config.xml')) {
