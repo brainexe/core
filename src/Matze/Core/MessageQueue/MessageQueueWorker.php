@@ -18,7 +18,7 @@ class MessageQueueWorker {
 
 		while (true) {
 			list ($queue_name, $message) = $predis->BRPOP(MessageQueue::REDIS_MESSAGE_QUEUE, 0);
-			$message = json_decode($message);
+			$message = json_decode($message, true);
 
 			$service = $this->getServiceContainer()->get($message['service_id']);
 
