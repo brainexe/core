@@ -9,9 +9,10 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\ProcessBuilder;
 use Matze\Annotations\Annotations as DI;
+use Matze\Core\Annotations as CoreDI;
 
 /**
- * @DI\Command
+ * @CoreDI\Command
  */
 class ServerRunCommand extends Command {
 	/**

@@ -5,10 +5,11 @@ namespace Matze\Core\MessageQueue;
 use Matze\Core\EventDispatcher\AbstractEventListener;
 use Matze\Core\EventDispatcher\MessageQueueEvent;
 use Matze\Annotations\Annotations as DI;
+use Matze\Core\Annotations as CoreDI;
 use Matze\Core\Traits\RedisTrait;
 
 /**
- * @DI\EventListener(public = false)
+ * @CoreDI\EventListener(public = false)
  */
 class MessageQueueListener extends AbstractEventListener {
 

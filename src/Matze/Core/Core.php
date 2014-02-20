@@ -9,6 +9,7 @@ if (!defined('ROOT')) {
 }
 
 use Matze\Annotations\Loader\AnnotationLoader;
+use Matze\Core\Annotations\Builder\CommandDefinitionBuilder;
 use Matze\Core\DependencyInjection\GlobalCompilerPass;
 use Monolog\Logger;
 use Symfony\Component\Config\FileLocator;
@@ -37,25 +38,25 @@ class Core {
 	public static function boot() {
 		chdir(ROOT);
 
-		date_default_timezone_set('Europe/Berlin');
-
 		/** @var Container $dic */
 		if (file_exists('cache/dic.php')) {
 			include 'cache/dic.php';
-			self::$service_container = new \DIC();
+			$dic = self::$service_container = new \DIC();
 		} else {
-			self::$service_container = self::rebuildDIC();
+			$dic = self::$service_container = self::rebuildDIC();
 		}
-//		/** @var Logger $logger */
-//		$logger = self::$service_container->get('Monolog.Logger');
+
+		date_default_timezone_set($dic->getParameter('timezone'));
 
 		// TODO fix error handler
+//		/** @var Logger $logger */
+//		$logger = self::$service_container->get('Monolog.Logger');
 //		$error_handler = new ErrorHandler($logger);
 //		$error_handler->registerErrorHandler();
 //		$error_handler->registerExceptionHandler();
 //		$error_handler->registerFatalHandler();
 
-		return self::$service_container;
+		return $dic;
 	}
 
 	/**
@@ -64,6 +65,10 @@ class Core {
 	public static function rebuildDIC() {
 		$container_builder = new ContainerBuilder();
 		$annotation_loader = new AnnotationLoader($container_builder);
+		$annotation_loader->addAnnotation('Matze\Core\Annotations\Command', 'Matze\Core\Annotations\Builder\CommandDefinitionBuilder');
+		$annotation_loader->addAnnotation('Matze\Core\Annotations\Controller', 'Matze\Core\Annotations\Builder\ControllerDefinitionBuilder');
+		$annotation_loader->addAnnotation('Matze\Core\Annotations\EventListener', 'Matze\Core\Annotations\Builder\EventListenerDefinitionBuilder');
+
 		$annotation_loader->load('src/');
 		$annotation_loader->load(CORE_ROOT . '/../../');
 

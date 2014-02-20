@@ -8,6 +8,7 @@
 		<parameter key="db.database">raspberry</parameter>
 		<parameter key="db.user">root</parameter>
 		<parameter key="db.password"/>
+		<parameter key="timezone">Europe/Berlin</parameter>
 
 		<parameter key="redis.host">127.0.0.1</parameter>
 
