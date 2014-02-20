@@ -4,11 +4,10 @@ namespace Matze\Core;
 
 define('CORE_ROOT', __DIR__);
 
-if (defined('ROOT')) {
+if (!defined('ROOT')) {
 	define('ROOT', CORE_ROOT . '/../../../');
 }
 
-use Doctrine\Common\Annotations\AnnotationRegistry;
 use Matze\Annotations\Loader\AnnotationLoader;
 use Matze\Core\DependencyInjection\GlobalCompilerPass;
 use Monolog\Logger;
@@ -47,8 +46,8 @@ class Core {
 		} else {
 			self::$service_container = self::rebuildDIC();
 		}
-		/** @var Logger $logger */
-		$logger = self::$service_container->get('Monolog.Logger');
+//		/** @var Logger $logger */
+//		$logger = self::$service_container->get('Monolog.Logger');
 
 		// TODO fix error handler
 //		$error_handler = new ErrorHandler($logger);
@@ -63,12 +62,6 @@ class Core {
 	 * @return ContainerBuilder
 	 */
 	public static function rebuildDIC() {
-		$class_loader = include ROOT . '/vendor/autoload.php';
-
-		AnnotationRegistry::registerLoader(function ($class) use ($class_loader) {
-			return $class_loader->loadClass($class);
-		});
-
 		$container_builder = new ContainerBuilder();
 		$annotation_loader = new AnnotationLoader($container_builder);
 		$annotation_loader->load('src/');
@@ -77,8 +70,8 @@ class Core {
 		$loader = new XmlFileLoader($container_builder, new FileLocator('config'));
 		$loader->load(ROOT . '/config/services.xml');
 		$loader->load(ROOT . '/config/config.default.xml');
-		$loader->load('services.xml');
-		$loader->load('config.default.xml');
+		$loader->load(CORE_ROOT . '/../../../config/services.xml');
+		$loader->load(CORE_ROOT . '/../../../config/config.default.xml');
 		if (file_exists('config/config.xml')) {
 			$loader->load('config.xml');
 		}
