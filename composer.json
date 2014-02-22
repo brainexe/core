@@ -2,7 +2,7 @@
 	"name": "matze/core",
 	"description": "Framework core",
 	"minimum-stability": "dev",
-	"version": "1.0.4",
+	"version": "1.0.5",
 	"authors": [
 		{
 			"name": "Matze",
@@ -25,10 +25,14 @@
 		"symfony/config": "2.4.*",
 		"symfony/console": "2.4.*",
 		"symfony/process": "2.4.*",
+		"symfony/http-foundation": "2.4.*",
+		"symfony/yaml": "2.4.*",
+		"symfony/http-kernel": "2.4.*",
+		"symfony/routing": "2.4.*",
+
 		"twig/twig": "1.15.*",
 		"predis/predis": "0.8.*",
 		"monolog/monolog": "1.7.*",
-		"silex/silex": "1.1.*",
 		"matze/annotations": "dev-master"
 	},
 
