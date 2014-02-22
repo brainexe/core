@@ -2,7 +2,6 @@
 
 namespace Matze\Core\DependencyInjection;
 
-use Raspberry\DIC\SensorCompilerPass;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 

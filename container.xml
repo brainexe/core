@@ -1,5 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+	<parameters>
+		<parameter key="debug">false</parameter>
+
+		<parameter key="db.host">127.0.0.1</parameter>
+		<parameter key="db.system">mysql</parameter>
+		<parameter key="db.database">raspberry</parameter>
+		<parameter key="db.user">root</parameter>
+		<parameter key="db.password"/>
+		<parameter key="timezone">Europe/Berlin</parameter>
+
+		<parameter key="redis.host">127.0.0.1</parameter>
+
+		<parameter key="cache.dir">%application.root%/cache/</parameter>
+		<parameter key="logger.dir">%application.root%/logs/</parameter>
+		<parameter key="logger.error.log">%logger.dir%error.log</parameter>
+		<parameter key="logger.info.log">%logger.dir%info.log</parameter>
+
+		<parameter key="application.name" on-invalid="exception"/>
+	</parameters>
+
     <services>
         <service id="pdo" class="PDO" public="false">
             <argument>%db.system%:host=%db.host%;dbname=%db.database%</argument>
@@ -43,6 +63,9 @@
 				</argument>
 				<argument type="collection">
 					<argument key="twig.path">templates</argument>
+					<argument key="twig.options" type="collection">
+						<argument key="cache">%cache.dir%twig</argument>
+					</argument>
 				</argument>
 			</call>
 			<call method="register">

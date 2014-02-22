@@ -2,14 +2,14 @@
 
 namespace Matze\Core\DependencyInjection;
 
+use Matze\Annotations\Annotations as DI;
 use Matze\Core\Controller\ControllerInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
-use Matze\Annotations\Annotations as DI;
 
 /**
- * @DI\Service(tags={{"name" = "compiler_pass"}})
+ * @Service(tags={{"name" = "compiler_pass"}})
  */
 class ControllerCompilerPass implements CompilerPassInterface {
 

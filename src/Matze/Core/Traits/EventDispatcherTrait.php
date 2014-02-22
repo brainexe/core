@@ -13,7 +13,7 @@ trait EventDispatcherTrait {
 	private $_event_dispatcher;
 
 	/**
-	 * @DI\Inject("@EventDispatcher")
+	 * @Inject("@EventDispatcher")
 	 */
 	public function setEventDispatcher(EventDispatcher $event_dispatcher) {
 		$this->_event_dispatcher = $event_dispatcher;

@@ -2,8 +2,8 @@
 
 namespace Matze\Core\Traits;
 
-use PDO;
 use Matze\Annotations\Annotations as DI;
+use PDO;
 
 trait PDOTrait {
 
@@ -20,7 +20,7 @@ trait PDOTrait {
 	}
 
 	/**
-	 * @DI\Inject("@PDO")
+	 * @Inject("@PDO")
 	 */
 	public function setPDO(PDO $pdo) {
 		$this->_pdo = $pdo;

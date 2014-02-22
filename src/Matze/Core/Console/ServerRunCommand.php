@@ -4,15 +4,13 @@ namespace Matze\Core\Console;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\ProcessBuilder;
-use Matze\Annotations\Annotations as DI;
-use Matze\Core\Annotations as CoreDI;
 
 /**
- * @CoreDI\Command
+ * @Command
  */
 class ServerRunCommand extends Command {
 	/**

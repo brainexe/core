@@ -12,7 +12,7 @@ trait RedisTrait {
 	private $_predis;
 
 	/**
-	 * @DI\Inject("@Predis")
+	 * @Inject("@Predis")
 	 */
 	public function setPredis(Client $client) {
 		$this->_predis = $client;

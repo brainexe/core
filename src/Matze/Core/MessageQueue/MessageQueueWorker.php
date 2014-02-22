@@ -2,12 +2,12 @@
 
 namespace Matze\Core\MessageQueue;
 
+use Matze\Annotations\Annotations as DI;
 use Matze\Core\Traits\RedisTrait;
 use Matze\Core\Traits\ServiceContainerTrait;
-use Matze\Annotations\Annotations as DI;
 
 /**
- * @DI\Service(public=false)
+ * @Service(public=false)
  */
 class MessageQueueWorker {
 	use ServiceContainerTrait;

@@ -3,16 +3,15 @@
 namespace Matze\Core\Console;
 
 use Matze\Core\Core;
-use Matze\Annotations\Annotations as DI;
+use Matze\Core\Traits\ParameterBagTrait;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Matze\Core\Annotations as CoreDI;
 
 /**
- * @CoreDI\Command
+ * @Command
  */
 class ClearCacheCommand extends Command {
 
@@ -35,8 +34,8 @@ class ClearCacheCommand extends Command {
 
 		$output->write('Clear Twig Cache...');
 		$file_system = new Filesystem();
-		$file_system->remove('../cache/twig/');
-		$file_system->mkdir('../cache/twig/', 0777);
+		$file_system->remove('cache/twig/');
+		$file_system->mkdir('cache/twig/', 0777);
 		$output->writeln('<info>...done</info>');
 	}
 

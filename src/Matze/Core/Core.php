@@ -9,9 +9,7 @@ if (!defined('ROOT')) {
 }
 
 use Matze\Annotations\Loader\AnnotationLoader;
-use Matze\Core\Annotations\Builder\CommandDefinitionBuilder;
 use Matze\Core\DependencyInjection\GlobalCompilerPass;
-use Monolog\Logger;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -75,11 +73,12 @@ class Core {
 		$loader = new XmlFileLoader($container_builder, new FileLocator('config'));
 		$loader->load(ROOT . '/config/services.xml');
 		$loader->load(ROOT . '/config/config.default.xml');
-		$loader->load(CORE_ROOT . '/../../../config/services.xml');
-		$loader->load(CORE_ROOT . '/../../../config/config.default.xml');
+		$loader->load(CORE_ROOT . '/../../../container.xml');
 		if (file_exists('config/config.xml')) {
 			$loader->load('config.xml');
 		}
+
+		$container_builder->setParameter('application.root', ROOT);
 
 		$container_builder->addCompilerPass(new GlobalCompilerPass());
 		$container_builder->compile();

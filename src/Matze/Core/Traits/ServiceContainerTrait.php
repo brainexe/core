@@ -2,9 +2,8 @@
 
 namespace Matze\Core\Traits;
 
-use Matze\Core\Core;
-use PDO;
 use Matze\Annotations\Annotations as DI;
+use Matze\Core\Core;
 use Symfony\Component\DependencyInjection\Container;
 
 trait ServiceContainerTrait {
@@ -23,7 +22,7 @@ trait ServiceContainerTrait {
 
 	/**
 	 * @todo!
-	 * @DI\Inject("service_container")
+	 * @Inject("service_container")
 	 */
 	public function setServiceContainer($service_container) {
 		$this->_service_container = Core::getServiceContainer();
