@@ -15,10 +15,15 @@ use Symfony\Component\Yaml\Yaml;
  */
 class ControllerCompilerPass implements CompilerPassInterface {
 
+	const TAG = 'controller';
+
+	/**
+	 * {@inheritdoc}
+	 */
 	public function process(ContainerBuilder $container) {
 		$all_routes = [];
 
-		$taggedServices = $container->findTaggedServiceIds('controller');
+		$taggedServices = $container->findTaggedServiceIds(self::TAG);
 		foreach ($taggedServices as $id => $attributes) {
 			/** @var ControllerInterface $service */
 			$service = $container->get($id);

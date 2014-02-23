@@ -12,8 +12,13 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class EventListenerCompilerPass implements CompilerPassInterface {
 
+	const TAG = 'event_subscriber';
+
+	/**
+	 * {@inheritdoc}
+	 */
 	public function process(ContainerBuilder $container) {
-		$services = $container->findTaggedServiceIds('event_subscriber');
+		$services = $container->findTaggedServiceIds(self::TAG);
 
 		$event_dispatcher = $container->getDefinition('EventDispatcher');
 

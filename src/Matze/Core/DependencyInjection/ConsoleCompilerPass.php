@@ -11,10 +11,15 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class ConsoleCompilerPass implements CompilerPassInterface {
 
+	const TAG = 'console';
+
+	/**
+	 * {@inheritdoc}
+	 */
 	public function process(ContainerBuilder $container) {
 		$definition = $container->getDefinition('Console');
 
-		$taggedServices = $container->findTaggedServiceIds('console');
+		$taggedServices = $container->findTaggedServiceIds(self::TAG);
 		foreach ($taggedServices as $id => $attributes) {
 			$definition->addMethodCall('add', [new Reference($id)]);
 		}

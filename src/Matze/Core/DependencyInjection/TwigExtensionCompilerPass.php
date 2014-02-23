@@ -11,11 +11,16 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class TwigExtensionCompilerPass implements CompilerPassInterface {
 
+	const TAG = 'twig_extension';
+
+	/**
+	 * {@inheritdoc}
+	 */
 	public function process(ContainerBuilder $container) {
 		/** @var \Twig_Environment $twig_definition */
 		$twig_definition = $container->getDefinition('Twig');
 
-		$taggedServices = $container->findTaggedServiceIds('twig_extension');
+		$taggedServices = $container->findTaggedServiceIds(self::TAG);
 		foreach ($taggedServices as $id => $attributes) {
 			$service = $container->getDefinition($id);
 			$service->setPublic(false);
