@@ -35,6 +35,7 @@ class ClearCacheCommand extends Command {
 		$output->write('Clear Twig Cache...');
 		$file_system = new Filesystem();
 		$file_system->remove('cache/twig/');
+		$file_system->remove('cache/twig/');
 		$file_system->mkdir('cache/twig/', 0777);
 		$output->writeln('<info>...done</info>');
 	}

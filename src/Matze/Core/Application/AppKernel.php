@@ -2,18 +2,16 @@
 
 namespace Matze\Core\Application;
 
-use DirectoryIterator;
-use Matze\Core\Controller\AbstractController;
 use Matze\Core\Controller\ControllerInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Exception\MethodNotAllowedException;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
+use Symfony\Component\Routing\Matcher\UrlMatcher;
+use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
-use Symfony\Component\Routing\RequestContext;
-use Symfony\Component\Routing\Matcher\UrlMatcher;
-use Symfony\Component\Routing\Exception\ResourceNotFoundException;
-use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\Yaml\Parser;
 
 class AppKernel {
@@ -39,7 +37,7 @@ class AppKernel {
 	public function __construct(Request $request, Container $container) {
 		$this->_resolver = new ControllerResolver($container);
 
-		$this->routes = include ROOT. '/cache/routes.php';
+		$this->routes = include ROOT . '/cache/routes.php';
 
 		$this->request = $request;
 	}
@@ -63,12 +61,16 @@ class AppKernel {
 		$response->send();
 	}
 
+	/**
+	 * @return Response
+	 */
 	private function loadResource() {
 		/** @var ControllerInterface[] $callable */
 		$callable = $this->_resolver->getController($this->request);
 		$arguments = $this->_resolver->getArguments($this->request, $callable);
 
 		$response = call_user_func_array($callable, $arguments);
+
 		return $response;
 	}
 

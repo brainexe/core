@@ -6,8 +6,6 @@ use Matze\Annotations\Annotations as DI;
 use Matze\Core\Controller\ControllerInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Dumper\YamlDumper;
-use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Yaml\Yaml;
 
 /**

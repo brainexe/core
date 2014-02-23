@@ -3,7 +3,6 @@
 namespace Matze\Core\Annotations\Builder;
 
 use Matze\Annotations\Loader\Annotation\DefinitionBuilder\ServiceDefinitionBuilder;
-use Matze\Core\DependencyInjection\ConsoleCompilerPass;
 use Matze\Core\DependencyInjection\ControllerCompilerPass;
 use Symfony\Component\DependencyInjection\Definition;
 
