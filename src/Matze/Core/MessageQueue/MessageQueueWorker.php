@@ -10,11 +10,15 @@ use Matze\Core\Traits\ServiceContainerTrait;
 /**
  * @Service(public=false)
  */
-class MessageQueueWorker {
+class MessageQueueWorker implements MessageQueueWorkerInterface {
 	use ServiceContainerTrait;
 	use RedisTrait;
 	use LoggerTrait;
 
+	/**
+	 * {@inheritdoc}
+	 * @todo run other workers
+	 */
 	public function run() {
 		$predis = $this->getPredis();
 
