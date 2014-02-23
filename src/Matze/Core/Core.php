@@ -63,11 +63,6 @@ class Core {
 	public static function rebuildDIC() {
 		$container_builder = new ContainerBuilder();
 		$annotation_loader = new AnnotationLoader($container_builder);
-		$annotation_loader->addAnnotation('Matze\Core\Annotations\Command', 'Matze\Core\Annotations\Builder\CommandDefinitionBuilder');
-		$annotation_loader->addAnnotation('Matze\Core\Annotations\Controller', 'Matze\Core\Annotations\Builder\ControllerDefinitionBuilder');
-		$annotation_loader->addAnnotation('Matze\Core\Annotations\EventListener', 'Matze\Core\Annotations\Builder\EventListenerDefinitionBuilder');
-		$annotation_loader->addAnnotation('Matze\Core\Annotations\TwigExtension', 'Matze\Core\Annotations\Builder\TwigExtensionDefinitionBuilder');
-		$annotation_loader->addAnnotation('Matze\Core\Annotations\CompilerPass', 'Matze\Core\Annotations\Builder\CompilerPassDefinitionBuilder');
 
 		$annotation_loader->load('src/');
 		$annotation_loader->load(CORE_ROOT . '/../../');
