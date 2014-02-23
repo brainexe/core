@@ -6,22 +6,31 @@ use Matze\Annotations\Annotations as DI;
 use Matze\Core\Controller\ControllerInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Dumper\YamlDumper;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\Yaml\Yaml;
 
 /**
- * @Service(tags={{"name" = "compiler_pass"}})
+ * @CompilerPass
  */
 class ControllerCompilerPass implements CompilerPassInterface {
 
 	public function process(ContainerBuilder $container) {
-		$definition = $container->getDefinition('Application');
+		$all_routes = [];
 
 		$taggedServices = $container->findTaggedServiceIds('controller');
 		foreach ($taggedServices as $id => $attributes) {
 			/** @var ControllerInterface $service */
 			$service = $container->get($id);
 
-			$definition->addMethodCall('mount', [$service->getPath(), new Reference($id)]);
+			$routes = $service->getRoutes();
+			$all_routes = array_merge($all_routes, $routes);
 		}
+
+		$content = "<?php\n\nreturn ";
+		$content .= var_export($all_routes, true);
+		$content .= ';';
+
+		file_put_contents(ROOT.'/cache/routes.php', $content);
 	}
 }

@@ -2,12 +2,10 @@
 
 namespace Matze\Core\Controller;
 
-use Silex\ControllerProviderInterface;
-
-interface ControllerInterface extends ControllerProviderInterface {
+interface ControllerInterface {
 
 	/**
 	 * @return string
 	 */
-	public function getPath();
+	public function getRoutes();
 }

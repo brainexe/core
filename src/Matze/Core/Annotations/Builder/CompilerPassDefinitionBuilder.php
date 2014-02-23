@@ -5,7 +5,7 @@ namespace Matze\Core\Annotations\Builder;
 use Matze\Annotations\Loader\Annotation\DefinitionBuilder\ServiceDefinitionBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
-class ControllerDefinitionBuilder extends ServiceDefinitionBuilder {
+class CompilerPassDefinitionBuilder extends ServiceDefinitionBuilder {
 	/**
 	 * {@inheritdoc}
 	 */
@@ -14,9 +14,9 @@ class ControllerDefinitionBuilder extends ServiceDefinitionBuilder {
 		/** @var Definition $definition */
 		$definition = $definitionHolder['definition'];
 
-		$id = sprintf('Controller.%s', str_replace('Controller', '', $definitionHolder['id']));
-		$definition->addTag('controller');
+		$definition->setPublic(false);
+		$definition->addTag('compiler_pass');
 
-		return ['id' => $id, 'definition' => $definition];
+		return ['id' => $definitionHolder['id'], 'definition' => $definition];
 	}
 }

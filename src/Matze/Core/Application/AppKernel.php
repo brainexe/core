@@ -2,16 +2,19 @@
 
 namespace Matze\Core\Application;
 
+use DirectoryIterator;
 use Matze\Core\Controller\AbstractController;
+use Matze\Core\Controller\ControllerInterface;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Controller\ControllerResolver;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
+use Symfony\Component\Yaml\Parser;
 
 class AppKernel {
 	/**
@@ -22,21 +25,32 @@ class AppKernel {
 	/**
 	 * @var array
 	 */
-	protected $routes;
+	protected $routes = [];
+
+	/**
+	 * @var ControllerResolver
+	 */
+	private $_resolver;
 
 	/**
 	 * @param Request $request
-	 * @param array $routes
+	 * @param Container $container
 	 */
-	public function __construct(Request $request, $routes = array()) {
+	public function __construct(Request $request, Container $container) {
+		$this->_resolver = new ControllerResolver($container);
+
+		$this->routes = include ROOT. '/cache/routes.php';
+
 		$this->request = $request;
-		$this->routes = $routes;
 	}
 
 	public function handle() {
 		try {
 			$this->matchRoute();
 			$response = $this->loadResource();
+			if (is_string($response)) {
+				$response = new Response($response);
+			}
 		} catch (ResourceNotFoundException $e) {
 			$response = new Response();
 			$response->setStatusCode(404);
@@ -50,16 +64,11 @@ class AppKernel {
 	}
 
 	private function loadResource() {
-		$resolver = new ControllerResolver();
+		/** @var ControllerInterface[] $callable */
+		$callable = $this->_resolver->getController($this->request);
+		$arguments = $this->_resolver->getArguments($this->request, $callable);
 
-		/** @var AbstractController[] $controller */
-		$controller = $resolver->getController($this->request);
-		$arguments = $resolver->getArguments($this->request, $controller);
-
-		$controller[0]->setRequest($this->request);
-		$controller[0]->init();
-
-		$response = call_user_func_array($controller, $arguments);
+		$response = call_user_func_array($callable, $arguments);
 		return $response;
 	}
 

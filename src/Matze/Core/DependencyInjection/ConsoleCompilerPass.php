@@ -7,7 +7,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * @Service(tags={{"name" = "compiler_pass"}})
+ * @CompilerPass
  */
 class ConsoleCompilerPass implements CompilerPassInterface {
 

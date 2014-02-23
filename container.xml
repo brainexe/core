@@ -21,6 +21,18 @@
 	</parameters>
 
     <services>
+		<service id="twig" class="Twig_Environment" public="false">
+			<argument type="service">
+				<service class="Twig_Loader_Filesystem">
+					<argument>%application.root%/templates/</argument>
+				</service>
+			</argument>
+			<argument type="collection">
+				<argument key="cache">%cache.dir%twig</argument>
+				<argument key="debug">%debug%</argument>
+			</argument>
+		</service>
+
         <service id="pdo" class="PDO" public="false">
             <argument>%db.system%:host=%db.host%;dbname=%db.database%</argument>
             <argument>%db.user%</argument>
@@ -50,29 +62,6 @@
         </service>
 
 		<service id="EventDispatcher" class="Symfony\Component\EventDispatcher\EventDispatcher" public="false">
-		</service>
-
-		<service id="Application" class="Silex\Application">
-			<argument type="collection">
-				<argument key="debug">%debug%</argument>
-			</argument>
-
-			<call method="register">
-				<argument type="service">
-					<service class="Silex\Provider\TwigServiceProvider"/>
-				</argument>
-				<argument type="collection">
-					<argument key="twig.path">templates</argument>
-					<argument key="twig.options" type="collection">
-						<argument key="cache">%cache.dir%twig</argument>
-					</argument>
-				</argument>
-			</call>
-			<call method="register">
-				<argument type="service">
-					<service class="Silex\Provider\SessionServiceProvider"/>
-				</argument>
-			</call>
 		</service>
 
 		<service id="Console" class="Symfony\Component\Console\Application">
