@@ -4,6 +4,8 @@ namespace Matze\Core;
 
 use Matze\Annotations\Loader\AnnotationLoader;
 use Matze\Core\DependencyInjection\GlobalCompilerPass;
+use Monolog\ErrorHandler;
+use Monolog\Logger;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -50,13 +52,12 @@ class Core {
 
 		date_default_timezone_set($dic->getParameter('timezone'));
 
-		// TODO fix error handler
-//		/** @var Logger $logger */
-//		$logger = self::$service_container->get('Monolog.Logger');
-//		$error_handler = new ErrorHandler($logger);
-//		$error_handler->registerErrorHandler();
-//		$error_handler->registerExceptionHandler();
-//		$error_handler->registerFatalHandler();
+		/** @var Logger $logger */
+		$logger = self::$service_container->get('Monolog.Logger');
+		$error_handler = new ErrorHandler($logger);
+		$error_handler->registerErrorHandler();
+		$error_handler->registerExceptionHandler();
+		$error_handler->registerFatalHandler();
 
 		return $dic;
 	}

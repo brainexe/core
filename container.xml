@@ -31,6 +31,7 @@
 			<argument type="collection">
 				<argument key="cache">%cache.dir%twig</argument>
 				<argument key="debug">%debug%</argument>
+				<argument key="auto_reload">true</argument>
 			</argument>
 		</service>
 
@@ -56,12 +57,18 @@
 			<call method="pushHandler">
 				<argument type="service" id="monolog.ErrorLog"/>
 			</call>
+			<call method="pushHandler">
+				<argument type="service" id="monolog.InfoLog"/>
+			</call>
         </service>
         <service id="monolog.ErrorLog" class="Monolog\Handler\StreamHandler" public="false">
             <argument>%logger.error.log%</argument>
-            <argument type="constant">Monolog\Logger::DEBUG</argument>
+            <argument type="constant">Monolog\Logger::ERROR</argument>
         </service>
-
+		<service id="monolog.InfoLog" class="Monolog\Handler\StreamHandler" public="false">
+			<argument>%logger.info.log%</argument>
+			<argument type="constant">Monolog\Logger::INFO</argument>
+		</service>
 		<service id="EventDispatcher" class="Symfony\Component\EventDispatcher\EventDispatcher" public="false">
 		</service>
 
