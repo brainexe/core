@@ -13,12 +13,26 @@ use Symfony\Component\Process\ProcessBuilder;
  * @Command
  */
 class ServerRunCommand extends Command {
+
+	/**
+	 * @var string
+	 */
+	private $_value_address;
+
+	/**
+	 * @Inject("%server.address%")
+	 */
+	public function setValueAddress($value_address) {
+		$this->_value_address = $value_address;
+	}
+
 	/**
 	 * {@inheritdoc}
 	 */
 	protected function configure() {
 		$this
-			->addArgument('address', InputArgument::OPTIONAL, 'Address:port', 'localhost:8000')
+			->addArgument('address', InputArgument::OPTIONAL, 'Address:port')
+			->addOption('quiet', 'q', InputOption::VALUE_NONE)
 			->setName('server:run')
 			->setDescription('Runs PHP built-in web server');;
 	}
@@ -27,13 +41,15 @@ class ServerRunCommand extends Command {
 	 * {@inheritdoc}
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output) {
-		$output->writeln(sprintf("Server running on <info>%s</info>\n", $input->getArgument('address')));
+		$address = $input->getArgument('address') ?: $this->_value_address;
 
-		$builder = new ProcessBuilder(array(PHP_BINARY, '-S', $input->getArgument('address')));
+		$output->writeln(sprintf("Server running on <info>%s</info>\n", $address));
+
+		$builder = new ProcessBuilder(array(PHP_BINARY, '-S', $address));
 		$builder->setWorkingDirectory(ROOT . '/web/');
 		$builder->setTimeout(null);
-		$builder->getProcess()->run(function ($type, $buffer) use ($output) {
-			if (OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity()) {
+		$builder->getProcess()->run(function ($type, $buffer) use ($output, $input) {
+			if (!$input->getOption('quiet')) {
 				$output->write($buffer);
 			}
 		});
