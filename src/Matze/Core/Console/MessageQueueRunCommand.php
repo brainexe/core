@@ -23,8 +23,9 @@ class MessageQueueRunCommand extends Command {
 	/**
 	 * @Inject("@MessageQueueWorker")
 	 */
-	public function setMessageQueueWorker(MessageQueueWorker $message_queue_worker) {
+	public function __construct(MessageQueueWorker $message_queue_worker) {
 		$this->_message_queue_worker = $message_queue_worker;
+		parent::__construct(null);
 	}
 
 	/**

@@ -25,7 +25,7 @@ trait TranslatorTrait {
 	 * @param string|null $locale     The locale or null to use the default
 	 * @return string The translated string
 	 */
-	protected function trans($id, array $parameters = array(), $domain = null, $locale = null) {
+	public function trans($id, array $parameters = array(), $domain = null, $locale = null) {
 		return $this->_translator->trans($id, $parameters, $domain, $locale);
 	}
 
@@ -37,7 +37,7 @@ trait TranslatorTrait {
 	 * @param string|null $locale     The locale or null to use the default
 	 * @return string The translated string
 	 */
-	protected function transChoice($id, $number, array $parameters = array(), $domain = null, $locale = null) {
+	public function transChoice($id, $number, array $parameters = array(), $domain = null, $locale = null) {
 		return $this->_translator->transChoice($id, $number, $parameters, $domain, $locale);
 	}
 }

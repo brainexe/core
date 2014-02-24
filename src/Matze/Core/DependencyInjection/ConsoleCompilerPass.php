@@ -19,6 +19,8 @@ class ConsoleCompilerPass implements CompilerPassInterface {
 	public function process(ContainerBuilder $container) {
 		$definition = $container->getDefinition('Console');
 
+		$definition->addMethodCall('setAutoExit', [false]);
+
 		$taggedServices = $container->findTaggedServiceIds(self::TAG);
 		foreach ($taggedServices as $id => $attributes) {
 			$definition->addMethodCall('add', [new Reference($id)]);

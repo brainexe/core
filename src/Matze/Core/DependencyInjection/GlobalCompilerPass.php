@@ -15,8 +15,8 @@ class GlobalCompilerPass implements CompilerPassInterface {
 	public function process(ContainerBuilder $container) {
 		$services = $container->findTaggedServiceIds(self::TAG);
 
-		foreach (array_keys($services) as $service_ids) {
-			$container->get($service_ids)->process($container);
+		foreach (array_keys($services) as $service_id) {
+			$container->get($service_id)->process($container);
 		}
 	}
 }

@@ -15,8 +15,6 @@ use Symfony\Component\Yaml\Yaml;
  */
 class TranslationCompilerPass implements CompilerPassInterface {
 
-	const TAG = 'console';
-
 	/**
 	 * {@inheritdoc}
 	 */

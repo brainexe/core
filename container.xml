@@ -18,6 +18,8 @@
 		<parameter key="logger.error.log">%logger.dir%error.log</parameter>
 		<parameter key="logger.info.log">%logger.dir%info.log</parameter>
 
+		<parameter key="application.name" on-invalid="exception"/>
+		
 		<parameter key="security" type="collection">
 			<parameter key="encoders" type="collection">
 				<parameter key="DatabaseUserProvider" type="collection">
@@ -27,8 +29,6 @@
 				</parameter>
 			</parameter>
 		</parameter>
-
-		<parameter key="application.name" on-invalid="exception"/>
 	</parameters>
 
     <services>
@@ -82,11 +82,7 @@
 		<service id="EventDispatcher" class="Symfony\Component\EventDispatcher\EventDispatcher" public="false">
 		</service>
 
-		<service id="Console" class="Symfony\Component\Console\Application">
-			<call method="setAutoExit">
-				<argument>false</argument>
-			</call>
-		</service>
+		<service id="Console" class="Symfony\Component\Console\Application"></service>
 
 		<service id="Translator" class="Symfony\Component\Translation\Translator" public="false">
 			<argument>de_DE</argument>
@@ -94,9 +90,9 @@
 				<service class="Symfony\Component\Translation\MessageSelector"/>
 			</argument>
 			<call method="addLoader">
-				<argument>array</argument>
+				<argument>php</argument>
 				<argument type="service">
-					<service class="Symfony\Component\Translation\Loader\ArrayLoader"/>
+					<service class="Symfony\Component\Translation\Loader\PhpFileLoader"/>
 				</argument>
 			</call>
 		</service>

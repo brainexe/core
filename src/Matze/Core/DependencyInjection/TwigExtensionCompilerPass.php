@@ -4,6 +4,7 @@ namespace Matze\Core\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
@@ -17,7 +18,7 @@ class TwigExtensionCompilerPass implements CompilerPassInterface {
 	 * {@inheritdoc}
 	 */
 	public function process(ContainerBuilder $container) {
-		/** @var \Twig_Environment $twig_definition */
+		/** @var Definition $twig_definition */
 		$twig_definition = $container->getDefinition('Twig');
 
 		$taggedServices = $container->findTaggedServiceIds(self::TAG);
