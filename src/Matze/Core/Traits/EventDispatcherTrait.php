@@ -19,7 +19,7 @@ trait EventDispatcherTrait {
 		$this->_event_dispatcher = $event_dispatcher;
 	}
 
-	public function getEventDispatcher() {
+	protected function getEventDispatcher() {
 		return $this->_event_dispatcher;
 	}
 

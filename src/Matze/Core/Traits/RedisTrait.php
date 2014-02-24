@@ -21,7 +21,7 @@ trait RedisTrait {
 	/**
 	 * @return Client
 	 */
-	public function getPredis() {
+	protected function getPredis() {
 		return $this->_predis;
 	}
 }

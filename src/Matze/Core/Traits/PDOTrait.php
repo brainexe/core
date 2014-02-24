@@ -22,7 +22,7 @@ trait PDOTrait {
 	/**
 	 * @Inject("@PDO")
 	 */
-	public function setPDO(PDO $pdo) {
+	protected function setPDO(PDO $pdo) {
 		$this->_pdo = $pdo;
 	}
 

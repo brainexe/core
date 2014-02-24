@@ -23,14 +23,14 @@ trait TwigTrait {
 	 * @param array $context
 	 * @return string
 	 */
-	public function render($name, array $context = []) {
+	protected function render($name, array $context = []) {
 		return $this->_twig->render($name, $context);
 	}
 
 	/**
 	 * @return Twig_Environment
 	 */
-	public function getTwig() {
+	protected function getTwig() {
 		return $this->_twig;
 	}
 } 
