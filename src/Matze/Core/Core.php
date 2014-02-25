@@ -6,11 +6,9 @@ use Matze\Annotations\Loader\AnnotationLoader;
 use Matze\Core\DependencyInjection\GlobalCompilerPass;
 use Monolog\ErrorHandler;
 use Monolog\Logger;
-use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -40,12 +38,7 @@ class Core {
 
 		date_default_timezone_set($dic->getParameter('timezone'));
 
-		/** @var Logger $logger */
-		$logger = $dic->get('Monolog.Logger');
-		$error_handler = new ErrorHandler($logger);
-		$error_handler->registerErrorHandler();
-		$error_handler->registerExceptionHandler();
-		$error_handler->registerFatalHandler();
+		$dic->get('monolog.ErrorHandler');
 
 		return $dic;
 	}
@@ -55,28 +48,10 @@ class Core {
 	 */
 	public static function rebuildDIC() {
 		$container_builder = new ContainerBuilder();
-		$container_builder->setParameter('application.root', ROOT);
 
 		$annotation_loader = new AnnotationLoader($container_builder);
 		$annotation_loader->load('src/');
 		$annotation_loader->load(CORE_ROOT . '/../../');
-
-		$loader = new XmlFileLoader($container_builder, new FileLocator('config'));
-		$loader->load(ROOT . '/app/container.xml');
-		if (file_exists(ROOT . '/app/config.xml')) {
-			$loader->load(ROOT . '/app/config.xml');
-		}
-
-		// load container.xml file from all "matze" components
-		$config_finder = new Finder();
-		$config_finder
-			->in(MATZE_VENDOR_ROOT)
-			->name('container.xml');
-
-		foreach ($config_finder as $file) {
-			/** @var SplFileInfo $file */
-			$loader->load($file->getPathname());
-		}
 
 		$container_builder->addCompilerPass(new GlobalCompilerPass());
 		$container_builder->compile();

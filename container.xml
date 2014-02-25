@@ -64,6 +64,13 @@
             </argument>
         </service>
 
+		<service id="monolog.ErrorHandler" class="Monolog\ErrorHandler">
+			<argument type="service" id="Monolog.Logger"/>
+			<call method="registerErrorHandler"/>
+			<call method="registerExceptionHandler"/>
+			<call method="registerFatalHandler"/>
+		</service>
+
         <service id="monolog.logger" class="Monolog\Logger">
             <argument>%application.name%</argument>
 			<call method="pushHandler">

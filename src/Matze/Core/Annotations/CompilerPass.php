@@ -11,6 +11,8 @@ use Matze\Core\Annotations\Builder\CompilerPassDefinitionBuilder;
  * @Annotation
  */
 class CompilerPass extends Service {
+	public $priority = 1;
+
 	/**
 	 * {@inheritdoc}
 	 */
