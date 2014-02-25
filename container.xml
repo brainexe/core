@@ -12,6 +12,7 @@
 		<parameter key="timezone">Europe/Berlin</parameter>
 
 		<parameter key="redis.host">127.0.0.1</parameter>
+		<parameter key="redis.password"/>
 
 		<parameter key="cache.dir">%application.root%/cache/</parameter>
 		<parameter key="logger.dir">%application.root%/logs/</parameter>
@@ -19,7 +20,7 @@
 		<parameter key="logger.info.log">%logger.dir%info.log</parameter>
 
 		<parameter key="application.name" on-invalid="exception"/>
-		
+
 		<parameter key="security" type="collection">
 			<parameter key="encoders" type="collection">
 				<parameter key="DatabaseUserProvider" type="collection">
@@ -58,6 +59,7 @@
             <argument type="collection">
                 <argument key="read_write_timeout">0</argument>
                 <argument key="host">%redis.host%</argument>
+                <argument key="password">%redis.password%</argument>
                 <argument key="prefix">%application.name%:</argument>
             </argument>
         </service>
