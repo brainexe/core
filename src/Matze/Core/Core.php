@@ -25,18 +25,6 @@ define('MATZE_VENDOR_ROOT', ROOT . '/vendor/matze/');
 class Core {
 
 	/**
-	 * @var Container
-	 */
-	private static $service_container;
-
-	/**
-	 * @return Container
-	 */
-	public static function getServiceContainer() {
-		return self::$service_container;
-	}
-
-	/**
 	 * @return Container
 	 */
 	public static function boot() {
@@ -45,15 +33,15 @@ class Core {
 		/** @var Container $dic */
 		if (file_exists('cache/dic.php')) {
 			include 'cache/dic.php';
-			$dic = self::$service_container = new \DIC();
+			$dic = new \DIC();
 		} else {
-			$dic = self::$service_container = self::rebuildDIC();
+			$dic = self::rebuildDIC();
 		}
 
 		date_default_timezone_set($dic->getParameter('timezone'));
 
 		/** @var Logger $logger */
-		$logger = self::$service_container->get('Monolog.Logger');
+		$logger = $dic->get('Monolog.Logger');
 		$error_handler = new ErrorHandler($logger);
 		$error_handler->registerErrorHandler();
 		$error_handler->registerExceptionHandler();

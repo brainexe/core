@@ -26,7 +26,7 @@ class MessageQueueWorker implements MessageQueueWorkerInterface {
 			$message_json = $predis->BRPOP(MessageQueue::REDIS_MESSAGE_QUEUE, 0)[1];
 			$message = json_decode($message_json, true);
 
-			$service = $this->getServiceContainer()->get($message['service_id']);
+			$service = $this->getService($message['service_id']);
 
 			$start = microtime(true);
 			call_user_func_array([$service, $message['method']], $message['arguments']);

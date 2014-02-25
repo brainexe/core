@@ -84,7 +84,7 @@
 		<service id="EventDispatcher" class="Symfony\Component\EventDispatcher\EventDispatcher" public="false">
 		</service>
 
-		<service id="Console" class="Symfony\Component\Console\Application"></service>
+		<service id="Console" class="Symfony\Component\Console\Application"/>
 
 		<service id="Translator" class="Symfony\Component\Translation\Translator" public="false">
 			<argument>de_DE</argument>

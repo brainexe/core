@@ -3,29 +3,27 @@
 namespace Matze\Core\Traits;
 
 use Matze\Annotations\Annotations as DI;
-use Matze\Core\Core;
-use Symfony\Component\DependencyInjection\Container;
+use Matze\Core\DependencyInjection\ObjectFinder;
 
 trait ServiceContainerTrait {
 
 	/**
-	 * @var Container
+	 * @var ObjectFinder
 	 */
-	private $_service_container;
+	private $_object_finder_trait;
 
 	/**
-	 * @return Container
+	 * @Inject("@ObjectFinder")
 	 */
-	public function getServiceContainer() {
-		return $this->_service_container;
+	public function setObjectFinder(ObjectFinder $object_finder) {
+		$this->_object_finder_trait = $object_finder;
 	}
 
 	/**
-	 * @todo!
-	 * @Inject("service_container")
+	 * @param string $service_id
 	 */
-	public function setServiceContainer($service_container) {
-		$this->_service_container = Core::getServiceContainer();
+	protected function getService($service_id) {
+		return $this->_object_finder_trait->getService($service_id);
 	}
 
 } 
