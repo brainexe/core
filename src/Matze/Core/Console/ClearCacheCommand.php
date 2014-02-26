@@ -49,16 +49,16 @@ class ClearCacheCommand extends Command {
 		}
 		$output->writeln('<info>...done</info>');
 
+		$output->write('Rebuild DIC...');
+		Core::rebuildDIC();
+		$output->writeln('<info>...done</info>');
+
 		$output->write('Set permissions...');
 		$file_system->chmod([
 			'cache/',
 			'cache/twig/',
 			'logs/',
-		] , 0777);
-		$output->writeln('<info>...done</info>');
-
-		$output->write('Rebuild DIC...');
-		Core::rebuildDIC();
+		] , 0777, 0000, true);
 		$output->writeln('<info>...done</info>');
 
 		$event = new ClearCacheEvent($output);
