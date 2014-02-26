@@ -21,9 +21,6 @@ class ConfigCompilerPass implements CompilerPassInterface {
 	public function process(ContainerBuilder $container) {
 		$loader = new XmlFileLoader($container, new FileLocator('config'));
 		$loader->load(ROOT . '/app/container.xml');
-		if (file_exists(ROOT . '/app/config.xml')) {
-			$loader->load(ROOT . '/app/config.xml');
-		}
 
 		// load container.xml file from all "matze" components
 		$config_finder = new Finder();
@@ -34,6 +31,10 @@ class ConfigCompilerPass implements CompilerPassInterface {
 		foreach ($config_finder as $file) {
 			/** @var SplFileInfo $file */
 			$loader->load($file->getPathname());
+		}
+
+		if (file_exists(ROOT . '/app/config.xml')) {
+			$loader->load(ROOT . '/app/config.xml');
 		}
 	}
 }
