@@ -3,6 +3,8 @@
 namespace Matze\Core\Console;
 
 use Matze\Core\Core;
+use Matze\Core\EventDispatcher\ClearCacheEvent;
+use Matze\Core\Traits\EventDispatcherTrait;
 use Matze\Core\Traits\ParameterBagTrait;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -16,6 +18,8 @@ use Symfony\Component\Finder\SplFileInfo;
  * @Command
  */
 class ClearCacheCommand extends Command {
+
+	use EventDispatcherTrait;
 
 	/**
 	 * {@inheritdoc}
@@ -56,6 +60,10 @@ class ClearCacheCommand extends Command {
 		$output->write('Rebuild DIC...');
 		Core::rebuildDIC();
 		$output->writeln('<info>...done</info>');
+
+		$event = new ClearCacheEvent($output);
+		$this->getEventDispatcher()->dispatch(ClearCacheEvent::CLEAR, $event);
+
 	}
 
 } 
