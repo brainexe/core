@@ -19,6 +19,8 @@ use Symfony\Component\Yaml\Parser;
  */
 class AppKernel {
 
+	use LoggerTrait;
+
 	/**
 	 * @var Request
 	 */
@@ -62,6 +64,11 @@ class AppKernel {
 		}
 
 		$response->prepare($this->_request);
+
+		$start_time = $_SERVER['REQUEST_TIME_FLOAT'];
+		$diff = microtime(true) - $start_time;
+		$this->debug(sprintf('Response time: %0.2fms', $diff*1000));
+
 		$response->send();
 	}
 
