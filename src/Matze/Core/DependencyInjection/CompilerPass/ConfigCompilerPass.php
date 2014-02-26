@@ -1,6 +1,6 @@
 <?php
 
-namespace Matze\Core\DependencyInjection;
+namespace Matze\Core\DependencyInjection\CompilerPass;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;

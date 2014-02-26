@@ -3,9 +3,7 @@
 namespace Matze\Core;
 
 use Matze\Annotations\Loader\AnnotationLoader;
-use Matze\Core\DependencyInjection\GlobalCompilerPass;
-use Monolog\ErrorHandler;
-use Monolog\Logger;
+use Matze\Core\DependencyInjection\CompilerPass\GlobalCompilerPass;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;

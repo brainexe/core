@@ -1,12 +1,11 @@
 <?php
 
-namespace Matze\Core\DependencyInjection;
+namespace Matze\Core\DependencyInjection\CompilerPass;
 
 use Matze\Core\Controller\ControllerInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * @CompilerPass

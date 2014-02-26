@@ -1,6 +1,6 @@
 <?php
 
-namespace Matze\Core\DependencyInjection;
+namespace Matze\Core\DependencyInjection\CompilerPass\CompilerPass;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

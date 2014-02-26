@@ -4,7 +4,7 @@ namespace Matze\Core\Annotations\Builder;
 
 use Matze\Annotations\Loader\Annotation\DefinitionBuilder\ServiceDefinitionBuilder;
 use Matze\Core\Annotations\CompilerPass;
-use Matze\Core\DependencyInjection\GlobalCompilerPass;
+use Matze\Core\DependencyInjection\CompilerPass\GlobalCompilerPass;
 use Symfony\Component\DependencyInjection\Definition;
 
 class CompilerPassDefinitionBuilder extends ServiceDefinitionBuilder {

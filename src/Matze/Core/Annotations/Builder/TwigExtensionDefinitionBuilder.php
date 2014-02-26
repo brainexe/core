@@ -3,7 +3,7 @@
 namespace Matze\Core\Annotations\Builder;
 
 use Matze\Annotations\Loader\Annotation\DefinitionBuilder\ServiceDefinitionBuilder;
-use Matze\Core\DependencyInjection\TwigExtensionCompilerPass;
+use Matze\Core\DependencyInjection\CompilerPass\TwigExtensionCompilerPass;
 use Symfony\Component\DependencyInjection\Definition;
 
 class TwigExtensionDefinitionBuilder extends ServiceDefinitionBuilder {
