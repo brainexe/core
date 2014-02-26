@@ -2,7 +2,6 @@
 
 namespace Matze\Core\Traits;
 
-use Matze\Annotations\Annotations as DI;
 use PDO;
 
 trait PDOTrait {

@@ -2,7 +2,6 @@
 
 namespace Matze\Core\MessageQueue;
 
-use Matze\Annotations\Annotations as DI;
 use Matze\Core\Traits\LoggerTrait;
 use Matze\Core\Traits\RedisTrait;
 use Matze\Core\Traits\ServiceContainerTrait;

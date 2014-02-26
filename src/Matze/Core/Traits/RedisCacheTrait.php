@@ -2,8 +2,6 @@
 
 namespace Matze\Core\Traits;
 
-use Matze\Annotations\Annotations as DI;
-
 trait RedisCacheTrait {
 
 	use RedisTrait;

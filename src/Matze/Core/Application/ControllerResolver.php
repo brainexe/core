@@ -2,24 +2,16 @@
 
 namespace Matze\Core\Application;
 
-
-use Symfony\Component\DependencyInjection\Container;
+use Matze\Core\Traits\ServiceContainerTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
 
+/**
+ * @Service(public=false)
+ */
 class ControllerResolver implements ControllerResolverInterface {
 
-	/**
-	 * @var Container
-	 */
-	private $_container;
-
-	/**
-	 * @param Container $container
-	 */
-	public function __construct(Container $container) {
-		$this->_container = $container;
-	}
+	use ServiceContainerTrait;
 
 	/**
 	 * {@inheritdoc}
@@ -35,7 +27,7 @@ class ControllerResolver implements ControllerResolverInterface {
 
 		list($service_id, $method) = explode('::', $controller, 2);
 
-		$service = $this->_container->get(sprintf('Controller.%s', $service_id));
+		$service = $this->getService(sprintf('Controller.%s', $service_id));
 
 		$callable = [$service, $method];
 
@@ -46,6 +38,11 @@ class ControllerResolver implements ControllerResolverInterface {
 		return $callable;
 	}
 
+	/**
+	 * @param Request $request
+	 * @param callable $controller
+	 * @return array
+	 */
 	public function getArguments(Request $request, $controller) {
 		if (is_array($controller)) {
 			$r = new \ReflectionMethod($controller[0], $controller[1]);
@@ -56,10 +53,17 @@ class ControllerResolver implements ControllerResolverInterface {
 			$r = new \ReflectionFunction($controller);
 		}
 
-		return $this->doGetArguments($request, $controller, $r->getParameters());
+		return $this->_doGetArguments($request, $controller, $r->getParameters());
 	}
 
-	protected function doGetArguments(Request $request, $controller, array $parameters) {
+	/**
+	 * @param Request $request
+	 * @param $controller
+	 * @param array $parameters
+	 * @return array
+	 * @throws \RuntimeException
+	 */
+	private function _doGetArguments(Request $request, $controller, array $parameters) {
 		$attributes = $request->attributes->all();
 		$arguments = array();
 

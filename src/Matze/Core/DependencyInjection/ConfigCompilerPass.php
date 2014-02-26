@@ -2,7 +2,6 @@
 
 namespace Matze\Core\DependencyInjection;
 
-use Matze\Annotations\Annotations as DI;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

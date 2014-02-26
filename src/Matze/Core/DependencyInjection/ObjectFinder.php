@@ -23,6 +23,7 @@ class ObjectFinder {
 
 	/**
 	 * @param string $service_id
+	 * @return mixed
 	 */
 	public function getService($service_id) {
 		return $this->_container->get($service_id);

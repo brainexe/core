@@ -106,5 +106,9 @@
 			</call>
 		</service>
 
+		<!--TODO-->
+		<service id="service_container" class="Symfony\Component\DependencyInjection\Container"/>
+
+		<service id="RouteCollection" class="Symfony\Component\Routing\RouteCollection" public="false"/>
 	</services>
 </container>

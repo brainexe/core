@@ -4,14 +4,13 @@ namespace Matze\Core\Authentication;
 
 use Matze\Core\Traits\PDOTrait;
 use Matze\Core\Traits\RedisTrait;
-use Matze\Annotations\Annotations as DI;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\User;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 /**
- * @DI\Service("Security.UserProvider", public=false)
+ * @Service("Security.UserProvider", public=false)
  */
 class DatabaseUserProvider implements UserProviderInterface {
 

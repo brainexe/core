@@ -2,10 +2,10 @@
 
 namespace Matze\Core\DependencyInjection;
 
-use Matze\Annotations\Annotations as DI;
 use Matze\Core\Controller\ControllerInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -30,10 +30,14 @@ class ControllerCompilerPass implements CompilerPassInterface {
 			$all_routes = array_merge($all_routes, $routes);
 		}
 
-		$content = "<?php\n\nreturn ";
-		$content .= var_export($all_routes, true);
-		$content .= ';';
+		$routes = $container->getDefinition('RouteCollection');
+		foreach ($all_routes as $key => $route) {
+			if (!empty($route['requirements'])) {
+				$routes->addMethodCall('add', [$key, new Definition('Symfony\Component\Routing\Route', [$route['pattern'], $route['defaults'], $route['requirements']])]);
+			} else {
+				$routes->addMethodCall('add', [$key, new Definition('Symfony\Component\Routing\Route', [$route['pattern'], $route['defaults']])]);
+			}
+		}
 
-		file_put_contents(ROOT.'/cache/routes.php', $content);
 	}
 }

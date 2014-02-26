@@ -3,27 +3,31 @@
 namespace Matze\Core\Application;
 
 use Matze\Core\Controller\ControllerInterface;
-use Symfony\Component\DependencyInjection\Container;
+use Matze\Core\Traits\LoggerTrait;
+use Matze\Core\Traits\ServiceContainerTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RequestContext;
-use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Yaml\Parser;
 
+/**
+ * @Service
+ */
 class AppKernel {
+
 	/**
 	 * @var Request
 	 */
-	protected $request;
+	private $_request;
 
 	/**
-	 * @var array
+	 * @var RouteCollection
 	 */
-	protected $routes = [];
+	private $_routes;
 
 	/**
 	 * @var ControllerResolver
@@ -31,21 +35,21 @@ class AppKernel {
 	private $_resolver;
 
 	/**
-	 * @param Request $request
-	 * @param Container $container
+	 * @Inject({"@ControllerResolver", "@RouteCollection"})
 	 */
-	public function __construct(Request $request, Container $container) {
-		$this->_resolver = new ControllerResolver($container);
-
-		$this->routes = include ROOT . '/cache/routes.php';
-
-		$this->request = $request;
+	public function __construct(ControllerResolver $container_resolver, RouteCollection $routes) {
+		$this->_resolver = $container_resolver;
+		$this->_routes = $routes;
 	}
 
-	public function handle() {
+	/**
+	 * @param Request $request
+	 */
+	public function handle(Request $request) {
+		$this->_request = $request;
 		try {
 			$this->matchRoute();
-			$response = $this->loadResource();
+			$response = $this->_loadResource();
 			if (is_string($response)) {
 				$response = new Response($response);
 			}
@@ -57,17 +61,17 @@ class AppKernel {
 			$response->setStatusCode(405);
 		}
 
-		$response->prepare($this->request);
+		$response->prepare($this->_request);
 		$response->send();
 	}
 
 	/**
 	 * @return Response
 	 */
-	private function loadResource() {
+	private function _loadResource() {
 		/** @var ControllerInterface[] $callable */
-		$callable = $this->_resolver->getController($this->request);
-		$arguments = $this->_resolver->getArguments($this->request, $callable);
+		$callable = $this->_resolver->getController($this->_request);
+		$arguments = $this->_resolver->getArguments($this->_request, $callable);
 
 		$response = call_user_func_array($callable, $arguments);
 
@@ -75,21 +79,12 @@ class AppKernel {
 	}
 
 	private function matchRoute() {
-		$routes = new RouteCollection();
-
-		foreach ($this->routes as $key => $route) {
-			if (!empty($route['requirements'])) {
-				$routes->add($key, new Route($route['pattern'], $route['defaults'], $route['requirements']));
-			} else {
-				$routes->add($key, new Route($route['pattern'], $route['defaults']));
-			}
-		}
-
 		$context = new RequestContext();
-		$context->fromRequest($this->request);
-		$matcher = new UrlMatcher($routes, $context);
+		$context->fromRequest($this->_request);
+		$matcher = new UrlMatcher($this->_routes, $context);
 
-		$attributes = $matcher->match($this->request->getPathInfo());
-		$this->request->attributes->add($attributes);
+		$attributes = $matcher->match($this->_request->getPathInfo());
+		$this->_request->attributes->add($attributes);
 	}
+
 }
