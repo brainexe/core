@@ -16,7 +16,6 @@ class MessageQueueWorker implements MessageQueueWorkerInterface {
 
 	/**
 	 * {@inheritdoc}
-	 * @todo run other workers
 	 */
 	public function run($timeout = 0) {
 		$predis = $this->getPredis();
