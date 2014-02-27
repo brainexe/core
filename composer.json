@@ -32,6 +32,7 @@
 		"symfony/security": "2.4.*",
 		"symfony/translation": "2.4.*",
 		"symfony/yaml": "2.4.*",
+		"symfony/proxy-manager-bridge": "2.4.*",
 
 		"matze/annotations": "dev-master",
 		"monolog/monolog": "1.7.*",
