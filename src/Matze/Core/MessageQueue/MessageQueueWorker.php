@@ -18,11 +18,15 @@ class MessageQueueWorker implements MessageQueueWorkerInterface {
 	 * {@inheritdoc}
 	 * @todo run other workers
 	 */
-	public function run() {
+	public function run($timeout = 0) {
 		$predis = $this->getPredis();
 
 		while (true) {
-			$message_json = $predis->BRPOP(MessageQueue::REDIS_MESSAGE_QUEUE, 0)[1];
+			$message_json = $predis->BRPOP(MessageQueue::REDIS_MESSAGE_QUEUE, $timeout)[1];
+			if (empty($message_json)) {
+				break;
+			}
+
 			$message = json_decode($message_json, true);
 
 			$service = $this->getService($message['service_id']);

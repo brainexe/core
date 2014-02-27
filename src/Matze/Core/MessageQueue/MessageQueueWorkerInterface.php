@@ -4,7 +4,7 @@ namespace Matze\Core\MessageQueue;
 
 interface MessageQueueWorkerInterface {
 	/**
-	 * Run worker
+	 * @param integer $timeout
 	 */
-	public function run();
+	public function run($timeout = 0);
 }
