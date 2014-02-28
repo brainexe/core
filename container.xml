@@ -42,7 +42,9 @@
 			<argument type="collection">
 				<argument key="cache">%cache.dir%twig</argument>
 				<argument key="debug">%debug%</argument>
-				<argument key="auto_reload">true</argument>
+				<argument key="auto_reload">%debug%</argument>
+				<argument key="auto_reload">%debug%</argument>
+				<argument key="strict_variables" type="expression">!%debug%</argument>
 			</argument>
 		</service>
 
