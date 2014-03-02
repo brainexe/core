@@ -43,8 +43,6 @@
 				<argument key="cache">%cache.dir%twig</argument>
 				<argument key="debug">%debug%</argument>
 				<argument key="auto_reload">%debug%</argument>
-				<argument key="auto_reload">%debug%</argument>
-				<argument key="strict_variables" type="expression">!%debug%</argument>
 			</argument>
 		</service>
 
@@ -106,6 +104,15 @@
 					<service class="Symfony\Component\Translation\Loader\PhpFileLoader"/>
 				</argument>
 			</call>
+		</service>
+
+		<service id="RedisSession" class="Symfony\Component\HttpFoundation\Session\Session">
+			<argument type="service">
+				<service class="Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage">
+					<argument type="collection"/>
+					<argument type="service" id="RedisSessionHandler"/>
+				</service>
+			</argument>
 		</service>
 
 		<!--TODO-->
