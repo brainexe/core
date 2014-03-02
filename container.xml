@@ -19,6 +19,9 @@
 		<parameter key="logger.error.log">%logger.dir%error.log</parameter>
 		<parameter key="logger.info.log">%logger.dir%info.log</parameter>
 
+		<parameter key="nexmo.api_key"/>
+		<parameter key="nexmo.api_secret"/>
+
 		<parameter key="application.name" on-invalid="exception"/>
 
 		<parameter key="security" type="collection">
@@ -118,7 +121,7 @@
 		<!--TODO-->
 		<service id="service_container" class="Symfony\Component\DependencyInjection\Container"/>
 
-		<service id="NexmoMessage" class="NexmoMessage">
+		<service id="NexmoMessage" class="NexmoMessage" public="false">
 			<argument>%nexmo.api_key%</argument>
 			<argument>%nexmo.api_secret%</argument>
 		</service>
