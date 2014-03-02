@@ -35,6 +35,7 @@
 
 		"matze/annotations": "dev-master",
 		"monolog/monolog": "1.7.*",
+		"wmather/nexmo-php-lib": "dev-master",
 		"predis/predis": "0.8.*",
 		"twig/twig": "1.15.*"
 	},

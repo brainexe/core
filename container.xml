@@ -118,6 +118,10 @@
 		<!--TODO-->
 		<service id="service_container" class="Symfony\Component\DependencyInjection\Container"/>
 
+		<service id="NexmoMessage" class="NexmoMessage">
+			<argument>%nexmo.api_key%</argument>
+			<argument>%nexmo.api_secret%</argument>
+		</service>
 		<service id="RouteCollection" class="Symfony\Component\Routing\RouteCollection" public="false"/>
 	</services>
 </container>
