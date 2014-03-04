@@ -22,7 +22,7 @@ class TwigExtensionCompilerPass implements CompilerPassInterface {
 		$twig_definition = $container->getDefinition('Twig');
 
 		$taggedServices = $container->findTaggedServiceIds(self::TAG);
-		foreach ($taggedServices as $id => $attributes) {
+		foreach (array_keys($taggedServices) as $id) {
 			$service = $container->getDefinition($id);
 			$service->setPublic(false);
 

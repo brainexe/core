@@ -21,9 +21,9 @@ class ConsoleCompilerPass implements CompilerPassInterface {
 
 		$definition->addMethodCall('setAutoExit', [false]);
 
-		$taggedServices = $container->findTaggedServiceIds(self::TAG);
-		foreach ($taggedServices as $id => $attributes) {
-			$definition->addMethodCall('add', [new Reference($id)]);
+		$tagged_services = $container->findTaggedServiceIds(self::TAG);
+		foreach (array_keys($tagged_services) as $service_id) {
+			$definition->addMethodCall('add', [new Reference($service_id)]);
 		}
 	}
 }

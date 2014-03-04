@@ -1,7 +1,8 @@
 <?php
 
-namespace Matze\Core\Application;
+namespace Matze\Tests\Core\Application;
 
+use Matze\Core\Application\ControllerResolver;
 use Matze\Core\Controller\ControllerInterface;
 use Matze\Core\DependencyInjection\ObjectFinder;
 use PHPUnit_Framework_MockObject_MockObject;

@@ -23,10 +23,16 @@ class SetDefinitionFileCompilerPass implements CompilerPassInterface {
 
 			try {
 				$reflection_class = new \ReflectionClass($definition->getClass());
-				$definition->setFile($reflection_class->getFileName());
 			} catch (\ReflectionException $e) {
 				continue;
 			}
+
+			$filename = $reflection_class->getFileName();
+			if (empty($filename)) {
+				continue;
+			}
+
+			$definition->setFile($filename);
 		}
 	}
 }
