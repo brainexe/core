@@ -25,6 +25,8 @@
 		<parameter key="sms.sender">%application.name%</parameter>
 
 		<parameter key="application.name" on-invalid="exception"/>
+		<parameter key="application.layout_template">layout.html.twig</parameter>
+		<parameter key="application.error_template">error.html.twig</parameter>
 
 		<parameter key="security" type="collection">
 			<parameter key="encoders" type="collection">

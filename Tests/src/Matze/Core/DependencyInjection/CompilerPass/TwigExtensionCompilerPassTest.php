@@ -4,6 +4,7 @@ namespace Matze\Tests\Core\DependencyInjection\CompilerPass;
 
 use Matze\Core\DependencyInjection\CompilerPass\TwigExtensionCompilerPass;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\DependencyInjection\Definition;
 
 class TwigExtensionCompilerPassTest extends \PHPUnit_Framework_TestCase {
 
@@ -57,9 +58,25 @@ class TwigExtensionCompilerPassTest extends \PHPUnit_Framework_TestCase {
 			->with(false);
 
 		$this->_mock_twig_definition
-			->expects($this->once())
+			->expects($this->at(0))
 			->method('addMethodCall')
 			->with('addExtension', [new Reference($service_id)]);
+
+		$this->_mock_container
+			->expects($this->at(3))
+			->method('getParameter')
+			->with('debug')
+			->will($this->returnValue(true));
+
+		$this->_mock_twig_definition
+			->expects($this->at(1))
+			->method('addMethodCall')
+			->with('addExtension', [new Definition('Twig_Extension_Debug')]);
+
+		$this->_mock_twig_definition
+			->expects($this->at(2))
+			->method('addMethodCall')
+			->with('enableStrictVariables');
 
 		$this->_subject->process($this->_mock_container);
 	}

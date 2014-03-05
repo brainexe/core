@@ -61,6 +61,10 @@ class AppKernel {
 		} catch (MethodNotAllowedException $e) {
 			$response = new Response();
 			$response->setStatusCode(405);
+		} catch (UserException $e) {
+			/** @var ErrorView $error_view */
+			$error_view = $this->_resolver->getService('ErrorView');
+			$response = $error_view->displayException($request, $e);
 		}
 
 		$response->prepare($this->_request);

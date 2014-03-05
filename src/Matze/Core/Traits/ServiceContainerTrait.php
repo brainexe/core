@@ -22,7 +22,7 @@ trait ServiceContainerTrait {
 	 * @param string $service_id
 	 * @return mixed
 	 */
-	protected function getService($service_id) {
+	public function getService($service_id) {
 		return $this->_object_finder_trait->getService($service_id);
 	}
 

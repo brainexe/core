@@ -28,5 +28,10 @@ class TwigExtensionCompilerPass implements CompilerPassInterface {
 
 			$twig_definition->addMethodCall('addExtension', [new Reference($id)]);
 		}
+
+		if ($container->getParameter('debug')) {
+			$twig_definition->addMethodCall('addExtension', [new Definition('Twig_Extension_Debug')]);
+			$twig_definition->addMethodCall('enableStrictVariables');
+		}
 	}
 }
