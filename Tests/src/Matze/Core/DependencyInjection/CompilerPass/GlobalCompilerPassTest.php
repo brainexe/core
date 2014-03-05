@@ -25,18 +25,25 @@ class GlobalCompilerPassTest extends \PHPUnit_Framework_TestCase {
 		$service_id = 'FooCompilerPass';
 
 		$compiler_mock = $this->getMock('Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface');
+		$logger_mock = $this->getMock('Monolog\Logger', [], [], '', false);
 
 		$this->_mock_container
-			->expects($this->once())
+			->expects($this->at(1))
 			->method('findTaggedServiceIds')
 			->with(GlobalCompilerPass::TAG)
 			->will($this->returnValue([$service_id => [['priority' => $priority = 10]]]));
 
 		$this->_mock_container
-			->expects($this->once())
+			->expects($this->at(2))
 			->method('get')
 			->with($service_id)
 			->will($this->returnValue($compiler_mock));
+
+		$this->_mock_container
+			->expects($this->at(3))
+			->method('get')
+			->with('monolog.logger')
+			->will($this->returnValue($logger_mock));
 
 		$compiler_mock
 			->expects($this->once())

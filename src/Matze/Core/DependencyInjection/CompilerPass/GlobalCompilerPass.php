@@ -26,8 +26,8 @@ class GlobalCompilerPass implements CompilerPassInterface {
 		$service_priorities = array_reverse($service_priorities);
 
 		/** @var Logger $logger */
-//		$logger = $container->get('logger');
 		$total_time = 0;
+		$logger_store = [];
 		foreach (array_keys($service_priorities) as $service_id) {
 			$start_time = microtime(true);
 
@@ -35,8 +35,15 @@ class GlobalCompilerPass implements CompilerPassInterface {
 
 			$total_time += $diff = microtime(true)-$start_time;
 
-//			$logger->debug(sprintf('DIC: %0.2fms %s\n', $diff * 1000, $service_id));
+			$logger_store[] = sprintf('DIC: %0.2fms %s\n', $diff * 1000, $service_id);
 		}
-//		$logger->debug(sprintf('DIC: %0.2fms total\n'), $total_time * 1000);
+
+		/** @var Logger $logger */
+		$logger = $container->get('monolog.logger');
+		foreach ($logger_store as $log) {
+			$logger->debug($log);
+		}
+		$logger->debug(sprintf('DIC: %0.2fms total time\n', $total_time * 1000));
 	}
 }
+

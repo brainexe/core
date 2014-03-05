@@ -24,6 +24,8 @@ class ConfigCompilerPass implements CompilerPassInterface {
 		// load container.xml file from all "matze" components
 		$config_finder = new Finder();
 		$config_finder
+			->files()
+			->depth(1)
 			->in(MATZE_VENDOR_ROOT)
 			->name('container.xml');
 

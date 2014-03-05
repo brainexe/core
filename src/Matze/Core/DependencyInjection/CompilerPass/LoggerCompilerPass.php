@@ -19,7 +19,7 @@ class LoggerCompilerPass implements CompilerPassInterface {
 		if ($container->getParameter('debug')) {
 			$logger = $container->getDefinition('monolog.Logger');
 			$logger->addMethodCall('pushHandler', [new Definition('Monolog\Handler\ChromePHPHandler')]);
-			$logger->addMethodCall('pushHandler', [new Definition('Monolog\Handler\StreamHandler', ['php://stdout', Logger::DEBUG])]);
+			$logger->addMethodCall('pushHandler', [new Definition('Monolog\Handler\StreamHandler', ['php://stdout', Logger::INFO])]);
 		}
 	}
 }
