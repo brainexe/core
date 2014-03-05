@@ -3,7 +3,7 @@
 namespace Matze\Core\Annotations\Builder;
 
 use Matze\Annotations\Loader\Annotation\DefinitionBuilder\ServiceDefinitionBuilder;
-use Matze\Core\DependencyInjection\CompilerPass\CompilerPass\EventListenerCompilerPass;
+use Matze\Core\DependencyInjection\CompilerPass\EventListenerCompilerPass;
 use Symfony\Component\DependencyInjection\Definition;
 
 class EventListenerDefinitionBuilder extends ServiceDefinitionBuilder {

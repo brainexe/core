@@ -13,14 +13,16 @@
 
 		<parameter key="redis.host">127.0.0.1</parameter>
 		<parameter key="redis.password"/>
+		<parameter key="redis.database">0</parameter>
 
 		<parameter key="cache.dir">%application.root%/cache/</parameter>
 		<parameter key="logger.dir">%application.root%/logs/</parameter>
 		<parameter key="logger.error.log">%logger.dir%error.log</parameter>
 		<parameter key="logger.info.log">%logger.dir%info.log</parameter>
 
-		<parameter key="nexmo.api_key"/>
-		<parameter key="nexmo.api_secret"/>
+		<parameter key="sms.api_key"/>
+		<parameter key="sms.api_secret"/>
+		<parameter key="sms.sender">%application.name%</parameter>
 
 		<parameter key="application.name" on-invalid="exception"/>
 
@@ -121,10 +123,6 @@
 		<!--TODO-->
 		<service id="service_container" class="Symfony\Component\DependencyInjection\Container"/>
 
-		<service id="NexmoMessage" class="NexmoMessage" public="false">
-			<argument>%nexmo.api_key%</argument>
-			<argument>%nexmo.api_secret%</argument>
-		</service>
 		<service id="RouteCollection" class="Symfony\Component\Routing\RouteCollection" public="false"/>
 	</services>
 </container>

@@ -2,7 +2,7 @@
 
 namespace Matze\Core\Console;
 
-use NexmoMessage;
+use Matze\Core\SMS\SMSGateway;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
@@ -24,29 +24,31 @@ class SendSMSCommandCommand extends Command {
 		$this->setName('sms:sens')
 			->setDescription('Send SMS')
 			->addArgument('number', InputArgument::REQUIRED, 'Cellphone number')
-			->addArgument('text', InputArgument::REQUIRED, 'tex')
-			->addArgument('from', InputArgument::OPTIONAL, 'From', 'App');
+			->addArgument('message', InputArgument::REQUIRED, 'message');
 	}
 
 	/**
-	 * @var NexmoMessage
+	 * @var SMSGateway
 	 */
-	private $_model_nexmo_message;
+	private $_model_sms_gateway;
 
 	/**
-	 * @Inject("@NexmoMessage")
+	 * @Inject("@SMSGateway")
 	 */
-	public function setNexmoMessage(NexmoMessage $model) {
-		$this->_model_nexmo_message = $model;
+	public function setSmsGatewayMessage(SMSGateway $model) {
+		$this->_model_sms_gateway = $model;
 	}
 	
 	/**
 	 * {@inheritdoc}
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output) {
-		$result = $this->_model_nexmo_message->sendText($input->getArgument('number'), $input->getArgument('from'),$input->getArgument('text'));
+		$number = $input->getArgument('number');
+		$message = $input->getArgument('message');
 
-		$output->write(print_r($result, true));
+		$result = $this->_model_sms_gateway->sendText($number, $message);
+
+		$output->writeln(print_r($result, true));
 	}
 
 } 
