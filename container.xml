@@ -116,7 +116,12 @@
 		<service id="RedisSession" class="Symfony\Component\HttpFoundation\Session\Session">
 			<argument type="service">
 				<service class="Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage">
-					<argument type="collection"/>
+					<argument type="collection">
+						<argument key="cookie_httponly">true</argument>
+						<argument key="cookie_lifetime">30758400</argument>
+						<argument key="name">sid_%application.name%</argument>
+					</argument>
+
 					<argument type="service" id="RedisSessionHandler"/>
 				</service>
 			</argument>
