@@ -44,7 +44,7 @@ class ErrorViewTest extends \PHPUnit_Framework_TestCase {
 			])
 			->will($this->returnValue($expected_content));
 
-		$response = $this->_subject->displayException($request, $exception);
+		$response = $this->_subject->renderException($request, $exception);
 
 		$this->assertEquals(200, $response->getStatusCode());
 		$this->assertEquals($expected_content, $response->getContent());

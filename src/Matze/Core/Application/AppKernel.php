@@ -2,8 +2,9 @@
 
 namespace Matze\Core\Application;
 
+use Exception;
 use Matze\Core\Controller\ControllerInterface;
-use Matze\Core\Traits\LoggerTrait;
+use Matze\Core\Middleware\MiddlewareInterface;
 use Matze\Core\Traits\ServiceContainerTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,13 +20,6 @@ use Symfony\Component\Yaml\Parser;
  */
 class AppKernel {
 
-	use LoggerTrait;
-
-	/**
-	 * @var Request
-	 */
-	private $_request;
-
 	/**
 	 * @var RouteCollection
 	 */
@@ -37,6 +31,11 @@ class AppKernel {
 	private $_resolver;
 
 	/**
+	 * @var MiddlewareInterface[]
+	 */
+	private $_middlewares;
+
+	/**
 	 * @Inject({"@ControllerResolver", "@RouteCollection"})
 	 */
 	public function __construct(ControllerResolver $container_resolver, RouteCollection $routes) {
@@ -45,57 +44,71 @@ class AppKernel {
 	}
 
 	/**
+	 * @param MiddlewareInterface $middleware
+	 */
+	public function addMiddleware(MiddlewareInterface $middleware) {
+		$this->_middlewares[] = $middleware;
+	}
+
+	/**
 	 * @param Request $request
 	 */
 	public function handle(Request $request) {
-		$this->_request = $request;
+		$response = null;
+
 		try {
-			$this->matchRoute();
-			$response = $this->_loadResource();
+			$response = $this->_handleRequest($request);
+
 			if (is_string($response)) {
 				$response = new Response($response);
 			}
-		} catch (ResourceNotFoundException $e) {
-			$response = new Response();
-			$response->setStatusCode(404);
-		} catch (MethodNotAllowedException $e) {
-			$response = new Response();
-			$response->setStatusCode(405);
-		} catch (UserException $e) {
-			/** @var ErrorView $error_view */
-			$error_view = $this->_resolver->getService('ErrorView');
-			$response = $error_view->displayException($request, $e);
+
+		} catch (Exception $e) {
+			if (empty($response)) {
+				$response = new Response();
+			}
+			foreach ($this->_middlewares as $middleware) {
+				$middleware->processException($request, $response, $e);
+			}
 		}
 
-		$response->prepare($this->_request);
+		$middleware_count = count($this->_middlewares);
+		for ($i = $middleware_count-1; $i >= 0; $i--) {
+			$middleware = $this->_middlewares[$i];
+			$middleware->processResponse($request, $response);
+		}
 
-		$start_time = $_SERVER['REQUEST_TIME_FLOAT'];
-		$diff = microtime(true) - $start_time;
-		$this->debug(sprintf('Response time: %0.2fms', $diff*1000));
-
+		$response->prepare($request);
 		$response->send();
 	}
 
 	/**
+	 * @param Request $request
 	 * @return Response
 	 */
-	private function _loadResource() {
+	private function _handleRequest(Request $request) {
+		$context = new RequestContext();
+		$context->fromRequest($request);
+		$matcher = new UrlMatcher($this->_routes, $context);
+
+		$attributes = $matcher->matchRequest($request);
+		$request->attributes->add($attributes);
+
+		$route = $this->_routes->get($attributes['_route']);
+		foreach ($this->_middlewares as $middleware) {
+			$response = $middleware->processRequest($request, $route);
+			if ($response) {
+				break;
+			}
+		}
+
 		/** @var ControllerInterface[] $callable */
-		$callable = $this->_resolver->getController($this->_request);
-		$arguments = $this->_resolver->getArguments($this->_request, $callable);
+		$callable = $this->_resolver->getController($request);
+		$arguments = $this->_resolver->getArguments($request, $callable);
 
 		$response = call_user_func_array($callable, $arguments);
 
 		return $response;
-	}
-
-	private function matchRoute() {
-		$context = new RequestContext();
-		$context->fromRequest($this->_request);
-		$matcher = new UrlMatcher($this->_routes, $context);
-
-		$attributes = $matcher->match($this->_request->getPathInfo());
-		$this->_request->attributes->add($attributes);
 	}
 
 }

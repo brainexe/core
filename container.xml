@@ -113,7 +113,7 @@
 			</call>
 		</service>
 
-		<service id="RedisSession" class="Symfony\Component\HttpFoundation\Session\Session">
+		<service id="RedisSession" class="Symfony\Component\HttpFoundation\Session\Session" public="false">
 			<argument type="service">
 				<service class="Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage">
 					<argument type="collection">

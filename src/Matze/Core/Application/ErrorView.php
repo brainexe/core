@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Service
+ * @Service(public=false)
  */
 class ErrorView {
 
@@ -35,9 +35,9 @@ class ErrorView {
 	/**
 	 * @param Request $request
 	 * @param Exception $e
-	 * @return Response
+	 * @return string
 	 */
-	public function displayException(Request $request, Exception $e) {
+	public function renderException(Request $request, Exception $e) {
 		$content = $this->render($this->_value_error_template, [
 			'exception' => $e,
 			'debug' => $this->_value_debug,

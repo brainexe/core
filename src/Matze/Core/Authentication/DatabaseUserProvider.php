@@ -10,7 +10,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 /**
- * @Service("Security.UserProvider", public=false)
+ * @Service("DatabaseUserProvider", public=false)
  */
 class DatabaseUserProvider implements UserProviderInterface {
 
@@ -23,20 +23,30 @@ class DatabaseUserProvider implements UserProviderInterface {
 	 * {@inheritdoc}
 	 */
 	public function loadUserByUsername($username) {
-		$predis = $this->getPredis();
+		$user_id = $this->getPredis()->HGET(self::REDIS_USER_NAMES, strtolower($username));
 
-		$user_id = $predis->HGET(self::REDIS_USER_NAMES, strtolower($username));
-		if (!$user_id) {
+		if (empty($user_id)) {
 			throw new UsernameNotFoundException(
 				sprintf('Username "%s" does not exist.', $username)
 			);
 		}
 
-		$redis_user = $predis->HGETALL($this->_getKey($user_id));
+		return $this->loadUserById($user_id);
+	}
+
+	/**
+	 * @param integer $user_id
+	 * @return User
+	 */
+	public function loadUserById($user_id) {
+		$redis_user = $this->getPredis()->HGETALL($this->_getKey($user_id));
+
+		print_r($redis_user);
+		print_r($redis_user['username']);
 
 		$user = new User($redis_user['username'], $redis_user['password'], explode(',', $redis_user['roles']));
 
-		return new $user;
+		return $user;
 	}
 
 	/**
@@ -59,5 +69,37 @@ class DatabaseUserProvider implements UserProviderInterface {
 	 */
 	private function _getKey($user_id) {
 		return sprintf(self::REDIS_USER, $user_id);
+	}
+
+	/**
+	 * @param string $password
+	 * @return string
+	 * @todo replace by password_hash()
+	 */
+	public function generateHash($password) {
+		return sha1($password.md5($password));
+	}
+
+	/**
+	 * @param User $user
+	 * @return integer $user_id
+	 */
+	public function register(User $user) {
+		$predis = $this->getPredis()->transaction();
+
+		$user_array = [
+			'username' => $user->getUsername(),
+			'password' => $password_hash = $this->generateHash($user->getPassword()),
+			'roles' => implode(',', $user->getRoles())
+		];
+
+		$user_id = mt_rand(1000, 10000000); //TODO
+
+		$predis->HSET(self::REDIS_USER_NAMES, strtolower($user->getUsername()), $user_id);
+		$predis->HMSET($this->_getKey($user_id), $user_array);
+
+		$predis->execute();
+
+		return $user_id;
 	}
 }

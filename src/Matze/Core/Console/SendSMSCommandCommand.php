@@ -35,8 +35,9 @@ class SendSMSCommandCommand extends Command {
 	/**
 	 * @Inject("@SMSGateway")
 	 */
-	public function setSmsGatewayMessage(SMSGateway $model) {
-		$this->_model_sms_gateway = $model;
+	public function __construct(SMSGateway $register) {
+		$this->_model_sms_gateway = $register;
+		parent::__construct();
 	}
 	
 	/**

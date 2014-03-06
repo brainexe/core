@@ -5,17 +5,18 @@ namespace Matze\Core\Annotations;
 use Doctrine\Common\Annotations\Annotation;
 use Doctrine\Common\Annotations\Reader;
 use Matze\Annotations\Annotations\Service;
-use Matze\Core\Annotations\Builder\ControllerDefinitionBuilder;
+use Matze\Core\Annotations\Builder\MiddlewareDefinitionBuilder;
 
 /**
  * @Annotation
  */
-class Controller extends Service {
+class Middleware extends Service {
+	public $priority = 5;
+
 	/**
 	 * {@inheritdoc}
 	 */
 	public static function getBuilder(Reader $reader) {
-		return new ControllerDefinitionBuilder($reader);
+		return new MiddlewareDefinitionBuilder($reader);
 	}
-
 }
