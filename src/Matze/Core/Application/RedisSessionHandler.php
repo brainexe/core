@@ -41,6 +41,7 @@ class RedisSessionHandler implements \SessionHandlerInterface {
 		$key = $this->_getKey($session_id);
 
 		$this->getPredis()->SET($key, $data);
+		$this->getPredis()->EXPIRE($key, 86400 * 7);
 	}
 
 	/**

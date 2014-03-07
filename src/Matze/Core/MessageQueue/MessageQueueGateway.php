@@ -35,13 +35,13 @@ class MessageQueueGateway {
 	 * @param array $event
 	 */
 	public function addJob(array $event) {
-		$pipeline = $this->getPredis()->pipeline();
+		$pipeline = $this->getPredis()->transaction();
 
 		$metadata_id = mt_rand();
-
-		$pipeline->LPUSH(MessageQueue::REDIS_MESSAGE_QUEUE, $metadata_id);
 		$meta_data_key = $this->_getMetadataKey($metadata_id);
+
 		$pipeline->HMSET($meta_data_key, $event);
+		$pipeline->LPUSH(MessageQueue::REDIS_MESSAGE_QUEUE, $metadata_id);
 
 		$pipeline->execute();
 	}
@@ -51,13 +51,13 @@ class MessageQueueGateway {
 	 * @return array|null
 	 */
 	private function _fetchMetaData($meta_data_id) {
-		$predis = $this->getPredis();
+		$predis = $this->getPredis()->transaction();
 		$key = $this->_getMetadataKey($meta_data_id);
 
-		$data = $predis->HGETALL($key);
+		$predis->HGETALL($key);
 		$predis->DEL($key);
 
-		return $data;
+		return $predis->execute()[0];
 	}
 
 	/**
