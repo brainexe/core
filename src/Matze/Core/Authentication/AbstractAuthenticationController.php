@@ -10,49 +10,25 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\User\User;
 
 abstract class AbstractAuthenticationController extends AbstractController {
+
 	use ServiceContainerTrait;
 
 	/**
-	 * {@inheritdoc}
-	 */
-	public function getRoutes() {
-		return [
-			'authenticate.login' => [
-				'pattern' => '/login/',
-				'defaults' => ['_controller' => 'Authentication::loginForm']
-			],
-			'authenticate.register' => [
-				'pattern' => '/register/',
-				'defaults' => ['_controller' => 'Authentication::registerForm']
-			],
-			'authenticate.doLogin' => [
-				'pattern' => '/login/login/',
-				'defaults' => ['_controller' => 'Authentication::doLogin']
-			],
-			'authenticate.doRegister' => [
-				'pattern' => '/register/register/',
-				'defaults' => ['_controller' => 'Authentication::doRegister']
-			],
-			'authenticate.logout' => [
-				'pattern' => '/logout/',
-				'defaults' => ['_controller' => 'Authentication::logout']
-			],
-		];
-	}
-
-	/**
 	 * @param Request $request
+	 * @Route("/register/", name="authenticate.register", methods="GET")
 	 */
 	abstract public function registerForm(Request $request);
 
 	/**
 	 * @param Request $request
+	 * @Route("/login/", name="authenticate.login", methods="GET")
 	 */
 	abstract public function loginForm(Request $request);
 
 	/**
 	 * @param Request $request
 	 * @return RedirectResponse
+	 * @Route("/login/", name="authenticate.doLogin", methods="POST")
 	 */
 	public function doLogin(Request $request) {
 		$username = $request->request->get('username');
@@ -69,6 +45,7 @@ abstract class AbstractAuthenticationController extends AbstractController {
 	/**
 	 * @param Request $request
 	 * @return RedirectResponse
+	 * @Route("/register/", name="authenticate.doRegister", methods="POST")
 	 */
 	public function doRegister(Request $request) {
 		$username = $request->request->get('username');
@@ -87,6 +64,7 @@ abstract class AbstractAuthenticationController extends AbstractController {
 	/**
 	 * @param Request $request
 	 * @return RedirectResponse
+	 * @Route("/logout/", name="authenticate.logout")
 	 */
 	public function logout(Request $request) {
 		$request->getSession()->set('user', null);

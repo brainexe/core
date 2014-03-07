@@ -2,6 +2,7 @@
 
 namespace Matze\Core\DependencyInjection\CompilerPass;
 
+use Matze\Core\Annotations\Route;
 use Matze\Core\Controller\ControllerInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -12,31 +13,31 @@ use Symfony\Component\DependencyInjection\Definition;
  */
 class ControllerCompilerPass implements CompilerPassInterface {
 
+	/**
+	 * @var Route[]
+	 */
+	private static $routes = [];
+
+	/**
+	 * @param Route $route
+	 */
+	public static function addRoute(Route $route) {
+		self::$routes[] = $route;
+	}
+
 	const TAG = 'controller';
 
 	/**
 	 * {@inheritdoc}
 	 */
 	public function process(ContainerBuilder $container) {
-		$all_routes = [];
-
-		$taggedServices = $container->findTaggedServiceIds(self::TAG);
-		foreach ($taggedServices as $id => $attributes) {
-			/** @var ControllerInterface $service */
-			$service = $container->get($id);
-
-			$routes = $service->getRoutes();
-			$all_routes = array_merge($all_routes, $routes);
-		}
-
 		$routes = $container->getDefinition('RouteCollection');
-		foreach ($all_routes as $key => $route) {
-			if (!empty($route['requirements'])) {
-				$routes->addMethodCall('add', [$key, new Definition('Symfony\Component\Routing\Route', [$route['pattern'], $route['defaults'], $route['requirements']])]);
-			} else {
-				$routes->addMethodCall('add', [$key, new Definition('Symfony\Component\Routing\Route', [$route['pattern'], $route['defaults']])]);
-			}
-		}
 
+		foreach (self::$routes as $route) {
+			$name = $route->getName() ?: str_replace('/', '.', trim($route->getPath(), './'));
+
+			$routes->addMethodCall('add', [$name, new Definition('Symfony\Component\Routing\Route', [$route->getPath(), $route->getDefaults(), $route->getRequirements(), $route->getOptions(), $route->getHost(), $route->getSchemes(), $route->getMethods(), $route->getCondition()])]);
+		}
+		self::$routes = [];
 	}
 }

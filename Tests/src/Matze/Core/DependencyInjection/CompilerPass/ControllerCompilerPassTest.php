@@ -35,54 +35,13 @@ class ControllerCompilerPassTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddSubscriber() {
-		$service_id = 'FooController';
-		$routes = [
-			$route_1_id = 'route_1' => [
-				'pattern' => $pattern_1 = 'pattern_1',
-				'defaults' => $default_1 = 'defaults_1',
-			],
-			$route_2_id = 'route_2' => [
-				'pattern' => $pattern_2 = 'pattern_2',
-				'defaults' => $default_2 = 'defaults_2',
-				'requirements' => $requirements_2 = 'requirements_2',
-			]
-		];
-
-		$mock_controller = $this->getMock('Matze\Core\Controller\ControllerInterface');
-
-		$this->_mock_container
-			->expects($this->once())
-			->method('findTaggedServiceIds')
-			->with(ControllerCompilerPass::TAG)
-			->will($this->returnValue([$service_id => []]));
-
 		$this->_mock_container
 			->expects($this->once())
 			->method('getDefinition')
 			->with('RouteCollection')
 			->will($this->returnValue($this->_mock_router_definition));
 
-		$this->_mock_container
-			->expects($this->once())
-			->method('get')
-			->with($service_id)
-			->will($this->returnValue($mock_controller));
-
-		$mock_controller
-			->expects($this->once())
-			->method('getRoutes')
-			->will($this->returnValue($routes));
-
-		$this->_mock_router_definition
-			->expects($this->at(0))
-			->method('addMethodCall')
-			->with('add', [$route_1_id, new Definition('Symfony\Component\Routing\Route', [$pattern_1, $default_1])]);
-
-		$this->_mock_router_definition
-			->expects($this->at(1))
-			->method('addMethodCall')
-			->with('add', [$route_2_id, new Definition('Symfony\Component\Routing\Route', [$pattern_2, $default_2, $requirements_2])]);
-
+		//TODO 
 		$this->_subject->process($this->_mock_container);
 	}
 

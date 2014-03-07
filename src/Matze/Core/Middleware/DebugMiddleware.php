@@ -20,7 +20,8 @@ class DebugMiddleware extends AbstractMiddleware {
 		$start_time = $_SERVER['REQUEST_TIME_FLOAT'];
 		$diff = microtime(true) - $start_time;
 
-		if ($user = $request->getSession()->get('user')) {
+		$session = $request->getSession();
+		if ($session && $user = $request->getSession()->get('user')) {
 			$username = $user->getUsername();
 		} else {
 			$username = '-anonymous-';

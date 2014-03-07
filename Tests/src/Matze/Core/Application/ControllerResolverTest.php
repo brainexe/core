@@ -9,7 +9,6 @@ use PHPUnit_Framework_MockObject_MockObject;
 use Symfony\Component\HttpFoundation\Request;
 
 class TestController implements ControllerInterface {
-	public function getRoutes() {}
 
 	public function validAction(Request $request, $test = null) {}
 }

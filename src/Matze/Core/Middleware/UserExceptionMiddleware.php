@@ -4,6 +4,7 @@ namespace Matze\Core\Middleware;
 
 use Exception;
 use Matze\Core\Application\ErrorView;
+use Matze\Core\Application\UserException;
 use Matze\Core\Traits\LoggerTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,8 +35,10 @@ class UserExceptionMiddleware extends AbstractMiddleware {
 	 */
 	public function processException(Request $request, Response $response, Exception $exception) {
 		if ($exception instanceof ResourceNotFoundException) {
+			$exception = new UserException(sprintf('Page not found: %s', $request->getRequestUri()), 0, $exception);
 			$response->setStatusCode(404);
 		} elseif ($exception instanceof MethodNotAllowedException) {
+			$exception = new UserException('You are not allowed to access the page', 0, $exception);
 			$response->setStatusCode(405);
 		}
 

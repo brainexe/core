@@ -44,6 +44,6 @@ class ErrorView {
 			'request' => $request,
 		]);
 
-		return new Response($content);
+		return $content;
 	}
 } 
