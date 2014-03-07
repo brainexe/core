@@ -24,6 +24,17 @@ class MessageQueueEvent extends Event {
 	public $arguments;
 
 	/**
+	 * @return array
+	 */
+	public function toArray() {
+		return [
+			'service_id' => $this->service_id,
+			'method' => $this->method,
+			'arguments' => json_encode($this->arguments),
+		];
+	}
+
+	/**
 	 * @param string $service_id
 	 * @param string $method
 	 * @param array $arguments

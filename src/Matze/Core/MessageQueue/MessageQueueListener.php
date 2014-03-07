@@ -5,13 +5,14 @@ namespace Matze\Core\MessageQueue;
 use Matze\Core\EventDispatcher\AbstractEventListener;
 use Matze\Core\EventDispatcher\MessageQueueEvent;
 use Matze\Core\Traits\RedisTrait;
+use Matze\Core\Traits\ServiceContainerTrait;
 
 /**
  * @EventListener(public = false)
  */
 class MessageQueueListener extends AbstractEventListener {
 
-	use RedisTrait;
+	use ServiceContainerTrait;
 
 	public static function getSubscribedEvents() {
 		return [
@@ -23,6 +24,9 @@ class MessageQueueListener extends AbstractEventListener {
 	 * @param MessageQueueEvent $event
 	 */
 	public function onMessageQueueEvent(MessageQueueEvent $event) {
-		$this->getPredis()->LPUSH(MessageQueue::REDIS_MESSAGE_QUEUE, json_encode($event));
+		/** @var MessageQueueGateway $MessageQueueGateway */
+		$message_queue_gateway = $this->getService('MessageQueueGateway');
+
+		$message_queue_gateway->addJob($event->toArray());
 	}
 }

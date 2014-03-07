@@ -41,9 +41,6 @@ class DatabaseUserProvider implements UserProviderInterface {
 	public function loadUserById($user_id) {
 		$redis_user = $this->getPredis()->HGETALL($this->_getKey($user_id));
 
-		print_r($redis_user);
-		print_r($redis_user['username']);
-
 		$user = new User($redis_user['username'], $redis_user['password'], explode(',', $redis_user['roles']));
 
 		return $user;
@@ -93,13 +90,13 @@ class DatabaseUserProvider implements UserProviderInterface {
 			'roles' => implode(',', $user->getRoles())
 		];
 
-		$user_id = mt_rand(1000, 10000000); //TODO
+		$new_user_id = mt_rand();
 
-		$predis->HSET(self::REDIS_USER_NAMES, strtolower($user->getUsername()), $user_id);
-		$predis->HMSET($this->_getKey($user_id), $user_array);
+		$predis->HSET(self::REDIS_USER_NAMES, strtolower($user->getUsername()), $new_user_id);
+		$predis->HMSET($this->_getKey($new_user_id), $user_array);
 
 		$predis->execute();
 
-		return $user_id;
+		return $new_user_id;
 	}
 }

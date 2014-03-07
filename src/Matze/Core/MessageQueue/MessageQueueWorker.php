@@ -10,32 +10,41 @@ use Matze\Core\Traits\ServiceContainerTrait;
  * @Service(public=false)
  */
 class MessageQueueWorker implements MessageQueueWorkerInterface {
+
 	use ServiceContainerTrait;
-	use RedisTrait;
 	use LoggerTrait;
+
+	/**
+	 * @var MessageQueueGateway
+	 */
+	private $_message_queue_gateway;
+
+	/**
+	 * @Inject("@MessageQueueGateway")
+	 */
+	public function __construct(MessageQueueGateway $message_queue_gateway) {
+		$this->_message_queue_gateway = $message_queue_gateway;
+	}
 
 	/**
 	 * {@inheritdoc}
 	 */
 	public function run($timeout = 0) {
-		$predis = $this->getPredis();
-
 		while (true) {
-			$message_json = $predis->BRPOP(MessageQueue::REDIS_MESSAGE_QUEUE, $timeout)[1];
-			if (empty($message_json)) {
+			$event = $this->_message_queue_gateway->waitForNewJob($timeout);
+
+			if (empty($event)) {
 				break;
 			}
 
-			$message = json_decode($message_json, true);
-
-			$service = $this->getService($message['service_id']);
+			$service = $this->getService($event->service_id);
 
 			$start = microtime(true);
-			call_user_func_array([$service, $message['method']], $message['arguments']);
+			call_user_func_array([$service, $event->method], $event->arguments);
 			$time = microtime(true) - $start;
 
 			$this->info(sprintf('[MQ]: %s->%s(%s). Time: %0.2fms',
-				$message['service_id'], $message['method'], implode(', ', $message['arguments']), $time * 1000)
+					$event->service_id, $event->method, implode(', ', $event->arguments), $time * 1000)
 			);
 		}
 	}
