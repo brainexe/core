@@ -2,7 +2,6 @@
 
 namespace Matze\Core\Console;
 
-use Matze\Core\Traits\ParameterBagTrait;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;

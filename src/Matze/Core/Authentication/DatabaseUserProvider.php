@@ -2,7 +2,6 @@
 
 namespace Matze\Core\Authentication;
 
-use Matze\Core\Traits\PDOTrait;
 use Matze\Core\Traits\RedisTrait;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\User;

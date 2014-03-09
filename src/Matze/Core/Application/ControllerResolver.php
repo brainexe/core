@@ -44,16 +44,9 @@ class ControllerResolver implements ControllerResolverInterface {
 	 * @return array
 	 */
 	public function getArguments(Request $request, $controller) {
-		if (is_array($controller)) {
-			$r = new \ReflectionMethod($controller[0], $controller[1]);
-		} elseif (is_object($controller) && !$controller instanceof \Closure) {
-			$r = new \ReflectionObject($controller);
-			$r = $r->getMethod('__invoke');
-		} else {
-			$r = new \ReflectionFunction($controller);
-		}
+		$reflection = new \ReflectionMethod($controller[0], $controller[1]);
 
-		return $this->_doGetArguments($request, $controller, $r->getParameters());
+		return $this->_doGetArguments($request, $controller, $reflection->getParameters());
 	}
 
 	/**

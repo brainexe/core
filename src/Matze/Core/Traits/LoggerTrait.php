@@ -14,17 +14,10 @@ trait LoggerTrait {
 	private $_logger;
 
 	/**
-	 * @return Logger
-	 */
-	public function getLogger() {
-		return $this->_logger;
-	}
-
-	/**
 	 * @Inject("@monolog.logger")
 	 */
-	public function setLogger(Logger $pdo) {
-		$this->_logger = $pdo;
+	public function setLogger(Logger $logger) {
+		$this->_logger = $logger;
 	}
 
 	/**

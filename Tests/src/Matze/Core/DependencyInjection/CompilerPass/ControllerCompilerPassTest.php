@@ -7,9 +7,6 @@ use Matze\Core\DependencyInjection\CompilerPass\ControllerCompilerPass;
 use PHPUnit_Framework_MockObject_MockObject;
 use PHPUnit_Framework_TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class ControllerCompilerPassTest extends PHPUnit_Framework_TestCase {
 

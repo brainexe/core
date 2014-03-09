@@ -3,6 +3,8 @@
 namespace Matze\Tests\Core\DependencyInjection\CompilerPass;
 
 use Matze\Core\DependencyInjection\CompilerPass\GlobalCompilerPass;
+use PHPUnit_Framework_MockObject_MockObject;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class GlobalCompilerPassTest extends \PHPUnit_Framework_TestCase {
 

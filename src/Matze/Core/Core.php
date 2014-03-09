@@ -27,6 +27,7 @@ class Core {
 	 */
 	public static function boot() {
 		chdir(ROOT);
+		umask(0);
 
 		/** @var Container $dic */
 		if (file_exists('cache/dic.php')) {

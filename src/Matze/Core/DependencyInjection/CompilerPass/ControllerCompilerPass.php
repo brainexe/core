@@ -3,7 +3,6 @@
 namespace Matze\Core\DependencyInjection\CompilerPass;
 
 use Matze\Core\Annotations\Route;
-use Matze\Core\Controller\ControllerInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;

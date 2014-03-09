@@ -2,13 +2,14 @@
 
 namespace Matze\Tests\Core\Application;
 
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit_Framework_TestCase;
+use Symfony\Component\Console\Application;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class ConsoleTest extends \PHPUnit_Framework_TestCase {
+class ConsoleTest extends PHPUnit_Framework_TestCase {
 
 	/**
-	 * @var Console
+	 * @var Application
 	 */
 	private $_subject;
 

@@ -3,8 +3,9 @@
 namespace Matze\Tests\Core\DependencyInjection\CompilerPass;
 
 use Matze\Core\DependencyInjection\CompilerPass\SetDefinitionFileCompilerPass;
+use PHPUnit_Framework_MockObject_MockObject;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\Reference;
 
 class FooTestClass {
 

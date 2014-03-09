@@ -27,10 +27,4 @@ trait TwigTrait {
 		return $this->_twig->render($name, $context);
 	}
 
-	/**
-	 * @return Twig_Environment
-	 */
-	protected function getTwig() {
-		return $this->_twig;
-	}
-} 
+}

@@ -3,6 +3,7 @@
 namespace Matze\Tests\Core\DependencyInjection;
 
 use Matze\Core\DependencyInjection\ObjectFinder;
+use PHPUnit_Framework_MockObject_MockObject;
 use Symfony\Component\DependencyInjection\Dump\Container;
 
 class ObjectFinderTest extends \PHPUnit_Framework_TestCase {
@@ -13,7 +14,7 @@ class ObjectFinderTest extends \PHPUnit_Framework_TestCase {
 	private $_subject;
 
 	/**
-	 * @var Container|\PHPUnit_Framework_MockObject_MockObject
+	 * @var Container|PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $_mock_container;
 

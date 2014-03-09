@@ -2,7 +2,6 @@
 
 namespace Matze\Core\MessageQueue;
 
-use Matze\Core\EventDispatcher\MessageQueueEvent;
 use Matze\Core\Traits\RedisTrait;
 use Symfony\Component\EventDispatcher\Event;
 

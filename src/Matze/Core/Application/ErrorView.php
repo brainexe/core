@@ -5,7 +5,6 @@ namespace Matze\Core\Application;
 use Matze\Core\Traits\TwigTrait;
 use Exception;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @Service(public=false)

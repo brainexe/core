@@ -2,6 +2,7 @@
 
 namespace Matze\Core\MessageQueue;
 
+use Matze\Core\EventDispatcher\MessageQueueEvent;
 use Matze\Core\Traits\LoggerTrait;
 use Matze\Core\Traits\RedisTrait;
 use Matze\Core\Traits\ServiceContainerTrait;
@@ -33,6 +34,7 @@ class MessageQueueWorker implements MessageQueueWorkerInterface {
 		$start = time();
 
 		while ($timeout === 0 || $start + $timeout > time()) {
+			/** @var MessageQueueEvent[] $events */
 			$events = $this->_message_queue_gateway->fetchPendingEvents();
 
 			foreach ($events as $event) {
@@ -43,9 +45,9 @@ class MessageQueueWorker implements MessageQueueWorkerInterface {
 				call_user_func_array([$service, $event->method], $event->arguments);
 				$time = microtime(true) - $start;
 
-//				$this->info(sprintf('[MQ]: %s->%s(%s). Time: %0.2fms',
-//					$event->service_id, $event->method, implode(', ', $event->arguments), $time * 1000)
-//				);
+				$this->info(sprintf('[MQ]: %s->%s(%s). Time: %0.2fms',
+					$event->service_id, $event->method, implode(', ', $event->arguments), $time * 1000)
+				);
 			}
 
 			sleep(1);

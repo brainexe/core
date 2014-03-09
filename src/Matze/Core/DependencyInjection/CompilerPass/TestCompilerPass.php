@@ -2,10 +2,8 @@
 
 namespace Matze\Core\DependencyInjection\CompilerPass;
 
-use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Yaml\Yaml;
@@ -31,7 +29,7 @@ class TestCompilerPass implements CompilerPassInterface {
 			return;
 		}
 
-		foreach ($container->getDefinitions() as $id =>$definition) {
+		foreach ($container->getDefinitions() as $definition) {
 			$definition->setPublic(true);
 		}
 

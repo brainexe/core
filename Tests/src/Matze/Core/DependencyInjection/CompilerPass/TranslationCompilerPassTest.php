@@ -6,9 +6,6 @@ use Matze\Core\DependencyInjection\CompilerPass\TranslationCompilerPass;
 use PHPUnit_Framework_MockObject_MockObject;
 use PHPUnit_Framework_TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class TranslationCompilerPassTest extends PHPUnit_Framework_TestCase {
 
