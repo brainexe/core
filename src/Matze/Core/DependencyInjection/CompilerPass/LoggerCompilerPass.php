@@ -16,10 +16,17 @@ class LoggerCompilerPass implements CompilerPassInterface {
 	 * {@inheritdoc}
 	 */
 	public function process(ContainerBuilder $container) {
-		if ($container->getParameter('debug')) {
-			$logger = $container->getDefinition('monolog.Logger');
+		$logger = $container->getDefinition('monolog.Logger');
+
+		if (defined('PHPUNIT')) {
+			$logger->removeMethodCall('pushHandler');
+			$logger->removeMethodCall('pushHandler');
+			$logger->addMethodCall('pushHandler', [new Definition('Monolog\Handler\TestHandler')]);
+
+		} elseif ($container->getParameter('debug')) {
 			$logger->addMethodCall('pushHandler', [new Definition('Monolog\Handler\ChromePHPHandler')]);
 			$logger->addMethodCall('pushHandler', [new Definition('Monolog\Handler\StreamHandler', ['php://stdout', Logger::INFO])]);
 		}
+
 	}
 }

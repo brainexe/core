@@ -33,12 +33,6 @@ class LoggerCompilerPassTest extends PHPUnit_Framework_TestCase {
 	public function testProcessCompiler() {
 		$this->_mock_container
 			->expects($this->once())
-			->method('getParameter')
-			->with('debug')
-			->will($this->returnValue(true));
-
-		$this->_mock_container
-			->expects($this->once())
 			->method('getDefinition')
 			->with('monolog.Logger')
 			->will($this->returnValue($this->_mock_logger_definition));
