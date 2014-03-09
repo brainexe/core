@@ -16,7 +16,9 @@ if (!defined('ROOT')) {
 	define('ROOT', CORE_ROOT . '/../../../');
 }
 
-define('MATZE_VENDOR_ROOT', ROOT . '/vendor/matze/');
+if (!defined('MATZE_VENDOR_ROOT')) {
+	define('MATZE_VENDOR_ROOT', ROOT . '/vendor/matze/');
+}
 
 class Core {
 
@@ -54,12 +56,14 @@ class Core {
 		$container_builder->addCompilerPass(new GlobalCompilerPass());
 		$container_builder->compile();
 
-		$container_file = 'cache/dic.php';
-		$dumper = new PhpDumper($container_builder);
-		$container_content = $dumper->dump(['class' => 'DIC']);
-		file_put_contents($container_file, $container_content);
-		chmod($container_file, 0777);
-		
+		if (!defined('PHPUNIT')) {
+			$container_file = 'cache/dic.php';
+			$dumper = new PhpDumper($container_builder);
+			$container_content = $dumper->dump(['class' => 'DIC']);
+			file_put_contents($container_file, $container_content);
+			chmod($container_file, 0777);
+		}
+
 		return $container_builder;
 	}
 } 

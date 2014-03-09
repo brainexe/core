@@ -21,7 +21,11 @@ class TranslationCompilerPass implements CompilerPassInterface {
 	public function process(ContainerBuilder $container) {
 		$translator = $container->getDefinition('Translator');
 
-		$path = ROOT . '/cache/lang/';
+		$cache_path = ROOT . '/cache/lang/';
+
+		if (!is_dir(ROOT . '/lang/')) {
+			return;
+		}
 
 		$finder = new Finder();
 		$finder
@@ -38,10 +42,10 @@ class TranslationCompilerPass implements CompilerPassInterface {
 			$resource = $yaml_loader->load($file->getPathname(), $locale);
 
 			$dumper->dump($resource, [
-				'path' => $path
+				'path' => $cache_path
 			]);
 
-			$translator->addMethodCall('addResource', ['php', sprintf('%smessages.%s.php', $path, $locale), $locale]);
+			$translator->addMethodCall('addResource', ['php', sprintf('%smessages.%s.php', $cache_path, $locale), $locale]);
 		}
 
 	}

@@ -3,3 +3,4 @@ vendor
 composer.phar
 /config/config.default.xml
 /coverage
+/cache

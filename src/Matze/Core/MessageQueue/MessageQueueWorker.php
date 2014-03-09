@@ -30,22 +30,25 @@ class MessageQueueWorker implements MessageQueueWorkerInterface {
 	 * {@inheritdoc}
 	 */
 	public function run($timeout = 0) {
-		while (true) {
-			$event = $this->_message_queue_gateway->waitForNewJob($timeout);
+		$start = time();
 
-			if (empty($event)) {
-				break;
+		while ($timeout === 0 || $start + $timeout > time()) {
+			$events = $this->_message_queue_gateway->fetchPendingEvents();
+
+			foreach ($events as $event) {
+				$service = $this->getService($event->service_id);
+
+				$start = microtime(true);
+				// todo dispatch event
+				call_user_func_array([$service, $event->method], $event->arguments);
+				$time = microtime(true) - $start;
+
+//				$this->info(sprintf('[MQ]: %s->%s(%s). Time: %0.2fms',
+//					$event->service_id, $event->method, implode(', ', $event->arguments), $time * 1000)
+//				);
 			}
 
-			$service = $this->getService($event->service_id);
-
-			$start = microtime(true);
-			call_user_func_array([$service, $event->method], $event->arguments);
-			$time = microtime(true) - $start;
-
-			$this->info(sprintf('[MQ]: %s->%s(%s). Time: %0.2fms',
-					$event->service_id, $event->method, implode(', ', $event->arguments), $time * 1000)
-			);
+			sleep(1);
 		}
 	}
 } 

@@ -4,6 +4,7 @@ namespace Matze\Core\MessageQueue;
 
 use Matze\Core\EventDispatcher\MessageQueueEvent;
 use Matze\Core\Traits\RedisTrait;
+use Symfony\Component\EventDispatcher\Event;
 
 /**
  * @Service
@@ -13,58 +14,62 @@ class MessageQueueGateway {
 	use RedisTrait;
 
 	/**
-	 * @param integer $timeout
-	 * @return MessageQueueEvent|null
+	 * @return Event[]
 	 */
-	public function waitForNewJob($timeout = 0) {
-		$meta_data_id = $this->getPredis()->BRPOP(MessageQueue::REDIS_MESSAGE_QUEUE, $timeout)[1];
+	public function fetchPendingEvents() {
+		$options = [
+			'cas' => true,
+			'watch' => MessageQueue::REDIS_MESSAGE_QUEUE,
+		];
 
-		if (empty($meta_data_id)) {
-			return null;
-		}
+		$this->getPredis()->transaction($options, function($transaction) use (&$result) {
+			$result = [];
 
-		$payload = $this->_fetchMetaData($meta_data_id);
-		if (empty($payload)) {
-			return null;
-		}
+			$now = time();
+			$event_results = $transaction->ZRANGEBYSCORE(MessageQueue::REDIS_MESSAGE_QUEUE, 0, $now, 'WITHSCORES');
 
-		return new MessageQueueEvent($payload['service_id'], $payload['method'], json_decode($payload['arguments'], true));
+			if (empty($event_results)) {
+				return;
+			}
+
+			$event_ids = [];
+			foreach ($event_results as $event_result) {
+				list($event_id) = $event_result;
+				$event_ids[] = $event_id;
+
+				$result[] = unserialize($transaction->HGET(MessageQueue::REDIS_MESSAGE_META_DATA, $event_id));
+			}
+
+			$transaction->ZREM(MessageQueue::REDIS_MESSAGE_QUEUE, $event_ids);
+			$transaction->HDEL(MessageQueue::REDIS_MESSAGE_META_DATA, $event_ids);
+		});
+
+		return $result;
 	}
 
 	/**
-	 * @param array $event
+	 * @param integer $event_id
 	 */
-	public function addJob(array $event) {
-		$pipeline = $this->getPredis()->transaction();
+	public function deleteEvent($event_id) {
+		$predis = $this->getPredis();
+
+		$predis->ZREM(MessageQueue::REDIS_MESSAGE_QUEUE, $event_id);
+		$predis->HDEL(MessageQueue::REDIS_MESSAGE_META_DATA, $event_id);
+
+	}
+
+	/**
+	 * @param mixed $event
+	 * @param integer $timestamp
+	 */
+	public function addEvent(Event $event, $timestamp = 0) {
+		$transaction = $this->getPredis()->transaction();
 
 		$metadata_id = mt_rand();
-		$meta_data_key = $this->_getMetadataKey($metadata_id);
 
-		$pipeline->HMSET($meta_data_key, $event);
-		$pipeline->LPUSH(MessageQueue::REDIS_MESSAGE_QUEUE, $metadata_id);
+		$transaction->HSET(MessageQueue::REDIS_MESSAGE_META_DATA, $metadata_id, serialize($event));
+		$transaction->ZADD(MessageQueue::REDIS_MESSAGE_QUEUE, $timestamp, $metadata_id);
 
-		$pipeline->execute();
+		$transaction->execute();
 	}
-
-	/**
-	 * @param integer $meta_data_id
-	 * @return array|null
-	 */
-	private function _fetchMetaData($meta_data_id) {
-		$predis = $this->getPredis()->transaction();
-		$key = $this->_getMetadataKey($meta_data_id);
-
-		$predis->HGETALL($key);
-		$predis->DEL($key);
-
-		return $predis->execute()[0];
-	}
-
-	/**
-	 * @param integer $metadata_id
-	 * @return string
-	 */
-	private function _getMetadataKey($metadata_id) {
-		return sprintf(MessageQueue::REDIS_MESSAGE_META_DATA, $metadata_id);
-	}
-} 
+}

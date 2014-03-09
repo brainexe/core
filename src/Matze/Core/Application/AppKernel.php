@@ -52,6 +52,7 @@ class AppKernel {
 
 	/**
 	 * @param Request $request
+	 * @return Response
 	 */
 	public function handle(Request $request) {
 		$response = null;
@@ -80,6 +81,8 @@ class AppKernel {
 
 		$response->prepare($request);
 		$response->send();
+
+		return $response;
 	}
 
 	/**
