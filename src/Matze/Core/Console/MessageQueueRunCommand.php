@@ -35,13 +35,17 @@ class MessageQueueRunCommand extends Command {
 		$this
 			->setName('messagequeue:run')
 			->setDescription('Runs message queue')
-			->addArgument('timeout', InputArgument::OPTIONAL, 'Timeout', 0);
+			->addArgument('timeout', InputArgument::OPTIONAL, 'Timeout', 0)
+			->addArgument('interval', InputArgument::OPTIONAL, 'Interval', 2);
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output) {
-		$this->_message_queue_worker->run($input->getArgument('timeout'));
+		$timeout = $input->getArgument('timeout');
+		$interval = $input->getArgument('interval');
+
+		$this->_message_queue_worker->run($timeout, $interval);
 	}
 }

@@ -61,7 +61,7 @@ class ClearCacheCommand extends Command {
 		$output->writeln('<info>...done</info>');
 
 		$event = new ClearCacheEvent($output);
-		$this->getEventDispatcher()->dispatch(ClearCacheEvent::CLEAR, $event);
+		$this->dispatchEvent($event);
 
 	}
 

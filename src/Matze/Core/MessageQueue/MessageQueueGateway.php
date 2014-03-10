@@ -2,6 +2,8 @@
 
 namespace Matze\Core\MessageQueue;
 
+use Matze\Core\EventDispatcher\AbstractEvent;
+use Matze\Core\Traits\IdGeneratorTrait;
 use Matze\Core\Traits\RedisTrait;
 use Symfony\Component\EventDispatcher\Event;
 
@@ -11,6 +13,7 @@ use Symfony\Component\EventDispatcher\Event;
 class MessageQueueGateway {
 
 	use RedisTrait;
+	use IdGeneratorTrait;
 
 	/**
 	 * @return Event[]
@@ -54,21 +57,23 @@ class MessageQueueGateway {
 
 		$predis->ZREM(MessageQueue::REDIS_MESSAGE_QUEUE, $event_id);
 		$predis->HDEL(MessageQueue::REDIS_MESSAGE_META_DATA, $event_id);
-
 	}
 
 	/**
-	 * @param mixed $event
+	 * @param AbstractEvent $event
 	 * @param integer $timestamp
+	 * @return integer
 	 */
-	public function addEvent(Event $event, $timestamp = 0) {
+	public function addEvent(AbstractEvent $event, $timestamp = 0) {
 		$transaction = $this->getPredis()->transaction();
 
-		$metadata_id = mt_rand();
+		$event_id = $this->generateRandomNumericId();
 
-		$transaction->HSET(MessageQueue::REDIS_MESSAGE_META_DATA, $metadata_id, serialize($event));
-		$transaction->ZADD(MessageQueue::REDIS_MESSAGE_QUEUE, $timestamp, $metadata_id);
+		$transaction->HSET(MessageQueue::REDIS_MESSAGE_META_DATA, $event_id, serialize($event));
+		$transaction->ZADD(MessageQueue::REDIS_MESSAGE_QUEUE, $timestamp, $event_id);
 
 		$transaction->execute();
+
+		return $event_id;
 	}
 }

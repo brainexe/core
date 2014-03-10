@@ -2,7 +2,8 @@
 
 namespace Matze\Core\MessageQueue;
 
-use Matze\Core\EventDispatcher\MessageQueueEvent;
+use Matze\Core\EventDispatcher\AbstractEvent;
+use Matze\Core\Traits\EventDispatcherTrait;
 use Matze\Core\Traits\LoggerTrait;
 use Matze\Core\Traits\RedisTrait;
 use Matze\Core\Traits\ServiceContainerTrait;
@@ -12,8 +13,8 @@ use Matze\Core\Traits\ServiceContainerTrait;
  */
 class MessageQueueWorker implements MessageQueueWorkerInterface {
 
-	use ServiceContainerTrait;
 	use LoggerTrait;
+	use EventDispatcherTrait;
 
 	/**
 	 * @var MessageQueueGateway
@@ -30,27 +31,24 @@ class MessageQueueWorker implements MessageQueueWorkerInterface {
 	/**
 	 * {@inheritdoc}
 	 */
-	public function run($timeout = 0) {
+	public function run($timeout = 0, $interval = 1) {
 		$start = time();
 
 		while ($timeout === 0 || $start + $timeout > time()) {
-			/** @var MessageQueueEvent[] $events */
+			/** @var AbstractEvent[] $events */
 			$events = $this->_message_queue_gateway->fetchPendingEvents();
 
 			foreach ($events as $event) {
-				$service = $this->getService($event->service_id);
-
 				$start = microtime(true);
-				// todo dispatch event
-				call_user_func_array([$service, $event->method], $event->arguments);
+				$this->dispatchEvent($event);
 				$time = microtime(true) - $start;
 
-				$this->info(sprintf('[MQ]: %s->%s(%s). Time: %0.2fms',
-					$event->service_id, $event->method, implode(', ', $event->arguments), $time * 1000)
+				$this->info(sprintf('[MQ]: %s. Time: %0.2fms',
+					$event->event_name, $time * 1000)
 				);
 			}
 
-			sleep(1);
+			sleep($interval);
 		}
 	}
 } 

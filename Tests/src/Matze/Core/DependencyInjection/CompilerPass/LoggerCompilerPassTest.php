@@ -6,6 +6,7 @@ use Matze\Core\DependencyInjection\CompilerPass\LoggerCompilerPass;
 use PHPUnit_Framework_MockObject_MockObject;
 use PHPUnit_Framework_TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 
 class LoggerCompilerPassTest extends PHPUnit_Framework_TestCase {
 

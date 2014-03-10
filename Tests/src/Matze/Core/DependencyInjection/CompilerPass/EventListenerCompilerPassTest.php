@@ -6,6 +6,7 @@ use Matze\Core\DependencyInjection\CompilerPass\EventListenerCompilerPass;
 use PHPUnit_Framework_MockObject_MockObject;
 use PHPUnit_Framework_TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -51,22 +52,35 @@ class EventListenerCompilerPassTest extends PHPUnit_Framework_TestCase {
 		$foo_service_mock = new TestEventDispatcher();
 
 		$this->_mock_container
-			->expects($this->once())
+			->expects($this->at(0))
 			->method('findTaggedServiceIds')
 			->with(EventListenerCompilerPass::TAG)
 			->will($this->returnValue([$service_id => []]));
 
 		$this->_mock_container
-			->expects($this->once())
-			->method('get')
-			->with($service_id)
-			->will($this->returnValue($foo_service_mock));
-
-		$this->_mock_container
-			->expects($this->once())
+			->expects($this->at(1))
 			->method('getDefinition')
 			->with('EventDispatcher')
 			->will($this->returnValue($this->_mock_event_dispatcher_definition));
+
+		$mock_definition = $this->getMock('Symfony\Component\DependencyInjection\Definition');
+
+		$this->_mock_container
+			->expects($this->at(2))
+			->method('getDefinition')
+			->with($service_id)
+			->will($this->returnValue($mock_definition));
+
+		$mock_definition
+			->expects($this->once())
+			->method('setPublic')
+			->with(false);
+
+		$this->_mock_container
+			->expects($this->at(3))
+			->method('get')
+			->with($service_id)
+			->will($this->returnValue($foo_service_mock));
 
 		$this->_mock_event_dispatcher_definition
 			->expects($this->at(0))

@@ -24,6 +24,9 @@ class EventListenerCompilerPass implements CompilerPassInterface {
 		$event_dispatcher = $container->getDefinition('EventDispatcher');
 
 		foreach (array_keys($services) as $service_id) {
+			$definition = $container->getDefinition($service_id);
+			$definition->setPublic(false);
+
 			/** @var EventSubscriberInterface $subscriber */
 			$subscriber = $container->get($service_id);
 
