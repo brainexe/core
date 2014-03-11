@@ -35,7 +35,6 @@ class TimeParserTest extends PHPUnit_Framework_TestCase {
 	 */
 	public static function providerTimes() {
 		return [
-			[0, -time()],
 			[2, 2],
 			[-1, false],
 			["2", 2],
