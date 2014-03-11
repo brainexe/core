@@ -24,6 +24,10 @@ class TimeParser {
 	 * @return integer
 	 */
 	public function parseString($string) {
+		if (empty($string)) {
+			return 0;
+
+		}
 		$now = time();
 
 		if (is_numeric($string)) {

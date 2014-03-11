@@ -7,6 +7,8 @@ namespace Matze\Core\Util;
  */
 class IdGenerator {
 
+	const ID_LENGTH = 10;
+
 	/**
 	 * @return integer
 	 */
@@ -20,6 +22,6 @@ class IdGenerator {
 	public function generateRandomId() {
 		$id = md5(microtime() . mt_rand());
 
-		return substr(base_convert($id, 16, 36), 0, 15);
+		return substr(base_convert($id, 16, 36), 0, self::ID_LENGTH);
 	}
 }

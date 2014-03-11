@@ -6,7 +6,7 @@ use Matze\Core\MessageQueue\AbstractMessageQueueEvent;
 
 class DelayedEvent extends AbstractMessageQueueEvent {
 
-	const NAME = 'delayed';
+	const DELAYED = 'message_queue.delayed';
 
 	/**
 	 * @var integer
@@ -18,7 +18,7 @@ class DelayedEvent extends AbstractMessageQueueEvent {
 	 * @param integer $timestamp
 	 */
 	function __construct(AbstractEvent $event, $timestamp) {
-		$this->event_name = self::NAME;
+		$this->event_name = self::DELAYED;
 		$this->event = $event;
 		$this->timestamp = $timestamp;
 	}

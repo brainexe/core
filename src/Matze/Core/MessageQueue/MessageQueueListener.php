@@ -18,8 +18,8 @@ class MessageQueueListener extends AbstractEventListener {
 
 	public static function getSubscribedEvents() {
 		return [
-			DelayedEvent::NAME => 'onDelayedEvent',
-			BackgroundEvent::NAME => 'onBackgroundEvent'
+			DelayedEvent::DELAYED => 'onDelayedEvent',
+			BackgroundEvent::BACKGROUND => 'onBackgroundEvent'
 		];
 	}
 
