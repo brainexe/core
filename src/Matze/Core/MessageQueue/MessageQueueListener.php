@@ -7,15 +7,15 @@ use Matze\Core\EventDispatcher\BackgroundEvent;
 use Matze\Core\EventDispatcher\DelayedEvent;
 use Matze\Core\Traits\RedisTrait;
 use Matze\Core\Traits\ServiceContainerTrait;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
  * @EventListener
  */
 class MessageQueueListener extends AbstractEventListener {
 
-	use ServiceContainerTrait;
-
+	/**
+	 * {@inheritdoc}
+	 */
 	public static function getSubscribedEvents() {
 		return [
 			DelayedEvent::DELAYED => 'onDelayedEvent',
