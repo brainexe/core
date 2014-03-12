@@ -19,14 +19,22 @@ class TwigExtensionCompilerPass implements CompilerPassInterface {
 	 */
 	public function process(ContainerBuilder $container) {
 		/** @var Definition $twig_definition */
+		/** @var Definition $twig_compiler_definition */
 		$twig_definition = $container->getDefinition('Twig');
+		$twig_compiler_definition = $container->getDefinition('TwigCompiler');
 
-		$taggedServices = $container->findTaggedServiceIds(self::TAG);
-		foreach (array_keys($taggedServices) as $id) {
+		$tagged_services = $container->findTaggedServiceIds(self::TAG);
+
+		foreach ($tagged_services as $id => $tag) {
 			$service = $container->getDefinition($id);
 			$service->setPublic(false);
 
-			$twig_definition->addMethodCall('addExtension', [new Reference($id)]);
+			if ($tag[0]['compiler']) {
+				$twig_compiler_definition->addMethodCall('addExtension', [new Reference($id)]);
+			} else {
+				$twig_definition->addMethodCall('addExtension', [new Reference($id)]);
+
+			}
 		}
 
 		if ($container->getParameter('debug')) {

@@ -18,7 +18,7 @@ use Symfony\Component\Security\Core\User\User;
 /**
  * @Command
  */
-class CreateUserCommandCommand extends Command {
+class CreateUserCommand extends Command {
 
 	/**
 	 * {@inheritdoc}

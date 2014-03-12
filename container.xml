@@ -11,6 +11,7 @@
 		<parameter key="redis.database">0</parameter>
 
 		<parameter key="cache.dir">%application.root%/cache/</parameter>
+		<parameter key="template.dir">%application.root%/templates/</parameter>
 		<parameter key="logger.dir">%application.root%/logs/</parameter>
 		<parameter key="logger.error.log">%logger.dir%error.log</parameter>
 		<parameter key="logger.info.log">%logger.dir%info.log</parameter>
@@ -38,7 +39,7 @@
 		<service id="twig" class="Twig_Environment" public="false">
 			<argument type="service">
 				<service class="Twig_Loader_Filesystem">
-					<argument>%application.root%/templates/</argument>
+					<argument>%template.dir%</argument>
 				</service>
 			</argument>
 			<argument type="collection">
@@ -47,6 +48,8 @@
 				<argument key="auto_reload">%debug%</argument>
 			</argument>
 		</service>
+
+		<service id="TwigCompiler" parent="twig" public="false"></service>
 
         <service id="predis" class="Predis\Client" public="false">
             <argument type="collection">

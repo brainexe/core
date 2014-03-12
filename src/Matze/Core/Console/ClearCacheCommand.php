@@ -6,6 +6,7 @@ use Matze\Core\Core;
 use Matze\Core\EventDispatcher\ClearCacheEvent;
 use Matze\Core\Traits\EventDispatcherTrait;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -25,7 +26,8 @@ class ClearCacheCommand extends Command {
 	 */
 	protected function configure() {
 		$this->setName('cache:clear')
-			->setDescription('Clears the local cache');
+			->setDescription('Clears the local cache')
+			->setAliases(['cc']);
 	}
 
 	/**
@@ -59,6 +61,10 @@ class ClearCacheCommand extends Command {
 			'logs/',
 		] , 0777, 0000, true);
 		$output->writeln('<info>...done</info>');
+
+		$output->writeln('Compile templates...');
+		$input = new ArrayInput(['command' => 'templates:compile']);
+		$this->getApplication()->run($input, $output);
 
 		$event = new ClearCacheEvent($output);
 		$this->dispatchEvent($event);

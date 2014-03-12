@@ -15,7 +15,7 @@ use Symfony\Component\Finder\SplFileInfo;
 /**
  * @Command
  */
-class SendSMSCommandCommand extends Command {
+class SendSMSCommand extends Command {
 
 	/**
 	 * {@inheritdoc}

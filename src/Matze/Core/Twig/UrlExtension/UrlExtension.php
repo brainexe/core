@@ -6,8 +6,7 @@ use Symfony\Component\Routing\Generator\UrlGenerator;
 use Twig_Extension;
 
 /**
- * @TODO compile only
- * @TwigExtension
+ * @TwigExtension(compiler=true)
  */
 class UrlExtension extends Twig_Extension {
 

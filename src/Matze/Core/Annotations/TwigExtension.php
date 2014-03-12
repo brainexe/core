@@ -11,6 +11,12 @@ use Matze\Core\Annotations\Builder\TwigExtensionDefinitionBuilder;
  * @Annotation
  */
 class TwigExtension extends Service {
+
+	/**
+	 * @var boolean
+	 */
+	public $compiler = false;
+
 	/**
 	 * {@inheritdoc}
 	 */
