@@ -25,11 +25,12 @@ class TwigExtensionCompilerPass implements CompilerPassInterface {
 
 		$tagged_services = $container->findTaggedServiceIds(self::TAG);
 
+		$debug = $container->getParameter('debug');
 		foreach ($tagged_services as $id => $tag) {
 			$service = $container->getDefinition($id);
 			$service->setPublic(false);
 
-			if ($tag[0]['compiler']) {
+			if (!$debug && $tag[0]['compiler']) {
 				$twig_compiler_definition->addMethodCall('addExtension', [new Reference($id)]);
 			} else {
 				$twig_definition->addMethodCall('addExtension', [new Reference($id)]);
@@ -37,7 +38,7 @@ class TwigExtensionCompilerPass implements CompilerPassInterface {
 			}
 		}
 
-		if ($container->getParameter('debug')) {
+		if ($debug) {
 			$twig_definition->addMethodCall('addExtension', [new Definition('Twig_Extension_Debug')]);
 			$twig_definition->addMethodCall('enableStrictVariables');
 		}

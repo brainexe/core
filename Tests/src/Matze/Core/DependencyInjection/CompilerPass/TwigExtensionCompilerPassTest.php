@@ -56,6 +56,12 @@ class TwigExtensionCompilerPassTest extends \PHPUnit_Framework_TestCase {
 
 		$this->_mock_container
 			->expects($this->at(3))
+			->method('getParameter')
+			->with('debug')
+			->will($this->returnValue(true));
+
+		$this->_mock_container
+			->expects($this->at(4))
 			->method('getDefinition')
 			->with($service_id)
 			->will($this->returnValue($mock_extension_definition));
@@ -69,12 +75,6 @@ class TwigExtensionCompilerPassTest extends \PHPUnit_Framework_TestCase {
 			->expects($this->at(0))
 			->method('addMethodCall')
 			->with('addExtension', [new Reference($service_id)]);
-
-		$this->_mock_container
-			->expects($this->at(4))
-			->method('getParameter')
-			->with('debug')
-			->will($this->returnValue(true));
 
 		$this->_mock_twig_definition
 			->expects($this->at(1))
