@@ -39,5 +39,4 @@ class MessageQueueJob {
 		return explode(':', $this->event_id, 2)[1];
 	}
 
-
-} 
+}

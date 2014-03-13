@@ -22,8 +22,20 @@ class EtaExtension extends \Twig_Extension {
 		];
 	}
 
+	/**
+	 * @param integer $timestamp
+	 * @return string
+	 */
 	public function getEta($timestamp){
 		$difference = $this->_now - $timestamp;
+
+		if (empty($timestamp)) {
+			return 'A ogn time ago';
+		}
+
+		if ($difference === 0) {
+			return 'now';
+		}
 
 		$periods = ["sec", "min", "hour", "day", "week", "month", "years", "decade"];
 		$lengths = ["60","60","24","7","4.35","12","10"];
