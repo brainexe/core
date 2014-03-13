@@ -4,7 +4,6 @@ namespace Matze\Core\Authentication;
 
 use Matze\Core\Traits\RedisTrait;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
-use Symfony\Component\Security\Core\User\User;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
@@ -35,12 +34,16 @@ class DatabaseUserProvider implements UserProviderInterface {
 
 	/**
 	 * @param integer $user_id
-	 * @return User
+	 * @return UserVO
 	 */
 	public function loadUserById($user_id) {
 		$redis_user = $this->getPredis()->HGETALL($this->_getKey($user_id));
 
-		$user = new User($redis_user['username'], $redis_user['password'], explode(',', $redis_user['roles']));
+		$user = new UserVO();
+		$user->id = $user_id;
+		$user->username = $redis_user['username'];
+		$user->password_hash = $redis_user['password'];
+		$user->roles = array_filter(explode(',', $redis_user['roles']));
 
 		return $user;
 	}
@@ -56,7 +59,7 @@ class DatabaseUserProvider implements UserProviderInterface {
 	 * {@inheritdoc}
 	 */
 	public function supportsClass($class) {
-		return 'Symfony\Component\Security\Core\User\User' === $class;
+		return 'Matze\Core\Authentication\UserVO' === $class;
 	}
 
 	/**
@@ -77,16 +80,16 @@ class DatabaseUserProvider implements UserProviderInterface {
 	}
 
 	/**
-	 * @param User $user
+	 * @param UserVO $user
 	 * @return integer $user_id
 	 */
-	public function register(User $user) {
+	public function register(UserVO $user) {
 		$predis = $this->getPredis()->transaction();
 
 		$user_array = [
 			'username' => $user->getUsername(),
-			'password' => $password_hash = $this->generateHash($user->getPassword()),
-			'roles' => implode(',', $user->getRoles())
+			'password' => $password_hash = $this->generateHash($user->password),
+			'roles' => implode(',', $user->roles)
 		];
 
 		$new_user_id = mt_rand();

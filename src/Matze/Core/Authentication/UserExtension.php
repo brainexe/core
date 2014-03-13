@@ -2,8 +2,8 @@
 
 namespace Matze\Core\Authentication;
 
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\Security\Core\User\User;
 use Twig_Extension;
 
 /**
@@ -11,7 +11,7 @@ use Twig_Extension;
  */
 class UserExtension extends Twig_Extension {
 	/**
-	 * @var SessionInterface
+	 * @var Session
 	 */
 	private $_session;
 
@@ -33,24 +33,39 @@ class UserExtension extends Twig_Extension {
 		return [
 			'getCurrentUser' => new \Twig_Function_Method($this, 'getCurrentUser'),
 			'isLoggedIn' => new \Twig_Function_Method($this, 'isLoggedIn'),
-			'hasRole' => new \Twig_Function_Method($this, 'hasRole')
+			'hasRole' => new \Twig_Function_Method($this, 'hasRole'),
+			'getFlashBag' => new \Twig_Function_Method($this, 'getFlashBag')
 		];
 	}
 
 	/**
-	 * @return User
+	 * @return UserVO
 	 */
 	public function getCurrentUser() {
 		$user = $this->_session->get('user');
 
-		return $user ?: new User('', '', []);
+		return $user ?: new AnonymusUserVO();
 	}
 
 	/**
-	 * @return User
+	 * @return UserVO
 	 */
 	public function isLoggedIn() {
-		return (bool)$this->_session->get('user');
+		/** @var UserVO|null $user */
+		$user = $this->_session->get('user');
+
+		if (empty($user)) {
+			return false;
+		}
+
+		return (bool)$user->id;
+	}
+
+	/**
+	 * @return array[]
+	 */
+	public function getFlashBag() {
+		return $this->_session->getFlashBag()->all();
 	}
 
 	/**
@@ -58,14 +73,14 @@ class UserExtension extends Twig_Extension {
 	 * @return boolean
 	 */
 	public function hasRole($role) {
-		/** @var User $user */
+		/** @var UserVO $user */
 		$user = $this->_session->get('user');
 
 		if (empty($user)) {
 			return false;
 		}
 
-		return in_array($role, $user->getRoles());
+		return $user->hasRole($role);
 	}
 
 }

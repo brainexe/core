@@ -27,22 +27,22 @@ class Login {
 	 * @param string $password
 	 * @param SessionInterface $session
 	 * @throws UserException
-	 * @return boolean
+	 * @return UserVO
 	 */
 	public function tryLogin($username, $password, SessionInterface $session) {
-		$user = $this->_user_provider->loadUserByUsername($username);
-		if (empty($user)) {
+		$user_vo = $this->_user_provider->loadUserByUsername($username);
+		if (empty($user_vo)) {
 			throw new UserException("Invalid Username");
 		}
 
 		$hashed_password = $this->_user_provider->generateHash($password);
-		if ($hashed_password !== $user->getPassword()) {
+		if ($hashed_password !== $user_vo->getPassword()) {
 			throw new UserException("Invalid Password");
 		}
 
-		$session->set('user', $user);
+		$session->set('user', $user_vo);
 
-		return true;
+		return $user_vo;
 	}
 
 }

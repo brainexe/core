@@ -2,12 +2,10 @@
 
 namespace Matze\Core\Authentication;
 
-
 use Matze\Core\Controller\AbstractController;
 use Matze\Core\Traits\ServiceContainerTrait;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\User\User;
 
 abstract class AbstractAuthenticationController extends AbstractController {
 
@@ -32,12 +30,14 @@ abstract class AbstractAuthenticationController extends AbstractController {
 	 */
 	public function doLogin(Request $request) {
 		$username = $request->request->get('username');
-		$password = $request->request->get('password');
+		$plain_password = $request->request->get('password');
 
 		/** @var Login $login */
 		$login = $this->getService('Login');
 
-		$login->tryLogin($username, $password, $request->getSession());
+		$user_vo = $login->tryLogin($username, $plain_password, $request->getSession());
+
+		$this->_addFlash($request, self::ALERT_SUCCESS, sprintf('Welcome %s', $user_vo->username));
 
 		return new RedirectResponse('/');
 	}
@@ -49,14 +49,18 @@ abstract class AbstractAuthenticationController extends AbstractController {
 	 */
 	public function doRegister(Request $request) {
 		$username = $request->request->get('username');
-		$password = $request->request->get('password');
+		$plain_password = $request->request->get('password');
 
 		/** @var Register $register */
 		$register = $this->getService('Register');
 
-		$user = new User($username, $password, []);
+		$user_vo = new UserVO();
+		$user_vo->username = $username;
+		$user_vo->password = $plain_password;
 
-		$register->register($user, $request->getSession());
+		$register->register($user_vo, $request->getSession());
+
+		$this->_addFlash($request, self::ALERT_SUCCESS, sprintf('Welcome %s', $user_vo->username));
 
 		return new RedirectResponse('/');
 	}

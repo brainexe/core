@@ -3,6 +3,7 @@
 namespace Matze\Core\Console;
 
 use Matze\Core\Authentication\Register;
+use Matze\Core\Authentication\UserVO;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
@@ -13,7 +14,6 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
-use Symfony\Component\Security\Core\User\User;
 
 /**
  * @Command
@@ -53,7 +53,10 @@ class CreateUserCommand extends Command {
 		$password = $input->getArgument('password');
 		$roles = explode(',', $input->getArgument('roles'));
 
-		$user = new User($username, $password, $roles);
+		$user = new UserVO();
+		$user->username = $username;
+		$user->password = $password;
+		$user->roles = $roles;
 
 		$session = new Session(new MockArraySessionStorage());
 		$user_id = $this->_register->register($user, $session);

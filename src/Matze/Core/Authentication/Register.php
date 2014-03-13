@@ -4,8 +4,8 @@ namespace Matze\Core\Authentication;
 
 use Matze\Core\Application\UserException;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
-use Symfony\Component\Security\Core\User\User;
 
 /**
  * @Service
@@ -25,12 +25,12 @@ class Register {
 	}
 
 	/**
-	 * @param User $user
-	 * @param Session|\Symfony\Component\HttpFoundation\Session\SessionInterface $session
+	 * @param UserVO $user
+	 * @param Session|SessionInterface $session
 	 * @throws UserException
 	 * @return integer
 	 */
-	public function register(User $user, Session $session) {
+	public function register(UserVO $user, Session $session) {
 		try {
 			$this->_user_provider->loadUserByUsername($user->getUsername());
 
