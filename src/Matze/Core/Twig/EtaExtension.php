@@ -18,7 +18,7 @@ class EtaExtension extends \Twig_Extension {
 
 	public function getFilters() {
 		return [
-			new \Twig_SimpleFilter('eta', [$this, 'getEta', ['is_safe' => true]])
+			new \Twig_SimpleFilter('eta', [$this, 'getEta'], ['is_safe' => ['all']])
 		];
 	}
 
@@ -26,35 +26,8 @@ class EtaExtension extends \Twig_Extension {
 	 * @param integer $timestamp
 	 * @return string
 	 */
-	public function getEta($timestamp){
-		$difference = $this->_now - $timestamp;
-
-		if (empty($timestamp)) {
-			return 'A ogn time ago';
-		}
-
-		if ($difference === 0) {
-			return 'now';
-		}
-
-		$periods = ["sec", "min", "hour", "day", "week", "month", "years", "decade"];
-		$lengths = ["60","60","24","7","4.35","12","10"];
-
-		if ($difference > 0) {
-			$ending = "ago";
-		} else {
-			$difference = -$difference;
-			$ending = "to go";
-		}
-		for($j = 0; $difference >= $lengths[$j]; $j++) {
-			$difference /= $lengths[$j];
-		}
-
-		$difference = round($difference);
-		if($difference != 1) $periods[$j].= "s";
-		$text = "$difference $periods[$j] $ending";
-
-		return $text;
+	public function getEta($timestamp) {
+		return sprintf('<span class="eta" data-timestamp="%s"></span>', $timestamp);
 	}
 
 	/**
