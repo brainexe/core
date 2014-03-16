@@ -49,6 +49,8 @@ class CompileTemplatesCommand extends Command {
 	 * {@inheritdoc}
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output) {
+		$output->write('Compile templates...');
+
 		$finder = new Finder();
 		$finder
 			->files()
@@ -67,8 +69,12 @@ class CompileTemplatesCommand extends Command {
 			}
 		}
 
-		$needed_time = microtime(true) - $start;
-		$output->writeln(sprintf('Compiled %d templates in %0.1fms', count($finder), $needed_time * 1000));
+		if (OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity()) {
+			$needed_time = microtime(true) - $start;
+			$output->writeln(sprintf('Compiled %d templates in %0.1fms', count($finder), $needed_time * 1000));
+		}
+
+		$output->writeln('<info>done</info>');
 	}
 
 } 

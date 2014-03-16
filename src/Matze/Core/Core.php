@@ -13,11 +13,22 @@ use Symfony\Component\Finder\SplFileInfo;
 define('CORE_ROOT', __DIR__);
 
 if (!defined('ROOT')) {
-	define('ROOT', CORE_ROOT . '/../../../');
+	define('ROOT', realpath(CORE_ROOT . '/../../../').'/');
 }
 
 if (!defined('MATZE_VENDOR_ROOT')) {
 	define('MATZE_VENDOR_ROOT', ROOT . '/vendor/matze/');
+}
+
+function t($text) {
+	$args = func_get_args();
+	unset($args[0]);
+	$gettext = gettext($text);
+	$return = @vsprintf($gettext, $args);
+	if ($return === false) {
+		trigger_error("Wrong parameter count in translation: $text => $gettext", E_USER_WARNING);
+	}
+	return $return;
 }
 
 class Core {
@@ -42,6 +53,19 @@ class Core {
 		$dic->get('monolog.ErrorHandler');
 
 		return $dic;
+	}
+
+	/**
+	 * @param string $locale
+	 */
+	public static function setLocale($locale) {
+		putenv("LANG=$locale.UTF-8");
+		setlocale(LC_MESSAGES, "$locale.UTF-8");
+
+		$domain = 'messages';
+		bindtextdomain($domain, ROOT . "/lang/");
+		bind_textdomain_codeset($domain, 'UTF-8');
+		textdomain($domain);
 	}
 
 	/**

@@ -95,9 +95,9 @@
 				<service class="Symfony\Component\Translation\MessageSelector"/>
 			</argument>
 			<call method="addLoader">
-				<argument>php</argument>
+				<argument>mo</argument>
 				<argument type="service">
-					<service class="Symfony\Component\Translation\Loader\PhpFileLoader"/>
+					<service class="Symfony\Component\Translation\Loader\MoFileLoader"/>
 				</argument>
 			</call>
 		</service>
