@@ -119,6 +119,9 @@
 		<!--TODO-->
 		<service id="service_container" class="Symfony\Component\DependencyInjection\Container"/>
 
+		<service id="Assetic" class="Assetic\AssetManager" public="false">
+		</service>
+
 		<service id="RouteCollection" class="Symfony\Component\Routing\RouteCollection" public="false"/>
 		<service id="UrlGenerator" class="Symfony\Component\Routing\Generator\UrlGenerator" public="false">
 			<argument type="service" id="RouteCollection"/>
