@@ -20,16 +20,7 @@ if (!defined('MATZE_VENDOR_ROOT')) {
 	define('MATZE_VENDOR_ROOT', ROOT . '/vendor/matze/');
 }
 
-function t($text) {
-	$args = func_get_args();
-	unset($args[0]);
-	$gettext = gettext($text);
-	$return = @vsprintf($gettext, $args);
-	if ($return === false) {
-		trigger_error("Wrong parameter count in translation: $text => $gettext", E_USER_WARNING);
-	}
-	return $return;
-}
+require_once CORE_ROOT. '/functions.php';
 
 class Core {
 
