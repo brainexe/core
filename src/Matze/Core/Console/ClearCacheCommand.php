@@ -48,11 +48,11 @@ class ClearCacheCommand extends Command {
 			/** @var SplFileInfo $file */
 			unlink($file->getPathname());
 		}
-		$output->writeln('<info>...done</info>');
+		$output->writeln('<info>done</info>');
 
 		$output->write('Rebuild DIC...');
 		Core::rebuildDIC();
-		$output->writeln('<info>...done</info>');
+		$output->writeln('<info>done</info>');
 
 		$output->write('Set permissions...');
 		$file_system->chmod([
@@ -60,12 +60,15 @@ class ClearCacheCommand extends Command {
 			'cache/twig/',
 			'logs/',
 		] , 0777, 0000, true);
-		$output->writeln('<info>...done</info>');
+		$output->writeln('<info>done</info>');
 
 		$input = new ArrayInput(['command' => 'templates:compile']);
 		$this->getApplication()->run($input, $output);
 
 		$input = new ArrayInput(['command' => 'translation:compile']);
+		$this->getApplication()->run($input, $output);
+
+		$input = new ArrayInput(['command' => 'assets:dump']);
 		$this->getApplication()->run($input, $output);
 
 		$event = new ClearCacheEvent($output);

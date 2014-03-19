@@ -2,14 +2,19 @@
 
 namespace Matze\Core\Console;
 
+use Assetic\Asset\AssetCollection;
+use Assetic\Asset\FileAsset;
+use Assetic\Asset\GlobAsset;
 use Assetic\AssetManager;
 use Assetic\AssetWriter;
+use Assetic\Filter\CssRewriteFilter;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -18,14 +23,15 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 /**
  * @Command
  */
-class AssetsDumpCommand extends Command {
+class AssetsDumpCommand extends AbstractCommand {
 
 	/**
 	 * {@inheritdoc}
 	 */
 	protected function configure() {
-		$this->setName('assets:dump')
-			->setDescription('Dump Assets');
+		$this
+			->setName('assets:dump')
+			->setDescription('Build minified asset files');
 	}
 
 	/**
@@ -45,14 +51,11 @@ class AssetsDumpCommand extends Command {
 	/**
 	 * {@inheritdoc}
 	 */
-	protected function execute(InputInterface $input, OutputInterface $output) {
-		foreach ($this->_assetic->getNames() as $name) {
-			$asset_collection = $this->_assetic->get($name);
-//			$asset_collection->dump();
-		}
+	protected function doExecute(InputInterface $input, OutputInterface $output) {
+		$web_dir = ROOT . '/web/';
+		$cache_dir = $web_dir . 'cache';
 
-
-		$writer = new AssetWriter(ROOT . 'web/cache/');
+		$writer = new AssetWriter($cache_dir);
 		$writer->writeManagerAssets($this->_assetic);
 	}
 

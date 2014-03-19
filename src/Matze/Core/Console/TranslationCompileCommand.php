@@ -23,15 +23,13 @@ class TranslationCompileCommand extends AbstractCommand {
 	protected function configure() {
 		$this
 			->setName('translation:compile')
-			->setDescription('Compile all po files into mo files');
+			->setDescription('Compile PO files');
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	protected function execute(InputInterface $input, OutputInterface $output) {
-		$output->write('Compile PO files...');
-
+	protected function doExecute(InputInterface $input, OutputInterface $output) {
 		$lang_path = ROOT . '/lang/';
 
 		$finder = new Finder();
@@ -49,13 +47,11 @@ class TranslationCompileCommand extends AbstractCommand {
 
 			$process = new Process(sprintf($command, $locale_path, $locale_path));
 			$process->run();
-			$this->_chckProcess($output, $process);
+			$this->_checkProcess($output, $process);
 
 			if (OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity()) {
 				$output->writeln(sprintf("Compiled %s", $locale));
 			}
 		}
-
-		$output->writeln('<info>done</info>');
 	}
 }

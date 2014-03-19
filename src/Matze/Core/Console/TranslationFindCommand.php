@@ -29,14 +29,12 @@ class TranslationFindCommand extends AbstractCommand {
 	/**
 	 * {@inheritdoc}
 	 */
-	protected function execute(InputInterface $input, OutputInterface $output) {
-		$output->write('Find Translations...');
-
+	protected function doExecute(InputInterface $input, OutputInterface $output) {
 		$command = 'find %s -type f -iname "*.php" | xgettext --keyword=__ --keyword=t -j -f - -o %slang/messages.pot';
 
 		$process = new Process(sprintf($command, ROOT, ROOT));
 		$process->run();
-		$this->_chckProcess($output, $process);
+		$this->_checkProcess($output, $process);
 
 		$output->writeln('<error>' . $process->getErrorOutput() . '</error>');
 
@@ -57,13 +55,11 @@ class TranslationFindCommand extends AbstractCommand {
 
 			$process = new Process(sprintf($command, $locale_path, $lang_path));
 			$process->run();
-			$this->_chckProcess($output, $process);
+			$this->_checkProcess($output, $process);
 
 			if (OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity()) {
 				$output->writeln(sprintf("Process %s", $locale));
 			}
 		}
-
-		$output->writeln('<info>done</info>');
 	}
 }
