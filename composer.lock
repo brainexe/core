@@ -43,7 +43,7 @@
             ],
             "authors": [
                 {
-                    "name": "Jonathan Wage",
+                    "name": "Jonathan H. Wage",
                     "email": "jonwage@gmail.com",
                     "homepage": "http://www.jwage.com/",
                     "role": "Creator"
@@ -140,12 +140,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/kriswallsmith/assetic.git",
-                "reference": "70a1d422ee712a2384732b48d415e3680440acb5"
+                "reference": "c501da7ffbf311a7133113186540a572d9fe5135"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kriswallsmith/assetic/zipball/70a1d422ee712a2384732b48d415e3680440acb5",
-                "reference": "70a1d422ee712a2384732b48d415e3680440acb5",
+                "url": "https://api.github.com/repos/kriswallsmith/assetic/zipball/c501da7ffbf311a7133113186540a572d9fe5135",
+                "reference": "c501da7ffbf311a7133113186540a572d9fe5135",
                 "shasum": ""
             },
             "require": {
@@ -205,7 +205,7 @@
                 "compression",
                 "minification"
             ],
-            "time": "2014-03-16 18:25:42"
+            "time": "2014-03-18 09:11:56"
         },
         {
             "name": "matze/annotations",
@@ -498,12 +498,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Debug.git",
-                "reference": "8b0839bb30d40be5950a7162b16fe8150393e773"
+                "reference": "3d839f44bda86abefb01c0aa67f916824236905b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Debug/zipball/8b0839bb30d40be5950a7162b16fe8150393e773",
-                "reference": "8b0839bb30d40be5950a7162b16fe8150393e773",
+                "url": "https://api.github.com/repos/symfony/Debug/zipball/3d839f44bda86abefb01c0aa67f916824236905b",
+                "reference": "3d839f44bda86abefb01c0aa67f916824236905b",
                 "shasum": ""
             },
             "require": {
@@ -546,7 +546,7 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "http://symfony.com",
-            "time": "2014-03-03 12:53:01"
+            "time": "2014-03-18 09:04:14"
         },
         {
             "name": "symfony/dependency-injection",
