@@ -6,6 +6,7 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Yaml\Yaml;
@@ -19,7 +20,8 @@ class ConfigCompilerPass implements CompilerPassInterface {
 	 * {@inheritdoc}
 	 */
 	public function process(ContainerBuilder $container) {
-		$loader = new XmlFileLoader($container, new FileLocator('config'));
+		$xml_loader = new XmlFileLoader($container, new FileLocator('config'));
+		$yaml_loader = new YamlFileLoader($container, new FileLocator('config'));
 
 		// load container.xml file from all "matze" components
 		$config_finder = new Finder();
@@ -31,14 +33,15 @@ class ConfigCompilerPass implements CompilerPassInterface {
 
 		foreach ($config_finder as $file) {
 			/** @var SplFileInfo $file */
-			$loader->load($file->getPathname());
+			$xml_loader->load($file->getPathname());
 		}
 
 		if (is_dir(ROOT . '/app')) {
-			$loader->load(ROOT . '/app/container.xml');
-			$loader->load(ROOT . '/app/config.default.xml');
+			$xml_loader->load(ROOT . '/app/container.xml');
+			$xml_loader->load(ROOT . '/app/config.default.xml');
+			$yaml_loader->load(ROOT . '/app/assets.yaml');
 			if (file_exists(ROOT . '/app/config.xml')) {
-				$loader->load(ROOT . '/app/config.xml');
+				$xml_loader->load(ROOT . '/app/config.xml');
 			}
 		}
 

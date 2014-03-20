@@ -7,6 +7,9 @@ use Assetic\Asset\FileAsset;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
+/**
+ * @Service(public=false)
+ */
 class AssetCollector {
 
 	/**
@@ -14,10 +17,22 @@ class AssetCollector {
 	 */
 	private $_priorities;
 
-	public function addPriority($file) {
-		$this->_priorities[] = $file;
+	/**
+	 * @var string[]
+	 */
+	private $_mergable;
+
+	/**
+	 * @Inject({"%assets_priorities%", "%assets_mergable%"})
+	 */
+	public function __construct($priorities, $mergable) {
+		$this->_priorities = $priorities;
+		$this->_mergable = $mergable;
 	}
 
+	/**
+	 * @param AssetManager $manager
+	 */
 	public function collectAssets(AssetManager $manager) {
 		$asset_path = ROOT . 'assets';
 
@@ -66,6 +81,6 @@ class AssetCollector {
 	 * @return boolean
 	 */
 	private function _isMerged($extension) {
-		return in_array($extension, ['css', 'js']);
+		return in_array($extension, $this->_mergable);
 	}
 }

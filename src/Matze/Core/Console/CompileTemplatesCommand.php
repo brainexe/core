@@ -15,7 +15,7 @@ use Twig_Environment;
 /**
  * @Command
  */
-class CompileTemplatesCommand extends Command {
+class CompileTemplatesCommand extends AbstractCommand {
 
 	/**
 	 * @var string
@@ -48,9 +48,7 @@ class CompileTemplatesCommand extends Command {
 	/**
 	 * {@inheritdoc}
 	 */
-	protected function execute(InputInterface $input, OutputInterface $output) {
-		$output->write('Compile templates...');
-
+	protected function doExecute(InputInterface $input, OutputInterface $output) {
 		$finder = new Finder();
 		$finder
 			->files()
@@ -70,11 +68,8 @@ class CompileTemplatesCommand extends Command {
 		}
 
 		if (OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity()) {
-			$needed_time = microtime(true) - $start;
-			$output->writeln(sprintf('Compiled %d templates in %0.1fms', count($finder), $needed_time * 1000));
+			$output->writeln(sprintf('Compiled %d templates', count($finder)));
 		}
-
-		$output->writeln('<info>done</info>');
 	}
 
 } 

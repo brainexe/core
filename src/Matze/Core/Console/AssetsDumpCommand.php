@@ -41,10 +41,16 @@ class AssetsDumpCommand extends AbstractCommand {
 	private $_assetic;
 
 	/**
-	 * @Inject("@Assetic")
+	 * @var AssetCollector
 	 */
-	public function __construct(AssetManager $assetic) {
+	private $asset_collector;
+
+	/**
+	 * @Inject({"@Assetic", "@AssetCollector"})
+	 */
+	public function __construct(AssetManager $assetic, AssetCollector $asset_collector) {
 		$this->_assetic = $assetic;
+		$this->asset_collector = $asset_collector;
 
 		parent::__construct();
 	}
@@ -55,11 +61,8 @@ class AssetsDumpCommand extends AbstractCommand {
 	protected function doExecute(InputInterface $input, OutputInterface $output) {
 		$cache_dir = ROOT . 'web/cache';
 
-		$asset_collector = new AssetCollector();
-		$asset_collector->addPriority('js/jquery-2.1.0.min.js');
-		$asset_collector->addPriority('rickshaw/d3.min.js');
-		$asset_collector->addPriority('rickshaw/d3.layout.min.js');
-		$asset_collector->collectAssets($this->_assetic);
+		// TODO
+		$this->asset_collector->collectAssets($this->_assetic);
 
 		$writer = new AssetWriter($cache_dir);
 		$writer->writeManagerAssets($this->_assetic);
