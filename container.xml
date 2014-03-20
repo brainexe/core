@@ -36,7 +36,7 @@
 	</parameters>
 
     <services>
-		<service id="twig" class="Twig_Environment" public="false">
+		<service id="twig" class="Matze\Core\Twig\TwigEnvironment" public="false">
 			<argument type="service">
 				<service class="Twig_Loader_Filesystem">
 					<argument>%template.dir%</argument>
