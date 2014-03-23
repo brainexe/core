@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\Routing\Route;
 
 /**
- * @Middleware(priority=12)
+ * @Middleware(priority=8)
  */
 class AuthenticationMiddleware extends AbstractMiddleware {
 

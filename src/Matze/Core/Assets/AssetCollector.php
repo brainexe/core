@@ -39,7 +39,7 @@ class AssetCollector {
 		if (!is_dir($asset_path)) {
 			return;
 		}
-		
+
 		$finder = new Finder();
 		$finder
 			->files()
