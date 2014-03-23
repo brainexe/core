@@ -36,6 +36,10 @@ class AssetCollector {
 	public function collectAssets(AssetManager $manager) {
 		$asset_path = ROOT . 'assets';
 
+		if (!is_dir($asset_path)) {
+			return;
+		}
+		
 		$finder = new Finder();
 		$finder
 			->files()

@@ -15,7 +15,7 @@ class LocaleMiddleware extends AbstractMiddleware {
 	/**
 	 * {@inheritdoc}
 	 */
-	public function processRequest(Request $request, Route $route) {
+	public function processRequest(Request $request, Route $route, $route_name) {
 		$session = $request->getSession();
 
 		// TODO move into DIC

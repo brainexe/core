@@ -97,9 +97,9 @@ class AppKernel {
 
 		$route = $this->_routes->get($attributes['_route']);
 		foreach ($this->_middlewares as $middleware) {
-			$response = $middleware->processRequest($request, $route);
+			$response = $middleware->processRequest($request, $route, $attributes['_route']);
 			if ($response) {
-				break;
+				return $response;
 			}
 		}
 

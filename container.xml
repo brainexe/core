@@ -2,6 +2,7 @@
 <container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 	<parameters>
 		<parameter key="debug">false</parameter>
+		<parameter key="cache.enabled">true</parameter>
 		<parameter key="server.address">localhost:8080</parameter>
 
 		<parameter key="timezone">Europe/Berlin</parameter>
@@ -33,6 +34,9 @@
 				</parameter>
 			</parameter>
 		</parameter>
+
+		<parameter key="assets_priorities"/>
+		<parameter key="assets_mergable"/>
 	</parameters>
 
     <services>
@@ -119,10 +123,10 @@
 		<!--TODO-->
 		<service id="service_container" class="Symfony\Component\DependencyInjection\Container"/>
 
-		<service id="cache.redis" class="Matze\Core\Application\Cache\Redis.cache" public="false">
+		<service id="cache.redis" class="Matze\Core\Application\Cache\RedisCache" public="false">
 			<argument type="service" id="predis"/>
 		</service>
-		<service id="cache" alias="cache.redis" public="true" />
+		<service id="cache" alias="cache.redis" public="false" />
 
 		<service id="Assetic" class="Matze\Core\Assets\AssetManager" public="false"/>
 

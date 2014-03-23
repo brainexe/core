@@ -17,7 +17,7 @@ class RedisCache extends CacheProvider {
 	 *
 	 * @param Client|\Redis $redis
 	 */
-	public function setRedis($redis) {
+	public function __construct($redis) {
 		$this->_redis = $redis;
 	}
 
