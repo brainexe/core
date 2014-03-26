@@ -61,11 +61,17 @@ class AssetsDumpCommand extends AbstractCommand {
 	protected function doExecute(InputInterface $input, OutputInterface $output) {
 		$cache_dir = ROOT . 'web/cache';
 
-		// TODO
 		$this->asset_collector->collectAssets($this->_assetic);
 
 		$writer = new AssetWriter($cache_dir);
 		$writer->writeManagerAssets($this->_assetic);
+
+		if (OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity()) {
+			foreach ($this->_assetic->getNames() as $name) {
+				$asset_colector = $this->_assetic->get	($name);
+				$output->writeln($asset_colector->getTargetPath());
+			}
+		}
 	}
 
 } 

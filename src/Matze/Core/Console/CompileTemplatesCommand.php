@@ -55,7 +55,6 @@ class CompileTemplatesCommand extends AbstractCommand {
 			->in($this->value_template_dir)
 			->name("*twig");
 
-		$start = microtime(true);
 		foreach ($finder as $file) {
 			/** @var SplFileInfo $file */
 			$filename = $file->getRelativePathname();
