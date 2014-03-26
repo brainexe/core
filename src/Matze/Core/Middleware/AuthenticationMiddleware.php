@@ -20,6 +20,18 @@ class AuthenticationMiddleware extends AbstractMiddleware {
 	use LoggerTrait;
 
 	/**
+	 * @var
+	 */
+	private $_application_guests_allowed;
+
+	/**
+	 * @Inject("%application.guests_allowed%")
+	 */
+	public function __construct($application_guests_allowed) {
+		$this->_application_guests_allowed = $application_guests_allowed;
+	}
+
+	/**
 	 * {@inheritdoc}
 	 */
 	public function processResponse(Request $request, Response $response) {
@@ -29,6 +41,10 @@ class AuthenticationMiddleware extends AbstractMiddleware {
 	 * {@inheritdoc}
 	 */
 	public function processRequest(Request $request, Route $route, $route_name) {
+		if ($this->_application_guests_allowed) {
+			return null;
+		}
+
 		if (strpos($route_name, 'authenticate.') === 0) {
 			return null;
 		}
