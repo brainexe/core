@@ -17,10 +17,6 @@
 		<parameter key="logger.error.log">%logger.dir%error.log</parameter>
 		<parameter key="logger.info.log">%logger.dir%info.log</parameter>
 
-		<parameter key="sms.api_key"/>
-		<parameter key="sms.api_secret"/>
-		<parameter key="sms.sender">%application.name%</parameter>
-
 		<parameter key="application.name" on-invalid="exception"/>
 		<parameter key="application.layout_template">layout.html.twig</parameter>
 		<parameter key="application.error_template">error.html.twig</parameter>
