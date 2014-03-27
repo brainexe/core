@@ -2,11 +2,11 @@
 
 namespace Matze\Tests\Core\DependencyInjection\CompilerPass;
 
-use Symfony\Component\DependencyInjection\Definition;
 use Matze\Core\DependencyInjection\CompilerPass\ControllerCompilerPass;
 use PHPUnit_Framework_MockObject_MockObject;
 use PHPUnit_Framework_TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 
 class ControllerCompilerPassTest extends PHPUnit_Framework_TestCase {
 

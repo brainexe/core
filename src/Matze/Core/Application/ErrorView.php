@@ -2,8 +2,8 @@
 
 namespace Matze\Core\Application;
 
-use Matze\Core\Traits\TwigTrait;
 use Exception;
+use Matze\Core\Traits\TwigTrait;
 use Symfony\Component\HttpFoundation\Request;
 
 /**

@@ -9,8 +9,6 @@ use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Translation\Dumper\MoFileDumper;
 use Symfony\Component\Translation\Dumper\PhpFileDumper;
 use Symfony\Component\Translation\Dumper\PoFileDumper;
-use Symfony\Component\Translation\Loader\YamlFileLoader;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * @CompilerPass

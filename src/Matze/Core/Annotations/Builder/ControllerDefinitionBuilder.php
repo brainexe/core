@@ -5,8 +5,8 @@ namespace Matze\Core\Annotations\Builder;
 use Matze\Annotations\Loader\Annotation\DefinitionBuilder\ServiceDefinitionBuilder;
 use Matze\Core\Annotations\Route;
 use Matze\Core\DependencyInjection\CompilerPass\ControllerCompilerPass;
-use Symfony\Component\DependencyInjection\Definition;
 use ReflectionMethod;
+use Symfony\Component\DependencyInjection\Definition;
 
 class ControllerDefinitionBuilder extends ServiceDefinitionBuilder {
 	/**

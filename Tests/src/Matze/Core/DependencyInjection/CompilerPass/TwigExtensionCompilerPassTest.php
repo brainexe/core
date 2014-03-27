@@ -5,8 +5,8 @@ namespace Matze\Tests\Core\DependencyInjection\CompilerPass;
 use Matze\Core\DependencyInjection\CompilerPass\TwigExtensionCompilerPass;
 use PHPUnit_Framework_MockObject_MockObject;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 
 class TwigExtensionCompilerPassTest extends \PHPUnit_Framework_TestCase {
 
