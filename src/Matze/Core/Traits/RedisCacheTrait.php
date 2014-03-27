@@ -2,6 +2,9 @@
 
 namespace Matze\Core\Traits;
 
+/**
+ * TODO use Cache object / refactor
+ */
 trait RedisCacheTrait {
 
 	use RedisTrait;

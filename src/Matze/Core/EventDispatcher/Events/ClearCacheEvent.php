@@ -1,6 +1,6 @@
 <?php
 
-namespace Matze\Core\EventDispatcher;
+namespace Matze\Core\EventDispatcher\Events;
 
 use Symfony\Component\Console\Output\OutputInterface;
 

@@ -17,11 +17,12 @@ class IdGenerator {
 	}
 
 	/**
+	 * @param integer $length
 	 * @return string
 	 */
-	public function generateRandomId() {
+	public function generateRandomId($length = self::ID_LENGTH) {
 		$id = md5(microtime() . mt_rand());
 
-		return substr(base_convert($id, 16, 36), 0, self::ID_LENGTH);
+		return substr(base_convert($id, 16, 36), 0, $length);
 	}
 }

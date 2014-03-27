@@ -7,6 +7,7 @@ use Twig_NodeInterface;
 class TwigEnvironment extends \Twig_Environment {
 
 	/**
+	 * Trim ll whitespaces in compiled code
 	 * {@inheritdoc}
 	 */
 	public function compile(Twig_NodeInterface $node) {

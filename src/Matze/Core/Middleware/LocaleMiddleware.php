@@ -5,7 +5,6 @@ namespace Matze\Core\Middleware;
 use Matze\Core\Core;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Route;
-use Symfony\Component\Translation\Translator;
 
 /**
  * @Middleware(priority=4)

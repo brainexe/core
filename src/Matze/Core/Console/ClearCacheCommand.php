@@ -3,7 +3,7 @@
 namespace Matze\Core\Console;
 
 use Matze\Core\Core;
-use Matze\Core\EventDispatcher\ClearCacheEvent;
+use Matze\Core\EventDispatcher\Events\ClearCacheEvent;
 use Matze\Core\Traits\EventDispatcherTrait;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;

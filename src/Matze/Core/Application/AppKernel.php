@@ -3,7 +3,7 @@
 namespace Matze\Core\Application;
 
 use Exception;
-use Matze\Core\Controller\ControllerInterface;
+use Matze\Core\Controller\AbstractController;
 use Matze\Core\Middleware\MiddlewareInterface;
 use Matze\Core\Traits\ServiceContainerTrait;
 use Symfony\Component\HttpFoundation\Request;
@@ -102,7 +102,7 @@ class AppKernel {
 			}
 		}
 
-		/** @var ControllerInterface[] $callable */
+		/** @var AbstractController[] $callable */
 		$callable = $this->_resolver->getController($request);
 		$arguments = $this->_resolver->getArguments($request, $callable);
 

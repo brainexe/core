@@ -8,6 +8,7 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
 /**
+ * @todo rework
  * @Service(public=false)
  */
 class AssetCollector {

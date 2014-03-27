@@ -20,8 +20,6 @@ if (!defined('MATZE_VENDOR_ROOT')) {
 	define('MATZE_VENDOR_ROOT', ROOT . '/vendor/matze/');
 }
 
-require_once CORE_ROOT. '/functions.php';
-
 class Core {
 
 	/**

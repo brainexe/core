@@ -5,6 +5,7 @@ namespace Matze\Core\Util;
 use Matze\Core\Application\UserException;
 
 /**
+ * Parse user input into an unix timestamp
  * @Service(public=false)
  */
 class TimeParser {

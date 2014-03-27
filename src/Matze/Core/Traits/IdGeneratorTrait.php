@@ -4,6 +4,9 @@ namespace Matze\Core\Traits;
 
 use Matze\Core\Util\IdGenerator;
 
+/**
+ * @todo remove: include service as @Inject
+ */
 trait IdGeneratorTrait {
 	/**
 	 * @var IdGenerator
