@@ -29,7 +29,6 @@
 		"symfony/http-kernel": "2.4.*",
 		"symfony/process": "2.4.*",
 		"symfony/routing": "2.4.*",
-		"symfony/translation": "2.4.*",
 
 		"kriswallsmith/assetic": "dev-master",
 		"matze/annotations": "dev-master",
@@ -40,6 +39,7 @@
 	},
 
 	"bin": [
-		"console"
+		"console",
+		"scripts/mq_deamon.sh"
 	]
 }

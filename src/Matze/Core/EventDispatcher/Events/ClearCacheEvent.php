@@ -3,6 +3,7 @@
 namespace Matze\Core\EventDispatcher\Events;
 
 use Symfony\Component\Console\Output\OutputInterface;
+use Matze\Core\EventDispatcher\AbstractEvent;
 
 class ClearCacheEvent extends AbstractEvent {
 	const NAME = 'cache.clear';
