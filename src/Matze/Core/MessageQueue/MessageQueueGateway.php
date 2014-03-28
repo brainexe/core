@@ -26,7 +26,7 @@ class MessageQueueGateway {
 		$now = time();
 
 		$redis = $this->getRedis();
-		$event_results = $redis->ZRANGEBYSCORE(self::REDIS_MESSAGE_QUEUE, 0, $now, 'WITHSCORES', 'LIMIT', 0, 1);
+		$event_results = $redis->ZRANGEBYSCORE(self::REDIS_MESSAGE_QUEUE, 0, $now, ['withscores' => true, 'limit' => [0, 1]]);
 
 		if (empty($event_results)) {
 			return null;
