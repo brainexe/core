@@ -33,7 +33,6 @@
 		"kriswallsmith/assetic": "dev-master",
 		"matze/annotations": "dev-master",
 		"monolog/monolog": "1.7.*",
-		"predis/predis": "0.8.*",
 		"twig/twig": "1.15.*",
 		"doctrine/cache": "1.3.*"
 	},

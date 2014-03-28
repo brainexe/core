@@ -6,6 +6,7 @@ use Matze\Core\Controller\AbstractController;
 use Matze\Core\DependencyInjection\ObjectFinder;
 use PHPUnit_Framework_MockObject_MockObject;
 use Symfony\Component\HttpFoundation\Request;
+use Matze\Core\Application\ControllerResolver;
 
 class TestController extends AbstractController {
 

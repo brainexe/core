@@ -25,15 +25,15 @@ class MessageQueueGateway {
 	public function fetchPendingEvent() {
 		$now = time();
 
-		$predis = $this->getPredis();
-		$event_results = $predis->ZRANGEBYSCORE(self::REDIS_MESSAGE_QUEUE, 0, $now, 'WITHSCORES', 'LIMIT', 0, 1);
+		$redis = $this->getRedis();
+		$event_results = $redis->ZRANGEBYSCORE(self::REDIS_MESSAGE_QUEUE, 0, $now, 'WITHSCORES', 'LIMIT', 0, 1);
 
 		if (empty($event_results)) {
 			return null;
 		}
 
 		list($event_id, $timestamp) = $event_results[0];
-		$event = unserialize($predis->HGET(self::REDIS_MESSAGE_META_DATA, $event_id));
+		$event = unserialize($redis->HGET(self::REDIS_MESSAGE_META_DATA, $event_id));
 
 		return new MessageQueueJob($event, $event_id, $timestamp);
 	}
@@ -49,10 +49,10 @@ class MessageQueueGateway {
 			$event_type = explode(':', $event_id, 1)[0];
 		}
 
-		$predis = $this->getPredis();
-		$predis->ZREM(self::REDIS_MESSAGE_QUEUE, $event_id);
-		$predis->HDEL(self::REDIS_MESSAGE_META_DATA, $event_id);
-		$predis->SREM($this->_getTypeKeyName($event_type), $event_id);
+		$redis = $this->getRedis();
+		$redis->ZREM(self::REDIS_MESSAGE_QUEUE, $event_id);
+		$redis->HDEL(self::REDIS_MESSAGE_META_DATA, $event_id);
+		$redis->SREM($this->_getTypeKeyName($event_type), $event_id);
 	}
 
 	/**
@@ -61,7 +61,7 @@ class MessageQueueGateway {
 	 * @return integer
 	 */
 	public function addEvent(AbstractEvent $event, $timestamp = 0) {
-		$transaction = $this->getPredis()->transaction();
+		$transaction = $this->getRedis()->transaction();
 
 		$random_id = $this->generateRandomId();
 
@@ -83,16 +83,16 @@ class MessageQueueGateway {
 	 * @todo use redis index
 	 */
 	public function getEventsByType($event_type = null, $since = 0) {
-		$predis = $this->getPredis();
+		$redis = $this->getRedis();
 
 		$events = [];
 
-		$result_raw = $predis->ZRANGEBYSCORE(self::REDIS_MESSAGE_QUEUE, $since, '+inf', 'WITHSCORES');
+		$result_raw = $redis->ZRANGEBYSCORE(self::REDIS_MESSAGE_QUEUE, $since, '+inf', 'WITHSCORES');
 		foreach ($result_raw as $result) {
 			list($event_id, $timestamp) = $result;
 
 			if (empty($event_type) || strpos($event_id, "$event_type:") === 0) {
-				$event_raw = $predis->HGET(self::REDIS_MESSAGE_META_DATA, $event_id);
+				$event_raw = $redis->HGET(self::REDIS_MESSAGE_META_DATA, $event_id);
 
 				$events[$event_id] = new MessageQueueJob(unserialize($event_raw), $event_id, $timestamp);
 			}
@@ -105,7 +105,7 @@ class MessageQueueGateway {
 	 * @return integer
 	 */
 	public function countJobs() {
-		return (int)$this->getPredis()->ZCARD(self::REDIS_MESSAGE_QUEUE);
+		return (int)$this->getRedis()->ZCARD(self::REDIS_MESSAGE_QUEUE);
 	}
 
 	/**

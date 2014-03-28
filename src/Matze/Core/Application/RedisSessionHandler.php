@@ -31,7 +31,7 @@ class RedisSessionHandler implements \SessionHandlerInterface {
 	 */
 	public function read($session_id) {
 		$key = $this->_getKey($session_id);
-		return $this->getPredis()->GET($key) ? : '';
+		return $this->getRedis()->GET($key) ? : '';
 	}
 
 	/**
@@ -40,15 +40,15 @@ class RedisSessionHandler implements \SessionHandlerInterface {
 	public function write($session_id, $data) {
 		$key = $this->_getKey($session_id);
 
-		$this->getPredis()->SET($key, $data);
-		$this->getPredis()->EXPIRE($key, 86400 * 7);
+		$this->getRedis()->SET($key, $data);
+		$this->getRedis()->EXPIRE($key, 86400 * 7);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public function destroy($session_id) {
-		return $this->getPredis()->DEL($this->_getKey($session_id));
+		return $this->getRedis()->DEL($this->_getKey($session_id));
 	}
 
 	/**

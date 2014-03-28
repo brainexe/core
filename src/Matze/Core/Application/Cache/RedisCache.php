@@ -4,7 +4,6 @@ namespace Matze\Core\Application\Cache;
 
 use Doctrine\Common\Cache\Cache;
 use Doctrine\Common\Cache\CacheProvider;
-use Predis\Client;
 
 class RedisCache extends CacheProvider {
 	/**

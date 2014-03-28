@@ -21,7 +21,7 @@ class DatabaseUserProvider implements UserProviderInterface {
 	 * {@inheritdoc}
 	 */
 	public function loadUserByUsername($username) {
-		$user_id = $this->getPredis()->HGET(self::REDIS_USER_NAMES, strtolower($username));
+		$user_id = $this->getRedis()->HGET(self::REDIS_USER_NAMES, strtolower($username));
 
 		if (empty($user_id)) {
 			throw new UsernameNotFoundException(
@@ -37,7 +37,7 @@ class DatabaseUserProvider implements UserProviderInterface {
 	 * @return UserVO
 	 */
 	public function loadUserById($user_id) {
-		$redis_user = $this->getPredis()->HGETALL($this->_getKey($user_id));
+		$redis_user = $this->getRedis()->HGETALL($this->_getKey($user_id));
 
 		$user = new UserVO();
 		$user->id = $user_id;
@@ -84,7 +84,7 @@ class DatabaseUserProvider implements UserProviderInterface {
 	 * @return integer $user_id
 	 */
 	public function register(UserVO $user) {
-		$predis = $this->getPredis()->transaction();
+		$redis = $this->getRedis()->transaction();
 
 		$user_array = [
 			'username' => $user->getUsername(),
@@ -94,10 +94,10 @@ class DatabaseUserProvider implements UserProviderInterface {
 
 		$new_user_id = mt_rand();
 
-		$predis->HSET(self::REDIS_USER_NAMES, strtolower($user->getUsername()), $new_user_id);
-		$predis->HMSET($this->_getKey($new_user_id), $user_array);
+		$redis->HSET(self::REDIS_USER_NAMES, strtolower($user->getUsername()), $new_user_id);
+		$redis->HMSET($this->_getKey($new_user_id), $user_array);
 
-		$predis->execute();
+		$redis->execute();
 
 		return $new_user_id;
 	}

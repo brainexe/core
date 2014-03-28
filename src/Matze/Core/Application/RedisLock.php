@@ -16,16 +16,16 @@ class RedisLock {
 	 */
 	public function lock($name, $lock_time) {
 		$now = time();
-		$predis = $this->getPredis();
+		$redis = $this->getRedis();
 
-		$result = $predis->SETNX($name, $now + $lock_time);
+		$result = $redis->SETNX($name, $now + $lock_time);
 		if ($result) {
 			return true;
 		}
 
-		$lock_time = $predis->GET($name);
+		$lock_time = $redis->GET($name);
 		if ($now > $lock_time) {
-			$predis->SET($name, $now + $lock_time);
+			$redis->SET($name, $now + $lock_time);
 			return true;
 		}
 
@@ -36,6 +36,6 @@ class RedisLock {
 	 * @param string $name
 	 */
 	public function unlock($name) {
-		$this->getPredis()->DEL($name);
+		$this->getRedis()->DEL($name);
 	}
 } 
