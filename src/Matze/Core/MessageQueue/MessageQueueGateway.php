@@ -87,7 +87,7 @@ class MessageQueueGateway {
 
 		$events = [];
 
-		$result_raw = $redis->ZRANGEBYSCORE(self::REDIS_MESSAGE_QUEUE, $since, '+inf', array('withscores' => TRUE));
+		$result_raw = $redis->ZRANGEBYSCORE(self::REDIS_MESSAGE_QUEUE, $since, '+inf', ['withscores' => true]);
 
 		foreach ($result_raw as $event_id => $timestamp) {
 			if (empty($event_type) || strpos($event_id, "$event_type:") === 0) {

@@ -37,7 +37,6 @@ class ConfigCompilerPass implements CompilerPassInterface {
 		if (is_dir(ROOT . '/app')) {
 			$xml_loader->load(ROOT . '/app/container.xml');
 			$xml_loader->load(ROOT . '/app/config.default.xml');
-			$xml_loader->load(ROOT . '/app/assets.xml');
 			if (file_exists(ROOT . '/app/config.xml')) {
 				$xml_loader->load(ROOT . '/app/config.xml');
 			}

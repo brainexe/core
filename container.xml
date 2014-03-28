@@ -32,8 +32,11 @@
 			</parameter>
 		</parameter>
 
-		<parameter key="assets_priorities"/>
-		<parameter key="assets_mergable"/>
+		<parameter key="assets_priorities" type="collection"/>
+		<parameter key="assets_mergable" type="collection">
+			<parameter>js</parameter>
+			<parameter>css</parameter>
+		</parameter>
 	</parameters>
 
     <services>
