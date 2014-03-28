@@ -7,14 +7,14 @@ use Doctrine\Common\Cache\CacheProvider;
 
 class RedisCache extends CacheProvider {
 	/**
-	 * @var Client|\Redis
+	 * @var \Redis
 	 */
 	protected $_redis;
 
 	/**
 	 * Sets the redis instance to use.
 	 *
-	 * @param Client|\Redis $redis
+	 * @param \Redis $redis
 	 */
 	public function __construct($redis) {
 		$this->_redis = $redis;

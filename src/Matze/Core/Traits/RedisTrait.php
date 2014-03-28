@@ -2,26 +2,26 @@
 
 namespace Matze\Core\Traits;
 
-use Predis\Client;
+use Redis;
 
 trait RedisTrait {
 
 	/**
-	 * @var Client
+	 * @var Redis
 	 */
-	private $_predis;
+	private $_redis;
 
 	/**
-	 * @Inject("@Predis")
+	 * @Inject("@Redis")
 	 */
-	public function setPredis(Client $client) {
-		$this->_predis = $client;
+	public function setRedis(Redis $client) {
+		$this->_redis = $client;
 	}
 
 	/**
-	 * @return Client
+	 * @return Redis
 	 */
 	protected function getRedis() {
-		return $this->_predis;
+		return $this->_redis;
 	}
 }

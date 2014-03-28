@@ -52,13 +52,15 @@
 
 		<service id="TwigCompiler" parent="twig" public="false"></service>
 
-        <service id="predis" class="Predis\Client" public="false">
-            <argument type="collection">
-                <argument key="read_write_timeout">0</argument>
-                <argument key="host">%redis.host%</argument>
-                <argument key="password">%redis.password%</argument>
-                <argument key="prefix">%application.name%:</argument>
-            </argument>
+        <service id="redis" class="Redis" public="false">
+			<call method="connect">
+				<argument key="host">%redis.host%</argument>
+			</call>
+            <!--<argument type="collection">-->
+                <!--<argument key="read_write_timeout">0</argument>-->
+                <!--<argument key="password">%redis.password%</argument>-->
+                <!--<argument key="prefix">%application.name%:</argument>-->
+            <!--</argument>-->
         </service>
 
 		<service id="monolog.ErrorHandler" class="Monolog\ErrorHandler">
@@ -108,7 +110,7 @@
 		<service id="service_container" class="Symfony\Component\DependencyInjection\Container"/>
 
 		<service id="cache.redis" class="Matze\Core\Application\Cache\RedisCache" public="false">
-			<argument type="service" id="predis"/>
+			<argument type="service" id="redis"/>
 		</service>
 		<service id="cache" alias="cache.redis" public="false" />
 

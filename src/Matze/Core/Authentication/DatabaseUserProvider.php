@@ -97,7 +97,7 @@ class DatabaseUserProvider implements UserProviderInterface {
 		$redis->HSET(self::REDIS_USER_NAMES, strtolower($user->getUsername()), $new_user_id);
 		$redis->HMSET($this->_getKey($new_user_id), $user_array);
 
-		$redis->execute();
+		$redis->exec();
 
 		return $new_user_id;
 	}

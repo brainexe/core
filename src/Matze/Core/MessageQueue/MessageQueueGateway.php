@@ -61,7 +61,7 @@ class MessageQueueGateway {
 	 * @return integer
 	 */
 	public function addEvent(AbstractEvent $event, $timestamp = 0) {
-		$transaction = $this->getRedis()->transaction();
+		$transaction = $this->getRedis()->pipeline();
 
 		$random_id = $this->generateRandomId();
 
@@ -71,7 +71,7 @@ class MessageQueueGateway {
 		$transaction->ZADD(self::REDIS_MESSAGE_QUEUE, $timestamp, $event_id);
 		$transaction->SADD($this->_getTypeKeyName($event->event_name), $event_id);
 
-		$transaction->execute();
+		$transaction->exec();
 
 		return $event_id;
 	}
@@ -87,10 +87,9 @@ class MessageQueueGateway {
 
 		$events = [];
 
-		$result_raw = $redis->ZRANGEBYSCORE(self::REDIS_MESSAGE_QUEUE, $since, '+inf', 'WITHSCORES');
-		foreach ($result_raw as $result) {
-			list($event_id, $timestamp) = $result;
+		$result_raw = $redis->ZRANGEBYSCORE(self::REDIS_MESSAGE_QUEUE, $since, '+inf', array('withscores' => TRUE));
 
+		foreach ($result_raw as $event_id => $timestamp) {
 			if (empty($event_type) || strpos($event_id, "$event_type:") === 0) {
 				$event_raw = $redis->HGET(self::REDIS_MESSAGE_META_DATA, $event_id);
 

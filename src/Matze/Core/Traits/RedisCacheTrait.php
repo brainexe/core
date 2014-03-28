@@ -16,15 +16,15 @@ trait RedisCacheTrait {
 	 * @return mixed
 	 */
 	protected function wrapCache($key, $callback, $ttl = 3600) {
-		$cached_value = $this->_predis->GET($key);
+		$cached_value = $this->_redis->GET($key);
 		if ($cached_value) {
 			return unserialize($cached_value);
 		}
 
 		$value = $callback();
 
-		$this->_predis->SET($key, serialize($value));
-		$this->_predis->EXPIRE($key, $ttl);
+		$this->_redis->SET($key, serialize($value));
+		$this->_redis->EXPIRE($key, $ttl);
 
 		return $value;
 	}
@@ -33,7 +33,7 @@ trait RedisCacheTrait {
 	 * @param string $key
 	 */
 	protected function invalidate($key) {
-		$this->_predis->DEL($key);
+		$this->_redis->DEL($key);
 	}
 
 
