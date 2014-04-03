@@ -43,14 +43,14 @@ class AssetsDumpCommand extends AbstractCommand {
 	/**
 	 * @var AssetCollector
 	 */
-	private $asset_collector;
+	private $_asset_collector;
 
 	/**
 	 * @Inject({"@Assetic", "@AssetCollector"})
 	 */
 	public function __construct(AssetManager $assetic, AssetCollector $asset_collector) {
 		$this->_assetic = $assetic;
-		$this->asset_collector = $asset_collector;
+		$this->_asset_collector = $asset_collector;
 
 		parent::__construct();
 	}
@@ -59,9 +59,9 @@ class AssetsDumpCommand extends AbstractCommand {
 	 * {@inheritdoc}
 	 */
 	protected function doExecute(InputInterface $input, OutputInterface $output) {
-		$cache_dir = ROOT . 'web/cache';
+		$cache_dir = ROOT . 'web';
 
-		$this->asset_collector->collectAssets($this->_assetic);
+		$this->_asset_collector->collectAssets($this->_assetic);
 
 		$writer = new AssetWriter($cache_dir);
 		$writer->writeManagerAssets($this->_assetic);
@@ -72,6 +72,8 @@ class AssetsDumpCommand extends AbstractCommand {
 				$output->writeln($asset_colector->getTargetPath());
 			}
 		}
+
+		copy(MATZE_VENDOR_ROOT.'core/scripts/web.php', ROOT.'web/index.php');
 	}
 
 } 

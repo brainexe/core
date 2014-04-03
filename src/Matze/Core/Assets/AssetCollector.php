@@ -4,6 +4,9 @@ namespace Matze\Core\Assets;
 
 use Assetic\Asset\AssetCollection;
 use Assetic\Asset\FileAsset;
+use Assetic\Filter\CssImportFilter;
+use Assetic\Filter\JSqueezeFilter;
+use Assetic\Filter\Yui\CssCompressorFilter;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -24,11 +27,17 @@ class AssetCollector {
 	private $_mergable;
 
 	/**
-	 * @Inject({"%assets_priorities%", "%assets_mergable%"})
+	 * @var string[]
 	 */
-	public function __construct($priorities, $mergable) {
+	private $_separate_files;
+
+	/**
+	 * @Inject({"%assets.priorities%", "%assets.mergable%", "%assets.separate%"})
+	 */
+	public function __construct($priorities, $mergable, $separate) {
 		$this->_priorities = $priorities;
 		$this->_mergable = $mergable;
+		$this->_separate_files = array_flip($separate);
 	}
 
 	/**
@@ -63,9 +72,21 @@ class AssetCollector {
 
 			$extension = $file->getExtension();
 
-			$asset = new FileAsset($file->getPathname());
+			$asset = new FileAsset($file->getPathname(), [], dirname($file->getPathname()));
 
-			if ($this->_isMerged($extension)) {
+			// process each file separately
+			switch ($extension) {
+				case 'js':
+					if (strpos($file->getFilename(), '.min.js') === false) {
+						$asset->ensureFilter(new JSqueezeFilter());
+					}
+					break;
+				case 'css':
+					$asset->setTargetPath('/');
+					$asset->ensureFilter(new CssImportFilter());
+			}
+
+			if ($this->_isMerged($extension) && !isset($this->_separate_files[$file->getRelativePathname()])) {
 				if (!$manager->has($extension)) {
 					$collection = new AssetCollection();
 					$collection->setTargetPath('merged.' . $extension);

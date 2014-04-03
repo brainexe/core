@@ -2,17 +2,36 @@
 
 namespace Matze\Core\Controller;
 
-use Matze\Core\Traits\TwigTrait;
 use Symfony\Component\HttpFoundation\Request;
+use Twig_Environment;
 
 abstract class AbstractController {
-
-	use TwigTrait;
 
 	const ALERT_WARNING = 'warning';
 	const ALERT_INFO = 'info';
 	const ALERT_SUCCESS = 'success';
 	const ALERT_DANGER = 'danger';
+
+	/**
+	 * @var Twig_Environment
+	 */
+	protected $_twig;
+
+	/**
+	 * @Inject("@Twig")
+	 */
+	public function __construct(Twig_Environment $twig) {
+		$this->_twig = $twig;
+	}
+
+	/**
+	 * @param string $name
+	 * @param array $context
+	 * @return string
+	 */
+	protected function render($name, array $context = []) {
+		return $this->_twig->render($name, $context);
+	}
 
 	/**
 	 * @param Request $request

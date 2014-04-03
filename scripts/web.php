@@ -1,7 +1,11 @@
 <?php
 
-use Matze\Core\Application\AppKernel;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
+use Matze\Core\Application\AppKernel;
+
+/** @var Container $dic */
+$dic = include __DIR__ . '/../src/bootstrap.php';
 
 $request = Request::createFromGlobals();
 
