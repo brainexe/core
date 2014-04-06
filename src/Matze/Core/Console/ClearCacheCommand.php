@@ -68,6 +68,9 @@ class ClearCacheCommand extends Command {
 		$input = new ArrayInput(['command' => 'translation:compile']);
 		$this->getApplication()->run($input, $output);
 
+		$input = new ArrayInput(['command' => 'redis:scripts:load']);
+		$this->getApplication()->run($input, $output);
+
 		$input = new ArrayInput(['command' => 'assets:dump']);
 		$this->getApplication()->run($input, $output);
 

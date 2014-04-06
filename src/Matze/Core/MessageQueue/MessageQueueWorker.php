@@ -44,35 +44,24 @@ class MessageQueueWorker implements MessageQueueWorkerInterface {
 		$start = time();
 
 		while ($timeout === 0 || $start + $timeout > time()) {
-			$got_lock = $this->_redis_lock->lock(self::MESSAGE_QUEUE_LOCK, self::LOCK_TIME);
-
-			if (!$got_lock) {
-				sleep(self::LOCK_TIME);
-
-				continue;
-			}
-
 			$job = $this->_message_queue_gateway->fetchPendingEvent();
 			if (empty($job)) {
-				// wait for new job
 				sleep($interval);
-				$this->_redis_lock->unlock(self::MESSAGE_QUEUE_LOCK);
 				continue;
 			}
+			try {
+				$start = microtime(true);
+				$this->dispatchEvent($job->event);
+				$needed_time = microtime(true) - $start;
 
-			$start = microtime(true);
-			$this->dispatchEvent($job->event);
-			$time = microtime(true) - $start;
-
-			$this->_message_queue_gateway->deleteEvent($job->event_id);
-
-			$this->_redis_lock->unlock(self::MESSAGE_QUEUE_LOCK);
-
-			$this->info(sprintf('[MQ]: %s. Time: %0.2fms',
-				$job->event->event_name, $time * 1000)
-			);
+				$this->info(sprintf('[MQ]: %s. Time: %0.2fms',
+					$job->event->event_name, $needed_time * 1000)
+				);
+				$this->_message_queue_gateway->deleteEvent($job->event_id);
+			} catch (\Exception $e) {
+				$this->error($e->getMessage(), ['exception' => $e]);
+				$this->_message_queue_gateway->restoreEvent($job->event_id);
+			}
 		}
-
-
 	}
 } 

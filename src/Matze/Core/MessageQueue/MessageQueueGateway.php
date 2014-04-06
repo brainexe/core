@@ -3,21 +3,37 @@
 namespace Matze\Core\MessageQueue;
 
 use Matze\Core\EventDispatcher\AbstractEvent;
+use Matze\Core\Redis\RedisScripts;
 use Matze\Core\Traits\IdGeneratorTrait;
 use Matze\Core\Traits\RedisTrait;
+use Matze\Core\Redis\RedisScriptInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * @Service
+ * @Service(tags={{"name" = "redis_script"}})
  */
-class MessageQueueGateway {
+class MessageQueueGateway implements RedisScriptInterface {
+
+	use RedisTrait;
+	use IdGeneratorTrait;
 
 	const REDIS_MESSAGE_QUEUE = 'message_queue';
 	const REDIS_MESSAGE_META_DATA = 'message_queue_meta_data';
 	const REDIS_MESSAGE_QUEUE_TYPES = 'message_queue_types:%s';
 
-	use RedisTrait;
-	use IdGeneratorTrait;
+	const SCRIPT_MESSAGE_QUEUE = 'message_queue';
+
+	/**
+	 * @var RedisScripts
+	 */
+	private $_redis_script;
+
+	/**
+	 * @Inject("@RedisScripts")
+	 */
+	public function __construct(RedisScripts $redis_script) {
+		$this->_redis_script = $redis_script;
+	}
 
 	/**
 	 * @return MessageQueueJob|null
@@ -25,17 +41,16 @@ class MessageQueueGateway {
 	public function fetchPendingEvent() {
 		$now = time();
 
-		$redis = $this->getRedis();
-		$event_results = $redis->ZRANGEBYSCORE(self::REDIS_MESSAGE_QUEUE, 0, $now, ['withscores' => true, 'limit' => [0, 1]]);
+		$sha1 = $this->_redis_script->getSha1(self::SCRIPT_MESSAGE_QUEUE);
+		$result = $this->getRedis()->EVALSHA($sha1, [$now], 1);
 
-		if (empty($event_results)) {
+		if (empty($result)) {
 			return null;
 		}
 
-		list($event_id, $timestamp) = $event_results[0];
-		$event = unserialize($redis->HGET(self::REDIS_MESSAGE_META_DATA, $event_id));
+		list($event_id, $timestamp, $payload) = $result;
 
-		return new MessageQueueJob($event, $event_id, $timestamp);
+		return new MessageQueueJob(unserialize($payload), $event_id, $timestamp);
 	}
 
 	/**
@@ -49,10 +64,11 @@ class MessageQueueGateway {
 			$event_type = explode(':', $event_id, 1)[0];
 		}
 
-		$redis = $this->getRedis();
-		$redis->ZREM(self::REDIS_MESSAGE_QUEUE, $event_id);
-		$redis->HDEL(self::REDIS_MESSAGE_META_DATA, $event_id);
-		$redis->SREM($this->_getTypeKeyName($event_type), $event_id);
+		$pipeline = $this->getRedis()->PIPELINE();
+		$pipeline->ZREM(self::REDIS_MESSAGE_QUEUE, $event_id);
+		$pipeline->HDEL(self::REDIS_MESSAGE_META_DATA, $event_id);
+		$pipeline->SREM($this->_getTypeKeyName($event_type), $event_id);
+		$pipeline->exec();
 	}
 
 	/**
@@ -61,17 +77,17 @@ class MessageQueueGateway {
 	 * @return integer
 	 */
 	public function addEvent(AbstractEvent $event, $timestamp = 0) {
-		$transaction = $this->getRedis()->pipeline();
+		$pipeline = $this->getRedis()->pipeline();
 
 		$random_id = $this->generateRandomId();
 
 		$event_id = sprintf('%s:%s', $event->event_name, $random_id);
 
-		$transaction->HSET(self::REDIS_MESSAGE_META_DATA, $event_id, serialize($event));
-		$transaction->ZADD(self::REDIS_MESSAGE_QUEUE, $timestamp, $event_id);
-		$transaction->SADD($this->_getTypeKeyName($event->event_name), $event_id);
+		$pipeline->HSET(self::REDIS_MESSAGE_META_DATA, $event_id, serialize($event));
+		$pipeline->ZADD(self::REDIS_MESSAGE_QUEUE, $timestamp, $event_id);
+		$pipeline->SADD($this->_getTypeKeyName($event->event_name), $event_id);
 
-		$transaction->exec();
+		$pipeline->exec();
 
 		return $event_id;
 	}
@@ -80,7 +96,7 @@ class MessageQueueGateway {
 	 * @param string $event_type
 	 * @param integer $since
 	 * @return MessageQueueJob[]
-	 * @todo use redis index
+	 * @todo use redis index or lua script?
 	 */
 	public function getEventsByType($event_type = null, $since = 0) {
 		$redis = $this->getRedis();
@@ -101,6 +117,13 @@ class MessageQueueGateway {
 	}
 
 	/**
+	 * @param string $event_id
+	 */
+	public function restoreEvent($event_id) {
+		$this->getRedis()->ZADD(self::REDIS_MESSAGE_QUEUE, 0, $event_id);
+	}
+
+	/**
 	 * @return integer
 	 */
 	public function countJobs() {
@@ -113,5 +136,27 @@ class MessageQueueGateway {
 	 */
 	private function _getTypeKeyName($type) {
 		return sprintf(self::REDIS_MESSAGE_QUEUE_TYPES, $type);
+	}
+
+	/**
+	 * @return string[]
+	 */
+	public static function getRedisScripts() {
+		return [
+			self::SCRIPT_MESSAGE_QUEUE =>'
+				local result = redis.call("ZRANGEBYSCORE", "message_queue", 0, KEYS[1], "withscores", "LIMIT", 0, 1)
+				if result == nil then
+					return nil
+				else
+					local event_id = result[1]
+					local timestamp = result[2]
+					local result = redis.call("HGET", "message_queue_meta_data", event_id)
+
+					redis.call("ZREM", "message_queue", event_id)
+
+					return {event_id, timestamp, result}
+				end
+			'
+		];
 	}
 }
