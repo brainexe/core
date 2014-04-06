@@ -17,7 +17,7 @@ if (!defined('ROOT')) {
 }
 
 if (!defined('MATZE_VENDOR_ROOT')) {
-	define('MATZE_VENDOR_ROOT', ROOT . '/vendor/matze/');
+	define('MATZE_VENDOR_ROOT', ROOT . 'vendor/matze/');
 }
 
 class Core {

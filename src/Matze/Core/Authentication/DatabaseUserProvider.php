@@ -84,7 +84,7 @@ class DatabaseUserProvider implements UserProviderInterface {
 	 * @return integer $user_id
 	 */
 	public function register(UserVO $user) {
-		$redis = $this->getRedis()->transaction();
+		$redis = $this->getRedis()->pipeline();
 
 		$user_array = [
 			'username' => $user->getUsername(),

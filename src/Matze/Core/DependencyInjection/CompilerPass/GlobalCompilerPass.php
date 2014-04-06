@@ -15,9 +15,11 @@ class GlobalCompilerPass implements CompilerPassInterface {
 	 */
 	public function process(ContainerBuilder $container) {
 		$container->setParameter('application.root', ROOT);
+		$container->setParameter('application.vendor_root', MATZE_VENDOR_ROOT);
 
 		$service_ids = $container->findTaggedServiceIds(self::TAG);
 		$service_priorities = [];
+
 		foreach ($service_ids as $service_id => $tag) {
 			$service_priorities[$service_id] = $tag[0]['priority'];
 		}
@@ -46,4 +48,3 @@ class GlobalCompilerPass implements CompilerPassInterface {
 		$logger->debug(sprintf('DIC: %0.2fms total time\n', $total_time * 1000));
 	}
 }
-

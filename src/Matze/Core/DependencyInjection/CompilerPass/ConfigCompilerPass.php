@@ -34,11 +34,11 @@ class ConfigCompilerPass implements CompilerPassInterface {
 			$xml_loader->load($file->getPathname());
 		}
 
-		if (is_dir(ROOT . '/app')) {
-			$xml_loader->load(ROOT . '/app/container.xml');
-			$xml_loader->load(ROOT . '/app/config.default.xml');
-			if (file_exists(ROOT . '/app/config.xml')) {
-				$xml_loader->load(ROOT . '/app/config.xml');
+		if (is_dir(ROOT . 'app')) {
+			$xml_loader->load(ROOT . 'app/container.xml');
+			$xml_loader->load(ROOT . 'app/config.default.xml');
+			if (file_exists(ROOT . 'app/config.xml')) {
+				$xml_loader->load(ROOT . 'app/config.xml');
 			}
 		}
 

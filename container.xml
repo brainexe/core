@@ -11,9 +11,9 @@
 		<parameter key="redis.password"/>
 		<parameter key="redis.database">0</parameter>
 
-		<parameter key="cache.dir">%application.root%/cache/</parameter>
-		<parameter key="template.dir">%application.root%/templates/</parameter>
-		<parameter key="logger.dir">%application.root%/logs/</parameter>
+		<parameter key="cache.dir">%application.root%cache/</parameter>
+		<parameter key="template.dir">%application.root%templates/</parameter>
+		<parameter key="logger.dir">%application.root%logs/</parameter>
 		<parameter key="logger.error.log">%logger.dir%error.log</parameter>
 		<parameter key="logger.info.log">%logger.dir%info.log</parameter>
 
@@ -21,16 +21,6 @@
 		<parameter key="application.layout_template">layout.html.twig</parameter>
 		<parameter key="application.error_template">error.html.twig</parameter>
 		<parameter key="application.guests_allowed">false</parameter>
-
-		<parameter key="security" type="collection">
-			<parameter key="encoders" type="collection">
-				<parameter key="DatabaseUserProvider" type="collection">
-					<parameter key="algorithm">sha512</parameter>
-					<parameter key="encode_as_base64">false</parameter>
-					<parameter key="iterations">2</parameter>
-				</parameter>
-			</parameter>
-		</parameter>
 
 		<parameter key="assets.priorities" type="collection"/>
 		<parameter key="assets.mergable" type="collection">
@@ -44,8 +34,19 @@
     <services>
 		<service id="twig" class="Matze\Core\Twig\TwigEnvironment" public="false">
 			<argument type="service">
-				<service class="Twig_Loader_Filesystem">
-					<argument>%template.dir%</argument>
+				<service class="Twig_Loader_Chain">
+					<argument type="collection">
+						<argument type="service">
+							<service class="Twig_Loader_Filesystem">
+								<argument>%template.dir%</argument>
+							</service>
+						</argument>
+						<argument type="service">
+							<service class="Twig_Loader_Filesystem">
+								<argument>%application.vendor_root%core/templates</argument>
+							</service>
+						</argument>
+					</argument>
 				</service>
 			</argument>
 			<argument type="collection">
@@ -55,17 +56,12 @@
 			</argument>
 		</service>
 
-		<service id="TwigCompiler" parent="twig" public="false"></service>
+		<service id="TwigCompiler" parent="twig" public="false"/>
 
         <service id="redis" class="Redis" public="false">
 			<call method="connect">
 				<argument key="host">%redis.host%</argument>
 			</call>
-            <!--<argument type="collection">-->
-                <!--<argument key="read_write_timeout">0</argument>-->
-                <!--<argument key="password">%redis.password%</argument>-->
-                <!--<argument key="prefix">%application.name%:</argument>-->
-            <!--</argument>-->
         </service>
 
 		<service id="monolog.ErrorHandler" class="Monolog\ErrorHandler">
