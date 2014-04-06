@@ -30,19 +30,27 @@ class GlobalCompilerPassTest extends \PHPUnit_Framework_TestCase {
 		$logger_mock = $this->getMock('Monolog\Logger', [], [], '', false);
 
 		$this->_mock_container
+			->expects($this->at(0))
+			->method('setParameter');
+
+		$this->_mock_container
 			->expects($this->at(1))
+			->method('setParameter');
+
+		$this->_mock_container
+			->expects($this->at(2))
 			->method('findTaggedServiceIds')
 			->with(GlobalCompilerPass::TAG)
 			->will($this->returnValue([$service_id => [['priority' => $priority = 10]]]));
 
 		$this->_mock_container
-			->expects($this->at(2))
+			->expects($this->at(3))
 			->method('get')
 			->with($service_id)
 			->will($this->returnValue($compiler_mock));
 
 		$this->_mock_container
-			->expects($this->at(3))
+			->expects($this->at(4))
 			->method('get')
 			->with('monolog.logger')
 			->will($this->returnValue($logger_mock));
