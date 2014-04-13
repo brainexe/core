@@ -38,6 +38,8 @@ class AppKernel {
 	public function __construct(ControllerResolver $container_resolver, RouteCollection $routes) {
 		$this->_resolver = $container_resolver;
 		$this->_routes = $routes;
+
+		include_once ROOT . 'cache/router_matcher.php';
 	}
 
 	/**
@@ -89,9 +91,10 @@ class AppKernel {
 	private function _handleRequest(Request $request) {
 		$context = new RequestContext();
 		$context->fromRequest($request);
-		$matcher = new UrlMatcher($this->_routes, $context);
 
-		$attributes = $matcher->matchRequest($request);
+		$url_matcher = new \ProjectUrlMatcher($context);
+
+		$attributes = $url_matcher->matchRequest($request);
 		$request->attributes->add($attributes);
 
 		$route = $this->_routes->get($attributes['_route']);
