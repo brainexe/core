@@ -40,8 +40,7 @@ class RedisSessionHandler implements \SessionHandlerInterface {
 	public function write($session_id, $data) {
 		$key = $this->_getKey($session_id);
 
-		$this->getRedis()->SET($key, $data);
-		$this->getRedis()->EXPIRE($key, 86400 * 7);
+		$this->getRedis()->setex($key, 86400 * 7, $data);
 	}
 
 	/**

@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 /**
  * @Middleware(priority=1)
  */
-class DebugMiddleware extends AbstractMiddleware {
+class GentimeMiddleware extends AbstractMiddleware {
 
 	use LoggerTrait;
 
@@ -29,6 +29,6 @@ class DebugMiddleware extends AbstractMiddleware {
 			$username = '-anonymous-';
 		}
 
-		$this->debug(sprintf('Response time: %0.2fms (route: %s, locale: %s, user:%s)', $diff*1000, $request->attributes->get('_controller'), $session->get('locale'), $username));
+		$this->info(sprintf('Response time: %0.2fms (route: %s, locale: %s, user:%s)', $diff*1000, $request->attributes->get('_controller'), $session->get('locale'), $username));
 	}
 } 
