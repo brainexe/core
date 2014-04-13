@@ -74,6 +74,23 @@ class AssetsDumpCommand extends AbstractCommand {
 		}
 
 		copy(MATZE_VENDOR_ROOT.'core/scripts/web.php', ROOT.'web/index.php');
+
+		$new_files = new Finder();
+		$new_files
+			->files()
+			->in($cache_dir)
+			->notName('*.php');
+
+		$md5 = [];
+		foreach ($new_files as $file) {
+			/** @var SplFileInfo $file */
+			$path = $file->getPathname();
+			$md5[$file->getRelativePathname()] = md5_file($path);
+		}
+
+		$md5_file = sprintf('%scache/assets.php', ROOT);
+		$content = sprintf('<?php return %s;', var_export($md5, true));
+		file_put_contents($md5_file, $content);
 	}
 
 } 
