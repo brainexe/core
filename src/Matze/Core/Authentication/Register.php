@@ -18,25 +18,45 @@ class Register {
 	private $_user_provider;
 
 	/**
-	 * @Inject("@DatabaseUserProvider")
+	 * @var RegisterTokens
 	 */
-	public function __construct(DatabaseUserProvider $user_provider) {
+	private $_register_tokens;
+
+	/**
+	 * @var boolean
+	 */
+	private $_registration_enabled;
+
+	/**
+	 * @Inject({"@DatabaseUserProvider", "@RegisterTokens", "%application.registration_enabled%"})
+	 */
+	public function __construct(DatabaseUserProvider $user_provider, RegisterTokens $register_tokens, $registration_enabled) {
 		$this->_user_provider = $user_provider;
+		$this->_register_tokens = $register_tokens;
+		$this->_registration_enabled = $registration_enabled;
+
 	}
 
 	/**
 	 * @param UserVO $user
 	 * @param Session|SessionInterface $session
+	 * @param string $token
 	 * @throws UserException
 	 * @return integer
 	 */
-	public function register(UserVO $user, Session $session) {
+	public function register(UserVO $user, Session $session, $token) {
 		try {
 			$this->_user_provider->loadUserByUsername($user->getUsername());
 
 			throw new UserException(sprintf("User %s already exists", $user->getUsername()));
 		} catch (UsernameNotFoundException $e) {
 			// all fine
+		}
+
+		if (!$this->_registration_enabled) {
+			if (empty($token) || !$this->_register_tokens->fetchToken($token)) {
+				throw new UserException("You have to provide a valid register token!");
+			}
 		}
 
 		$user_id = $this->_user_provider->register($user);

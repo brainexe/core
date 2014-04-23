@@ -21,6 +21,7 @@
 		<parameter key="application.layout_template">layout.html.twig</parameter>
 		<parameter key="application.error_template">error.html.twig</parameter>
 		<parameter key="application.guests_allowed">false</parameter>
+		<parameter key="application.registration_enabled">true</parameter>
 
 		<parameter key="assets.priorities" type="collection"/>
 		<parameter key="assets.mergable" type="collection">

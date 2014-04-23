@@ -61,7 +61,7 @@ class MessageQueueGateway implements RedisScriptInterface {
 		if ($event_type) {
 			$event_id = sprintf('%s:%s', $event_type, $event_id);
 		} else {
-			$event_type = explode(':', $event_id, 1)[0];
+			$event_type = explode(':', $event_id, 2)[0];
 		}
 
 		$pipeline = $this->getRedis()->PIPELINE();

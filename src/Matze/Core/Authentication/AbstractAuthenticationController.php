@@ -50,6 +50,7 @@ abstract class AbstractAuthenticationController extends AbstractController {
 	public function doRegister(Request $request) {
 		$username = $request->request->get('username');
 		$plain_password = $request->request->get('password');
+		$token = $request->cookies->get('token');
 
 		/** @var Register $register */
 		$register = $this->getService('Register');
@@ -58,7 +59,7 @@ abstract class AbstractAuthenticationController extends AbstractController {
 		$user_vo->username = $username;
 		$user_vo->password = $plain_password;
 
-		$register->register($user_vo, $request->getSession());
+		$register->register($user_vo, $request->getSession(), $token);
 
 		$this->_addFlash($request, self::ALERT_SUCCESS, sprintf('Welcome %s', $user_vo->username));
 
