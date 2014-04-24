@@ -9,6 +9,7 @@ use Assetic\AssetWriter;
 use Assetic\Filter\CssRewriteFilter;
 use Matze\Core\Assets\AssetCollector;
 use Matze\Core\Assets\AssetManager;
+use Matze\Core\Assets\AssetUrl;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
@@ -68,7 +69,7 @@ class AssetsDumpCommand extends AbstractCommand {
 
 		if (OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity()) {
 			foreach ($this->_assetic->getNames() as $name) {
-				$asset_colector = $this->_assetic->get	($name);
+				$asset_colector = $this->_assetic->get($name);
 				$output->writeln($asset_colector->getTargetPath());
 			}
 		}
@@ -85,10 +86,10 @@ class AssetsDumpCommand extends AbstractCommand {
 		foreach ($new_files as $file) {
 			/** @var SplFileInfo $file */
 			$path = $file->getPathname();
-			$md5[$file->getRelativePathname()] = md5_file($path);
+			$md5[$file->getRelativePathname()] = substr(base_convert(md5_file($path), 16, 36), 0, 10);
 		}
 
-		$md5_file = sprintf('%scache/assets.php', ROOT);
+		$md5_file = sprintf('%s%s', ROOT, AssetUrl::HASH_FILE);
 		$content = sprintf('<?php return %s;', var_export($md5, true));
 		file_put_contents($md5_file, $content);
 	}
