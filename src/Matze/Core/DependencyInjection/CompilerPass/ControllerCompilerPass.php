@@ -37,6 +37,10 @@ class ControllerCompilerPass implements CompilerPassInterface {
 		foreach (self::$routes as $route) {
 			$name = $route->getName() ?: str_replace('/', '.', trim($route->getPath(), './'));
 
+			if ($route->isCsrf()) {
+				$route->setOptions(['csrf' => true]);
+			}
+
 			$routes->addMethodCall('add', [$name, new Definition('Symfony\Component\Routing\Route', [$route->getPath(), $route->getDefaults(), $route->getRequirements(), $route->getOptions(), $route->getHost(), $route->getSchemes(), $route->getMethods(), $route->getCondition()])]);
 		}
 		self::$routes = [];
