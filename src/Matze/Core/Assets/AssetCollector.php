@@ -5,8 +5,8 @@ namespace Matze\Core\Assets;
 use Assetic\Asset\AssetCollection;
 use Assetic\Asset\FileAsset;
 use Assetic\Filter\CssImportFilter;
-use Assetic\Filter\JSqueezeFilter;
 use Assetic\Filter\Yui\CssCompressorFilter;
+use Assetic\Filter\Yui\JsCompressorFilter;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -32,12 +32,18 @@ class AssetCollector {
 	private $_separate_files;
 
 	/**
-	 * @Inject({"%assets.priorities%", "%assets.mergable%", "%assets.separate%"})
+	 * @var string
 	 */
-	public function __construct($priorities, $mergable, $separate) {
+	private $_yui_jar;
+
+	/**
+	 * @Inject({"%assets.priorities%", "%assets.mergable%", "%assets.separate%", "%yui.jar%"})
+	 */
+	public function __construct($priorities, $mergable, $separate, $yui_jar) {
 		$this->_priorities = $priorities;
 		$this->_mergable = $mergable;
 		$this->_separate_files = array_flip($separate);
+		$this->_yui_jar = $yui_jar;
 	}
 
 	/**
@@ -78,12 +84,17 @@ class AssetCollector {
 			switch ($extension) {
 				case 'js':
 					if (strpos($file->getFilename(), '.min.js') === false) {
-						$asset->ensureFilter(new JSqueezeFilter());
+						if ($this->_yui_jar) {
+							$asset->ensureFilter(new JsCompressorFilter($this->_yui_jar));
+						}
 					}
 					break;
 				case 'css':
 					$asset->setTargetPath('/');
 					$asset->ensureFilter(new CssImportFilter());
+					if ($this->_yui_jar) {
+						$asset->ensureFilter(new CssCompressorFilter($this->_yui_jar));
+					}
 			}
 
 			if ($this->_isMerged($extension) && !isset($this->_separate_files[$file->getRelativePathname()])) {
