@@ -25,7 +25,7 @@ class AssetExtension extends \Twig_Extension {
 	 */
 	public function getFunctions() {
 		return [
-			'asset_url' => new \Twig_Function_Method($this, 'getAssetUrl', ['asset_url' => ['all']])
+			'asset_url' => new \Twig_Function_Method($this, 'getAssetUrl', ['is_safe' => ['all']])
 		];
 	}
 
