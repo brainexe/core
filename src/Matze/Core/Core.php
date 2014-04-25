@@ -29,10 +29,14 @@ class Core {
 		chdir(ROOT);
 		umask(0);
 
+		$files = glob('cache/dic_*.php');
+
 		/** @var Container $dic */
-		if (file_exists('cache/dic.php')) {
-			include 'cache/dic.php';
-			$dic = new \DIC();
+		if ($files) {
+			include $files[0];
+			preg_match('/dic_([\d]*)/', $files[0], $matches);
+			$class_name = $matches[0];
+			$dic = new $class_name();
 		} else {
 			$dic = self::rebuildDIC();
 		}
@@ -71,13 +75,22 @@ class Core {
 		$container_builder->compile();
 
 		if (!defined('PHPUNIT')) {
-			$container_file = 'cache/dic.php';
+			$now = time();
+			$container_name = sprintf('dic_%d', $now);
+			$container_file = sprintf('cache/dic_%d.php', $now);
+
+			foreach(glob('cache/dic_*.php') as $file) {
+				unlink($file);
+			}
+
 			$dumper = new PhpDumper($container_builder);
-			$container_content = $dumper->dump(['class' => 'DIC']);
+			$container_content = $dumper->dump(['class' => $container_name]);
 			file_put_contents($container_file, $container_content);
 			chmod($container_file, 0777);
-		}
 
-		return $container_builder;
+			return self::boot();
+		} else {
+			return $container_builder;
+		}
 	}
 } 

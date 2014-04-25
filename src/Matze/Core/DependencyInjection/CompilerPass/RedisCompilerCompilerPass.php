@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 /**
  * @CompilerPass
  */
-class RedisPass implements CompilerPassInterface {
+class RedisCompilerPass implements CompilerPassInterface {
 
 	/**
 	 * {@inheritdoc}
