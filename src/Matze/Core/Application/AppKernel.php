@@ -72,8 +72,8 @@ class AppKernel {
 			}
 		}
 
-		$middleware_count = count($this->_middlewares);
-		for ($i = $middleware_count-1; $i >= 0; $i--) {
+		$middleware_idx = count($this->_middlewares) - 1;
+		for ($i = $middleware_idx; $i >= 0; $i--) {
 			$middleware = $this->_middlewares[$i];
 			$middleware->processResponse($request, $response);
 		}
@@ -97,9 +97,10 @@ class AppKernel {
 		$attributes = $url_matcher->matchRequest($request);
 		$request->attributes->add($attributes);
 
-		$route = $this->_routes->get($attributes['_route']);
+		$route_name = $attributes['_route'];
+		$route = $this->_routes->get($route_name);
 		foreach ($this->_middlewares as $middleware) {
-			$response = $middleware->processRequest($request, $route, $attributes['_route']);
+			$response = $middleware->processRequest($request, $route, $route_name);
 			if ($response) {
 				return $response;
 			}
@@ -109,9 +110,7 @@ class AppKernel {
 		$callable = $this->_resolver->getController($request);
 		$arguments = $this->_resolver->getArguments($request, $callable);
 
-		$response = call_user_func_array($callable, $arguments);
-
-		return $response;
+		return call_user_func_array($callable, $arguments);
 	}
 
 }

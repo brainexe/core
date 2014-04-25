@@ -37,8 +37,9 @@ class ControllerDefinitionBuilder extends ServiceDefinitionBuilder {
 
 				$class_parts = explode('\\', $definition->getClass());
 				$class = str_replace('Controller', '', $class_parts[count($class_parts)-1]);
+				$class = 'Controller.' . $class;
 
-				$defaults['_controller'] = sprintf('%s::%s', $class, $method->getName());
+				$defaults['_controller'] = [$class, $method->getName()];
 				$route_annotation->setDefaults($defaults);
 
 				ControllerCompilerPass::addRoute($route_annotation);
