@@ -8,7 +8,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 /**
- * @Service("DatabaseUserProvider", public=false)
+ * @Service(public=false)
  */
 class DatabaseUserProvider implements UserProviderInterface {
 
@@ -46,6 +46,13 @@ class DatabaseUserProvider implements UserProviderInterface {
 		$user->roles = array_filter(explode(',', $redis_user['roles']));
 
 		return $user;
+	}
+
+	/**
+	 * @return string[]
+	 */
+	public function getAllUserNames() {
+		return $this->getRedis()->hGetAll(self::REDIS_USER_NAMES);
 	}
 
 	/**

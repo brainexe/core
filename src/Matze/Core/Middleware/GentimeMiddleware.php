@@ -29,6 +29,6 @@ class GentimeMiddleware extends AbstractMiddleware {
 			$username = '-anonymous-';
 		}
 
-		$this->info(sprintf('Response time: %0.2fms (route: %s, locale: %s, user:%s)', $diff*1000, $request->attributes->get('_controller'), $session->get('locale'), $username));
+		$this->info(sprintf('Response time: %0.2fms (route: %s, locale: %s, user:%s)', $diff*1000, $request->getRequestUri(), $session->get('locale'), $username));
 	}
 } 
