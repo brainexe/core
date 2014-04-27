@@ -77,20 +77,31 @@
         <service id="monolog.logger" class="Monolog\Logger">
             <argument>%application.name%</argument>
 			<call method="pushHandler">
-				<argument type="service" id="monolog.ErrorLog"/>
+				<argument type="service">
+					<service class="Matze\Core\Logger\ChannelStreamHandler">
+						<argument>%logger.error.log%</argument>
+						<argument type="constant">Monolog\Logger::ERROR</argument>
+					</service>
+				</argument>
 			</call>
 			<call method="pushHandler">
-				<argument type="service" id="monolog.InfoLog"/>
+				<argument type="service">
+					<service class="Matze\Core\Logger\ChannelStreamHandler">
+						<argument>%logger.info.log%</argument>
+						<argument type="constant">Monolog\Logger::INFO</argument>
+					</service>
+				</argument>
+			</call>
+			<call method="pushHandler">
+				<argument type="service">
+					<service class="Matze\Core\Logger\ChannelStreamHandler">
+						<argument>%logger.dir%gentime.log</argument>
+						<argument type="constant">Monolog\Logger::DEBUG</argument>
+						<argument>gentime</argument>
+					</service>
+				</argument>
 			</call>
         </service>
-        <service id="monolog.ErrorLog" class="Monolog\Handler\StreamHandler" public="false">
-            <argument>%logger.error.log%</argument>
-            <argument type="constant">Monolog\Logger::ERROR</argument>
-        </service>
-		<service id="monolog.InfoLog" class="Monolog\Handler\StreamHandler" public="false">
-			<argument>%logger.info.log%</argument>
-			<argument type="constant">Monolog\Logger::INFO</argument>
-		</service>
 		<service id="EventDispatcher" class="Symfony\Component\EventDispatcher\EventDispatcher" public="false">
 		</service>
 

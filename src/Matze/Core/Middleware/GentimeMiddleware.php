@@ -2,6 +2,7 @@
 
 namespace Matze\Core\Middleware;
 
+use Matze\Core\Authentication\UserVO;
 use Matze\Core\Traits\LoggerTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,11 +25,12 @@ class GentimeMiddleware extends AbstractMiddleware {
 
 		$session = $request->getSession() ?: new Session(new MockArraySessionStorage());
 		if ($session && $user = $session->get('user')) {
+			/** @var UserVO $user */
 			$username = $user->getUsername();
 		} else {
 			$username = '-anonymous-';
 		}
 
-		$this->info(sprintf('Response time: %0.2fms (route: %s, locale: %s, user:%s)', $diff*1000, $request->getRequestUri(), $session->get('locale'), $username));
+		$this->info(sprintf('%0.2fms (route: %s, locale: %s, user:%s)', $diff*1000, $request->getRequestUri(), $session->get('locale'), $username), ['channel' => 'gentime']);
 	}
 } 

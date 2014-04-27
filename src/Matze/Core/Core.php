@@ -75,9 +75,9 @@ class Core {
 		$container_builder->compile();
 
 		if (!defined('PHPUNIT')) {
-			$now = time();
-			$container_name = sprintf('dic_%d', $now);
-			$container_file = sprintf('cache/dic_%d.php', $now);
+			$random_id = mt_rand();
+			$container_name = sprintf('dic_%d', $random_id);
+			$container_file = sprintf('cache/dic_%d.php', $random_id);
 
 			foreach(glob('cache/dic_*.php') as $file) {
 				unlink($file);
