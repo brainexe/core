@@ -92,8 +92,10 @@ class AssetCollector {
 				case 'css':
 					$asset->setTargetPath('/');
 					$asset->ensureFilter(new CssImportFilter());
-					if ($this->_yui_jar) {
-						$asset->ensureFilter(new CssCompressorFilter($this->_yui_jar));
+					if (strpos($file->getFilename(), '.min.css') === false) {
+						if ($this->_yui_jar) {
+							$asset->ensureFilter(new CssCompressorFilter($this->_yui_jar));
+						}
 					}
 			}
 
