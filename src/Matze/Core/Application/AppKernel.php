@@ -8,6 +8,7 @@ use Matze\Core\Middleware\MiddlewareInterface;
 use Matze\Core\Traits\ServiceContainerTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouteCollection;
@@ -15,7 +16,7 @@ use Symfony\Component\Routing\RouteCollection;
 /**
  * @Service
  */
-class AppKernel {
+class AppKernel implements HttpKernelInterface {
 
 	/**
 	 * @var RouteCollection
@@ -43,26 +44,20 @@ class AppKernel {
 	}
 
 	/**
-	 * @param MiddlewareInterface $middleware
+	 * @param MiddlewareInterface[] $middlewares
 	 */
-	public function addMiddleware(MiddlewareInterface $middleware) {
-		$this->_middlewares[] = $middleware;
+	public function setMiddlewares(array $middlewares) {
+		$this->_middlewares = $middlewares;
 	}
 
 	/**
-	 * @param Request $request
-	 * @return Response
+	 * {@inheritdoc}
 	 */
-	public function handle(Request $request) {
+	public function handle(Request $request, $type = self::MASTER_REQUEST, $catch = true) {
 		$response = null;
 
 		try {
 			$response = $this->_handleRequest($request);
-
-			if (is_string($response)) {
-				$response = new Response($response);
-			}
-
 		} catch (Exception $e) {
 			if (empty($response)) {
 				$response = new Response();
@@ -86,7 +81,7 @@ class AppKernel {
 
 	/**
 	 * @param Request $request
-	 * @return Response
+	 * @return Response|string
 	 */
 	private function _handleRequest(Request $request) {
 		$context = new RequestContext();
@@ -102,6 +97,7 @@ class AppKernel {
 		foreach ($this->_middlewares as $middleware) {
 			$response = $middleware->processRequest($request, $route, $route_name);
 			if ($response) {
+				// e.g. RedirectResponse or rendered error page
 				return $response;
 			}
 		}
@@ -110,7 +106,13 @@ class AppKernel {
 		$callable = $this->_resolver->getController($request);
 		$arguments = $this->_resolver->getArguments($request, $callable);
 
-		return call_user_func_array($callable, $arguments);
+		$response = call_user_func_array($callable, $arguments);
+
+		if (is_string($response)) {
+			return new Response($response);
+		} else {
+			return $response;
+		}
 	}
 
 }

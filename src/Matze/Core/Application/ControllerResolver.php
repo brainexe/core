@@ -27,17 +27,14 @@ class ControllerResolver implements ControllerResolverInterface {
 	}
 
 	/**
-	 * @param Request $request
-	 * @param callable $controller
-	 * @return array
+	 * {@inheritdoc}
 	 */
 	public function getArguments(Request $request, $controller) {
 		$arguments = [
 			$request
 		];
 
-		$attributes = $request->attributes->all();
-		foreach ($attributes as $attribute => $value) {
+		foreach ($request->attributes->all() as $attribute => $value) {
 			if ($attribute[0] !== '_') {
 				$arguments[] = $value;
 			}
