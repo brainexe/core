@@ -3,8 +3,9 @@
 namespace Matze\Core\Application\SelfUpdate;
 
 use Matze\Core\EventDispatcher\AbstractEvent;
+use Matze\Core\EventDispatcher\PushViaWebsocketInterface;
 
-class SelfUpdateEvent extends AbstractEvent {
+class SelfUpdateEvent extends AbstractEvent implements PushViaWebsocketInterface {
 
     const TRIGGER = 'update.trigger';
     const PROCESS = 'update.process';

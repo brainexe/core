@@ -3,9 +3,7 @@
 namespace Matze\Core\Traits;
 
 use Matze\Core\EventDispatcher\AbstractEvent;
-use Matze\Core\EventDispatcher\BackgroundEvent;
-use Matze\Core\EventDispatcher\DelayedEvent;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Matze\Core\EventDispatcher\EventDispatcher;
 
 trait EventDispatcherTrait {
 
@@ -32,7 +30,7 @@ trait EventDispatcherTrait {
 	 * @param AbstractEvent $event
 	 */
 	protected function dispatchEvent(AbstractEvent $event) {
-		$this->_event_dispatcher->dispatch($event->event_name, $event);
+		$this->_event_dispatcher->dispatchEvent($event);
 	}
 
 	/**
@@ -40,13 +38,7 @@ trait EventDispatcherTrait {
 	 * @param integer|null $timestamp
 	 */
 	protected function dispatchInBackground(AbstractEvent $event, $timestamp = 0) {
-		if ($timestamp) {
-			$wrapper = new DelayedEvent($event, $timestamp);
-		} else {
-			$wrapper = new BackgroundEvent($event);
-		}
-
-		$this->dispatchEvent($wrapper);
+		$this->_event_dispatcher->dispatchInBackground($event, $timestamp);
 	}
 
 } 

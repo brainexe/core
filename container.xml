@@ -112,7 +112,7 @@
 				</argument>
 			</call>
         </service>
-		<service id="EventDispatcher" class="Symfony\Component\EventDispatcher\EventDispatcher" public="false">
+		<service id="EventDispatcher" class="Matze\Core\EventDispatcher\EventDispatcher" public="false">
 		</service>
 
 		<service id="Console" class="Symfony\Component\Console\Application"/>
