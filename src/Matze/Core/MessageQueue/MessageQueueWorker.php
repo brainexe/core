@@ -55,7 +55,7 @@ class MessageQueueWorker implements MessageQueueWorkerInterface {
 				$needed_time = microtime(true) - $start;
 
 				$this->info(sprintf('[MQ]: %s. Time: %0.2fms',
-					$job->event->event_name, $needed_time * 1000)
+					$job->event->event_name, $needed_time * 1000), ['channel' => 'message_queue']
 				);
 				$this->_message_queue_gateway->deleteEvent($job->event_id);
 			} catch (\Exception $e) {
