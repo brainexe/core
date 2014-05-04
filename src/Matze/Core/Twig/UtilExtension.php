@@ -18,7 +18,7 @@ class UtilExtension extends \Twig_Extension {
 	 * @return string mixed
 	 */
 	public function print_r($variable) {
-		return nl2br(print_r($variable, true));
+		return print_r($variable, true);
 	}
 
 	/**
