@@ -39,4 +39,13 @@ class ChannelStreamHandler extends StreamHandler {
 
 		return $this->channel == $record['context']['channel'];
 	}
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function write(array $record) {
+        unset($record['context']['channel']);
+        parent::write($record);
+    }
+
 }

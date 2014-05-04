@@ -16,6 +16,7 @@
 		<parameter key="logger.dir">%application.root%logs/</parameter>
 		<parameter key="logger.error.log">%logger.dir%error.log</parameter>
 		<parameter key="logger.info.log">%logger.dir%info.log</parameter>
+		<parameter key="logger.message_queue.log">%logger.dir%message_queue.log</parameter>
 
 		<parameter key="application.name" on-invalid="exception"/>
 		<parameter key="application.layout_template">layout.html.twig</parameter>
@@ -90,6 +91,15 @@
 						<argument>%logger.info.log%</argument>
 						<argument type="constant">Monolog\Logger::INFO</argument>
 					</service>
+				</argument>
+			</call>
+			<call method="pushHandler">
+				<argument type="service">
+					<service class="Matze\Core\Logger\ChannelStreamHandler">
+						<argument>%logger.message_queue.log%</argument>
+						<argument type="constant">Monolog\Logger::INFO</argument>
+                        <argument>message_queue</argument>
+                    </service>
 				</argument>
 			</call>
 			<call method="pushHandler">
