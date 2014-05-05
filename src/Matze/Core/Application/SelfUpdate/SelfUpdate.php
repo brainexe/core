@@ -22,7 +22,8 @@ class SelfUpdate {
         $commands[] = 'php composer.phar update -o';
 
         $process = new Process(implode('&&', $commands));
-
+		$process->setIdleTimeout(0);
+		
 		$process->run(function ($type, $buffer) {
 			$event = new SelfUpdateEvent(SelfUpdateEvent::PROCESS);
 			$event->payload = $buffer;
