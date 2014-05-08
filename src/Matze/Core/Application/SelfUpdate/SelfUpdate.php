@@ -18,11 +18,11 @@ class SelfUpdate {
 	public function startUpdate() {
         $commands = [];
         $commands[] = sprintf('cd %s', ROOT);
-        $commands[] = 'git pull --force';
+        $commands[] = 'git pull';
         $commands[] = 'php composer.phar update -o';
 
         $process = new Process(implode('&&', $commands));
-		$process->setIdleTimeout(0);
+		$process->setTimeout(0);
 		
 		$process->run(function ($type, $buffer) {
 			$event = new SelfUpdateEvent(SelfUpdateEvent::PROCESS);
