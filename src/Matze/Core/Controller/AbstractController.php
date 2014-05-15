@@ -4,7 +4,6 @@ namespace Matze\Core\Controller;
 
 use Matze\Core\Traits\TwigTrait;
 use Symfony\Component\HttpFoundation\Request;
-use Twig_Environment;
 
 abstract class AbstractController {
 
