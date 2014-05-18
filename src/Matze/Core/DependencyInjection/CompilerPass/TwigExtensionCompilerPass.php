@@ -31,10 +31,10 @@ class TwigExtensionCompilerPass implements CompilerPassInterface {
 			$service->setPublic(false);
 
 			if (!$debug && $tag[0]['compiler']) {
+				echo "$id -> compiler only\n";
 				$twig_compiler_definition->addMethodCall('addExtension', [new Reference($id)]);
 			} else {
 				$twig_definition->addMethodCall('addExtension', [new Reference($id)]);
-
 			}
 		}
 

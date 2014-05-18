@@ -2,7 +2,6 @@
 
 namespace Matze\Core\Twig\PiwikExtension;
 
-use Matze\Core\Traits\ConfigTrait;
 use Twig_Token;
 use Twig_TokenParser;
 

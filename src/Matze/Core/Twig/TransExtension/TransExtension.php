@@ -5,7 +5,7 @@ namespace Matze\Core\Twig\TransExtension;
 use Twig_Extension;
 
 /**
- * @TwigExtension
+ * @TwigExtension(compiler=true)
  */
 class TransExtension extends Twig_Extension {
 
