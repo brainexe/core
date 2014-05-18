@@ -5,6 +5,9 @@ namespace Matze\Core\Twig\TransExtension;
 use Twig_Token;
 use Twig_TokenParser;
 
+/**
+ * @Service(public=false)
+ */
 class TransExtensionTokenParser extends Twig_TokenParser {
 
 	/**

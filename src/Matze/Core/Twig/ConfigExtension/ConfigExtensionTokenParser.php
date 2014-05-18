@@ -7,7 +7,7 @@ use Twig_Token;
 use Twig_TokenParser;
 
 /**
- * @Service("ConfigExtensionTokenParser", public=false)
+ * @Service(public=false)
  */
 class ConfigExtensionTokenParser extends Twig_TokenParser {
 

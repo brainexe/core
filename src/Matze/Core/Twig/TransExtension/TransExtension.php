@@ -10,11 +10,23 @@ use Twig_Extension;
 class TransExtension extends Twig_Extension {
 
 	/**
+	 * @var TransExtensionTokenParser
+	 */
+	private $trans_extension_token_parser;
+
+	/**
+	 * @Inject("@TransExtensionTokenParser")
+	 */
+	public function __construct(TransExtensionTokenParser $trans_extension_token_parser) {
+		$this->trans_extension_token_parser = $trans_extension_token_parser;
+	}
+
+	/**
 	 * {@inheritdoc}
 	 */
 	public function getTokenParsers() {
 		return [
-			new TransExtensionTokenParser()
+			$this->trans_extension_token_parser
 		];
 	}
 
