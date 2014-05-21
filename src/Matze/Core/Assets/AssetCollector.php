@@ -35,15 +35,17 @@ class AssetCollector {
 	 * @var string
 	 */
 	private $_yui_jar;
+	private $_debug;
 
 	/**
-	 * @Inject({"%assets.priorities%", "%assets.mergable%", "%assets.separate%", "%yui.jar%"})
+	 * @Inject({"%assets.priorities%", "%assets.mergable%", "%assets.separate%", "%yui.jar%", "%debug%"})
 	 */
-	public function __construct($priorities, $mergable, $separate, $yui_jar) {
+	public function __construct($priorities, $mergable, $separate, $yui_jar, $debug) {
 		$this->_priorities = $priorities;
 		$this->_mergable = $mergable;
 		$this->_separate_files = array_flip($separate);
 		$this->_yui_jar = $yui_jar;
+		$this->_debug = $debug;
 	}
 
 	/**
@@ -84,7 +86,7 @@ class AssetCollector {
 			switch ($extension) {
 				case 'js':
 					if (strpos($file->getFilename(), '.min.js') === false) {
-						if ($this->_yui_jar) {
+						if ($this->_yui_jar && $this->_debug) {
 							$asset->ensureFilter(new JsCompressorFilter($this->_yui_jar));
 						}
 					}
@@ -93,7 +95,7 @@ class AssetCollector {
 					$asset->setTargetPath('/');
 					$asset->ensureFilter(new CssImportFilter());
 					if (strpos($file->getFilename(), '.min.css') === false) {
-						if ($this->_yui_jar) {
+						if ($this->_yui_jar && $this->_debug) {
 							$asset->ensureFilter(new CssCompressorFilter($this->_yui_jar));
 						}
 					}

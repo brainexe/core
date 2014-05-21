@@ -2,7 +2,9 @@
 
 namespace Matze\Core\DependencyInjection\CompilerPass;
 
+use Exception;
 use Matze\Core\Redis\RedisScriptInterface;
+use ReflectionClass;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
@@ -26,9 +28,9 @@ class RedisScriptCompilerPass implements CompilerPassInterface {
 			/** @var RedisScriptInterface $class */
 			$class = $definition->getClass();
 
-			$reflection_class = new \ReflectionClass($class);
+			$reflection_class = new ReflectionClass($class);
 			if (!$reflection_class->implementsInterface('Matze\Core\Redis\RedisScriptInterface')) {
-				throw new \Exception(sprintf("Class %s dies not implements the interface 'RedisScriptInterface'", $class));
+				throw new Exception(sprintf("Class %s dies not implements the interface 'RedisScriptInterface'", $class));
 			}
 			$scripts = $class::getRedisScripts();
 
