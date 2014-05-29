@@ -6,7 +6,6 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
-use Symfony\Component\Yaml\Yaml;
 
 class MessageQueueTestService {
 	const ID = 'MessageQueueTestService';

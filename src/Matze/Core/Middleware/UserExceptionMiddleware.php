@@ -5,7 +5,6 @@ namespace Matze\Core\Middleware;
 use Exception;
 use Matze\Core\Application\ErrorView;
 use Matze\Core\Application\UserException;
-use Matze\Core\Traits\LoggerTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;

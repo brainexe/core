@@ -5,8 +5,6 @@ namespace Matze\Core\MessageQueue;
 use Matze\Core\Application\RedisLock;
 use Matze\Core\Traits\EventDispatcherTrait;
 use Matze\Core\Traits\LoggerTrait;
-use Matze\Core\Traits\RedisTrait;
-use Matze\Core\Traits\ServiceContainerTrait;
 
 /**
  * @Service(public=false)

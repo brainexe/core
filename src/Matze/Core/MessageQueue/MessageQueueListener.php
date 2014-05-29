@@ -5,8 +5,6 @@ namespace Matze\Core\MessageQueue;
 use Matze\Core\EventDispatcher\AbstractEventListener;
 use Matze\Core\EventDispatcher\BackgroundEvent;
 use Matze\Core\EventDispatcher\DelayedEvent;
-use Matze\Core\Traits\RedisTrait;
-use Matze\Core\Traits\ServiceContainerTrait;
 
 /**
  * @EventListener

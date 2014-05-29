@@ -2,7 +2,6 @@
 
 namespace Matze\Core\Twig\ConfigExtension;
 
-use Matze\Core\Traits\ConfigTrait;
 use Matze\Core\Twig\UrlExtension\ConfigExtensionTokenParser;
 
 /**

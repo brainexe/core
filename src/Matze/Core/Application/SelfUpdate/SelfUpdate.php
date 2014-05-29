@@ -25,6 +25,7 @@ class SelfUpdate {
 		$process->setTimeout(0);
 		
 		$process->run(function ($type, $buffer) {
+			unset($type);
 			$event = new SelfUpdateEvent(SelfUpdateEvent::PROCESS);
 			$event->payload = $buffer;
 

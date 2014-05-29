@@ -6,9 +6,6 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
-use Symfony\Component\Translation\Dumper\MoFileDumper;
-use Symfony\Component\Translation\Dumper\PhpFileDumper;
-use Symfony\Component\Translation\Dumper\PoFileDumper;
 
 /**
  * @CompilerPass
@@ -33,8 +30,7 @@ class TranslationCompilerPass implements CompilerPassInterface {
 
 		foreach ($finder as $dir) {
 			/** @var SplFileInfo $dir */
-			$locale = $dir->getRelativePathname();
-
+//			$locale = $dir->getRelativePathname();
 //			$lang_dir = sprintf('%slang/%s/LC_MESSAGES/', ROOT, $locale);
 //			$translator->addMethodCall('addResource', ['mo', sprintf('%smessages.mo', $lang_dir), $locale]);
 		}

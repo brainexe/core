@@ -50,6 +50,7 @@ class ServerRunCommand extends Command {
 		$builder->setWorkingDirectory(ROOT . '/web/');
 		$builder->setTimeout(null);
 		$builder->getProcess()->run(function ($type, $buffer) use ($output, $input) {
+			unset($type);
 			if (!$input->getOption('quiet')) {
 				$output->write($buffer);
 			}

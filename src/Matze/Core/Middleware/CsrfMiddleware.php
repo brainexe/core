@@ -3,7 +3,6 @@
 namespace Matze\Core\Middleware;
 
 use Matze\Core\Traits\IdGeneratorTrait;
-use Matze\Core\Traits\LoggerTrait;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

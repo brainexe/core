@@ -2,6 +2,7 @@
 
 namespace Matze\Core\Traits;
 
+use Symfony\Component\HttpFoundation\Response;
 use Twig_Environment;
 
 trait TwigTrait {
@@ -21,10 +22,10 @@ trait TwigTrait {
 	/**
 	 * @param string $name
 	 * @param array $context
-	 * @return string
+	 * @return Response
 	 */
 	protected function render($name, array $context = []) {
-		return $this->_twig->render($name, $context);
+		return new Response($this->_twig->render($name, $context));
 	}
 
 }

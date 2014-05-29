@@ -2,14 +2,10 @@
 
 namespace Matze\Core\Middleware;
 
-use Matze\Core\Traits\CacheTrait;
 use Matze\Core\Traits\LoggerTrait;
-use Monolog\Logger;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\Routing\Route;
 
 /**
@@ -56,5 +52,7 @@ class AuthenticationMiddleware extends AbstractMiddleware {
 		if (!$logged_id) {
 			return new RedirectResponse('/login/');
 		}
+
+		return null;
 	}
 } 

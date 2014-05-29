@@ -3,13 +3,10 @@
 namespace Matze\Core\Application;
 
 use Exception;
-use Matze\Core\Controller\AbstractController;
 use Matze\Core\Middleware\MiddlewareInterface;
-use Matze\Core\Traits\ServiceContainerTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouteCollection;
 
@@ -102,17 +99,11 @@ class AppKernel implements HttpKernelInterface {
 			}
 		}
 
-		/** @var AbstractController[] $callable */
+		/** @var callable $callable */
 		$callable = $this->_resolver->getController($request);
 		$arguments = $this->_resolver->getArguments($request, $callable);
 
-		$response = call_user_func_array($callable, $arguments);
-
-		if (is_string($response)) {
-			return new Response($response);
-		} else {
-			return $response;
-		}
+		return call_user_func_array($callable, $arguments);
 	}
 
 }

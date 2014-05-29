@@ -7,7 +7,7 @@ use Matze\Core\Redis\RedisScripts;
 use Matze\Core\Traits\IdGeneratorTrait;
 use Matze\Core\Traits\RedisTrait;
 use Matze\Core\Redis\RedisScriptInterface;
-use Symfony\Component\EventDispatcher\Event;
+use Redis;
 
 /**
  * @Service(tags={{"name" = "redis_script"}})
@@ -64,7 +64,7 @@ class MessageQueueGateway implements RedisScriptInterface {
 			$event_type = explode(':', $event_id, 2)[0];
 		}
 
-		$pipeline = $this->getRedis()->PIPELINE();
+		$pipeline = $this->getRedis()->multi(Redis::PIPELINE);
 		$pipeline->ZREM(self::REDIS_MESSAGE_QUEUE, $event_id);
 		$pipeline->HDEL(self::REDIS_MESSAGE_META_DATA, $event_id);
 		$pipeline->SREM($this->_getTypeKeyName($event_type), $event_id);
@@ -77,7 +77,7 @@ class MessageQueueGateway implements RedisScriptInterface {
 	 * @return integer
 	 */
 	public function addEvent(AbstractEvent $event, $timestamp = 0) {
-		$pipeline = $this->getRedis()->pipeline();
+		$pipeline = $this->getRedis()->multi(Redis::PIPELINE);
 
 		$random_id = $this->generateRandomId();
 

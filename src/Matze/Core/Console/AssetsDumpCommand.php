@@ -2,13 +2,8 @@
 
 namespace Matze\Core\Console;
 
-use Assetic\Asset\AssetCollection;
-use Assetic\Asset\FileAsset;
-use Assetic\Asset\GlobAsset;
 use Assetic\AssetWriter;
-use Assetic\Filter\CssRewriteFilter;
 use Matze\Core\Assets\AssetCollector;
-use Matze\Core\Assets\AssetManager;
 use Matze\Core\Assets\AssetUrl;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -16,11 +11,8 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
-use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 /**
  * @Command
@@ -37,20 +29,14 @@ class AssetsDumpCommand extends AbstractCommand {
 	}
 
 	/**
-	 * @var AssetManager
-	 */
-	private $_assetic;
-
-	/**
 	 * @var AssetCollector
 	 */
 	private $_asset_collector;
 
 	/**
-	 * @Inject({"@Assetic", "@AssetCollector"})
+	 * @Inject({"@AssetCollector"})
 	 */
-	public function __construct(AssetManager $assetic, AssetCollector $asset_collector) {
-		$this->_assetic = $assetic;
+	public function __construct(AssetCollector $asset_collector) {
 		$this->_asset_collector = $asset_collector;
 
 		parent::__construct();
@@ -61,20 +47,20 @@ class AssetsDumpCommand extends AbstractCommand {
 	 */
 	protected function doExecute(InputInterface $input, OutputInterface $output) {
 		$cache_dir = ROOT . 'web';
+		exec(sprintf('rm -Rf %s/*', $cache_dir));
+		copy(MATZE_VENDOR_ROOT.'core/scripts/web.php', ROOT.'web/index.php');
 
-		$this->_asset_collector->collectAssets($this->_assetic);
+		$manager = $this->_asset_collector->collectAssets();
 
 		$writer = new AssetWriter($cache_dir);
-		$writer->writeManagerAssets($this->_assetic);
+		$writer->writeManagerAssets($manager);
 
 		if (OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity()) {
-			foreach ($this->_assetic->getNames() as $name) {
-				$asset_colector = $this->_assetic->get($name);
+			foreach ($manager->getNames() as $name) {
+				$asset_colector = $manager->get($name);
 				$output->writeln($asset_colector->getTargetPath());
 			}
 		}
-
-		copy(MATZE_VENDOR_ROOT.'core/scripts/web.php', ROOT.'web/index.php');
 
 		$new_files = new Finder();
 		$new_files

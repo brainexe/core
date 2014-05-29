@@ -4,124 +4,131 @@ namespace Matze\Core\Assets;
 
 use Assetic\Asset\AssetCollection;
 use Assetic\Asset\FileAsset;
-use Assetic\Filter\CssImportFilter;
-use Assetic\Filter\Yui\CssCompressorFilter;
-use Assetic\Filter\Yui\JsCompressorFilter;
+use Matze\Core\Assets\Rules\CopyProcessor;
+use Matze\Core\Assets\Rules\Processor;
+use Matze\Core\Assets\Rules\MergableProcessor;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
 /**
- * @todo rework
  * @Service(public=false)
  */
 class AssetCollector {
 
 	/**
-	 * @var string[]
+	 * @var Processor[]
 	 */
-	private $_priorities;
-
-	/**
-	 * @var string[]
-	 */
-	private $_mergable;
-
-	/**
-	 * @var string[]
-	 */
-	private $_separate_files;
+	private $_processors;
 
 	/**
 	 * @var string
 	 */
-	private $_yui_jar;
-	private $_debug;
+	private $_assetPath;
 
 	/**
-	 * @Inject({"%assets.priorities%", "%assets.mergable%", "%assets.separate%", "%yui.jar%", "%debug%"})
+	 * @var AssetManager
 	 */
-	public function __construct($priorities, $mergable, $separate, $yui_jar, $debug) {
-		$this->_priorities = $priorities;
-		$this->_mergable = $mergable;
-		$this->_separate_files = array_flip($separate);
-		$this->_yui_jar = $yui_jar;
-		$this->_debug = $debug;
+	private $_assetic;
+
+	/**
+	 * @Inject("@Assetic")
+	 */
+	public function __construct(AssetManager $assetic) {
+		$this->_assetic = $assetic;
 	}
 
 	/**
-	 * @param AssetManager $manager
+	 * @param Processor $processor
 	 */
-	public function collectAssets(AssetManager $manager) {
-		$asset_path = ROOT . 'assets';
+	public function addProcessor(Processor $processor) {
+		$this->_processors[] = $processor;
+	}
 
-		if (!is_dir($asset_path)) {
-			return;
+	/**
+	 * @return AssetManager|null
+	 */
+	public function collectAssets() {
+		$this->_assetPath = $asset_path = ROOT . 'assets';
+
+		if (!is_dir($this->_assetPath)) {
+			return null;
 		}
+
+		foreach ($this->_processors as $processor) {
+			if ($processor instanceof MergableProcessor) {
+				$this->_handleMergableExtension($processor);
+			} else
+				if ($processor instanceof CopyProcessor) {
+				$this->_handleCopyExtension($processor);
+			}
+		}
+
+		return $this->_assetic;
+	}
+
+	/**
+	 * @param MergableProcessor $processor
+	 */
+	private function _handleMergableExtension(MergableProcessor $processor) {
+		$merged_file_names = [];
 
 		$finder = new Finder();
 		$finder
 			->files()
-			->in($asset_path)
-			->sort(function(SplFileInfo $a, SplFileInfo $b) {
-				$a_idx = array_search($a->getRelativePathname(), $this->_priorities);
-				if ($a_idx === false) {
-					return 1;
-				}
-				$b_idx = array_search($b->getRelativePathname(), $this->_priorities);
-				if ($b_idx === false) {
-					return -1;
-				}
-
-				return $a_idx > $b_idx;
-			});
+			->in($this->_assetPath)
+			->name($processor->file_expression);
 
 		foreach ($finder as $file) {
 			/** @var SplFileInfo $file */
 
-			$extension = $file->getExtension();
+			$relative_path_name = $file->getRelativePathname();
 
-			$asset = new FileAsset($file->getPathname(), [], dirname($file->getPathname()));
-
-			// process each file separately
-			switch ($extension) {
-				case 'js':
-					if (strpos($file->getFilename(), '.min.js') === false) {
-						if ($this->_yui_jar && $this->_debug) {
-							$asset->ensureFilter(new JsCompressorFilter($this->_yui_jar));
-						}
+			foreach ($processor->files as $file_name => $file_definition) {
+				// is file attched to any file?
+				foreach ($file_definition->input_files as $idx => $file_regexp) {
+					if (preg_match('/' . ($file_regexp) . '/', $relative_path_name)) {
+						$merged_file_names[$file_name][$idx][] = $relative_path_name;
+						continue 3;
 					}
-					break;
-				case 'css':
-					$asset->setTargetPath('/');
-					$asset->ensureFilter(new CssImportFilter());
-					if (strpos($file->getFilename(), '.min.css') === false) {
-						if ($this->_yui_jar && $this->_debug) {
-							$asset->ensureFilter(new CssCompressorFilter($this->_yui_jar));
-						}
-					}
-			}
-
-			if ($this->_isMerged($extension) && !isset($this->_separate_files[$file->getRelativePathname()])) {
-				if (!$manager->has($extension)) {
-					$collection = new AssetCollection();
-					$collection->setTargetPath('merged.' . $extension);
-					$manager->set($extension, $collection);
-				} else {
-					$collection = $manager->get($extension);
 				}
-				$collection->add($asset);
-			} else {
-				$asset->setTargetPath($file->getRelativePathname());
-				$manager->set(md5($file->getPathname()), $asset);
+			}
+			$merged_file_names[$processor->fallback][1000][] = $relative_path_name;
+		}
+
+		foreach ($merged_file_names as $file_name => $files) {
+			$collection = new AssetCollection();
+			$collection->setTargetPath($file_name);
+
+			$this->_assetic->set(md5($file_name), $collection);
+
+			ksort($files);
+
+			foreach ($files as $file_list) {
+				foreach ($file_list as $relative_file_path) {
+					$asset = new FileAsset(ROOT . 'assets/' . $relative_file_path, [], dirname(ROOT . 'assets/' . $relative_file_path)); //TODO prefix?
+					$collection->add($asset);
+
+					$processor->setFilterForAsset($asset, $relative_file_path);
+				}
 			}
 		}
 	}
 
 	/**
-	 * @param string $extension
-	 * @return boolean
+	 * @param CopyProcessor $definition
 	 */
-	private function _isMerged($extension) {
-		return in_array($extension, $this->_mergable);
+	private function _handleCopyExtension(CopyProcessor $definition) {
+		$finder = new Finder();
+		$finder
+			->files()
+			->in($this->_assetPath)
+			->name($definition->file_expression);
+
+		foreach ($finder as $file) {
+			/** @var SplFileInfo $file */
+			$asset = new FileAsset($file->getPathname(), [], dirname($file->getPathname()));
+			$asset->setTargetPath($file->getRelativePathname());
+			$this->_assetic->set(md5($file->getPathname()), $asset);
+		}
 	}
 }

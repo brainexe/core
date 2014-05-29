@@ -59,7 +59,7 @@ class CreateUserCommand extends Command {
 		$user->roles = $roles;
 
 		$session = new Session(new MockArraySessionStorage());
-		$user_id = $this->_register->register($user, $session);
+		$user_id = $this->_register->register($user, $session, null);
 
 		$output->writeln(sprintf("New user-id: <info>%d</info>", $user_id));
 	}
