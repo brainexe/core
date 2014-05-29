@@ -10,8 +10,8 @@
 		}
 	],
 	"autoload": {
-		"psr-0": {
-			"Matze\\Core": "src/"
+		"psr-4": {
+			"Matze\\Core\\": "src/"
 		}
 	},
 	"repositories": [
