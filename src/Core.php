@@ -13,7 +13,7 @@ use Symfony\Component\Finder\SplFileInfo;
 define('CORE_ROOT', __DIR__);
 
 if (!defined('ROOT')) {
-	define('ROOT', realpath(CORE_ROOT . '/../../../').'/');
+	define('ROOT', realpath(CORE_ROOT . '/../').'/');
 }
 
 if (!defined('MATZE_VENDOR_ROOT')) {
@@ -69,7 +69,7 @@ class Core {
 
 		$annotation_loader = new AnnotationLoader($container_builder);
 		$annotation_loader->load('src/');
-		$annotation_loader->load(CORE_ROOT . '/../../');
+		$annotation_loader->load(CORE_ROOT);
 
 		$container_builder->addCompilerPass(new GlobalCompilerPass());
 		$container_builder->compile();
