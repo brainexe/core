@@ -33,12 +33,12 @@ class ErrorView {
 
 	/**
 	 * @param Request $request
-	 * @param Exception $e
+	 * @param Exception $exception
 	 * @return string
 	 */
-	public function renderException(Request $request, Exception $e) {
+	public function renderException(Request $request, Exception $exception) {
 		$content = $this->render($this->_value_error_template, [
-			'exception' => $e,
+			'exception' => $exception,
 			'debug' => $this->_value_debug,
 			'request' => $request,
 		]);

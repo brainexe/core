@@ -22,10 +22,19 @@ trait TwigTrait {
 	/**
 	 * @param string $name
 	 * @param array $context
+	 * @return string
+	 */
+	public function render($name, array $context = []) {
+		return $this->_twig->render($name, $context);
+	}
+
+	/**
+	 * @param string $name
+	 * @param array $context
 	 * @return Response
 	 */
-	protected function render($name, array $context = []) {
-		return new Response($this->_twig->render($name, $context));
+	protected function renderToResponse($name, array $context = []) {
+		return new Response($this->render($name, $context));
 	}
 
 }

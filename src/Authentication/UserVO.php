@@ -34,6 +34,9 @@ class UserVO implements UserInterface {
 	 */
 	public $email;
 
+	/**
+	 * @var string[]
+	 */
 	public $roles = [];
 
 	/**

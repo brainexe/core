@@ -42,6 +42,7 @@ class DatabaseUserProvider implements UserProviderInterface {
 		$user = new UserVO();
 		$user->id = $user_id;
 		$user->username = $redis_user['username'];
+		$user->email = isset($redis_user['email']) ? $redis_user['email'] : '';
 		$user->password_hash = $redis_user['password'];
 		$user->roles = array_filter(explode(',', $redis_user['roles']));
 
