@@ -2,17 +2,30 @@
 
 namespace Matze\Core\Twig;
 
+use Twig_SimpleFilter;
+
 /**
  * @TwigExtension
  */
 class UtilExtension extends \Twig_Extension {
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function getFunctions() {
 		return [
 			'print_r' => new \Twig_Function_Method($this, 'print_r', ['is_safe' => ['all']])
 		];
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
+	public function getFilters() {
+		return [
+			new Twig_SimpleFilter('sum', 'array_sum'),
+		];
+	}
 	/**
 	 * @param mixed $variable
 	 * @return string mixed
