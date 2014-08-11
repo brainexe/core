@@ -2,14 +2,12 @@
 
 namespace Matze\Core\Console;
 
+use Assetic\Asset\AssetCollection;
+use Assetic\Asset\FileAsset;
 use Assetic\AssetWriter;
 use Matze\Core\Assets\AssetCollector;
 use Matze\Core\Assets\AssetUrl;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
@@ -58,7 +56,21 @@ class AssetsDumpCommand extends AbstractCommand {
 		if (OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity()) {
 			foreach ($manager->getNames() as $name) {
 				$asset_colector = $manager->get($name);
-				$output->writeln($asset_colector->getTargetPath());
+
+				$target_path = $asset_colector->getTargetPath();
+				$output->writeln("<info>$target_path</info>");
+
+				if ($asset_colector instanceof AssetCollection) {
+					foreach ($asset_colector->all() as $asset) {
+						/** @var FileAsset $asset */
+						$source_file = $asset->getSourceDirectory().'/'.$asset->getSourcePath();
+						$file_size = filesize($source_file);
+						$output->writeln(sprintf('->%s (%2.1fkb)', $asset->getSourcePath(), $file_size / 1000));
+					}
+				}
+
+				$file_size = filesize($cache_dir.'/'.$target_path);
+				$output->writeln(sprintf("<info>->%2.1fkb</info>\n", $file_size/1000));
 			}
 		}
 
