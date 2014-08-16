@@ -23,9 +23,11 @@ class UtilExtension extends \Twig_Extension {
 	 */
 	public function getFilters() {
 		return [
-			new Twig_SimpleFilter('sum', 'array_sum'),
+			new Twig_SimpleFilter('sum', 'array_sum', ['is_safe' => ['all']]),
+			new Twig_SimpleFilter('json', 'json_encode', ['is_safe' => ['all']]),
 		];
 	}
+
 	/**
 	 * @param mixed $variable
 	 * @return string mixed
