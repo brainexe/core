@@ -5,6 +5,7 @@ namespace Matze\Core\Middleware;
 use Exception;
 use Matze\Core\Application\ErrorView;
 use Matze\Core\Application\UserException;
+use Matze\Core\Traits\ServiceContainerTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
@@ -15,17 +16,7 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
  */
 class UserExceptionMiddleware extends AbstractMiddleware {
 
-	/**
-	 * @var ErrorView
-	 */
-	private $_error_view;
-
-	/**
-	 * @Inject("@ErrorView")
-	 */
-	public function __construct(ErrorView $error_view) {
-		$this->_error_view = $error_view;
-	}
+	use ServiceContainerTrait;
 
 	/**
 	 * @param Request $request
@@ -41,8 +32,21 @@ class UserExceptionMiddleware extends AbstractMiddleware {
 			$response->setStatusCode(405);
 		}
 
-		$response_string = $this->_error_view->renderException($request, $exception);
+		if ($request->isXmlHttpRequest()) {
+			$response_array = [
+				'error' => $exception->getMessage()
+			];
 
-		$response->setContent($response_string);
+			$response->setContent(json_encode($response_array));
+			$response->headers->set('Content-Type', 'application/json');
+			$response->setStatusCode(500);
+
+		} else {
+			/** @var ErrorView $error_view */
+			$error_view = $this->getService('ErrorView');
+			$response_string = $error_view->renderException($request, $exception);
+			$response->setContent($response_string);
+		}
+
 	}
 }

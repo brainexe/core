@@ -7,7 +7,7 @@ use Matze\Core\Traits\TwigTrait;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @Service(public=false)
+ * @Service
  */
 class ErrorView {
 
