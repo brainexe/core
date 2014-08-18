@@ -6,6 +6,7 @@ use Matze\Core\Controller\AbstractController;
 use Matze\Core\Traits\ServiceContainerTrait;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 abstract class AbstractAuthenticationController extends AbstractController {
 
@@ -39,7 +40,7 @@ abstract class AbstractAuthenticationController extends AbstractController {
 
 		$this->_addFlash($request, self::ALERT_SUCCESS, sprintf('Welcome %s', $user_vo->username));
 
-		return new RedirectResponse('/');
+		return new JsonResponse($user_vo);
 	}
 
 	/**

@@ -2,10 +2,11 @@
 
 namespace Matze\Core\Authentication;
 
+use JsonSerializable;
 use Symfony\Component\Security\Core\Role\Role;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class UserVO implements UserInterface {
+class UserVO implements UserInterface, JsonSerializable {
 	const ROLE_ADMIN = 'admin';
 	const ROLE_USER = 'user';
 
@@ -82,5 +83,15 @@ class UserVO implements UserInterface {
 	 */
 	public function eraseCredentials() {
 		$this->password = null;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function jsonSerialize() {
+		return [
+			'id' => $this->id,
+			'username' => $this->username,
+		];
 	}
 }
