@@ -108,6 +108,8 @@ class DatabaseUserProvider implements UserProviderInterface {
 
 		$redis->exec();
 
+		$user->id = $new_user_id;
+
 		return $new_user_id;
 	}
 }

@@ -64,7 +64,8 @@ abstract class AbstractAuthenticationController extends AbstractController {
 
 		$this->_addFlash($request, self::ALERT_SUCCESS, sprintf('Welcome %s', $user_vo->username));
 
-		return new RedirectResponse('/');
+		return new JsonResponse($user_vo);
+
 	}
 
 	/**
@@ -75,6 +76,6 @@ abstract class AbstractAuthenticationController extends AbstractController {
 	public function logout(Request $request) {
 		$request->getSession()->set('user', null);
 
-		return new RedirectResponse('/');
+		return new JsonResponse(new AnonymusUserVO());
 	}
 } 
