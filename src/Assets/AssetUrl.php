@@ -11,6 +11,14 @@ class AssetUrl {
 	const HASH_LENGTH = 12;
 
 	/**
+	 * @Inject("%cdn.url%")
+	 * @param $cdn_url
+	 */
+	public function __construct($cdn_url) {
+		$this->_cdn_url = $cdn_url;
+	}
+
+	/**
 	 * @var string[]
 	 */
 	private $_hashes = null;
@@ -36,9 +44,7 @@ class AssetUrl {
 	public function getAssetUrl($path) {
 		$hash = $this->getHash($path);
 
-		$base_path = '/';
-
-		return sprintf('%s%s?%s', $base_path, $path, $hash);
+		return sprintf('%s%s?%s', $this->_cdn_url, $path, $hash);
 	}
 
 	private function _initHashes() {

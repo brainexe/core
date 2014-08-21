@@ -13,8 +13,6 @@ use Symfony\Component\Routing\Route;
  */
 class AuthenticationMiddleware extends AbstractMiddleware {
 
-	use LoggerTrait;
-
 	/**
 	 * @var
 	 */
@@ -41,6 +39,7 @@ class AuthenticationMiddleware extends AbstractMiddleware {
 			return null;
 		}
 
+		// todo create @guest annotation
 		if (strpos($route_name, 'authenticate.') === 0) {
 			return null;
 		}

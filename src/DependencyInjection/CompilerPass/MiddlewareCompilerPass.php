@@ -20,6 +20,9 @@ class MiddlewareCompilerPass implements CompilerPassInterface {
 		$service_ids = $container->findTaggedServiceIds(self::TAG);
 		$service_priorities = [];
 		foreach ($service_ids as $service_id => $tag) {
+			if (null === $tag[0]['priority']) {
+				continue;
+			}
 			$service_priorities[$service_id] = $tag[0]['priority'];
 		}
 

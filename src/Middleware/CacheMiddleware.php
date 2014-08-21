@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Route;
 
 /**
- * @Middleware(priority=20)
+ * @Middleware(priority=null)
  */
 class CacheMiddleware extends AbstractMiddleware {
 

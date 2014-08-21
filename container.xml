@@ -11,6 +11,7 @@
 		<parameter key="redis.password"/>
 		<parameter key="redis.database">0</parameter>
 
+		<parameter key="cdn.url">/</parameter>
 		<parameter key="cache.dir">%application.root%cache/</parameter>
 		<parameter key="template.dir">%application.root%templates/</parameter>
 		<parameter key="logger.dir">%application.root%logs/</parameter>

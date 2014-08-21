@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Route;
 
 /**
- * @Middleware(priority=4)
+ * @Middleware(priority=null)
  */
 class LocaleMiddleware extends AbstractMiddleware {
 

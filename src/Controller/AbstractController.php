@@ -9,8 +9,6 @@ use Symfony\Component\HttpFoundation\Session\Session;
 
 abstract class AbstractController {
 
-	use TwigTrait;
-
 	const ALERT_WARNING = 'warning';
 	const ALERT_INFO = 'info';
 	const ALERT_SUCCESS = 'success';
