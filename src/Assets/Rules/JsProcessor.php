@@ -1,9 +1,9 @@
 <?php
 
 namespace Matze\Core\Assets\Rules;
+
 use Assetic\Asset\FileAsset;
 use Assetic\Filter\Yui\JsCompressorFilter;
-use Symfony\Component\Finder\SplFileInfo;
 
 /**
  * @Service("Assets.JsProcessor", public=false)

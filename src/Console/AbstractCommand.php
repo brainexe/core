@@ -44,5 +44,10 @@ abstract class AbstractCommand extends Command {
 		}
 	}
 
+	/**
+	 * @param InputInterface $input
+	 * @param OutputInterface $output
+	 * @return mixed
+	 */
 	abstract protected function doExecute(InputInterface $input, OutputInterface $output);
 } 

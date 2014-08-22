@@ -9,7 +9,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 /**
- * @Service(public=false)
+ * @Service(public=true)
  */
 class DatabaseUserProvider implements UserProviderInterface {
 
@@ -81,11 +81,31 @@ class DatabaseUserProvider implements UserProviderInterface {
 
 	/**
 	 * @param string $password
-	 * @return string
-	 * @todo replace by password_hash()
+	 * @return string $hash
 	 */
 	public function generateHash($password) {
-		return sha1($password.md5($password));
+		return password_hash($password, PASSWORD_BCRYPT);
+	}
+
+	/**
+	 * @param string $password
+	 * @param string $hash
+	 * @return boolean
+	 */
+	public function verifyHash($password, $hash) {
+		return password_verify($password, $hash);
+	}
+
+	/**
+	 * @param integer $user_id
+	 * @param string $new_password
+	 */
+	public function changePassword($user_id, $new_password) {
+		$redis = $this->getRedis();
+
+		$password_hash = $this->generateHash($new_password);
+
+		$redis->HSET($this->_getKey($user_id), 'password', $password_hash);
 	}
 
 	/**

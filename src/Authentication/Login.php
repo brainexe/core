@@ -35,8 +35,7 @@ class Login {
 			throw new UserException("Invalid Username");
 		}
 
-		$hashed_password = $this->_user_provider->generateHash($password);
-		if ($hashed_password !== $user_vo->getPassword()) {
+		if (!$this->_user_provider->verifyHash($password, $user_vo->getPassword())) {
 			throw new UserException("Invalid Password");
 		}
 

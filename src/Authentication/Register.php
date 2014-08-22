@@ -54,7 +54,7 @@ class Register {
 		}
 
 		if (!$this->_registration_enabled) {
-			if (empty($token) || !$this->_register_tokens->fetchToken($token)) {
+			if ($token !== null || !$this->_register_tokens->fetchToken($token)) {
 				throw new UserException("You have to provide a valid register token!");
 			}
 		}

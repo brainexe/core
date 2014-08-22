@@ -2,7 +2,6 @@
 
 namespace Matze\Core\Middleware;
 
-use Matze\Core\Traits\LoggerTrait;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -39,6 +38,12 @@ class AuthenticationMiddleware extends AbstractMiddleware {
 			return null;
 		}
 
+		$session = $request->getSession();
+		$user = $session ? $session->get('user') : null;
+		$logged_id = $user && $user->id > 0;
+
+		$request->attributes->set('user', $user);
+
 		// todo create @guest annotation
 		if (strpos($route_name, 'authenticate.') === 0) {
 			return null;
@@ -46,10 +51,6 @@ class AuthenticationMiddleware extends AbstractMiddleware {
 		if ($route_name === 'index') {
 			return null;
 		}
-
-		$session = $request->getSession();
-		$user = $session ? $session->get('user') : null;
-		$logged_id = $user && $user->id > 0;
 
 		if (!$logged_id) {
 			return new RedirectResponse('#/login');

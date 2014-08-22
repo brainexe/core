@@ -14,18 +14,6 @@ abstract class AbstractAuthenticationController extends AbstractController {
 
 	/**
 	 * @param Request $request
-	 * @Route("/register/", name="authenticate.register", methods="GET")
-	 */
-	abstract public function registerForm(Request $request);
-
-	/**
-	 * @param Request $request
-	 * @Route("/login/", name="authenticate.login", methods="GET")
-	 */
-	abstract public function loginForm(Request $request);
-
-	/**
-	 * @param Request $request
 	 * @return RedirectResponse
 	 * @Route("/login/", name="authenticate.doLogin", methods="POST")
 	 */
@@ -41,6 +29,23 @@ abstract class AbstractAuthenticationController extends AbstractController {
 		$this->_addFlash($request, self::ALERT_SUCCESS, sprintf('Welcome %s', $user_vo->username));
 
 		return new JsonResponse($user_vo);
+	}
+
+	/**
+	 * @param Request $request
+	 * @return JsonResponse
+	 * @Route("/user/change_password/", name="user.change_password", methods="POST")
+	 */
+	public function changePassword(Request $request) {
+		$new_password = $request->request->get('password');
+		/** @var UserVO $user */
+		$user = $request->attributes->get('user');
+
+		/** @var DatabaseUserProvider $user_provider */
+		$user_provider = $this->getService('DatabaseUserProvider');
+		$user_provider->changePassword($user->id, $new_password);
+
+		return new JsonResponse(true);
 	}
 
 	/**

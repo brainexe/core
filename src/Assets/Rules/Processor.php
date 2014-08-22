@@ -3,7 +3,6 @@
 namespace Matze\Core\Assets\Rules;
 
 use Assetic\Asset\FileAsset;
-use Symfony\Component\Finder\SplFileInfo;
 
 class Processor {
 

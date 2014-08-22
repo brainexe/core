@@ -1,6 +1,7 @@
 <?php
 
 namespace Matze\Core\Assets\Rules;
+
 /**
  * @Service("Assets.TemplateProcessor", public=false)
  */

@@ -3,7 +3,6 @@
 namespace Matze\Core\Controller;
 
 use Matze\Core\Authentication\UserVO;
-use Matze\Core\Traits\TwigTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 
