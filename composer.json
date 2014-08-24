@@ -31,6 +31,7 @@
 		"symfony/routing": "~2.4",
 		"symfony/security": "~2.4",
 
+		"spomky-lab/otphp": "3.*",
 		"kriswallsmith/assetic": "dev-master",
 		"matze/annotations": "dev-master",
 		"monolog/monolog": "~1.9",
