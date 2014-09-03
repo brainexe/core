@@ -16,6 +16,7 @@ class TransExtension extends Twig_Extension {
 
 	/**
 	 * @Inject("@TransExtensionTokenParser")
+	 * @param TransExtensionTokenParser $trans_extension_token_parser
 	 */
 	public function __construct(TransExtensionTokenParser $trans_extension_token_parser) {
 		$this->trans_extension_token_parser = $trans_extension_token_parser;

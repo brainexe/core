@@ -28,6 +28,11 @@ class UserVO implements UserInterface, JsonSerializable {
 	/**
 	 * @var string
 	 */
+	public $one_time_secret;
+
+	/**
+	 * @var string
+	 */
 	public $password;
 
 	/**

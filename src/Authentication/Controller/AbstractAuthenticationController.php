@@ -1,7 +1,12 @@
 <?php
 
-namespace Matze\Core\Authentication;
+namespace Matze\Core\Authentication\Controller;
 
+use Matze\Core\Authentication\AnonymusUserVO;
+use Matze\Core\Authentication\DatabaseUserProvider;
+use Matze\Core\Authentication\Login;
+use Matze\Core\Authentication\Register;
+use Matze\Core\Authentication\UserVO;
 use Matze\Core\Controller\AbstractController;
 use Matze\Core\Traits\ServiceContainerTrait;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -20,11 +25,12 @@ abstract class AbstractAuthenticationController extends AbstractController {
 	public function doLogin(Request $request) {
 		$username = $request->request->get('username');
 		$plain_password = $request->request->get('password');
+		$one_time_token = $request->request->get('one_time_token');
 
 		/** @var Login $login */
 		$login = $this->getService('Login');
 
-		$user_vo = $login->tryLogin($username, $plain_password, $request->getSession());
+		$user_vo = $login->tryLogin($username, $plain_password, $one_time_token, $request->getSession());
 
 		$this->_addFlash($request, self::ALERT_SUCCESS, sprintf('Welcome %s', $user_vo->username));
 
@@ -43,7 +49,7 @@ abstract class AbstractAuthenticationController extends AbstractController {
 
 		/** @var DatabaseUserProvider $user_provider */
 		$user_provider = $this->getService('DatabaseUserProvider');
-		$user_provider->changePassword($user->id, $new_password);
+		$user_provider->changePassword($user, $new_password);
 
 		return new JsonResponse(true);
 	}
@@ -70,13 +76,12 @@ abstract class AbstractAuthenticationController extends AbstractController {
 		$this->_addFlash($request, self::ALERT_SUCCESS, sprintf('Welcome %s', $user_vo->username));
 
 		return new JsonResponse($user_vo);
-
 	}
 
 	/**
 	 * @param Request $request
 	 * @return RedirectResponse
-	 * @Route("/logout/", name="authenticate.logout")
+	 * @Route("/logout/", name="user.logout")
 	 */
 	public function logout(Request $request) {
 		$request->getSession()->set('user', null);

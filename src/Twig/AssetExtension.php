@@ -1,12 +1,14 @@
 <?php
 
 namespace Matze\Core\Twig;
+
 use Matze\Core\Assets\AssetUrl;
+use Twig_Extension;
 
 /**
  * @TwigExtension
  */
-class AssetExtension extends \Twig_Extension {
+class AssetExtension extends Twig_Extension {
 
 	/**
 	 * @var AssetUrl
@@ -15,6 +17,7 @@ class AssetExtension extends \Twig_Extension {
 
 	/**
 	 * @Inject("@AssetUrl")
+	 * @param AssetUrl $asset_url
 	 */
 	public function __construct(AssetUrl $asset_url) {
 		$this->_asset_url = $asset_url;

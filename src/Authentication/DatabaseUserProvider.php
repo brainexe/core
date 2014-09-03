@@ -45,6 +45,7 @@ class DatabaseUserProvider implements UserProviderInterface {
 		$user->username = $redis_user['username'];
 		$user->email = isset($redis_user['email']) ? $redis_user['email'] : '';
 		$user->password_hash = $redis_user['password'];
+		$user->one_time_secret = $redis_user['one_time_secret'];
 		$user->roles = array_filter(explode(',', $redis_user['roles']));
 
 		return $user;
@@ -72,14 +73,6 @@ class DatabaseUserProvider implements UserProviderInterface {
 	}
 
 	/**
-	 * @param integer $user_id
-	 * @return string
-	 */
-	private function _getKey($user_id) {
-		return sprintf(self::REDIS_USER, $user_id);
-	}
-
-	/**
 	 * @param string $password
 	 * @return string $hash
 	 */
@@ -97,15 +90,25 @@ class DatabaseUserProvider implements UserProviderInterface {
 	}
 
 	/**
-	 * @param integer $user_id
+	 * @param UserVO $user
 	 * @param string $new_password
 	 */
-	public function changePassword($user_id, $new_password) {
+	public function changePassword(UserVO $user, $new_password) {
+		$password_hash = $this->generateHash($new_password);
+		$user->password = $password_hash;
+
+		$this->setUserProperty($user, 'password');
+	}
+
+	/**
+	 * @param UserVO $user_vo
+	 * @param string $property
+	 */
+	public function setUserProperty(UserVO $user_vo, $property) {
 		$redis = $this->getRedis();
 
-		$password_hash = $this->generateHash($new_password);
-
-		$redis->HSET($this->_getKey($user_id), 'password', $password_hash);
+		$value = $user_vo->$property;
+		$redis->HSET($this->_getKey($user_vo->id), $property, $value);
 	}
 
 	/**
@@ -132,4 +135,13 @@ class DatabaseUserProvider implements UserProviderInterface {
 
 		return $new_user_id;
 	}
+
+	/**
+	 * @param integer $user_id
+	 * @return string
+	 */
+	private function _getKey($user_id) {
+		return sprintf(self::REDIS_USER, $user_id);
+	}
+
 }

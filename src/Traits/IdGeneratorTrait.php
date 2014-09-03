@@ -4,9 +4,6 @@ namespace Matze\Core\Traits;
 
 use Matze\Core\Util\IdGenerator;
 
-/**
- * @todo remove: include service as @Inject
- */
 trait IdGeneratorTrait {
 	/**
 	 * @var IdGenerator
@@ -28,9 +25,10 @@ trait IdGeneratorTrait {
 	}
 
 	/**
+	 * @param integer $length
 	 * @return string
 	 */
-	protected function generateRandomId() {
-		return $this->_id_generator->generateRandomId();
+	protected function generateRandomId($length = IdGenerator::ID_LENGTH) {
+		return $this->_id_generator->generateRandomId($length);
 	}
 } 

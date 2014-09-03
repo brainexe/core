@@ -2,6 +2,7 @@
 
 namespace Matze\Core\Middleware;
 
+use Matze\Core\Authentication\DatabaseUserProvider;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,12 +17,19 @@ class AuthenticationMiddleware extends AbstractMiddleware {
 	 * @var
 	 */
 	private $_application_guests_allowed;
+	/**
+	 * @var DatabaseUserProvider
+	 */
+	private $_database_user_provider;
 
 	/**
-	 * @Inject("%application.guests_allowed%")
+	 * @Inject({"%application.guests_allowed%", "@DatabaseUserProvider"})
+	 * @param boolean $application_guests_allowed
+	 * @param DatabaseUserProvider $database_user_provider
 	 */
-	public function __construct($application_guests_allowed) {
+	public function __construct($application_guests_allowed, DatabaseUserProvider $database_user_provider) {
 		$this->_application_guests_allowed = $application_guests_allowed;
+		$this->_database_user_provider = $database_user_provider;
 	}
 
 	/**
@@ -39,16 +47,18 @@ class AuthenticationMiddleware extends AbstractMiddleware {
 		}
 
 		$session = $request->getSession();
-		$user = $session ? $session->get('user') : null;
-		$logged_id = $user && $user->id > 0;
+		$user_id = $session->get('user_id');
+		$logged_id = $user_id > 0;
 
-		$request->attributes->set('user', $user);
+		if ($logged_id) {
+			$user = $this->_database_user_provider->loadUserById($user_id);
+			$request->attributes->set('user', $user);
+		}
+
+		$request->attributes->set('user_id', $user_id);
 
 		// todo create @guest annotation
-		if (strpos($route_name, 'authenticate.') === 0) {
-			return null;
-		}
-		if ($route_name === 'index') {
+		if (strpos($route_name, 'authenticate.') === 0 || $route_name === 'index') {
 			return null;
 		}
 

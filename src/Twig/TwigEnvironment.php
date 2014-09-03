@@ -2,9 +2,10 @@
 
 namespace Matze\Core\Twig;
 
+use Twig_Environment;
 use Twig_NodeInterface;
 
-class TwigEnvironment extends \Twig_Environment {
+class TwigEnvironment extends Twig_Environment {
 
 	/**
 	 * Trim all whitespaces in compiled code

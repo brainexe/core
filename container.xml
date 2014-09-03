@@ -25,6 +25,11 @@
 		<parameter key="application.guests_allowed">false</parameter>
 		<parameter key="application.registration_enabled">true</parameter>
 
+		<parameter key="totp.label">%application.name%</parameter>
+		<parameter key="totp.interval">30</parameter>
+		<parameter key="totp.digits">6</parameter>
+		<parameter key="totp.digest">sha1</parameter>
+
 		<parameter key="yui.jar">/usr/share/yui-compressor/yui-compressor.jar</parameter>
 	</parameters>
 
@@ -51,6 +56,38 @@
 				<argument key="debug">%debug%</argument>
 				<argument key="auto_reload">%debug%</argument>
 			</argument>
+		</service>
+
+		<service id="twig_angular" parent="twig" public="true">
+			<call method="setLexer">
+				<argument type="service">
+					<service class="Twig_Lexer">
+						<argument type="service" id="Twig">
+						</argument>
+						<argument type="collection">
+							<argument type="collection" key="tag_comment">
+								<argument type="collection">
+									<argument>{##</argument>
+									<argument>##}</argument>
+								</argument>
+							</argument>
+							<argument type="collection" key="tag_block">
+								<argument type="collection">
+									<argument>{%%</argument>
+									<argument>%%}</argument>
+								</argument>
+							</argument>
+
+							<!--'tag_comment'     => array('{#', '#}'),-->
+							<!--'tag_block'       => array('{%', '%}'),-->
+							<!--'tag_variable'    => array('{{', '}}'),-->
+							<!--'whitespace_trim' => '-',-->
+							<!--'interpolation'   => array('#{', '}'),-->
+
+						</argument>
+					</service>
+				</argument>
+			</call>
 		</service>
 
 		<service id="TwigCompiler" parent="twig" public="false"/>

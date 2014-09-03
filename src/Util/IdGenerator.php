@@ -1,6 +1,7 @@
 <?php
 
 namespace Matze\Core\Util;
+use Base32\Base32;
 
 /**
  * @Service(public=false)
@@ -23,6 +24,6 @@ class IdGenerator {
 	public function generateRandomId($length = self::ID_LENGTH) {
 		$id = md5(microtime() . mt_rand());
 
-		return substr(base_convert($id, 16, 36), 0, $length);
+		return substr(Base32::encode($id), 0, $length);
 	}
 }
