@@ -44,7 +44,9 @@ class AssetUrl {
 	public function getAssetUrl($path) {
 		$hash = $this->getHash($path);
 
-		return sprintf('%s%s?%s', $this->_cdn_url, $path, $hash);
+		list($name, $extension) = explode('.', $path, 2);
+
+		return sprintf('%s%s-%s.%s', $this->_cdn_url, $name, $hash, $extension);
 	}
 
 	private function _initHashes() {

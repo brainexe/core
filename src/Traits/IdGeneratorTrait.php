@@ -12,8 +12,9 @@ trait IdGeneratorTrait {
 
 	/**
 	 * @Inject("@IdGenerator")
+	 * @param IdGenerator $id_generator
 	 */
-	public function setIdGenerator($id_generator) {
+	public function setIdGenerator(IdGenerator $id_generator) {
 		$this->_id_generator = $id_generator;
 	}
 

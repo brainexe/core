@@ -80,15 +80,21 @@ class AssetsDumpCommand extends AbstractCommand {
 			->in($cache_dir)
 			->notName('*.php');
 
-		$md5 = [];
+		$md5s = [];
 		foreach ($new_files as $file) {
 			/** @var SplFileInfo $file */
 			$path = $file->getPathname();
-			$md5[$file->getRelativePathname()] = substr(base_convert(md5_file($path), 16, 36), 0, 10);
+			$md5 = substr(base_convert(md5_file($path), 16, 36), 0, 10);
+			$md5s[$file->getRelativePathname()] = $md5;
+
+			$old_path = $file->getPathname();
+			$new_path = preg_replace('/.(\w*)$/', '-' . $md5 .'.$1', $old_path);
+
+			copy($old_path, $new_path);
 		}
 
 		$md5_file = sprintf('%s%s', ROOT, AssetUrl::HASH_FILE);
-		$content = sprintf('<?php return %s;', var_export($md5, true));
+		$content = sprintf('<?php return %s;', var_export($md5s, true));
 		file_put_contents($md5_file, $content);
 	}
 

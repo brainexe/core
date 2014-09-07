@@ -14,7 +14,7 @@ class TwigEnvironment extends Twig_Environment {
 	public function compile(Twig_NodeInterface $node) {
 		$content = parent::compile($node);
 
-		$content = str_replace("\\t", '', $content);
+		$content = str_replace("\t", '', $content);
 		$content = preg_replace('/>\s+</m', '><', $content);
 		$content = preg_replace('/<!--[^>]*-->/', '', $content);
 

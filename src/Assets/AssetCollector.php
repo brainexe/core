@@ -126,8 +126,13 @@ class AssetCollector {
 
 		foreach ($finder as $file) {
 			/** @var SplFileInfo $file */
+			$relative_file_path = $file->getRelativePathname();
+
 			$asset = new FileAsset($file->getPathname(), [], dirname($file->getPathname()));
-			$asset->setTargetPath($file->getRelativePathname());
+			$asset->setTargetPath($relative_file_path);
+
+			$definition->setFilterForAsset($asset, $relative_file_path);
+
 			$this->_assetic->set(md5($file->getPathname()), $asset);
 		}
 	}

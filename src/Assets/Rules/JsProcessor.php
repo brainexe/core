@@ -18,10 +18,12 @@ class JsProcessor extends MergableProcessor {
 	 * {@inheritdoc}
 	 */
 	public function setFilterForAsset(FileAsset $asset, $relative_file_path) {
-		if (strpos($relative_file_path, '.min.js') === false) {
-			if ($this->_yui_jar && !$this->_debug) {
-				$asset->ensureFilter(new JsCompressorFilter($this->_yui_jar));
-			}
+		if ($this->_debug) {
+			return;
+		}
+
+		if($this->_yui_jar) {
+			$asset->ensureFilter(new JsCompressorFilter($this->_yui_jar));
 		}
 	}
 

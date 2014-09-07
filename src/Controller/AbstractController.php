@@ -29,7 +29,7 @@ abstract class AbstractController {
 	 * @return UserVO|null
 	 */
 	protected function _getCurrentUser(Request $request) {
-		$user = $request->getSession()->get('user');
+		$user = $request->attributes->get('user');
 
 		if (empty($user)) {
 			return new UserVO();
