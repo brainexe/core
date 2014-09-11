@@ -8,20 +8,25 @@ namespace Matze\Core\Assets;
 class AssetUrl {
 
 	const HASH_FILE = 'cache/assets.php';
-	const HASH_LENGTH = 12;
-
-	/**
-	 * @Inject("%cdn.url%")
-	 * @param $cdn_url
-	 */
-	public function __construct($cdn_url) {
-		$this->_cdn_url = $cdn_url;
-	}
+	const HASH_LENGTH = 6;
 
 	/**
 	 * @var string[]
 	 */
-	private $_hashes = null;
+	private $_hashes = [];
+
+	/**
+	 * @var boolean
+	 */
+	private $_initialized = false;
+
+	/**
+	 * @Inject("%cdn.url%")
+	 * @param string $cdn_url
+	 */
+	public function __construct($cdn_url) {
+		$this->_cdn_url = $cdn_url;
+	}
 
 	/**
 	 * @param string $path
@@ -44,13 +49,27 @@ class AssetUrl {
 	public function getAssetUrl($path) {
 		$hash = $this->getHash($path);
 
-		list($name, $extension) = explode('.', $path, 2);
+		if (empty($hash)) {
+			echo "no hash: $path\n";
+			return sprintf('%s%s', $this->_cdn_url, $path);
+		} else {
+			echo "hash: $path $hash\n";
 
-		return sprintf('%s%s-%s.%s', $this->_cdn_url, $name, $hash, $extension);
+			list($name, $extension) = explode('.', $path, 2);
+			return sprintf('%s%s-%s.%s', $this->_cdn_url, $name, $hash, $extension);
+		}
+	}
+
+	/**
+	 * @param string $path
+	 * @param string $hash
+	 */
+	public function addHash($path, $hash) {
+		$this->_hashes[$path] = $hash;
 	}
 
 	private function _initHashes() {
-		if (null !== $this->_hashes) {
+		if ($this->_initialized) {
 			return;
 		}
 
@@ -59,6 +78,7 @@ class AssetUrl {
 			$this->_hashes = [];
 			return;
 		}
+		$this->_initialized = true;
 
 		$this->_hashes = include $file;
 	}

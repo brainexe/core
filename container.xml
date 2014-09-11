@@ -31,6 +31,7 @@
 		<parameter key="totp.digest">sha1</parameter>
 
 		<parameter key="yui.jar">/usr/share/yui-compressor/yui-compressor.jar</parameter>
+		<parameter key="closure.jar">/usr/share/java/closure-compiler.jar</parameter>
 	</parameters>
 
     <services>

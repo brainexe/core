@@ -2,7 +2,6 @@
 
 namespace Matze\Core\Assets;
 
-use Assetic\Asset\AssetCollection;
 use Assetic\Asset\FileAsset;
 use Matze\Core\Assets\Rules\CopyProcessor;
 use Matze\Core\Assets\Rules\Processor;
@@ -32,6 +31,7 @@ class AssetCollector {
 
 	/**
 	 * @Inject("@Assetic")
+	 * @param AssetManager $assetic
 	 */
 	public function __construct(AssetManager $assetic) {
 		$this->_assetic = $assetic;
@@ -96,7 +96,7 @@ class AssetCollector {
 		}
 
 		foreach ($merged_file_names as $file_name => $files) {
-			$collection = new AssetCollection();
+			$collection = new MergedFileCollection();
 			$collection->setTargetPath($file_name);
 
 			$this->_assetic->set(md5($file_name), $collection);
@@ -107,10 +107,9 @@ class AssetCollector {
 				foreach ($file_list as $relative_file_path) {
 					$asset = new FileAsset(ROOT . 'assets/' . $relative_file_path, [], dirname(ROOT . 'assets/' . $relative_file_path)); //TODO prefix?
 					$collection->add($asset);
-
-					$processor->setFilterForAsset($asset, $relative_file_path);
 				}
 			}
+			$processor->setFilterForAsset($collection, $file_name);
 		}
 	}
 

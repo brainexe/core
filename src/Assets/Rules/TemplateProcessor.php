@@ -2,7 +2,7 @@
 
 namespace Matze\Core\Assets\Rules;
 
-use Assetic\Asset\FileAsset;
+use Assetic\Asset\AssetInterface;
 use Matze\Core\Assets\Filters\StripWhiteSpaceHtmlFilter;
 
 /**
@@ -16,7 +16,7 @@ class TemplateProcessor extends CopyProcessor {
 	/**
 	 * {@inheritdoc}
 	 */
-	public function setFilterForAsset(FileAsset $asset, $relative_file_path) {
+	public function setFilterForAsset(AssetInterface $asset, $relative_file_path) {
 		$asset->ensureFilter(new StripWhiteSpaceHtmlFilter());
 	}
 } 

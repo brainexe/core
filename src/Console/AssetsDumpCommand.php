@@ -16,6 +16,15 @@ use Symfony\Component\Finder\SplFileInfo;
  * @Command
  */
 class AssetsDumpCommand extends AbstractCommand {
+	/**
+	 * @var AssetUrl
+	 */
+	private $_asset_url;
+
+	/**
+	 * @var AssetCollector
+	 */
+	private $_asset_collector;
 
 	/**
 	 * {@inheritdoc}
@@ -27,15 +36,13 @@ class AssetsDumpCommand extends AbstractCommand {
 	}
 
 	/**
-	 * @var AssetCollector
+	 * @Inject({"@AssetCollector", "@AssetUrl"})
+	 * @param AssetCollector $asset_collector
+	 * @param AssetUrl $asset_url
 	 */
-	private $_asset_collector;
-
-	/**
-	 * @Inject({"@AssetCollector"})
-	 */
-	public function __construct(AssetCollector $asset_collector) {
+	public function __construct(AssetCollector $asset_collector, AssetUrl $asset_url) {
 		$this->_asset_collector = $asset_collector;
+		$this->_asset_url = $asset_url;
 
 		parent::__construct();
 	}
@@ -46,56 +53,49 @@ class AssetsDumpCommand extends AbstractCommand {
 	protected function doExecute(InputInterface $input, OutputInterface $output) {
 		$cache_dir = ROOT . 'web';
 		exec(sprintf('rm -Rf %s/*', $cache_dir));
-		copy(MATZE_VENDOR_ROOT.'core/scripts/web.php', ROOT.'web/index.php');
+		copy(MATZE_VENDOR_ROOT . 'core/scripts/web.php', ROOT . 'web/index.php');
 
 		$manager = $this->_asset_collector->collectAssets();
 
 		$writer = new AssetWriter($cache_dir);
-		$writer->writeManagerAssets($manager);
+		$md5s = [];
 
-		if (OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity()) {
-			foreach ($manager->getNames() as $name) {
-				$asset_colector = $manager->get($name);
+		foreach ($manager->getNames() as $name) {
+			$asset_colector = $manager->get($name);
 
+			$asset_colector->load();
+
+			// calculate md5 sum of source content and rename
+			$md5 = substr(md5($asset_colector->getContent()), 0, AssetUrl::HASH_LENGTH);
+			$relative_file_path = $asset_colector->getTargetPath();
+			$md5s[$relative_file_path] = $md5;
+			$this->_asset_url->addHash($asset_colector->getTargetPath(), $md5);
+			$asset_colector->setTargetPath(preg_replace('/.(\w*)$/', '-' . $md5 . '.$1', $relative_file_path));
+
+			echo $relative_file_path."\n";
+			$writer->writeAsset($asset_colector);
+
+			if (OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity()) {
 				$target_path = $asset_colector->getTargetPath();
 				$output->writeln("<info>$target_path</info>");
 
 				if ($asset_colector instanceof AssetCollection) {
 					foreach ($asset_colector->all() as $asset) {
 						/** @var FileAsset $asset */
-						$source_file = $asset->getSourceDirectory().'/'.$asset->getSourcePath();
+						$source_file = $asset->getSourceDirectory() . '/' . $asset->getSourcePath();
 						$file_size = filesize($source_file);
 						$output->writeln(sprintf('->%s (%2.1fkb)', $asset->getSourcePath(), $file_size / 1000));
 					}
 				}
 
-				$file_size = filesize($cache_dir.'/'.$target_path);
-				$output->writeln(sprintf("<info>->%2.1fkb</info>\n", $file_size/1000));
+				$file_size = filesize($cache_dir . '/' . $target_path);
+				$output->writeln(sprintf("<info>->%2.1fkb</info>\n", $file_size / 1000));
 			}
 		}
 
-		$new_files = new Finder();
-		$new_files
-			->files()
-			->in($cache_dir)
-			->notName('*.php');
-
-		$md5s = [];
-		foreach ($new_files as $file) {
-			/** @var SplFileInfo $file */
-			$path = $file->getPathname();
-			$md5 = substr(base_convert(md5_file($path), 16, 36), 0, 10);
-			$md5s[$file->getRelativePathname()] = $md5;
-
-			$old_path = $file->getPathname();
-			$new_path = preg_replace('/.(\w*)$/', '-' . $md5 .'.$1', $old_path);
-
-			copy($old_path, $new_path);
-		}
-
+		// save asset hashs
 		$md5_file = sprintf('%s%s', ROOT, AssetUrl::HASH_FILE);
 		$content = sprintf('<?php return %s;', var_export($md5s, true));
 		file_put_contents($md5_file, $content);
 	}
-
-} 
+}
