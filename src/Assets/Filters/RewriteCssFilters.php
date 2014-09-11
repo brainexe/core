@@ -36,10 +36,8 @@ class RewriteCssFilters implements FilterInterface {
 	public function filterDump(AssetInterface $asset) {
 		$content = $asset->getContent();
 
-		$content = preg_replace_callback('/([a-z\.\-\/]+)\.(jpg|png|gif|otf|oet|svg|woff|ttf)/', function($part) {
+		$content = preg_replace_callback('/([\d\w\.\-\/]+)\.(jpg|png|gif|otf|oet|svg|woff|ttf)/', function($part) {
 			$asset = ltrim($part[0], './');
-			print_r($asset);
-			echo "\n";
 			return $this->_asset_url->getAssetUrl($asset);
 		}, $content);
 

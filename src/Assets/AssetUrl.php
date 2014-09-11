@@ -50,11 +50,8 @@ class AssetUrl {
 		$hash = $this->getHash($path);
 
 		if (empty($hash)) {
-			echo "no hash: $path\n";
 			return sprintf('%s%s', $this->_cdn_url, $path);
 		} else {
-			echo "hash: $path $hash\n";
-
 			list($name, $extension) = explode('.', $path, 2);
 			return sprintf('%s%s-%s.%s', $this->_cdn_url, $name, $hash, $extension);
 		}

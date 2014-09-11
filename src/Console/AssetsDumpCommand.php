@@ -66,13 +66,14 @@ class AssetsDumpCommand extends AbstractCommand {
 			$asset_colector->load();
 
 			// calculate md5 sum of source content and rename
+			// todo move into filter?
 			$md5 = substr(md5($asset_colector->getContent()), 0, AssetUrl::HASH_LENGTH);
 			$relative_file_path = $asset_colector->getTargetPath();
 			$md5s[$relative_file_path] = $md5;
 			$this->_asset_url->addHash($asset_colector->getTargetPath(), $md5);
 			$asset_colector->setTargetPath(preg_replace('/.(\w*)$/', '-' . $md5 . '.$1', $relative_file_path));
 
-			echo $relative_file_path."\n";
+			// final dumping...
 			$writer->writeAsset($asset_colector);
 
 			if (OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity()) {

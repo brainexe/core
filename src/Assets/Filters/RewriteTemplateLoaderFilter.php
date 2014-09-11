@@ -35,9 +35,10 @@ class RewriteTemplateLoaderFilter implements FilterInterface {
 	public function filterDump(AssetInterface $asset) {
 		$content = $asset->getContent();
 
-		$content = preg_replace_callback('/(\/templates\/([a-z\.\-]+).html)/', function($part) {
-			$template_name = ltrim($part[0], '/');
-			return $this->_asset_url->getAssetUrl(ltrim($template_name, '/'));
+		$content = preg_replace_callback('/[\'"](([\w\d\.\-\/]+)\.(html|js))[\'"]/', function($part) {
+			$template_name = ltrim($part[1], '/');
+			$new_path = $this->_asset_url->getAssetUrl(ltrim($template_name, '/'));
+			return sprintf("'%s'", $new_path);
 		}, $content);
 		$asset->setContent($content);
 	}
