@@ -32,9 +32,10 @@ abstract class AbstractAuthenticationController extends AbstractController {
 
 		$user_vo = $login->tryLogin($username, $plain_password, $one_time_token, $request->getSession());
 
-		$this->_addFlash($request, self::ALERT_SUCCESS, sprintf('Welcome %s', $user_vo->username));
+		$response = new JsonResponse($user_vo);
+		$this->_addFlash($response, self::ALERT_SUCCESS, sprintf('Welcome %s', $user_vo->username));
 
-		return new JsonResponse($user_vo);
+		return $response;
 	}
 
 	/**
@@ -73,9 +74,10 @@ abstract class AbstractAuthenticationController extends AbstractController {
 
 		$register->register($user_vo, $request->getSession(), $token);
 
-		$this->_addFlash($request, self::ALERT_SUCCESS, sprintf('Welcome %s', $user_vo->username));
+		$response = new JsonResponse($user_vo);
+		$this->_addFlash($response, self::ALERT_SUCCESS, sprintf('Welcome %s', $user_vo->username));
 
-		return new JsonResponse($user_vo);
+		return $response;
 	}
 
 	/**

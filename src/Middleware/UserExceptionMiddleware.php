@@ -5,6 +5,7 @@ namespace Matze\Core\Middleware;
 use Exception;
 use Matze\Core\Application\ErrorView;
 use Matze\Core\Application\UserException;
+use Matze\Core\Controller\AbstractController;
 use Matze\Core\Traits\ServiceContainerTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,12 +34,8 @@ class UserExceptionMiddleware extends AbstractMiddleware {
 		}
 
 		if ($request->isXmlHttpRequest()) {
-			$response_array = [
-				'error' => $exception->getMessage()
-			];
-
-			$response->setContent(json_encode($response_array));
-			$response->headers->set('Content-Type', 'application/json');
+			$message = $exception->getMessage() ?: 'An internal error occured';
+			$response->headers->set('X-Flash', json_encode([AbstractController::ALERT_DANGER, $message]));
 			$response->setStatusCode(500);
 
 		} else {

@@ -29,15 +29,21 @@ class DebugCommand extends AbstractCommand {
 	 * {@inheritdoc}
 	 */
 	protected function doExecute(InputInterface $input, OutputInterface $output) {
+		$finder = new Finder();
+		$finder
+			->directories()
+			->in(ROOT . 'assets');
 
 		$handler = new Handler;
-		$handler->register(ROOT . 'assets', Event::ALL ^ (Event::ACCESS | Event::OPEN), function (Event $event, Handler $handler) {
-			var_dump($event->name);
-		});
+		$events = Event::CREATE | Event::MODIFY | Event::MOVE | Event::MOVE_SELF | Event::DELETE | Event::DELETE_SELF;
+		foreach ($finder as $file) {
+			/** @var SplFileInfo $file */
+			$handler->register(ROOT . 'assets/' . $file->getRelativePathname(), $events, function (Event $event, Handler $handler) {
+			});
+		}
 
 		$handler->cyclicWait(5, function (Handler $handler, $count) use ($output){
-			echo $count."\n";
-
+			$output->write('.');
 			if ($count) {
 				$input = new ArrayInput(['command' => 'assets:dump']);
 				$this->getApplication()->run($input, $output);
