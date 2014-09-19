@@ -1,12 +1,15 @@
 <?php
 
 namespace Matze\Core\Application;
+
 use Matze\Core\Traits\RedisTrait;
 
 /**
  * @Service(public=false)
+ * @todo improve locking
  */
 class RedisLock {
+
 	use RedisTrait;
 
 	/**

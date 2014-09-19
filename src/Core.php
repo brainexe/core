@@ -41,6 +41,7 @@ class Core {
 
 		date_default_timezone_set($dic->getParameter('timezone'));
 
+		// TODO improve
 		$dic->get('monolog.ErrorHandler');
 
 		return $dic;

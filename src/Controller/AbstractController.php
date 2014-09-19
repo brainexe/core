@@ -18,7 +18,6 @@ abstract class AbstractController {
 	 * @param Response $response
 	 * @param string $type self::ALERT_*
 	 * @param string $text
-	 * @todo put to response as X-Header
 	 */
 	protected function _addFlash(Response $response, $type, $text) {
 		$response->headers->set('X-Flash', json_encode([$type, $text]));
@@ -26,7 +25,7 @@ abstract class AbstractController {
 
 	/**
 	 * @param Request $request
-	 * @return UserVO|null
+	 * @return UserVO|AnonymusUserVO
 	 */
 	protected function _getCurrentUser(Request $request) {
 		$user = $request->attributes->get('user');

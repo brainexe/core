@@ -16,6 +16,7 @@ class ConfigExtension extends \Twig_Extension {
 
 	/**
 	 * @Inject("@ConfigExtensionTokenParser")
+	 * @param ConfigExtensionTokenParser $config_token_parser
 	 */
 	public function __construct(ConfigExtensionTokenParser $config_token_parser) {
 		$this->_config_token_parser = $config_token_parser;

@@ -13,6 +13,7 @@ trait CacheTrait {
 
 	/**
 	 * @Inject("@Cache")
+	 * @param CacheProvider $cache
 	 */
 	public function setCache(CacheProvider $cache) {
 		$this->_cache = $cache;

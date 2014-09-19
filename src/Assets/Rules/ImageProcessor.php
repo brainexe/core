@@ -3,7 +3,7 @@
 namespace Matze\Core\Assets\Rules;
 
 /**
- * @Service("Assets.ImageProcessor", public=false)
+ * @Service("Assets.ImageProcessor")
  */
 class ImageProcessor extends CopyProcessor {
 	public function __construct() {

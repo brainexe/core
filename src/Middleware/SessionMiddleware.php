@@ -18,6 +18,7 @@ class SessionMiddleware extends AbstractMiddleware {
 
 	/**
 	 * @Inject({"@RedisSession"})
+	 * @param Session $redis_session
 	 */
 	public function __construct(Session $redis_session) {
 		$this->_redis_session = $redis_session;

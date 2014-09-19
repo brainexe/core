@@ -20,9 +20,7 @@ class UserExceptionMiddleware extends AbstractMiddleware {
 	use ServiceContainerTrait;
 
 	/**
-	 * @param Request $request
-	 * @param Response $response
-	 * @param Exception $exception
+	 * {@inheritdoc}
 	 */
 	public function processException(Request $request, Response $response, Exception $exception) {
 		if ($exception instanceof ResourceNotFoundException) {
@@ -37,7 +35,6 @@ class UserExceptionMiddleware extends AbstractMiddleware {
 			$message = $exception->getMessage() ?: 'An internal error occured';
 			$response->headers->set('X-Flash', json_encode([AbstractController::ALERT_DANGER, $message]));
 			$response->setStatusCode(500);
-
 		} else {
 			/** @var ErrorView $error_view */
 			$error_view = $this->getService('ErrorView');

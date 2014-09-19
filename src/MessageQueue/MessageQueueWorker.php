@@ -23,16 +23,11 @@ class MessageQueueWorker implements MessageQueueWorkerInterface {
 	private $_message_queue_gateway;
 
 	/**
-	 * @var RedisLock
+	 * @Inject({"@MessageQueueGateway"})
+	 * @param MessageQueueGateway $message_queue_gateway
 	 */
-	private $_redis_lock;
-
-	/**
-	 * @Inject({"@MessageQueueGateway", "@RedisLock"})
-	 */
-	public function __construct(MessageQueueGateway $message_queue_gateway, RedisLock $redis_lock) {
+	public function __construct(MessageQueueGateway $message_queue_gateway) {
 		$this->_message_queue_gateway = $message_queue_gateway;
-		$this->_redis_lock = $redis_lock;
 	}
 
 	/**

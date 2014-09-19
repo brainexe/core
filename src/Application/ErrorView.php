@@ -25,6 +25,8 @@ class ErrorView {
 
 	/**
 	 * @Inject({"%debug%", "%application.error_template%"})
+	 * @param boolean $debug
+	 * @param string $error_template
 	 */
 	public function __construct($debug, $error_template) {
 		$this->_value_debug = $debug;

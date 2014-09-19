@@ -3,6 +3,8 @@
 namespace Matze\Core\Console;
 
 use Assetic\Asset\AssetCollection;
+use Assetic\Asset\AssetInterface;
+use Assetic\Asset\BaseAsset;
 use Assetic\Asset\FileAsset;
 use Assetic\AssetWriter;
 use Matze\Core\Assets\AssetCollector;
@@ -52,7 +54,7 @@ class AssetsDumpCommand extends AbstractCommand {
 	 */
 	protected function doExecute(InputInterface $input, OutputInterface $output) {
 		$cache_dir = ROOT . 'web';
-		exec(sprintf('rm -Rf %s/*', $cache_dir));
+
 		copy(MATZE_VENDOR_ROOT . 'core/scripts/web.php', ROOT . 'web/index.php');
 
 		$manager = $this->_asset_collector->collectAssets();
@@ -66,21 +68,33 @@ class AssetsDumpCommand extends AbstractCommand {
 			$asset_colector->load();
 
 			// calculate md5 sum of source content and rename
-			// todo move into filter?
-			$md5 = substr(md5($asset_colector->getContent()), 0, AssetUrl::HASH_LENGTH);
+			$md5 = $this->_getFileHash($asset_colector);
 			$relative_file_path = $asset_colector->getTargetPath();
-			$md5s[$relative_file_path] = $md5;
-			$this->_asset_url->addHash($asset_colector->getTargetPath(), $md5);
-			$asset_colector->setTargetPath(preg_replace('/.(\w*)$/', '-' . $md5 . '.$1', $relative_file_path));
+			$target_file = $this->_getTargetFilePath($relative_file_path, $md5);
+			$this->_asset_url->addTargetUrl($asset_colector->getTargetPath(), $target_file);
+			$asset_colector->setTargetPath($target_file);
+			$md5s[$relative_file_path] = $target_file;
 
-			// final dumping...
-			$writer->writeAsset($asset_colector);
+			$file_exists = file_exists($cache_dir . '/' . $target_file);
+			$needed_time = 0;
+			if (!$file_exists) {
+				$start_time = microtime(true);
+				// final dumping if not exists...
+				$writer->writeAsset($asset_colector);
+
+				$needed_time = microtime(true) - $start_time;
+			}
 
 			if (OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity()) {
 				$target_path = $asset_colector->getTargetPath();
-				$output->writeln("<info>$target_path</info>");
+				$output->write("<info>$target_path</info>");
+				if ($file_exists) {
+					$output->writeln(' (<info>existing</info>)');
+				} else {
+					$output->writeln(sprintf(' (<error>dumped in %0.3fs</error>)', $needed_time));
+				}
 
-				if ($asset_colector instanceof AssetCollection) {
+				if (OutputInterface::VERBOSITY_DEBUG <= $output->getVerbosity() && $asset_colector instanceof AssetCollection) {
 					foreach ($asset_colector->all() as $asset) {
 						/** @var FileAsset $asset */
 						$source_file = $asset->getSourceDirectory() . '/' . $asset->getSourcePath();
@@ -95,8 +109,46 @@ class AssetsDumpCommand extends AbstractCommand {
 		}
 
 		// save asset hashs
-		$md5_file = sprintf('%s%s', ROOT, AssetUrl::HASH_FILE);
+		$md5_file = sprintf('%s%s', ROOT, AssetUrl::ASSET_FILE);
 		$content = sprintf('<?php return %s;', var_export($md5s, true));
 		file_put_contents($md5_file, $content);
+
+		// todo remove not existing files
+		$finder = new Finder();
+		$finder
+			->files()
+			->in($cache_dir)
+			->notName('*.php');
+
+		foreach ($md5s as $file) {
+			$finder->notName(basename($file));
+		}
+
+		foreach ($finder as $file) {
+			/** @var SplFileInfo $file */
+			$filename = $file->getRelativePathname();
+
+			unlink($cache_dir . '/' . $filename);
+		}
+	}
+
+	/**
+	 * @param BaseAsset|AssetInterface $asset_colector
+	 * @return string
+	 * @todo add filters/debug...
+	 */
+	private function _getFileHash($asset_colector) {
+		return substr(md5($asset_colector->getContent()), 0, AssetUrl::HASH_LENGTH);
+	}
+
+	/**
+	 * @param string $relative_file_path
+	 * @param string $md5
+	 * @return string
+	 */
+	private function _getTargetFilePath($relative_file_path, $md5) {
+		$target_file = preg_replace('/.(\w*)$/', '-' . $md5 . '.$1', $relative_file_path);
+
+			return $target_file;
 	}
 }

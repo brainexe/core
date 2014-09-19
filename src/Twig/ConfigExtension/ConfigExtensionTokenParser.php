@@ -19,7 +19,7 @@ class ConfigExtensionTokenParser extends Twig_TokenParser {
 	public function parse(Twig_Token $token) {
 		$expr = $this->parser->getExpressionParser()->parseExpression();
 
-		$this->parser->getStream()->expect(\Twig_Token::BLOCK_END_TYPE);
+		$this->parser->getStream()->expect(Twig_Token::BLOCK_END_TYPE);
 
 		$config_name = $expr->getAttribute('value');
 		$config_value = $this->getParameter($config_name);

@@ -19,7 +19,7 @@ class TransExtensionTokenParser extends Twig_TokenParser {
 		while (!$nodeType = $this->parser->getStream()->test(Twig_Token::BLOCK_END_TYPE)) {
 			$parameters[] = $this->parser->getExpressionParser()->parseExpression();
 		}
-		$this->parser->getStream()->expect(\Twig_Token::BLOCK_END_TYPE);
+		$this->parser->getStream()->expect(Twig_Token::BLOCK_END_TYPE);
 
 		return new TransNode($expr, $parameters, $token->getLine());
 	}

@@ -24,6 +24,8 @@ class StripWhiteSpaceHtmlFilter implements FilterInterface {
 		$content = str_replace("\t", '', $content);
 		$content = preg_replace('/>\s+</m', '><', $content);
 		$content = preg_replace('/<!--[^>]*-->/', '', $content);
+		$content = preg_replace("/ +}}/", '}}', $content);
+		$content = preg_replace("/{{ +/", '{{', $content);
 
 		$asset->setContent($content);
 	}

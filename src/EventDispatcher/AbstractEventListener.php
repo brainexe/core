@@ -14,6 +14,7 @@ abstract class AbstractEventListener implements EventSubscriberInterface {
 
 	/**
 	 * @Inject("@ObjectFinder")
+	 * @param ObjectFinder $object_finder
 	 */
 	public function __construct(ObjectFinder $object_finder) {
 		$this->_object_finder_trait = $object_finder;
@@ -21,7 +22,8 @@ abstract class AbstractEventListener implements EventSubscriberInterface {
 
 	/**
 	 * @param string $service_id
-	 * @return mixed
+	 * @return object
+	 * @todo protected?
 	 */
 	public function getService($service_id) {
 		return $this->_object_finder_trait->getService($service_id);

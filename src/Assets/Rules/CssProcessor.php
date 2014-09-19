@@ -7,7 +7,7 @@ use Assetic\Filter\Yui\CssCompressorFilter;
 use Matze\Core\Traits\ServiceContainerTrait;
 
 /**
- * @Service("Assets.CssProcessor", public=false)
+ * @Service("Assets.CssProcessor")
  */
 class CssProcessor extends MergableProcessor {
 

@@ -2,7 +2,7 @@
 
 namespace Matze\Core\Assets\Rules;
 
-class MergableProcessor extends Processor {
+abstract class MergableProcessor extends Processor {
 	/**
 	 * @var boolean
 	 */
@@ -15,6 +15,8 @@ class MergableProcessor extends Processor {
 
 	/**
 	 * @Inject({"%yui.jar%", "%debug%"})
+	 * @param string $yui_jar
+	 * @param boolean $debug
 	 */
 	public function setConfig($yui_jar, $debug) {
 		$this->_yui_jar = $yui_jar;

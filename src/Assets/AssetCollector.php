@@ -8,21 +8,19 @@ use Matze\Core\Assets\Rules\Processor;
 use Matze\Core\Assets\Rules\MergableProcessor;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
+use Symfony\Component\Process\Exception\RuntimeException;
 
 /**
  * @Service(public=false)
  */
 class AssetCollector {
 
-	/**
-	 * @var Processor[]
-	 */
-	private $_processors;
+	const ASSETS_DIR = 'assets/';
 
 	/**
 	 * @var string
 	 */
-	private $_assetPath;
+	private $_asset_dir;
 
 	/**
 	 * @var AssetManager
@@ -30,31 +28,32 @@ class AssetCollector {
 	private $_assetic;
 
 	/**
-	 * @Inject("@Assetic")
-	 * @param AssetManager $assetic
+	 * @var AssetCollectorLoader
 	 */
-	public function __construct(AssetManager $assetic) {
-		$this->_assetic = $assetic;
-	}
+	private $_asset_collector_loader;
 
 	/**
-	 * @param Processor $processor
+	 * @Inject({"@Assetic", "@AssetCollectorLoader"})
+	 * @param AssetManager $assetic
+	 * @param AssetCollectorLoader $asset_collector_loader
 	 */
-	public function addProcessor(Processor $processor) {
-		$this->_processors[] = $processor;
+	public function __construct(AssetManager $assetic, AssetCollectorLoader $asset_collector_loader) {
+		$this->_assetic = $assetic;
+		$this->_asset_collector_loader = $asset_collector_loader;
 	}
 
 	/**
 	 * @return AssetManager|null
 	 */
 	public function collectAssets() {
-		$this->_assetPath = $asset_path = ROOT . 'assets';
+		$this->_asset_dir = $asset_path = ROOT . self::ASSETS_DIR;
 
-		if (!is_dir($this->_assetPath)) {
+		if (!is_dir($this->_asset_dir)) {
 			return null;
 		}
 
-		foreach ($this->_processors as $processor) {
+		$processors = $this->_asset_collector_loader->loadProcessors();
+		foreach ($processors as $processor) {
 			if ($processor instanceof MergableProcessor) {
 				$this->_handleMergableExtension($processor);
 			} else
@@ -75,7 +74,7 @@ class AssetCollector {
 		$finder = new Finder();
 		$finder
 			->files()
-			->in($this->_assetPath)
+			->in($this->_asset_dir)
 			->name($processor->file_expression);
 
 		foreach ($finder as $file) {
@@ -86,14 +85,22 @@ class AssetCollector {
 			foreach ($processor->files as $file_name => $file_definition) {
 				// is file attched to any file?
 				foreach ($file_definition->input_files as $idx => $file_regexp) {
-					if (preg_match('/' . ($file_regexp) . '/', $relative_path_name)) {
+					$file_regexp = str_replace('/', '\\/', $file_regexp);
+
+					if (preg_match('/' . $file_regexp . '/', $relative_path_name)) {
 						$merged_file_names[$file_name][$idx][] = $relative_path_name;
 						continue 3;
 					}
 				}
 			}
+
+			if (empty($processor->fallback)) {
+				throw new RuntimeException(sprintf("File not referenced and no fallback defined: %s", $relative_path_name));
+			}
+
 			$merged_file_names[$processor->fallback][1000][] = $relative_path_name;
 		}
+
 
 		foreach ($merged_file_names as $file_name => $files) {
 			$collection = new MergedFileCollection();
@@ -105,7 +112,7 @@ class AssetCollector {
 
 			foreach ($files as $file_list) {
 				foreach ($file_list as $relative_file_path) {
-					$asset = new FileAsset(ROOT . 'assets/' . $relative_file_path, [], dirname(ROOT . 'assets/' . $relative_file_path)); //TODO prefix?
+					$asset = new FileAsset($this->_asset_dir . $relative_file_path, [], dirname($this->_asset_dir . $relative_file_path));
 					$collection->add($asset);
 				}
 			}
@@ -120,7 +127,7 @@ class AssetCollector {
 		$finder = new Finder();
 		$finder
 			->files()
-			->in($this->_assetPath)
+			->in($this->_asset_dir)
 			->name($definition->file_expression);
 
 		foreach ($finder as $file) {

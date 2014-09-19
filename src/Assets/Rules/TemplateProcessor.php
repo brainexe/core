@@ -6,7 +6,7 @@ use Assetic\Asset\AssetInterface;
 use Matze\Core\Assets\Filters\StripWhiteSpaceHtmlFilter;
 
 /**
- * @Service("Assets.TemplateProcessor", public=false)
+ * @Service("Assets.TemplateProcessor")
  */
 class TemplateProcessor extends CopyProcessor {
 	public function __construct() {

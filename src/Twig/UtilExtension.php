@@ -5,7 +5,7 @@ namespace Matze\Core\Twig;
 use Twig_SimpleFilter;
 
 /**
- * @TwigExtension
+ * @TwigExtension(compiler=true)
  */
 class UtilExtension extends \Twig_Extension {
 

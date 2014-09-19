@@ -4,17 +4,18 @@ namespace Matze\Core\Application\Cache;
 
 use Doctrine\Common\Cache\Cache;
 use Doctrine\Common\Cache\CacheProvider;
+use Redis;
 
 class RedisCache extends CacheProvider {
 	/**
-	 * @var \Redis
+	 * @var Redis
 	 */
 	protected $_redis;
 
 	/**
 	 * Sets the redis instance to use.
 	 *
-	 * @param \Redis $redis
+	 * @param Redis $redis
 	 */
 	public function __construct($redis) {
 		$this->_redis = $redis;

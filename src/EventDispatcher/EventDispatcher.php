@@ -13,7 +13,6 @@ class EventDispatcher extends SymfonyEventDispatcher {
 	public function dispatchEvent(AbstractEvent $event) {
 		$this->dispatch($event->event_name, $event);
 
-		// TODO use own listener!
 		if ($event instanceof PushViaWebsocketInterface) {
 			$this->dispatchAsWebsocketEvent($event);
 		}

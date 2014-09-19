@@ -4,7 +4,7 @@ namespace Matze\Core\Assets\Rules;
 
 use Assetic\Asset\AssetInterface;
 
-class Processor {
+abstract class Processor {
 
 	/**
 	 * @var string

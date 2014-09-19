@@ -16,6 +16,7 @@ class PiwikExtension extends Twig_Extension {
 
 	/**
 	 * @Inject("@PiwikExtensionTokenParser")
+	 * @param PiwikExtensionTokenParser $piwik_extension_token_parser
 	 */
 	public function __construct(PiwikExtensionTokenParser $piwik_extension_token_parser) {
 		$this->piwik_extension_token_parser = $piwik_extension_token_parser;

@@ -7,13 +7,13 @@ namespace Matze\Core\Assets;
  */
 class AssetUrl {
 
-	const HASH_FILE = 'cache/assets.php';
-	const HASH_LENGTH = 6;
+	const ASSET_FILE = 'cache/assets.php';
+	const HASH_LENGTH = 8;
 
 	/**
 	 * @var string[]
 	 */
-	private $_hashes = [];
+	private $_asset_files = [];
 
 	/**
 	 * @var boolean
@@ -32,11 +32,11 @@ class AssetUrl {
 	 * @param string $path
 	 * @return null|string
 	 */
-	public function getHash($path) {
-		$this->_initHashes();
+	public function getTargetUrl($path) {
+		$this->_initFile();
 
-		if (!empty($this->_hashes[$path])) {
-			return $this->_hashes[$path];
+		if (!empty($this->_asset_files[$path])) {
+			return $this->_asset_files[$path];
 		}
 
 		return null;
@@ -47,36 +47,31 @@ class AssetUrl {
 	 * @return string
 	 */
 	public function getAssetUrl($path) {
-		$hash = $this->getHash($path);
+		$target_url = $this->getTargetUrl($path);
 
-		if (empty($hash)) {
-			return sprintf('%s%s', $this->_cdn_url, $path);
-		} else {
-			list($name, $extension) = explode('.', $path, 2);
-			return sprintf('%s%s-%s.%s', $this->_cdn_url, $name, $hash, $extension);
-		}
+		return sprintf('%s%s', $this->_cdn_url, $target_url ?: $path);
 	}
 
 	/**
-	 * @param string $path
-	 * @param string $hash
+	 * @param string $source_file
+	 * @param string $target_file
 	 */
-	public function addHash($path, $hash) {
-		$this->_hashes[$path] = $hash;
+	public function addTargetUrl($source_file, $target_file) {
+		$this->_asset_files[$source_file] = $target_file;
 	}
 
-	private function _initHashes() {
+	private function _initFile() {
 		if ($this->_initialized) {
 			return;
 		}
 
-		$file = ROOT . self::HASH_FILE;
+		$file = ROOT . self::ASSET_FILE;
 		if (!is_file($file)) {
-			$this->_hashes = [];
+			$this->_asset_files = [];
 			return;
 		}
 		$this->_initialized = true;
 
-		$this->_hashes = include $file;
+		$this->_asset_files = include $file;
 	}
 }

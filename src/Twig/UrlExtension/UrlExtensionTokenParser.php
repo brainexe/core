@@ -26,7 +26,7 @@ class UrlExtensionTokenParser extends Twig_TokenParser {
 	public function parse(Twig_Token $token) {
 		$expr = $this->parser->getExpressionParser()->parseExpression();
 
-		$this->parser->getStream()->expect(\Twig_Token::BLOCK_END_TYPE);
+		$this->parser->getStream()->expect(Twig_Token::BLOCK_END_TYPE);
 
 		$url_name = $expr->getAttribute('value');
 		$url = $this->_url_generator->generate($url_name);

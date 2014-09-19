@@ -42,10 +42,6 @@ class AuthenticationMiddleware extends AbstractMiddleware {
 	 * {@inheritdoc}
 	 */
 	public function processRequest(Request $request, Route $route, $route_name) {
-		if ($this->_application_guests_allowed) {
-			return null;
-		}
-
 		$session = $request->getSession();
 		$user_id = $session->get('user_id');
 		$logged_id = $user_id > 0;
@@ -56,6 +52,10 @@ class AuthenticationMiddleware extends AbstractMiddleware {
 		}
 
 		$request->attributes->set('user_id', $user_id);
+
+		if ($this->_application_guests_allowed) {
+			return null;
+		}
 
 		// todo create @guest annotation
 		if (strpos($route_name, 'authenticate.') === 0 || $route_name === 'index') {

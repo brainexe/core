@@ -9,21 +9,27 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Route;
 
 /**
- * @Middleware(priority=null)
+ * @todo invalidate
+ * @Middleware(priority=2)
  */
 class CacheMiddleware extends AbstractMiddleware {
 
 	use CacheTrait;
 	use LoggerTrait;
 
-	private $_cache_key;
 	/**
-	 * @var
+	 * @var string
+	 */
+	private $_cache_key;
+
+	/**
+	 * @var boolean
 	 */
 	private $_cache_enabled;
 
 	/**
 	 * @Inject("%cache.enabled%")
+	 * @param boolean $cache_enabled
 	 */
 	public function __construct($cache_enabled) {
 		$this->_cache_enabled = $cache_enabled;

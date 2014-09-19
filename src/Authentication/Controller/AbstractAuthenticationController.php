@@ -18,6 +18,14 @@ abstract class AbstractAuthenticationController extends AbstractController {
 	use ServiceContainerTrait;
 
 	/**
+	 * @return RedirectResponse
+	 * @Route("/user/current/", name="authenticate.current_user")
+	 */
+	public function getCurrentUser() {
+		return new JsonResponse($this->getCurrentUser());
+	}
+
+	/**
 	 * @param Request $request
 	 * @return RedirectResponse
 	 * @Route("/login/", name="authenticate.doLogin", methods="POST")

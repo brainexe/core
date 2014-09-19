@@ -16,6 +16,9 @@ class TransNode extends \Twig_Node {
 	 */
 	private $_parameters;
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function __construct(Twig_Node_Expression $string, array $parameters, $lineno) {
 		parent::__construct(array(), array('string' => $string), $lineno);
 
@@ -23,6 +26,9 @@ class TransNode extends \Twig_Node {
 		$this->_parameters = $parameters;
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function compile(Twig_Compiler $compiler) {
 		$compiler->addDebugInfo($this);
 

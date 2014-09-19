@@ -17,6 +17,7 @@ class UrlExtension extends Twig_Extension {
 
 	/**
 	 * @Inject("@UrlGenerator")
+	 * @param UrlGenerator $url_generator
 	 */
 	public function __construct(UrlGenerator $url_generator) {
 		$this->_url_generator = $url_generator;

@@ -78,7 +78,7 @@ class AppKernel implements HttpKernelInterface {
 
 	/**
 	 * @param Request $request
-	 * @return Response|string
+	 * @return Response
 	 */
 	private function _handleRequest(Request $request) {
 		$context = new RequestContext();

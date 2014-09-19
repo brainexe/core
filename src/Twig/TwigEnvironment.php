@@ -16,7 +16,9 @@ class TwigEnvironment extends Twig_Environment {
 
 		$content = str_replace("\\t", '', $content);
 		$content = preg_replace('/>\s+</m', '><', $content);
-		$content = preg_replace('/<!--[^>]*-->/', '', $content);
+		$content = preg_replace("/<!--.*?-->/", '', $content);
+		$content = preg_replace("/ +}}/", '}}', $content);
+		$content = preg_replace("/{{ +/", '{{', $content);
 
 		return $content;
 	}
