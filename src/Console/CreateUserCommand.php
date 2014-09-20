@@ -17,6 +17,11 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 class CreateUserCommand extends Command {
 
 	/**
+	 * @var Register
+	 */
+	private $_register;
+
+	/**
 	 * {@inheritdoc}
 	 */
 	protected function configure() {
@@ -28,12 +33,8 @@ class CreateUserCommand extends Command {
 	}
 
 	/**
-	 * @var Register
-	 */
-	private $_register;
-
-	/**
 	 * @Inject("@Register")
+	 * @param Register $register
 	 */
 	public function __construct(Register $register) {
 		$this->_register = $register;

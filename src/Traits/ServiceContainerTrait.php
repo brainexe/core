@@ -13,6 +13,7 @@ trait ServiceContainerTrait {
 
 	/**
 	 * @Inject("@ObjectFinder")
+	 * @param ObjectFinder $object_finder
 	 */
 	public function setObjectFinder(ObjectFinder $object_finder) {
 		$this->_object_finder_trait = $object_finder;

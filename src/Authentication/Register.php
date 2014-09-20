@@ -29,6 +29,9 @@ class Register {
 
 	/**
 	 * @Inject({"@DatabaseUserProvider", "@RegisterTokens", "%application.registration_enabled%"})
+	 * @param DatabaseUserProvider $user_provider
+	 * @param RegisterTokens $register_tokens
+	 * @param $registration_enabled
 	 */
 	public function __construct(DatabaseUserProvider $user_provider, RegisterTokens $register_tokens, $registration_enabled) {
 		$this->_user_provider = $user_provider;

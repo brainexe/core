@@ -25,6 +25,8 @@ class CompileTemplatesCommand extends AbstractCommand {
 
 	/**
 	 * @Inject({"%template.dir%", "@TwigCompiler"})
+	 * @param string $value_template_dir
+	 * @param Twig_Environment $twig
 	 */
 	public function __construct($value_template_dir, Twig_Environment $twig) {
 		$this->value_template_dir = $value_template_dir;

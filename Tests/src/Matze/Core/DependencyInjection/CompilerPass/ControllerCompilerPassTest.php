@@ -31,15 +31,4 @@ class ControllerCompilerPassTest extends PHPUnit_Framework_TestCase {
 		$this->_mock_router_definition = $this->getMock('Symfony\Component\DependencyInjection\Definition');
 	}
 
-	public function testAddSubscriber() {
-		$this->_mock_container
-			->expects($this->once())
-			->method('getDefinition')
-			->with('RouteCollection')
-			->will($this->returnValue($this->_mock_router_definition));
-
-		//TODO 
-		$this->_subject->process($this->_mock_container);
-	}
-
 } 

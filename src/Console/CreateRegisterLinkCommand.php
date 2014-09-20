@@ -27,6 +27,7 @@ class CreateRegisterLinkCommand extends Command {
 
 	/**
 	 * @Inject("@RegisterTokens")
+	 * @param RegisterTokens $register_tokens
 	 */
 	public function __construct(RegisterTokens $register_tokens) {
 		$this->_register_tokens = $register_tokens;

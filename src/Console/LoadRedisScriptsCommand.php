@@ -21,6 +21,7 @@ class LoadRedisScriptsCommand extends AbstractCommand {
 
 	/**
 	 * @Inject({"@RedisScripts"})
+	 * @param RedisScripts $redis_scripts
 	 */
 	public function __construct(RedisScripts $redis_scripts) {
 		parent::__construct();

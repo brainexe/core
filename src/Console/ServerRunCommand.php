@@ -21,6 +21,7 @@ class ServerRunCommand extends Command {
 
 	/**
 	 * @Inject("%server.address%")
+	 * @param string $value_address
 	 */
 	public function __construct($value_address) {
 		$this->_value_address = $value_address;

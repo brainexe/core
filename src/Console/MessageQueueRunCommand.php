@@ -20,6 +20,7 @@ class MessageQueueRunCommand extends Command {
 
 	/**
 	 * @Inject("@MessageQueueWorker")
+	 * @param MessageQueueWorker $message_queue_worker
 	 */
 	public function __construct(MessageQueueWorker $message_queue_worker) {
 		$this->_message_queue_worker = $message_queue_worker;

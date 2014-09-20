@@ -23,9 +23,8 @@ abstract class AbstractEventListener implements EventSubscriberInterface {
 	/**
 	 * @param string $service_id
 	 * @return object
-	 * @todo protected?
 	 */
-	public function getService($service_id) {
+	protected function getService($service_id) {
 		return $this->_object_finder_trait->getService($service_id);
 	}
 

@@ -10,12 +10,12 @@ class MergedFileCollection extends AssetCollection {
 
 	/**
 	 * {@inheritdoc}
-	 * @todo
 	 */
 	public function dump(FilterInterface $additionalFilter = null) {
-
 		$this->load($additionalFilter);
-		(new FilterCollection($this->getFilters()))->filterDump($this);
+
+		$filters = new FilterCollection($this->getFilters());
+		$filters->filterDump($this);
 
 		return $this->getContent();
 	}

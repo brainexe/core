@@ -29,6 +29,11 @@ class AssetsDumpCommand extends AbstractCommand {
 	private $_asset_collector;
 
 	/**
+	 * @var boolean
+	 */
+	private $_debug;
+
+	/**
 	 * {@inheritdoc}
 	 */
 	protected function configure() {
@@ -38,15 +43,17 @@ class AssetsDumpCommand extends AbstractCommand {
 	}
 
 	/**
-	 * @Inject({"@AssetCollector", "@AssetUrl"})
+	 * @Inject({"@AssetCollector", "@AssetUrl", "%debug%"})
 	 * @param AssetCollector $asset_collector
 	 * @param AssetUrl $asset_url
+	 * @param boolean $debug
 	 */
-	public function __construct(AssetCollector $asset_collector, AssetUrl $asset_url) {
+	public function __construct(AssetCollector $asset_collector, AssetUrl $asset_url, $debug) {
+		parent::__construct();
+
 		$this->_asset_collector = $asset_collector;
 		$this->_asset_url = $asset_url;
-
-		parent::__construct();
+		$this->_debug = $debug;
 	}
 
 	/**
@@ -108,17 +115,41 @@ class AssetsDumpCommand extends AbstractCommand {
 			}
 		}
 
-		// save asset hashs
-		$md5_file = sprintf('%s%s', ROOT, AssetUrl::ASSET_FILE);
-		$content = sprintf('<?php return %s;', var_export($md5s, true));
-		file_put_contents($md5_file, $content);
+		$this->_saveAssetFile($md5s);
 
-		// todo remove not existing files
+		$this->_deleteOldAssetFile($cache_dir, $md5s);
+	}
+
+	/**
+	 * @param BaseAsset|AssetInterface $asset_colector
+	 * @return string
+	 */
+	private function _getFileHash($asset_colector) {
+		$content = $asset_colector->getContent();
+
+		$content .= (int)$this->_debug;
+
+		return substr(md5($content), 0, AssetUrl::HASH_LENGTH);
+	}
+
+	/**
+	 * @param string $relative_file_path
+	 * @param string $md5
+	 * @return string
+	 */
+	private function _getTargetFilePath($relative_file_path, $md5) {
+		$target_file = preg_replace('/.(\w*)$/', '-' . $md5 . '.$1', $relative_file_path);
+
+			return $target_file;
+	}
+
+	/**
+	 * @param string $cache_dir
+	 * @param string[] $md5s
+	 */
+	private function _deleteOldAssetFile($cache_dir, $md5s) {
 		$finder = new Finder();
-		$finder
-			->files()
-			->in($cache_dir)
-			->notName('*.php');
+		$finder->files()->in($cache_dir)->notName('*.php');
 
 		foreach ($md5s as $file) {
 			$finder->notName(basename($file));
@@ -133,22 +164,12 @@ class AssetsDumpCommand extends AbstractCommand {
 	}
 
 	/**
-	 * @param BaseAsset|AssetInterface $asset_colector
-	 * @return string
-	 * @todo add filters/debug...
+	 * save asset hashs
+	 * @param string[] $md5s
 	 */
-	private function _getFileHash($asset_colector) {
-		return substr(md5($asset_colector->getContent()), 0, AssetUrl::HASH_LENGTH);
-	}
-
-	/**
-	 * @param string $relative_file_path
-	 * @param string $md5
-	 * @return string
-	 */
-	private function _getTargetFilePath($relative_file_path, $md5) {
-		$target_file = preg_replace('/.(\w*)$/', '-' . $md5 . '.$1', $relative_file_path);
-
-			return $target_file;
+	private function _saveAssetFile(array $md5s) {
+		$md5_file = sprintf('%s%s', ROOT, AssetUrl::ASSET_FILE);
+		$content = sprintf('<?php return %s;', var_export($md5s, true));
+		file_put_contents($md5_file, $content);
 	}
 }

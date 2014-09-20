@@ -9,8 +9,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Route;
 
 /**
+ * @todo use X-Cache / X-Validate
  * @todo invalidate
- * @Middleware(priority=2)
+ * @Middleware(priority=null)
  */
 class CacheMiddleware extends AbstractMiddleware {
 
