@@ -25,8 +25,8 @@ interface MiddlewareInterface {
 
 	/**
 	 * @param Request $request
-	 * @param Response $response
 	 * @param Exception $exception
+	 * @return Response|void
 	 */
-	public function processException(Request $request, Response $response, Exception $exception);
+	public function processException(Request $request, Exception $exception);
 }

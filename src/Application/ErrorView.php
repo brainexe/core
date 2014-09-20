@@ -3,6 +3,7 @@
 namespace Matze\Core\Application;
 
 use Exception;
+use Matze\Core\Authentication\AnonymusUserVO;
 use Matze\Core\Traits\TwigTrait;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -43,6 +44,7 @@ class ErrorView {
 			'exception' => $exception,
 			'debug' => $this->_value_debug,
 			'request' => $request,
+			'current_user' => $request->attributes->get('user') ?: new AnonymusUserVO(),
 		]);
 
 		return $content;

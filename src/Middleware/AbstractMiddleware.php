@@ -24,6 +24,6 @@ class AbstractMiddleware implements MiddlewareInterface {
 	/**
 	 * {@inheritdoc}
 	 */
-	public function processException(Request $request, Response $response, Exception $exception) {
+	public function processException(Request $request, Exception $exception) {
 	}
 }

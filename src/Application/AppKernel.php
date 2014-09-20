@@ -32,6 +32,8 @@ class AppKernel implements HttpKernelInterface {
 
 	/**
 	 * @Inject({"@ControllerResolver", "@RouteCollection"})
+	 * @param ControllerResolver $container_resolver
+	 * @param RouteCollection $routes
 	 */
 	public function __construct(ControllerResolver $container_resolver, RouteCollection $routes) {
 		$this->_resolver = $container_resolver;
@@ -55,11 +57,9 @@ class AppKernel implements HttpKernelInterface {
 
 		try {
 			$response = $this->_handleRequest($request);
-		} catch (Exception $e) {
-			//TODO remove default response here
-			$default_response = new Response();
+		} catch (Exception $exception) {
 			foreach ($this->_middlewares as $middleware) {
-				$response = $middleware->processException($request, $default_response, $e);
+				$response = $middleware->processException($request, $exception);
 				if ($response) {
 					break;
 				}

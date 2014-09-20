@@ -19,9 +19,10 @@ class GentimeMiddleware extends AbstractMiddleware {
 	 * {@inheritdoc}
 	 */
 	public function processRequest(Request $request, Route $route, $route_name) {
-		if (empty($_SERVER['REQUEST_TIME_FLOAT'])) {
-			$_SERVER['REQUEST_TIME_FLOAT'] = microtime(true);
-		}
+		// todo fix for application server
+//		if (empty($_SERVER['REQUEST_TIME_FLOAT'])) {
+//			$_SERVER['REQUEST_TIME_FLOAT'] = microtime(true);
+//		}
 	}
 
 	/**

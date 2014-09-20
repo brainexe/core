@@ -3,30 +3,23 @@
 namespace Matze\Core\Middleware;
 
 use Exception;
-use Matze\Core\Traits\LoggerTrait;
-use Matze\Core\Traits\ServiceContainerTrait;
-use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeExtensionGuesser;
 use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
-use Symfony\Component\Routing\Route;
 
 /**
- * @todo debug only
- * @Middleware(priority=3)
+ * @todo finalize
+ * @ # Middleware(priority=20)
  */
 class DeliverAsstesMiddleware extends AbstractMiddleware {
-
-	use LoggerTrait;
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function processException(Request $request, Response $response, Exception $exception) {
+	public function processException(Request $request, Exception $exception) {
 		if (!$exception instanceof ResourceNotFoundException) {
-			return;
+			return null;
 		}
 
 		$request_uri = $request->getRequestUri();
@@ -36,17 +29,33 @@ class DeliverAsstesMiddleware extends AbstractMiddleware {
 			$full_path = ROOT . 'web' . $request_uri;
 
 			if (file_exists($full_path)) {
-
 				$mime_type_guess = MimeTypeGuesser::getInstance();
 				$mimetype = $mime_type_guess->guess($full_path);
 
-				$this->error($mimetype . $full_path);
+				list(,$extension) = explode('.', $full_path);
+				switch ($extension) {
+					case 'js':
+						$mimetype = 'application/x-javascript';
+						break;
+					case 'html':
+						$mimetype = 'text/html';
+						break;
+					case 'css':
+						$mimetype = 'text/css';
+						break;
+				}
 
 				$response = new Response(file_get_contents($full_path));
-				$request->headers->set('Content-Type', $mimetype);
+				$response->headers->set('Content-Type', $mimetype);
+				$response->setCache([
+					'public' => true,
+					'max_age' => 3600
+				]);
 
 				return $response;
 			}
 		}
+
+		return null;
 	}
 }

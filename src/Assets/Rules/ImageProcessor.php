@@ -7,6 +7,6 @@ namespace Matze\Core\Assets\Rules;
  */
 class ImageProcessor extends CopyProcessor {
 	public function __construct() {
-		parent::__construct('*.{jpg,png,gif,otf,oet,svg,woff,ttf}');
+		parent::__construct('*.{jpg,png,gif,otf,oet,svg,woff,ttf,ico}');
 	}
 } 

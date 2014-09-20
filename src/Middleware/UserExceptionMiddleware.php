@@ -22,7 +22,7 @@ class UserExceptionMiddleware extends AbstractMiddleware {
 	/**
 	 * {@inheritdoc}
 	 */
-	public function processException(Request $request, Response $response, Exception $exception) {
+	public function processException(Request $request, Exception $exception) {
 		if ($exception instanceof ResourceNotFoundException) {
 			$exception = new UserException(sprintf('Page not found: %s', $request->getRequestUri()), 0, $exception);
 
@@ -35,8 +35,6 @@ class UserExceptionMiddleware extends AbstractMiddleware {
 			$response = new Response('', 500);
 		}
 
-		echo $exception->getMessage();
-
 		if ($request->isXmlHttpRequest()) {
 			$message = $exception->getMessage() ?: 'An internal error occured';
 			$response->headers->set('X-Flash', json_encode([AbstractController::ALERT_DANGER, $message]));
@@ -48,5 +46,6 @@ class UserExceptionMiddleware extends AbstractMiddleware {
 			$response->setContent($response_string);
 		}
 
+		return $response;
 	}
 }
