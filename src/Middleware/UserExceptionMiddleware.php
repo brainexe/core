@@ -25,11 +25,17 @@ class UserExceptionMiddleware extends AbstractMiddleware {
 	public function processException(Request $request, Response $response, Exception $exception) {
 		if ($exception instanceof ResourceNotFoundException) {
 			$exception = new UserException(sprintf('Page not found: %s', $request->getRequestUri()), 0, $exception);
-			$response->setStatusCode(404);
+
+			$response = new Response('', 404);
 		} elseif ($exception instanceof MethodNotAllowedException) {
 			$exception = new UserException('You are not allowed to access the page', 0, $exception);
-			$response->setStatusCode(405);
+			$response = new Response('', 404);
+		} else {
+			$exception = new UserException($exception->getMessage(), 0, $exception);
+			$response = new Response('', 500);
 		}
+
+		echo $exception->getMessage();
 
 		if ($request->isXmlHttpRequest()) {
 			$message = $exception->getMessage() ?: 'An internal error occured';

@@ -56,12 +56,18 @@ class AppKernel implements HttpKernelInterface {
 		try {
 			$response = $this->_handleRequest($request);
 		} catch (Exception $e) {
-			if (empty($response)) {
-				$response = new Response();
-			}
+			//TODO remove default response here
+			$default_response = new Response();
 			foreach ($this->_middlewares as $middleware) {
-				$middleware->processException($request, $response, $e);
+				$response = $middleware->processException($request, $default_response, $e);
+				if ($response) {
+					break;
+				}
 			}
+		}
+
+		if (!$response) {
+			$response = new Response();
 		}
 
 		$middleware_idx = count($this->_middlewares) - 1;
@@ -88,6 +94,7 @@ class AppKernel implements HttpKernelInterface {
 
 		$route_name = $attributes['_route'];
 		$route = $this->_routes->get($route_name);
+
 		foreach ($this->_middlewares as $middleware) {
 			$response = $middleware->processRequest($request, $route, $route_name);
 			if ($response) {
