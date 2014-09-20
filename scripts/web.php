@@ -11,4 +11,7 @@ $request = Request::createFromGlobals();
 
 /** @var AppKernel $kernel */
 $kernel = $dic->get('AppKernel');
-$kernel->handle($request);
+$response = $kernel->handle($request);
+
+$response->prepare($request);
+$response->send();

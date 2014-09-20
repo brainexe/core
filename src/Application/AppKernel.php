@@ -70,9 +70,6 @@ class AppKernel implements HttpKernelInterface {
 			$middleware->processResponse($request, $response);
 		}
 
-		$response->prepare($request);
-		$response->send();
-
 		return $response;
 	}
 

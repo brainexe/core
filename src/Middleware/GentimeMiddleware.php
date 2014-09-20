@@ -6,6 +6,7 @@ use Matze\Core\Authentication\UserVO;
 use Matze\Core\Traits\LoggerTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Route;
 
 /**
  * @Middleware(priority=1)
@@ -13,6 +14,15 @@ use Symfony\Component\HttpFoundation\Response;
 class GentimeMiddleware extends AbstractMiddleware {
 
 	use LoggerTrait;
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function processRequest(Request $request, Route $route, $route_name) {
+		if (empty($_SERVER['REQUEST_TIME_FLOAT'])) {
+			$_SERVER['REQUEST_TIME_FLOAT'] = microtime(true);
+		}
+	}
 
 	/**
 	 * {@inheritdoc}

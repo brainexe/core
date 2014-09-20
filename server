@@ -1,0 +1,28 @@
+#!/usr/bin/php
+<?php
+
+use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\HttpFoundation\Request;
+use Matze\Core\Application\AppKernel;
+use Yosymfony\HttpServer\HttpKernelRequestHandler;
+use Yosymfony\HttpServer\HttpServer;
+
+/** @var Container $dic */
+$dic = include __DIR__ . '/../../src/bootstrap.php';
+
+$request = Request::createFromGlobals();
+
+/** @var AppKernel $kernel */
+$kernel = $dic->get('AppKernel');
+
+$options = array(
+	'host' => '127.0.0.1',
+	'port' => 8081,
+);
+
+// Wrap it with the RequestHandler.
+$handler = new HttpKernelRequestHandler($kernel, $options);
+
+// Start the server using the RequestHandler.
+$server = new HttpServer($handler);
+$server->start();
