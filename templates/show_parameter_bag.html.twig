@@ -11,7 +11,7 @@
 			{% for key, value in parameters %}
 				<tr>
 					<td>{{ key }}</td>
-					<td>{{ value }}</td>
+					<td>{{ value|json_encode() }}</td>
 				</tr>
 			{% endfor %}
 		</tbody>
