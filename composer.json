@@ -33,7 +33,6 @@
 
 		"matze/annotations": "dev-master",
 
-		"spomky-labs/otphp": "3.0.*",
 		"monolog/monolog": "~1.9",
 		"twig/twig": "~1.15",
 		"doctrine/cache": "~1.3"
