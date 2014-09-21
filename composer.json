@@ -2,7 +2,7 @@
 	"name": "matze/core",
 	"description": "Framework core",
 	"minimum-stability": "dev",
-	"version": "1.0.5",
+	"version": "1.0.6",
 	"authors": [
 		{
 			"name": "Matze",
@@ -32,19 +32,17 @@
 		"symfony/security": "~2.4",
 
 		"matze/annotations": "dev-master",
+		"core/templates": "dev-master",
 
 		"monolog/monolog": "~1.9",
-		"twig/twig": "~1.15",
 		"doctrine/cache": "~1.3"
 	},
 
 	"suggest": {
-		"crunch/inotify": "needed for 'console debug'",
-		"yosymfony/httpserver": "used for application server: 1.0.*@dev"
+		"crunch/inotify": "needed for 'console debug'"
 	},
 
 	"bin": [
-		"console",
-		"application_server"
+		"console"
 	]
 }

@@ -7,6 +7,8 @@ use Matze\Core\DependencyInjection\CompilerPass\GlobalCompilerPass;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 
 define('CORE_ROOT', __DIR__);
 
@@ -69,6 +71,18 @@ class Core {
 		$annotation_loader = new AnnotationLoader($container_builder);
 		$annotation_loader->load('src/');
 		$annotation_loader->load(CORE_ROOT);
+
+		$app_finder = new Finder();
+		$app_finder
+			->directories()
+			->depth(1)
+			->in(MATZE_VENDOR_ROOT)
+			->name('src');
+
+		foreach ($app_finder as $dir) {
+			/** @var SplFileInfo $dir  */
+			$annotation_loader->load($dir->getPathname());
+		}
 
 		$container_builder->addCompilerPass(new GlobalCompilerPass());
 		$container_builder->compile();
