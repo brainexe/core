@@ -1,8 +1,8 @@
 <?php
 
-namespace Matze\Core\EventDispatcher;
+namespace BrainExe\Core\EventDispatcher;
 
-use Matze\Core\DependencyInjection\ObjectFinder;
+use BrainExe\Core\DependencyInjection\ObjectFinder;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 abstract class AbstractEventListener implements EventSubscriberInterface {

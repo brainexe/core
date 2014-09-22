@@ -1,9 +1,9 @@
 <?php
 
-namespace Matze\Core\Middleware;
+namespace BrainExe\Core\Middleware;
 
-use Matze\Core\Traits\CacheTrait;
-use Matze\Core\Traits\LoggerTrait;
+use BrainExe\Core\Traits\CacheTrait;
+use BrainExe\Core\Traits\LoggerTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Route;

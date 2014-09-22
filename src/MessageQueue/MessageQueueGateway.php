@@ -1,12 +1,12 @@
 <?php
 
-namespace Matze\Core\MessageQueue;
+namespace BrainExe\Core\MessageQueue;
 
-use Matze\Core\EventDispatcher\AbstractEvent;
-use Matze\Core\Redis\RedisScripts;
-use Matze\Core\Traits\IdGeneratorTrait;
-use Matze\Core\Traits\RedisTrait;
-use Matze\Core\Redis\RedisScriptInterface;
+use BrainExe\Core\EventDispatcher\AbstractEvent;
+use BrainExe\Core\Redis\RedisScripts;
+use BrainExe\Core\Traits\IdGeneratorTrait;
+use BrainExe\Core\Traits\RedisTrait;
+use BrainExe\Core\Redis\RedisScriptInterface;
 use Redis;
 
 /**

@@ -1,10 +1,10 @@
 <?php
 
-namespace Matze\Core\MessageQueue;
+namespace BrainExe\Core\MessageQueue;
 
-use Matze\Core\EventDispatcher\AbstractEventListener;
-use Matze\Core\EventDispatcher\BackgroundEvent;
-use Matze\Core\EventDispatcher\DelayedEvent;
+use BrainExe\Core\EventDispatcher\AbstractEventListener;
+use BrainExe\Core\EventDispatcher\BackgroundEvent;
+use BrainExe\Core\EventDispatcher\DelayedEvent;
 
 /**
  * @EventListener

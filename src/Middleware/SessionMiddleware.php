@@ -1,6 +1,6 @@
 <?php
 
-namespace Matze\Core\Middleware;
+namespace BrainExe\Core\Middleware;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;

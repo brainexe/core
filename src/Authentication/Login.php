@@ -1,10 +1,10 @@
 <?php
 
-namespace Matze\Core\Authentication;
+namespace BrainExe\Core\Authentication;
 
-use Matze\Core\Application\UserException;
-use Matze\Core\Authentication\OneTimePassword\OneTimePassword;
-use Matze\Core\Traits\ServiceContainerTrait;
+use BrainExe\Core\Application\UserException;
+use BrainExe\Core\Authentication\OneTimePassword\OneTimePassword;
+use BrainExe\Core\Traits\ServiceContainerTrait;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**

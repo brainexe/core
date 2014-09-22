@@ -1,8 +1,8 @@
 <?php
 
-namespace Matze\Core\Authentication;
+namespace BrainExe\Core\Authentication;
 
-use Matze\Core\Traits\RedisTrait;
+use BrainExe\Core\Traits\RedisTrait;
 use Redis;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -69,7 +69,7 @@ class DatabaseUserProvider implements UserProviderInterface {
 	 * {@inheritdoc}
 	 */
 	public function supportsClass($class) {
-		return 'Matze\Core\Authentication\UserVO' === $class;
+		return 'BrainExe\Core\Authentication\UserVO' === $class;
 	}
 
 	/**

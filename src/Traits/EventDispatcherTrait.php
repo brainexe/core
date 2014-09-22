@@ -1,9 +1,9 @@
 <?php
 
-namespace Matze\Core\Traits;
+namespace BrainExe\Core\Traits;
 
-use Matze\Core\EventDispatcher\AbstractEvent;
-use Matze\Core\EventDispatcher\EventDispatcher;
+use BrainExe\Core\EventDispatcher\AbstractEvent;
+use BrainExe\Core\EventDispatcher\EventDispatcher;
 
 trait EventDispatcherTrait {
 

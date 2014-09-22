@@ -1,8 +1,8 @@
 <?php
 
-namespace Matze\Core\EventDispatcher;
+namespace BrainExe\Core\EventDispatcher;
 
-use Matze\Core\MessageQueue\AbstractMessageQueueEvent;
+use BrainExe\Core\MessageQueue\AbstractMessageQueueEvent;
 
 class BackgroundEvent extends AbstractMessageQueueEvent {
 

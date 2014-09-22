@@ -1,6 +1,6 @@
 <?php
 
-namespace Matze\Tests\Core\Application;
+namespace BrainExe\Tests\Core\Application;
 
 use PHPUnit_Framework_TestCase;
 use Symfony\Component\Console\Application;

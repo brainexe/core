@@ -1,9 +1,9 @@
 <?php
 
-namespace Matze\Core\Console;
+namespace BrainExe\Core\Console;
 
-use Matze\Core\Core;
-use Matze\Core\Traits\EventDispatcherTrait;
+use BrainExe\Core\Core;
+use BrainExe\Core\Traits\EventDispatcherTrait;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\Dumper\GraphvizDumper;

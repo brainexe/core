@@ -1,12 +1,11 @@
 <?php
 
-namespace Matze\Tests\Core\Application;
+namespace BrainExe\Tests\Core\Application;
 
-use Matze\Core\Application\AppKernel;
+use BrainExe\Core\Application\AppKernel;
 use PHPUnit_Framework_TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpFoundation\Request;
-
 
 class AppKernelTest extends PHPUnit_Framework_TestCase {
 

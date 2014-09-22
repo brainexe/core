@@ -1,9 +1,9 @@
 <?php
 
-namespace Matze\Core\Application\SelfUpdate;
+namespace BrainExe\Core\Application\SelfUpdate;
 
-use Matze\Core\EventDispatcher\AbstractEvent;
-use Matze\Core\EventDispatcher\PushViaWebsocketInterface;
+use BrainExe\Core\EventDispatcher\AbstractEvent;
+use BrainExe\Core\EventDispatcher\PushViaWebsocketInterface;
 
 class SelfUpdateEvent extends AbstractEvent implements PushViaWebsocketInterface {
 

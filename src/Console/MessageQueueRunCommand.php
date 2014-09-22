@@ -1,8 +1,8 @@
 <?php
 
-namespace Matze\Core\Console;
+namespace BrainExe\Core\Console;
 
-use Matze\Core\MessageQueue\MessageQueueWorker;
+use BrainExe\Core\MessageQueue\MessageQueueWorker;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

@@ -1,10 +1,10 @@
 <?php
 
-namespace Matze\Core\Application;
+namespace BrainExe\Core\Application;
 
 use Exception;
-use Matze\Core\Authentication\AnonymusUserVO;
-use Matze\Core\Traits\TwigTrait;
+use BrainExe\Core\Authentication\AnonymusUserVO;
+use BrainExe\Core\Traits\TwigTrait;
 use Symfony\Component\HttpFoundation\Request;
 
 /**

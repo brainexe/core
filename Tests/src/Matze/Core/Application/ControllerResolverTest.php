@@ -1,12 +1,12 @@
 <?php
 
-namespace Matze\Tests\Core\Application;
+namespace BrainExe\Tests\Core\Application;
 
-use Matze\Core\Controller\AbstractController;
-use Matze\Core\DependencyInjection\ObjectFinder;
+use BrainExe\Core\Controller\AbstractController;
+use BrainExe\Core\DependencyInjection\ObjectFinder;
 use PHPUnit_Framework_MockObject_MockObject;
 use Symfony\Component\HttpFoundation\Request;
-use Matze\Core\Application\ControllerResolver;
+use BrainExe\Core\Application\ControllerResolver;
 
 class TestController extends AbstractController {
 
@@ -25,7 +25,7 @@ class ControllerResolverTest extends \PHPUnit_Framework_TestCase {
 	private $_mock_object_finder;
 
 	protected function setUp() {
-		$this->_mock_object_finder = $this->getMock('Matze\Core\DependencyInjection\ObjectFinder', [], [], '', false);
+		$this->_mock_object_finder = $this->getMock('BrainExe\Core\DependencyInjection\ObjectFinder', [], [], '', false);
 		$this->_subject = new ControllerResolver($this->_mock_object_finder);
 		$this->_subject->setObjectFinder($this->_mock_object_finder);
 	}

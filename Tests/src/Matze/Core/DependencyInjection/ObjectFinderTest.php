@@ -1,8 +1,8 @@
 <?php
 
-namespace Matze\Tests\Core\DependencyInjection;
+namespace BrainExe\Tests\Core\DependencyInjection;
 
-use Matze\Core\DependencyInjection\ObjectFinder;
+use BrainExe\Core\DependencyInjection\ObjectFinder;
 use PHPUnit_Framework_MockObject_MockObject;
 use Symfony\Component\DependencyInjection\Dump\Container;
 

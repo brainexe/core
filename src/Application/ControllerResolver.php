@@ -1,8 +1,8 @@
 <?php
 
-namespace Matze\Core\Application;
+namespace BrainExe\Core\Application;
 
-use Matze\Core\Traits\ServiceContainerTrait;
+use BrainExe\Core\Traits\ServiceContainerTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
 

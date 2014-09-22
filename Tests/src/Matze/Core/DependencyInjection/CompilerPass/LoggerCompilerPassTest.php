@@ -1,8 +1,8 @@
 <?php
 
-namespace Matze\Tests\Core\DependencyInjection\CompilerPass;
+namespace BrainExe\Tests\Core\DependencyInjection\CompilerPass;
 
-use Matze\Core\DependencyInjection\CompilerPass\LoggerCompilerPass;
+use BrainExe\Core\DependencyInjection\CompilerPass\LoggerCompilerPass;
 use PHPUnit_Framework_MockObject_MockObject;
 use PHPUnit_Framework_TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

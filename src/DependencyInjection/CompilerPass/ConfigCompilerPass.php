@@ -1,6 +1,6 @@
 <?php
 
-namespace Matze\Core\DependencyInjection\CompilerPass;
+namespace BrainExe\Core\DependencyInjection\CompilerPass;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -20,12 +20,12 @@ class ConfigCompilerPass implements CompilerPassInterface {
 	public function process(ContainerBuilder $container) {
 		$xml_loader = new XmlFileLoader($container, new FileLocator('config'));
 
-		// load container.xml file from all "matze" components
+		// load container.xml file from all "brainexe" components
 		$config_finder = new Finder();
 		$config_finder
 			->files()
 			->depth(1)
-			->in(MATZE_VENDOR_ROOT)
+			->in(BRAINEXE_VENDOR_ROOT)
 			->name('container.xml');
 
 		foreach ($config_finder as $file) {

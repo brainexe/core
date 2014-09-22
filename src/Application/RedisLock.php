@@ -1,8 +1,8 @@
 <?php
 
-namespace Matze\Core\Application;
+namespace BrainExe\Core\Application;
 
-use Matze\Core\Traits\RedisTrait;
+use BrainExe\Core\Traits\RedisTrait;
 
 /**
  * @Service(public=false)

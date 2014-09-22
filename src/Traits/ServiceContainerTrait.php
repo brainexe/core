@@ -1,8 +1,8 @@
 <?php
 
-namespace Matze\Core\Traits;
+namespace BrainExe\Core\Traits;
 
-use Matze\Core\DependencyInjection\ObjectFinder;
+use BrainExe\Core\DependencyInjection\ObjectFinder;
 
 trait ServiceContainerTrait {
 

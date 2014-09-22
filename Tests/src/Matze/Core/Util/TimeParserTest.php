@@ -1,8 +1,8 @@
 <?php
 
-namespace Matze\Tests\Core\Util;
+namespace BrainExe\Tests\Core\Util;
 
-use Matze\Core\Util\TimeParser;
+use BrainExe\Core\Util\TimeParser;
 use PHPUnit_Framework_TestCase;
 
 class TimeParserTest extends PHPUnit_Framework_TestCase {
@@ -21,7 +21,7 @@ class TimeParserTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function testParse($input_string, $expected_eta) {
 		if (false === $expected_eta) {
-			$this->setExpectedException('Matze\Core\Application\UserException');
+			$this->setExpectedException('BrainExe\Core\Application\UserException');
 		}
 
 		$now = time();

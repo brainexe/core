@@ -1,8 +1,8 @@
 <?php
 
-namespace Matze\Core\Application\SelfUpdate;
+namespace BrainExe\Core\Application\SelfUpdate;
 
-use Matze\Core\Traits\EventDispatcherTrait;
+use BrainExe\Core\Traits\EventDispatcherTrait;
 use Symfony\Component\Process\Process;
 
 /**

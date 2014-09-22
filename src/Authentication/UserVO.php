@@ -1,6 +1,6 @@
 <?php
 
-namespace Matze\Core\Authentication;
+namespace BrainExe\Core\Authentication;
 
 use JsonSerializable;
 use Symfony\Component\Security\Core\Role\Role;

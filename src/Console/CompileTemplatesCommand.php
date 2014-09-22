@@ -1,6 +1,6 @@
 <?php
 
-namespace Matze\Core\Console;
+namespace BrainExe\Core\Console;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

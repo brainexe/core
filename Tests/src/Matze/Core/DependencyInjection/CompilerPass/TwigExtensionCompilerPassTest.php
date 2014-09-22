@@ -1,8 +1,8 @@
 <?php
 
-namespace Matze\Tests\Core\DependencyInjection\CompilerPass;
+namespace BrainExe\Tests\Core\DependencyInjection\CompilerPass;
 
-use Matze\Core\DependencyInjection\CompilerPass\TwigExtensionCompilerPass;
+use BrainExe\Core\DependencyInjection\CompilerPass\TwigExtensionCompilerPass;
 use PHPUnit_Framework_MockObject_MockObject;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;

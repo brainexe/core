@@ -1,11 +1,12 @@
 <?php
 
-namespace Matze\Tests\Core;
+namespace BrainExe\Tests\Core;
 
-use Matze\Core\Core;
+use BrainExe\Core\Core;
+use PHPUnit_Framework_TestCase;
 use Symfony\Component\DependencyInjection\Container;
 
-class CoreTest extends \PHPUnit_Framework_TestCase {
+class CoreTest extends PHPUnit_Framework_TestCase {
 
 	public function testGetContainer() {
 		$dic = Core::rebuildDIC();

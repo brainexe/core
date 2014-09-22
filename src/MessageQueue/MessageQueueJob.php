@@ -1,8 +1,8 @@
 <?php
 
-namespace Matze\Core\MessageQueue;
+namespace BrainExe\Core\MessageQueue;
 
-use Matze\Core\EventDispatcher\AbstractEvent;
+use BrainExe\Core\EventDispatcher\AbstractEvent;
 
 class MessageQueueJob {
 

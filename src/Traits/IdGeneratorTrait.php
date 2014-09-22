@@ -1,8 +1,8 @@
 <?php
 
-namespace Matze\Core\Traits;
+namespace BrainExe\Core\Traits;
 
-use Matze\Core\Util\IdGenerator;
+use BrainExe\Core\Util\IdGenerator;
 
 trait IdGeneratorTrait {
 	/**

@@ -1,6 +1,6 @@
 <?php
 
-namespace Matze\Core\Middleware;
+namespace BrainExe\Core\Middleware;
 
 use Exception;
 use Symfony\Component\HttpFoundation\Request;

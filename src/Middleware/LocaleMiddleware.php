@@ -1,8 +1,8 @@
 <?php
 
-namespace Matze\Core\Middleware;
+namespace BrainExe\Core\Middleware;
 
-use Matze\Core\Core;
+use BrainExe\Core\Core;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Route;
 

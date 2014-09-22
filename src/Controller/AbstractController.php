@@ -1,9 +1,9 @@
 <?php
 
-namespace Matze\Core\Controller;
+namespace BrainExe\Core\Controller;
 
-use Matze\Core\Authentication\AnonymusUserVO;
-use Matze\Core\Authentication\UserVO;
+use BrainExe\Core\Authentication\AnonymusUserVO;
+use BrainExe\Core\Authentication\UserVO;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 

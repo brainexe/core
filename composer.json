@@ -1,8 +1,8 @@
 {
-	"name": "matze/core",
+	"name": "brainexe/core",
 	"description": "Framework core",
 	"minimum-stability": "dev",
-	"version": "1.0.6",
+	"version": "1.0.8",
 	"authors": [
 		{
 			"name": "Matze",
@@ -11,7 +11,7 @@
 	],
 	"autoload": {
 		"psr-4": {
-			"Matze\\Core\\": "src/"
+			"BrainExe\\Core\\": "src/"
 		}
 	},
 	"repositories": [
@@ -32,7 +32,7 @@
 		"symfony/security": "~2.4",
 
 		"brainexe/annotations": "dev-master",
-		"matze/template": "dev-master",
+		"brainexe/template": "dev-master",
 
 		"monolog/monolog": "~1.9",
 		"doctrine/cache": "~1.3"

@@ -1,10 +1,10 @@
 <?php
 
-namespace Matze\Core\Annotations\Builder;
+namespace BrainExe\Core\Annotations\Builder;
 
-use Matze\Annotations\Loader\Annotation\DefinitionBuilder\ServiceDefinitionBuilder;
-use Matze\Core\Annotations\Route;
-use Matze\Core\DependencyInjection\CompilerPass\ControllerCompilerPass;
+use BrainExe\Annotations\Loader\Annotation\DefinitionBuilder\ServiceDefinitionBuilder;
+use BrainExe\Core\Annotations\Route;
+use BrainExe\Core\DependencyInjection\CompilerPass\ControllerCompilerPass;
 use ReflectionMethod;
 use Symfony\Component\DependencyInjection\Definition;
 
@@ -27,12 +27,12 @@ class ControllerDefinitionBuilder extends ServiceDefinitionBuilder {
 	 * @param ReflectionMethod[] $methods
 	 * @param Definition $definition
 	 */
-	protected function processMethods($methods, Definition $definition) {
-		parent::processMethods($methods, $definition);
+	protected function _processMethods($methods, Definition $definition) {
+		parent::_processMethods($methods, $definition);
 
 		foreach ($methods as $method) {
 			/** @var Route $route_annotation */
-			if ($route_annotation = $this->reader->getMethodAnnotation($method, 'Symfony\Component\Routing\Annotation\Route')) {
+			if ($route_annotation = $this->_reader->getMethodAnnotation($method, 'Symfony\Component\Routing\Annotation\Route')) {
 				$defaults = $route_annotation->getDefaults();
 
 				$class_parts = explode('\\', $definition->getClass());

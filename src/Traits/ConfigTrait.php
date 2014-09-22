@@ -1,6 +1,6 @@
 <?php
 
-namespace Matze\Core\Traits;
+namespace BrainExe\Core\Traits;
 
 use Symfony\Component\DependencyInjection\Container;
 

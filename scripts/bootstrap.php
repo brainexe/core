@@ -1,5 +1,5 @@
 <?php
 
-use Matze\Core\Core;
+use BrainExe\Core\Core;
 
 return Core::boot();

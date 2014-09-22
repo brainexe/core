@@ -1,8 +1,8 @@
 <?php
 
-namespace Matze\Core\Application\SelfUpdate;
+namespace BrainExe\Core\Application\SelfUpdate;
 
-use Matze\Core\Console\AbstractCommand;
+use BrainExe\Core\Console\AbstractCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;

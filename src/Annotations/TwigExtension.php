@@ -1,11 +1,11 @@
 <?php
 
-namespace Matze\Core\Annotations;
+namespace BrainExe\Core\Annotations;
 
 use Doctrine\Common\Annotations\Annotation;
 use Doctrine\Common\Annotations\Reader;
-use Matze\Annotations\Annotations\Service;
-use Matze\Core\Annotations\Builder\TwigExtensionDefinitionBuilder;
+use BrainExe\Annotations\Annotations\Service;
+use BrainExe\Core\Annotations\Builder\TwigExtensionDefinitionBuilder;
 
 /**
  * @Annotation

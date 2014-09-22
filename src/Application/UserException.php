@@ -1,6 +1,6 @@
 <?php
 
-namespace Matze\Core\Application;
+namespace BrainExe\Core\Application;
 
 use Exception;
 

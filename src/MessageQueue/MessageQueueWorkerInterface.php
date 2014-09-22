@@ -1,6 +1,6 @@
 <?php
 
-namespace Matze\Core\MessageQueue;
+namespace BrainExe\Core\MessageQueue;
 
 interface MessageQueueWorkerInterface {
 	/**

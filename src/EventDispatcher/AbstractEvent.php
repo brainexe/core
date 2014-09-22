@@ -1,6 +1,6 @@
 <?php
 
-namespace Matze\Core\EventDispatcher;
+namespace BrainExe\Core\EventDispatcher;
 
 use Symfony\Component\EventDispatcher\Event;
 

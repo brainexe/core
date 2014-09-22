@@ -1,8 +1,8 @@
 <?php
 
-namespace Matze\Core\Authentication;
+namespace BrainExe\Core\Authentication;
 
-use Matze\Core\Application\UserException;
+use BrainExe\Core\Application\UserException;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;

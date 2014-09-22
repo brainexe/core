@@ -1,14 +1,14 @@
 <?php
 
-namespace Matze\Core\Authentication\Controller;
+namespace BrainExe\Core\Authentication\Controller;
 
-use Matze\Core\Authentication\AnonymusUserVO;
-use Matze\Core\Authentication\DatabaseUserProvider;
-use Matze\Core\Authentication\Login;
-use Matze\Core\Authentication\Register;
-use Matze\Core\Authentication\UserVO;
-use Matze\Core\Controller\AbstractController;
-use Matze\Core\Traits\ServiceContainerTrait;
+use BrainExe\Core\Authentication\AnonymusUserVO;
+use BrainExe\Core\Authentication\DatabaseUserProvider;
+use BrainExe\Core\Authentication\Login;
+use BrainExe\Core\Authentication\Register;
+use BrainExe\Core\Authentication\UserVO;
+use BrainExe\Core\Controller\AbstractController;
+use BrainExe\Core\Traits\ServiceContainerTrait;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;

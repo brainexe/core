@@ -1,9 +1,9 @@
 <?php
 
-namespace Matze\Core\Application;
+namespace BrainExe\Core\Application;
 
 use Exception;
-use Matze\Core\Middleware\MiddlewareInterface;
+use BrainExe\Core\Middleware\MiddlewareInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;

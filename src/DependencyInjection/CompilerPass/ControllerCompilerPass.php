@@ -1,8 +1,8 @@
 <?php
 
-namespace Matze\Core\DependencyInjection\CompilerPass;
+namespace BrainExe\Core\DependencyInjection\CompilerPass;
 
-use Matze\Core\Annotations\Route;
+use BrainExe\Core\Annotations\Route;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;

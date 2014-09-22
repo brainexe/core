@@ -1,6 +1,6 @@
 <?php
 
-namespace Matze\Core\Authentication;
+namespace BrainExe\Core\Authentication;
 
 class AnonymusUserVO extends UserVO {
 }

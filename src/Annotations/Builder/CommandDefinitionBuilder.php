@@ -1,9 +1,9 @@
 <?php
 
-namespace Matze\Core\Annotations\Builder;
+namespace BrainExe\Core\Annotations\Builder;
 
-use Matze\Annotations\Loader\Annotation\DefinitionBuilder\ServiceDefinitionBuilder;
-use Matze\Core\DependencyInjection\CompilerPass\ConsoleCompilerPass;
+use BrainExe\Annotations\Loader\Annotation\DefinitionBuilder\ServiceDefinitionBuilder;
+use BrainExe\Core\DependencyInjection\CompilerPass\ConsoleCompilerPass;
 use Symfony\Component\DependencyInjection\Definition;
 
 class CommandDefinitionBuilder extends ServiceDefinitionBuilder {

@@ -1,9 +1,9 @@
 <?php
 
-namespace Matze\Core;
+namespace BrainExe\Core;
 
-use Matze\Annotations\Loader\AnnotationLoader;
-use Matze\Core\DependencyInjection\CompilerPass\GlobalCompilerPass;
+use BrainExe\Annotations\Loader\AnnotationLoader;
+use BrainExe\Core\DependencyInjection\CompilerPass\GlobalCompilerPass;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
@@ -16,8 +16,8 @@ if (!defined('ROOT')) {
 	define('ROOT', realpath(CORE_ROOT . '/../').'/');
 }
 
-if (!defined('MATZE_VENDOR_ROOT')) {
-	define('MATZE_VENDOR_ROOT', ROOT . 'vendor/matze/');
+if (!defined('BRAINEXE_VENDOR_ROOT')) {
+	define('BRAINEXE_VENDOR_ROOT', ROOT . 'vendor/brainexe/');
 }
 
 class Core {
@@ -76,7 +76,7 @@ class Core {
 		$app_finder
 			->directories()
 			->depth(1)
-			->in(MATZE_VENDOR_ROOT)
+			->in(BRAINEXE_VENDOR_ROOT)
 			->name('src');
 
 		foreach ($app_finder as $dir) {

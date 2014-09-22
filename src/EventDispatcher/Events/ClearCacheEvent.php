@@ -1,9 +1,9 @@
 <?php
 
-namespace Matze\Core\EventDispatcher\Events;
+namespace BrainExe\Core\EventDispatcher\Events;
 
 use Symfony\Component\Console\Output\OutputInterface;
-use Matze\Core\EventDispatcher\AbstractEvent;
+use BrainExe\Core\EventDispatcher\AbstractEvent;
 
 class ClearCacheEvent extends AbstractEvent {
 	const NAME = 'cache.clear';

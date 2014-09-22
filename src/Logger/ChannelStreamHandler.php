@@ -1,5 +1,5 @@
 <?php
-namespace Matze\Core\Logger;
+namespace BrainExe\Core\Logger;
 
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;

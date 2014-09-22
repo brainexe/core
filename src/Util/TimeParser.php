@@ -1,8 +1,8 @@
 <?php
 
-namespace Matze\Core\Util;
+namespace BrainExe\Core\Util;
 
-use Matze\Core\Application\UserException;
+use BrainExe\Core\Application\UserException;
 
 /**
  * Parse user input into an unix timestamp

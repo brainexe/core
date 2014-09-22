@@ -1,10 +1,10 @@
 <?php
 
-namespace Matze\Core\MessageQueue;
+namespace BrainExe\Core\MessageQueue;
 
-use Matze\Core\Application\RedisLock;
-use Matze\Core\Traits\EventDispatcherTrait;
-use Matze\Core\Traits\LoggerTrait;
+use BrainExe\Core\Application\RedisLock;
+use BrainExe\Core\Traits\EventDispatcherTrait;
+use BrainExe\Core\Traits\LoggerTrait;
 
 /**
  * @Service(public=false)

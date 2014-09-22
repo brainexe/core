@@ -1,8 +1,8 @@
 <?php
 
-namespace Matze\Core\Middleware;
+namespace BrainExe\Core\Middleware;
 
-use Matze\Core\Traits\IdGeneratorTrait;
+use BrainExe\Core\Traits\IdGeneratorTrait;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

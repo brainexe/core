@@ -45,7 +45,7 @@
             <argument>%application.name%</argument>
 			<call method="pushHandler">
 				<argument type="service">
-					<service class="Matze\Core\Logger\ChannelStreamHandler">
+					<service class="BrainExe\Core\Logger\ChannelStreamHandler">
 						<argument>%logger.error.log%</argument>
 						<argument type="constant">Monolog\Logger::ERROR</argument>
 					</service>
@@ -53,7 +53,7 @@
 			</call>
 			<call method="pushHandler">
 				<argument type="service">
-					<service class="Matze\Core\Logger\ChannelStreamHandler">
+					<service class="BrainExe\Core\Logger\ChannelStreamHandler">
 						<argument>%logger.info.log%</argument>
 						<argument type="constant">Monolog\Logger::INFO</argument>
 					</service>
@@ -61,7 +61,7 @@
 			</call>
 			<call method="pushHandler">
 				<argument type="service">
-					<service class="Matze\Core\Logger\ChannelStreamHandler">
+					<service class="BrainExe\Core\Logger\ChannelStreamHandler">
 						<argument>%logger.message_queue.log%</argument>
 						<argument type="constant">Monolog\Logger::INFO</argument>
                         <argument>message_queue</argument>
@@ -70,7 +70,7 @@
 			</call>
 			<call method="pushHandler">
 				<argument type="service">
-					<service class="Matze\Core\Logger\ChannelStreamHandler">
+					<service class="BrainExe\Core\Logger\ChannelStreamHandler">
 						<argument>%logger.dir%gentime.log</argument>
 						<argument type="constant">Monolog\Logger::DEBUG</argument>
 						<argument>gentime</argument>
@@ -78,7 +78,7 @@
 				</argument>
 			</call>
         </service>
-		<service id="EventDispatcher" class="Matze\Core\EventDispatcher\EventDispatcher" public="false">
+		<service id="EventDispatcher" class="BrainExe\Core\EventDispatcher\EventDispatcher" public="false">
 		</service>
 
 		<service id="Console" class="Symfony\Component\Console\Application"/>
@@ -100,7 +100,7 @@
 		<!--TODO-->
 		<service id="service_container" class="Symfony\Component\DependencyInjection\Container"/>
 
-		<service id="cache.redis" class="Matze\Core\Application\Cache\RedisCache" public="false">
+		<service id="cache.redis" class="BrainExe\Core\Application\Cache\RedisCache" public="false">
 			<argument type="service" id="redis"/>
 		</service>
 		<service id="cache" alias="cache.redis" public="false" />

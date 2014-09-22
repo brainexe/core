@@ -1,9 +1,9 @@
 <?php
 
-namespace Matze\Core\Console;
+namespace BrainExe\Core\Console;
 
-use Matze\Core\Authentication\Register;
-use Matze\Core\Authentication\UserVO;
+use BrainExe\Core\Authentication\Register;
+use BrainExe\Core\Authentication\UserVO;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

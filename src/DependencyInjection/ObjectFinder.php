@@ -1,6 +1,6 @@
 <?php
 
-namespace Matze\Core\DependencyInjection;
+namespace BrainExe\Core\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\Container;
 

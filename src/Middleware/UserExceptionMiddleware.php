@@ -1,12 +1,12 @@
 <?php
 
-namespace Matze\Core\Middleware;
+namespace BrainExe\Core\Middleware;
 
 use Exception;
-use Matze\Core\Application\ErrorView;
-use Matze\Core\Application\UserException;
-use Matze\Core\Controller\AbstractController;
-use Matze\Core\Traits\ServiceContainerTrait;
+use BrainExe\Core\Application\ErrorView;
+use BrainExe\Core\Application\UserException;
+use BrainExe\Core\Controller\AbstractController;
+use BrainExe\Core\Traits\ServiceContainerTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;

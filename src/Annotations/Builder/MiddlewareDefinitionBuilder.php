@@ -1,10 +1,10 @@
 <?php
 
-namespace Matze\Core\Annotations\Builder;
+namespace BrainExe\Core\Annotations\Builder;
 
-use Matze\Annotations\Loader\Annotation\DefinitionBuilder\ServiceDefinitionBuilder;
-use Matze\Core\Annotations\CompilerPass;
-use Matze\Core\DependencyInjection\CompilerPass\MiddlewareCompilerPass;
+use BrainExe\Annotations\Loader\Annotation\DefinitionBuilder\ServiceDefinitionBuilder;
+use BrainExe\Core\Annotations\CompilerPass;
+use BrainExe\Core\DependencyInjection\CompilerPass\MiddlewareCompilerPass;
 use Symfony\Component\DependencyInjection\Definition;
 
 class MiddlewareDefinitionBuilder extends ServiceDefinitionBuilder {

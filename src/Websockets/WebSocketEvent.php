@@ -1,8 +1,8 @@
 <?php
 
-namespace Matze\Core\Websockets;
+namespace BrainExe\Core\Websockets;
 
-use Matze\Core\EventDispatcher\AbstractEvent;
+use BrainExe\Core\EventDispatcher\AbstractEvent;
 
 class WebSocketEvent extends AbstractEvent {
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace Matze\Core\Console;
+namespace BrainExe\Core\Console;
 
-use Matze\Core\Authentication\RegisterTokens;
+use BrainExe\Core\Authentication\RegisterTokens;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

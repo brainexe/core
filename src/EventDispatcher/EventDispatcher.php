@@ -1,8 +1,8 @@
 <?php
 
-namespace Matze\Core\EventDispatcher;
+namespace BrainExe\Core\EventDispatcher;
 
-use Matze\Core\Websockets\WebSocketEvent;
+use BrainExe\Core\Websockets\WebSocketEvent;
 use Symfony\Component\EventDispatcher\EventDispatcher as SymfonyEventDispatcher;
 
 class EventDispatcher extends SymfonyEventDispatcher {

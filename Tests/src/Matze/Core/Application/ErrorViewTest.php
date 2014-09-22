@@ -1,9 +1,9 @@
 <?php
 
-namespace Matze\Tests\Core\Application;
+namespace BrainExe\Tests\Core\Application;
 
-use Matze\Core\Application\ErrorView;
-use Matze\Core\Application\UserException;
+use BrainExe\Core\Application\ErrorView;
+use BrainExe\Core\Application\UserException;
 use PHPUnit_Framework_MockObject_MockObject;
 use PHPUnit_Framework_TestCase;
 use Symfony\Component\HttpFoundation\Request;

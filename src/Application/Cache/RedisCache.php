@@ -1,6 +1,6 @@
 <?php
 
-namespace Matze\Core\Application\Cache;
+namespace BrainExe\Core\Application\Cache;
 
 use Doctrine\Common\Cache\Cache;
 use Doctrine\Common\Cache\CacheProvider;

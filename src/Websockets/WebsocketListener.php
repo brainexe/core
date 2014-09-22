@@ -1,10 +1,10 @@
 <?php
 
-namespace Matze\Core\Websockets;
+namespace BrainExe\Core\Websockets;
 
-use Matze\Core\EventDispatcher\AbstractEventListener;
-use Matze\Core\Traits\EventDispatcherTrait;
-use Matze\Core\Traits\RedisTrait;
+use BrainExe\Core\EventDispatcher\AbstractEventListener;
+use BrainExe\Core\Traits\EventDispatcherTrait;
+use BrainExe\Core\Traits\RedisTrait;
 
 /**
  * @EventListener

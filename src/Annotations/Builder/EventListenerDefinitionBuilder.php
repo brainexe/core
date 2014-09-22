@@ -1,9 +1,9 @@
 <?php
 
-namespace Matze\Core\Annotations\Builder;
+namespace BrainExe\Core\Annotations\Builder;
 
-use Matze\Annotations\Loader\Annotation\DefinitionBuilder\ServiceDefinitionBuilder;
-use Matze\Core\DependencyInjection\CompilerPass\EventListenerCompilerPass;
+use BrainExe\Annotations\Loader\Annotation\DefinitionBuilder\ServiceDefinitionBuilder;
+use BrainExe\Core\DependencyInjection\CompilerPass\EventListenerCompilerPass;
 use Symfony\Component\DependencyInjection\Definition;
 
 class EventListenerDefinitionBuilder extends ServiceDefinitionBuilder {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Matze\Core\Redis;
+namespace BrainExe\Core\Redis;
 
 interface RedisScriptInterface {
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Matze\Core\Util;
+namespace BrainExe\Core\Util;
 use Base32\Base32;
 
 /**

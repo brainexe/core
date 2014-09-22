@@ -1,8 +1,8 @@
 <?php
 
-namespace Matze\Core\Middleware;
+namespace BrainExe\Core\Middleware;
 
-use Matze\Core\Authentication\DatabaseUserProvider;
+use BrainExe\Core\Authentication\DatabaseUserProvider;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

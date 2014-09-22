@@ -1,8 +1,8 @@
 <?php
 
-namespace Matze\Core\Application\SelfUpdate;
+namespace BrainExe\Core\Application\SelfUpdate;
 
-use Matze\Core\EventDispatcher\AbstractEventListener;
+use BrainExe\Core\EventDispatcher\AbstractEventListener;
 
 /**
  * @EventListener

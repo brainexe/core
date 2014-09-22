@@ -1,6 +1,6 @@
 <?php
 
-namespace Matze\Core\Annotations;
+namespace BrainExe\Core\Annotations;
 
 use Doctrine\Common\Annotations\Annotation;
 use Symfony\Component\Routing\Annotation\Route as SymfonyRoute;

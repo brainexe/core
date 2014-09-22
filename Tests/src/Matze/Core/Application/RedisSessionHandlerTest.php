@@ -1,8 +1,8 @@
 <?php
 
-namespace Matze\Tests\Core\Application;
+namespace BrainExe\Tests\Core\Application;
 
-use Matze\Core\Application\RedisSessionHandler;
+use BrainExe\Core\Application\RedisSessionHandler;
 use PHPUnit_Framework_TestCase;
 
 class RedisSessionHandlerTest extends PHPUnit_Framework_TestCase {

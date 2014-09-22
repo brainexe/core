@@ -1,8 +1,8 @@
 <?php
 
-namespace Matze\Tests\Core\DependencyInjection\CompilerPass;
+namespace BrainExe\Tests\Core\DependencyInjection\CompilerPass;
 
-use Matze\Core\DependencyInjection\CompilerPass\SetDefinitionFileCompilerPass;
+use BrainExe\Core\DependencyInjection\CompilerPass\SetDefinitionFileCompilerPass;
 use PHPUnit_Framework_MockObject_MockObject;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -68,7 +68,7 @@ class SetDefinitionFileCompilerPassTest extends \PHPUnit_Framework_TestCase {
 		$this->_mock_definition
 			->expects($this->once())
 			->method('getClass')
-			->will($this->returnValue('Matze\Tests\Core\DependencyInjection\CompilerPass\FooTestClass'));
+			->will($this->returnValue('BrainExe\Tests\Core\DependencyInjection\CompilerPass\FooTestClass'));
 
 		$this->_mock_definition
 			->expects($this->once())

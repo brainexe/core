@@ -1,10 +1,10 @@
 <?php
 
-namespace Matze\Core\Console;
+namespace BrainExe\Core\Console;
 
-use Matze\Core\Core;
-use Matze\Core\EventDispatcher\Events\ClearCacheEvent;
-use Matze\Core\Traits\EventDispatcherTrait;
+use BrainExe\Core\Core;
+use BrainExe\Core\EventDispatcher\Events\ClearCacheEvent;
+use BrainExe\Core\Traits\EventDispatcherTrait;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;

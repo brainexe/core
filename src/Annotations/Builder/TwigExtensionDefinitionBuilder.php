@@ -1,10 +1,10 @@
 <?php
 
-namespace Matze\Core\Annotations\Builder;
+namespace BrainExe\Core\Annotations\Builder;
 
-use Matze\Annotations\Loader\Annotation\DefinitionBuilder\ServiceDefinitionBuilder;
-use Matze\Core\Annotations\TwigExtension;
-use Matze\Core\DependencyInjection\CompilerPass\TwigExtensionCompilerPass;
+use BrainExe\Annotations\Loader\Annotation\DefinitionBuilder\ServiceDefinitionBuilder;
+use BrainExe\Core\Annotations\TwigExtension;
+use BrainExe\Core\DependencyInjection\CompilerPass\TwigExtensionCompilerPass;
 use ReflectionClass;
 use Symfony\Component\DependencyInjection\Definition;
 

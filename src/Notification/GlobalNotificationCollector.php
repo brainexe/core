@@ -1,6 +1,6 @@
 <?php
 
-namespace Matze\Core\Notification;
+namespace BrainExe\Core\Notification;
 
 /**
  * @Service(public=false)

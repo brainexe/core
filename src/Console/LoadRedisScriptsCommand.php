@@ -1,9 +1,9 @@
 <?php
 
-namespace Matze\Core\Console;
+namespace BrainExe\Core\Console;
 
-use Matze\Core\Redis\RedisScripts;
-use Matze\Core\Traits\RedisTrait;
+use BrainExe\Core\Redis\RedisScripts;
+use BrainExe\Core\Traits\RedisTrait;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 

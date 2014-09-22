@@ -2,7 +2,7 @@
 
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
-use Matze\Core\Application\AppKernel;
+use BrainExe\Core\Application\AppKernel;
 
 /** @var Container $dic */
 $dic = include __DIR__ . '/../src/bootstrap.php';

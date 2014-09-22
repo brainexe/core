@@ -1,6 +1,6 @@
 <?php
 
-namespace Matze\Core\DependencyInjection\CompilerPass;
+namespace BrainExe\Core\DependencyInjection\CompilerPass;
 
 use Monolog\Logger;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -15,7 +15,7 @@ class GlobalCompilerPass implements CompilerPassInterface {
 	 */
 	public function process(ContainerBuilder $container) {
 		$container->setParameter('application.root', ROOT);
-		$container->setParameter('application.vendor_root', MATZE_VENDOR_ROOT);
+		$container->setParameter('application.vendor_root', BRAINEXE_VENDOR_ROOT);
 
 		$service_ids = $container->findTaggedServiceIds(self::TAG);
 		$service_priorities = [];

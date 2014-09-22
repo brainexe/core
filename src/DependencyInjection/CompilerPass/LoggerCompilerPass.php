@@ -1,6 +1,6 @@
 <?php
 
-namespace Matze\Core\DependencyInjection\CompilerPass;
+namespace BrainExe\Core\DependencyInjection\CompilerPass;
 
 use Monolog\Logger;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
