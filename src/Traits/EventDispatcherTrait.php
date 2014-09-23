@@ -14,6 +14,7 @@ trait EventDispatcherTrait {
 
 	/**
 	 * @Inject("@EventDispatcher")
+	 * @param EventDispatcher $event_dispatcher
 	 */
 	public function setEventDispatcher(EventDispatcher $event_dispatcher) {
 		$this->_event_dispatcher = $event_dispatcher;

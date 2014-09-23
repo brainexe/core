@@ -2,7 +2,7 @@
 
 namespace BrainExe\Core\EventDispatcher;
 
-use BrainExe\Core\MessageQueue\AbstractMessageQueueEvent;
+use BrainExe\MessageQueue\Event\AbstractMessageQueueEvent;
 
 class DelayedEvent extends AbstractMessageQueueEvent {
 
