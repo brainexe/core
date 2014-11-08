@@ -63,9 +63,10 @@ class Core {
 	}
 
 	/**
+	 * @param boolean $boot
 	 * @return ContainerBuilder
 	 */
-	public static function rebuildDIC() {
+	public static function rebuildDIC($boot = true) {
 		$container_builder = new ContainerBuilder();
 
 		$annotation_loader = new AnnotationLoader($container_builder);
@@ -88,22 +89,24 @@ class Core {
 		$container_builder->compile();
 
 		if (!defined('PHPUNIT')) {
-			$random_id = mt_rand();
+			$random_id      = mt_rand();
 			$container_name = sprintf('dic_%d', $random_id);
 			$container_file = sprintf('cache/dic_%d.php', $random_id);
 
-			foreach(glob('cache/dic_*.php') as $file) {
+			foreach (glob('cache/dic_*.php') as $file) {
 				unlink($file);
 			}
 
-			$dumper = new PhpDumper($container_builder);
+			$dumper            = new PhpDumper($container_builder);
 			$container_content = $dumper->dump(['class' => $container_name]);
 			file_put_contents($container_file, $container_content);
 			chmod($container_file, 0777);
 
-			return self::boot();
-		} else {
-			return $container_builder;
+			if ($boot) {
+				return self::boot();
+			}
 		}
+
+		return $container_builder;
 	}
 } 
