@@ -79,6 +79,7 @@
 			</call>
         </service>
 		<service id="EventDispatcher" class="BrainExe\Core\EventDispatcher\EventDispatcher" public="false">
+			<argument type="service" id="service_container"/>
 		</service>
 
 		<service id="Console" class="Symfony\Component\Console\Application"/>
@@ -105,7 +106,7 @@
 		</service>
 		<service id="cache" alias="cache.redis" public="false" />
 
-		<service id="RouteCollection" class="Symfony\Component\Routing\RouteCollection" public="false"/>
+		<service id="RouteCollection" class="Symfony\Component\Routing\RouteCollection" public="false" decoration-inner-name=""/>
 		<service id="UrlGenerator" class="Symfony\Component\Routing\Generator\UrlGenerator" public="false">
 			<argument type="service" id="RouteCollection"/>
 			<argument type="service">

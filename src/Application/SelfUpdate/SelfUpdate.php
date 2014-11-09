@@ -6,7 +6,7 @@ use BrainExe\Core\Traits\EventDispatcherTrait;
 use Symfony\Component\Process\Process;
 
 /**
- * @Service
+ * @Service(public=false)
  */
 class SelfUpdate {
 

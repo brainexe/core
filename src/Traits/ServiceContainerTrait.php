@@ -4,6 +4,9 @@ namespace BrainExe\Core\Traits;
 
 use BrainExe\Core\DependencyInjection\ObjectFinder;
 
+/**
+ * @deprecated
+ */
 trait ServiceContainerTrait {
 
 	/**

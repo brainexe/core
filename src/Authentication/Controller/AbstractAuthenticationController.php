@@ -7,15 +7,17 @@ use BrainExe\Core\Authentication\DatabaseUserProvider;
 use BrainExe\Core\Authentication\Login;
 use BrainExe\Core\Authentication\Register;
 use BrainExe\Core\Authentication\UserVO;
-use BrainExe\Core\Controller\AbstractController;
+use BrainExe\Core\Controller\ControllerInterface;
+use BrainExe\Core\Traits\AddFlashTrait;
 use BrainExe\Core\Traits\ServiceContainerTrait;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-abstract class AbstractAuthenticationController extends AbstractController {
+abstract class AbstractAuthenticationController implements ControllerInterface {
 
-	use ServiceContainerTrait;
+	use AddFlashTrait;
+	use ServiceContainerTrait; // TODO evil
 
 	/**
 	 * @return RedirectResponse

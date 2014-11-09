@@ -11,6 +11,7 @@ use BrainExe\Core\Annotations\Builder\EventListenerDefinitionBuilder;
  * @Annotation
  */
 class EventListener extends Service {
+
 	/**
 	 * {@inheritdoc}
 	 */

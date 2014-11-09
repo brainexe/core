@@ -3,11 +3,12 @@
 namespace BrainExe\Core\Application;
 
 use BrainExe\Core\Traits\RedisTrait;
+use SessionHandlerInterface;
 
 /**
  * @Service(public=false)
  */
-class RedisSessionHandler implements \SessionHandlerInterface {
+class RedisSessionHandler implements SessionHandlerInterface {
 
 	const PREFIX = 'session:';
 

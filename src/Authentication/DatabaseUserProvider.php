@@ -2,6 +2,7 @@
 
 namespace BrainExe\Core\Authentication;
 
+use BrainExe\Core\Traits\IdGeneratorTrait;
 use BrainExe\Core\Traits\RedisTrait;
 use Redis;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
@@ -9,11 +10,13 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 /**
+ * @todo private
  * @Service(public=true)
  */
 class DatabaseUserProvider implements UserProviderInterface {
 
 	use RedisTrait;
+	use IdGeneratorTrait;
 
 	const REDIS_USER = 'user:%d';
 	const REDIS_USER_NAMES = 'user_names';
@@ -121,7 +124,8 @@ class DatabaseUserProvider implements UserProviderInterface {
 		$user_array = [
 			'username' => $user->getUsername(),
 			'password' => $password_hash = $this->generateHash($user->password),
-			'roles' => implode(',', $user->roles)
+			'roles' => implode(',', $user->roles),
+			'one_time_secret' => $user->one_time_secret
 		];
 
 		$new_user_id = mt_rand();

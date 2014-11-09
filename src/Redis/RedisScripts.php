@@ -27,6 +27,10 @@ class RedisScripts {
 		$this->_sha1[$name] = $sha1;
 	}
 
+	/**
+	 * @param string $name
+	 * @return string
+	 */
 	public function getSha1($name) {
 		return $this->_sha1[$name];
 	}

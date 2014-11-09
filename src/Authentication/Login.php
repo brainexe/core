@@ -3,11 +3,12 @@
 namespace BrainExe\Core\Authentication;
 
 use BrainExe\Core\Application\UserException;
-use BrainExe\Core\Authentication\OneTimePassword\OneTimePassword;
 use BrainExe\Core\Traits\ServiceContainerTrait;
+use BrainExe\TOTP\OneTimePassword;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
+ * @todo private
  * @Service
  */
 class Login {

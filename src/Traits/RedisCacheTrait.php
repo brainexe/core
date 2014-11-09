@@ -23,9 +23,7 @@ trait RedisCacheTrait {
 
 		$value = $callback();
 
-		// TODO use SETEX
-		$this->_redis->SET($key, serialize($value));
-		$this->_redis->EXPIRE($key, $ttl);
+		$this->_redis->SETEX($key, $ttl, serialize($value));
 
 		return $value;
 	}

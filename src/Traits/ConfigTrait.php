@@ -12,6 +12,7 @@ trait ConfigTrait {
 
 	/**
 	 * @Inject("@service_container")
+	 * @param Container $container
 	 */
 	public function setContainer(Container $container) {
 		$this->_container = $container;

@@ -2,6 +2,8 @@
 
 namespace BrainExe\Core\DependencyInjection\CompilerPass;
 
+use ReflectionClass;
+use ReflectionException;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -22,12 +24,12 @@ class SetDefinitionFileCompilerPass implements CompilerPassInterface {
 			$definition = $container->getDefinition($service_id);
 
 			try {
-				$reflection_class = new \ReflectionClass($definition->getClass());
-			} catch (\ReflectionException $e) {
+				$reflection = new ReflectionClass($definition->getClass());
+			} catch (ReflectionException $e) {
 				continue;
 			}
 
-			$filename = $reflection_class->getFileName();
+			$filename = $reflection->getFileName();
 			if (empty($filename)) {
 				continue;
 			}

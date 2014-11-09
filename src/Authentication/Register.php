@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
 /**
+ * @todo private
  * @Service
  */
 class Register {
@@ -57,7 +58,7 @@ class Register {
 		}
 
 		if (!$this->_registration_enabled) {
-			if ($token !== null || !$this->_register_tokens->fetchToken($token)) {
+			if ($token !== null && !$this->_register_tokens->fetchToken($token)) {
 				throw new UserException("You have to provide a valid register token!");
 			}
 		}

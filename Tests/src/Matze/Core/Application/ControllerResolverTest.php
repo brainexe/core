@@ -2,13 +2,13 @@
 
 namespace BrainExe\Tests\Core\Application;
 
-use BrainExe\Core\Controller\AbstractController;
+use BrainExe\Core\Controller\ControllerInterface;
 use BrainExe\Core\DependencyInjection\ObjectFinder;
 use PHPUnit_Framework_MockObject_MockObject;
-use Symfony\Component\HttpFoundation\Request;
 use BrainExe\Core\Application\ControllerResolver;
+use Symfony\Component\HttpFoundation\Request;
 
-class TestController extends AbstractController {
+class TestController implements ControllerInterface {
 
 	public function validAction(Request $request, $test = null) {}
 }

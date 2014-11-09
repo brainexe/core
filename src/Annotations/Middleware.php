@@ -11,6 +11,10 @@ use BrainExe\Core\Annotations\Builder\MiddlewareDefinitionBuilder;
  * @Annotation
  */
 class Middleware extends Service {
+
+	/**
+	 * @var integer
+	 */
 	public $priority = 5;
 
 	/**

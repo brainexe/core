@@ -3,14 +3,28 @@
 namespace BrainExe\Core\Application\SelfUpdate;
 
 use BrainExe\Core\EventDispatcher\AbstractEventListener;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * @EventListener
  */
-class SelfUpdateListener extends AbstractEventListener {
+class SelfUpdateListener implements EventSubscriberInterface {
 
     /**
-     * @{@inheritdoc}
+     * @var SelfUpdate
+     */
+    private $_selfUpdate;
+
+    /**
+     * @inject("@SelfUpdate")
+     * @param SelfUpdate $selfUpdate
+     */
+    public function __construct(SelfUpdate $selfUpdate) {
+        $this->_selfUpdate = $selfUpdate;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public static function getSubscribedEvents() {
         return [
@@ -19,9 +33,7 @@ class SelfUpdateListener extends AbstractEventListener {
     }
 
     public function startSelfUpdate() {
-		/** @var SelfUpdate $self_update */
-        $self_update = $this->getService('SelfUpdate');
-		$self_update->startUpdate();
+		$this->_selfUpdate->startUpdate();
     }
 
 }

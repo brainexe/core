@@ -2,10 +2,11 @@
 
 namespace BrainExe\Core\Middleware;
 
+use BrainExe\Core\Controller\ControllerInterface;
 use Exception;
 use BrainExe\Core\Application\ErrorView;
 use BrainExe\Core\Application\UserException;
-use BrainExe\Core\Controller\AbstractController;
+
 use BrainExe\Core\Traits\ServiceContainerTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,7 +38,7 @@ class UserExceptionMiddleware extends AbstractMiddleware {
 
 		if ($request->isXmlHttpRequest()) {
 			$message = $exception->getMessage() ?: 'An internal error occured';
-			$response->headers->set('X-Flash', json_encode([AbstractController::ALERT_DANGER, $message]));
+			$response->headers->set('X-Flash', json_encode([ControllerInterface::ALERT_DANGER, $message]));
 			$response->setStatusCode(500);
 		} else {
 			/** @var ErrorView $error_view */

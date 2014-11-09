@@ -8,6 +8,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\Routing\Generator\Dumper\PhpGeneratorDumper;
 use Symfony\Component\Routing\Matcher\Dumper\PhpMatcherDumper;
+use Symfony\Component\Routing\RouteCollection;
 
 /**
  * @CompilerPass
@@ -15,6 +16,7 @@ use Symfony\Component\Routing\Matcher\Dumper\PhpMatcherDumper;
 class ControllerCompilerPass implements CompilerPassInterface {
 
 	/**
+	 * @todo why static?
 	 * @var Route[]
 	 */
 	private static $routes = [];
@@ -43,15 +45,19 @@ class ControllerCompilerPass implements CompilerPassInterface {
 
 			$routes->addMethodCall('add', [$name, new Definition('Symfony\Component\Routing\Route', [$route->getPath(), $route->getDefaults(), $route->getRequirements(), $route->getOptions(), $route->getHost(), $route->getSchemes(), $route->getMethods(), $route->getCondition()])]);
 		}
+
 		self::$routes = [];
 
+		/** @var RouteCollection $router_collection */
+		$router_collection = $container->get('RouteCollection');
+
 		$router_file = sprintf('%scache/router_matcher.php', ROOT);
-		$route_dumper = new PhpMatcherDumper($container->get('RouteCollection'));
+		$route_dumper = new PhpMatcherDumper($router_collection);
 		$content = $route_dumper->dump();
 		file_put_contents($router_file, $content);
 
 		$router_file = sprintf('%scache/router_generator.php', ROOT);
-		$route_dumper = new PhpGeneratorDumper($container->get('RouteCollection'));
+		$route_dumper = new PhpGeneratorDumper($router_collection);
 		$content = $route_dumper->dump();
 		file_put_contents($router_file, $content);
 	}

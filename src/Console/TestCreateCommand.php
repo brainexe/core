@@ -3,7 +3,7 @@
 namespace Ig\StratCity\Classes\System\Commands\Test;
 
 use BrainExe\Core\Core;
-use BrainExe\Core\Traits\ServiceContainerTrait;
+use BrainExe\Core\Traits\ConfigTrait;
 use PHPUnit_Framework_MockObject_MockObject;
 use PHPUnit_Framework_TestCase;
 use ReflectionClass;
@@ -18,14 +18,12 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
 class TestData {
-
 	public $setter_calls = [];
 	public $default_tests = [];
 	public $mock_properties = [];
 	public $use_statements = [];
 	public $local_mocks = [];
 	public $constructor_arguments = [];
-
 }
 
 /**
@@ -33,7 +31,7 @@ class TestData {
  */
 class TestCreateCommand extends Command {
 
-	use ServiceContainerTrait;
+	use ConfigTrait;
 
 	/**
 	 * Cached container builder
@@ -98,12 +96,11 @@ class TestCreateCommand extends Command {
 				if ('%' === substr($reference_service_id, 0, 1)) {
 					// add config setter with current config value
 					$parameter_name  = substr($reference, 1, -1);
-					$parameter_value = $this->getConfigValue($parameter_name);
+					$parameter_value = $this->getParameter($parameter_name);
 
 					$formatted_parameter = var_export($parameter_value, true);
 
-					$test_data->setter_calls[] = sprintf("\t\t\$this->_subject->%s(%s);", $setter_name,
-														 $formatted_parameter);
+					$test_data->setter_calls[] = sprintf("\t\t\$this->_subject->%s(%s);", $setter_name, $formatted_parameter);
 
 				} else {
 					// add setter for model mock
@@ -234,7 +231,11 @@ class TestCreateCommand extends Command {
 	}
 
 	private function _initContainerBuilder() {
-		$this->_container_builder = Core::rebuildDIC();
+		if ($this->_container_builder !== null) {
+			return;
+		}
+
+		$this->_container_builder = Core::rebuildDIC(false);
 	}
 
 	/**
@@ -277,10 +278,8 @@ class TestCreateCommand extends Command {
 	 */
 	protected function _addMock(Definition $reference_service, TestData $test_data, $mock_name) {
 		$test_data->use_statements[]  = $reference_service->getClass();
-		$test_data->local_mocks[]     = sprintf("\t\t\$this->_mock%s = \$this->getMock(%s::class);", $mock_name,
-												$mock_name);
-		$test_data->mock_properties[] = sprintf("\t/**\n\t * @param %s|PHPUnit_Framework_MockObject_MockObject\n\t */\n\tprivate \$_mock%s;\n",
-												$mock_name, $mock_name);
+		$test_data->local_mocks[]     = sprintf("\t\t\$this->_mock%s = \$this->getMock(%s::class, [], [], '', false);", $mock_name,	$mock_name);
+		$test_data->mock_properties[] = sprintf("\t/**\n\t * @var %s|PHPUnit_Framework_MockObject_MockObject\n\t */\n\tprivate \$_mock%s;\n", $mock_name, $mock_name);
 	}
 
 	/**

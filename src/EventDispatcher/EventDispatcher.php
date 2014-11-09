@@ -3,7 +3,7 @@
 namespace BrainExe\Core\EventDispatcher;
 
 use BrainExe\Core\Websockets\WebSocketEvent;
-use Symfony\Component\EventDispatcher\EventDispatcher as SymfonyEventDispatcher;
+use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher as SymfonyEventDispatcher;
 
 class EventDispatcher extends SymfonyEventDispatcher {
 
