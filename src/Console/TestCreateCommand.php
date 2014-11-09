@@ -45,8 +45,7 @@ class TestCreateCommand extends Command {
 	protected function configure() {
 		$this
 			->setName('test:create')
-			->addArgument('service', InputArgument::REQUIRED, 'service id, e.g. Models.CityMap')
-			->addArgument('type', InputArgument::OPTIONAL, 'unit or integration test', 'unit');
+			->addArgument('service', InputArgument::REQUIRED, 'service id, e.g. IndexController');
 	}
 
 	/**
@@ -114,15 +113,12 @@ class TestCreateCommand extends Command {
 			}
 		}
 
-		$test_type = ucfirst($input->getArgument('type'));
-
 		$test_data->use_statements = array_map(function($class_name) {
 			return sprintf('use %s;', $class_name);
 		}, $test_data->use_statements);
 
 		$test_template = file_get_contents(CORE_ROOT . '/../scripts/phpunit_template.php.tpl');
-		$test_template = str_replace('%test_namespace%', $this->_getTestNamespace($service_namespace, $service_class_name, $test_type), $test_template);
-		$test_template = str_replace('%test_type%', $test_type, $test_template);
+		$test_template = str_replace('%test_namespace%', $this->_getTestNamespace($service_namespace, $service_class_name), $test_template);
 		$test_template = str_replace('%service_namespace%', $service_namespace, $test_template);
 		$test_template = str_replace('%class_name%', $service_class_name, $test_template);
 		$test_template = str_replace('%setters%', implode("\n", $test_data->setter_calls), $test_template);
@@ -191,10 +187,9 @@ class TestCreateCommand extends Command {
 	/**
 	 * @param string $service_namespace
 	 * @param string $service_class_name
-	 * @param string $test_type
 	 * @return string
 	 */
-	private function _getTestNamespace($service_namespace, $service_class_name, $test_type) {
+	private function _getTestNamespace($service_namespace, $service_class_name) {
 		return "Tests\\" . $service_namespace;
 	}
 

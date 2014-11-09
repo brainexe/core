@@ -15,12 +15,9 @@ class %class_name%Test extends PHPUnit_Framework_TestCase {
 	private $_subject;
 
 %mock_properties%
-
 	public function setUp() {
-		parent::setUp();
 
 %local_mocks%
-
 		$this->_subject = new %class_name%(%constructor_arguments%);
 %setters%
 	}

@@ -2,7 +2,6 @@
 
 namespace BrainExe\Core\Application\SelfUpdate;
 
-use BrainExe\Core\EventDispatcher\AbstractEventListener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**

@@ -36,7 +36,8 @@ class TestCreateAllCommand extends Command {
 	 */
 	protected function configure() {
 		$this
-			->setName('test:create:all');
+			->setName('test:create:all')
+			->addArgument('root', InputArgument::OPTIONAL, 'source root directory (without src)', ROOT);
 	}
 
 	/**
@@ -50,10 +51,8 @@ class TestCreateAllCommand extends Command {
 		foreach ($ids as $service_id) {
 			try {
 				$this->_handleService($input, $output, $service_id);
-				echo "ok $service_id\n";
 			} catch (InvalidArgumentException $e) {
-				echo "no $service_id\n";
-
+				$output->writeln(sprintf('<error>%s: %s</error>', $service_id, $e->getMessage()));
 			}
 		}
 	}
@@ -89,7 +88,7 @@ class TestCreateAllCommand extends Command {
 		$service_reflection = new ReflectionClass($service_object);
 		$service_namespace  = $service_reflection->getName();
 
-		$src = ROOT . 'src/';
+		$src = $input->getArgument('root') . 'src/';
 		if (strpos($service_reflection->getFileName(), $src) !== 0) {
 			return;
 		}
@@ -104,7 +103,6 @@ class TestCreateAllCommand extends Command {
 
 		}
 	}
-
 
 	private function _initContainerBuilder() {
 		$this->_container_builder = Core::rebuildDIC(false);
