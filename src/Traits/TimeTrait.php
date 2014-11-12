@@ -2,10 +2,10 @@
 
 namespace BrainExe\Core\Traits;
 
-use BrainExe\Core\Util\IdGenerator;
 use BrainExe\Core\Util\Time;
 
 trait TimeTrait {
+
 	/**
 	 * @var Time
 	 */
@@ -13,10 +13,10 @@ trait TimeTrait {
 
 	/**
 	 * @Inject("@Time")
-	 * @param Time $_time
+	 * @param Time $time
 	 */
-	public function setTime(Time $_time) {
-		$this->_time = $_time;
+	public function setTime(Time $time) {
+		$this->_time = $time;
 	}
 
 	/**

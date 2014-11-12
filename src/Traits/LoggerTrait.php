@@ -15,6 +15,7 @@ trait LoggerTrait {
 
 	/**
 	 * @Inject("@monolog.logger")
+	 * @param Logger $logger
 	 */
 	public function setLogger(Logger $logger) {
 		$this->_logger = $logger;
@@ -28,7 +29,7 @@ trait LoggerTrait {
 	 * @param array $context
 	 * @return null
 	 */
-	public function log($level, $message, array $context = array()) {
+	public function log($level, $message, array $context = []) {
 		$this->_logger->log($level, $message, $context);
 	}
 } 

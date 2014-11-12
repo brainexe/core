@@ -18,6 +18,8 @@ class TimeParserTest extends PHPUnit_Framework_TestCase {
 
 	/**
 	 * @dataProvider providerTimes
+	 * @param string $input_string
+	 * @param integer $expected_eta
 	 */
 	public function testParse($input_string, $expected_eta) {
 		if (false === $expected_eta) {

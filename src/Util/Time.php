@@ -15,9 +15,25 @@ class Time {
 	}
 
 	/**
+	 * @param string $format
+	 * @return string
+	 */
+	public function date($format) {
+		return date($format);
+	}
+
+	/**
 	 * @return integer
 	 */
 	public function microtime() {
 		return microtime(true);
+	}
+
+	/**
+	 * @param string $string
+	 * @return integer
+	 */
+	public function strtotime($string) {
+		return strtotime($string);
 	}
 }

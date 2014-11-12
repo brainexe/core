@@ -19,7 +19,6 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Reference;
 
-
 /**
  * @Command
  */
@@ -96,7 +95,7 @@ class TestCreateAllCommand extends Command {
 		$test_file_name = $this->_getTestFileName($service_namespace);
 
 		if (!file_exists($test_file_name)) {
-			echo "create: $service_id \n" . $service_reflection->getFileName()."\n";
+			$output->writeln("create: <info>$service_id</info> - <info>" . $service_reflection->getFileName()."<info>");
 
 			$input = new ArrayInput(['command' => 'test:create', 'service' => $service_id]);
 			$this->getApplication()->run($input, $output);
@@ -106,21 +105,6 @@ class TestCreateAllCommand extends Command {
 
 	private function _initContainerBuilder() {
 		$this->_container_builder = Core::rebuildDIC(false);
-	}
-
-	/**
-	 * @param string
-	 * @return string
-	 */
-	private function _getShortClassName($full_class_name) {
-		// Strip off namespace
-		$last_backslash_pos = strrpos($full_class_name, '\\');
-
-		if (!$last_backslash_pos) {
-			return $full_class_name;
-		}
-
-		return substr($full_class_name, $last_backslash_pos + 1);
 	}
 
 }

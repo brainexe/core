@@ -2,7 +2,7 @@
 	"name": "brainexe/core",
 	"description": "Framework core",
 	"minimum-stability": "dev",
-	"version": "1.0.15",
+	"version": "1.0.16",
 	"authors": [
 		{
 			"name": "Matze",

@@ -13,6 +13,7 @@ trait RedisTrait {
 
 	/**
 	 * @Inject("@Redis")
+	 * @param Redis $client
 	 */
 	public function setRedis(Redis $client) {
 		$this->_redis = $client;
