@@ -12,6 +12,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\DialogHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -45,7 +46,8 @@ class TestCreateCommand extends Command {
 	protected function configure() {
 		$this
 			->setName('test:create')
-			->addArgument('service', InputArgument::REQUIRED, 'service id, e.g. IndexController');
+			->addArgument('service', InputArgument::REQUIRED, 'service id, e.g. IndexController')
+			->addOption('dry', 'd', InputOption::VALUE_NONE, 'only display the generated test');
 	}
 
 	/**
@@ -80,7 +82,7 @@ class TestCreateCommand extends Command {
 			}
 
 			if ($method->getDeclaringClass() == $service_reflection) {
-				$test_data->default_tests[] = $this->_getDummyTestCode($method);
+				$test_data->default_tests[] = $this->_getDummyTestCode($test_data, $method);
 			}
 		}
 
@@ -115,7 +117,7 @@ class TestCreateCommand extends Command {
 
 		$test_data->use_statements = array_map(function($class_name) {
 			return sprintf('use %s;', $class_name);
-		}, $test_data->use_statements);
+		}, array_unique($test_data->use_statements));
 
 		$test_template = file_get_contents(CORE_ROOT . '/../scripts/phpunit_template.php.tpl');
 		$test_template = str_replace('%test_namespace%', $this->_getTestNamespace($service_namespace, $service_class_name), $test_template);
@@ -129,6 +131,11 @@ class TestCreateCommand extends Command {
 		$test_template = str_replace('%constructor_arguments%', implode(", ", $test_data->constructor_arguments), $test_template);
 
 		$test_file_name = $this->_getTestFileName($input, $service_namespace);
+
+		if ($input->getOption('dry')) {
+			$output->writeln($test_template);
+			return;
+		}
 
 		// handle already existing test file
 		if (file_exists($test_file_name)) {
@@ -196,21 +203,35 @@ class TestCreateCommand extends Command {
 	/**
 	 * Generated dummy test code for a given service method
 	 *
+	 * @param TestData $test_data
 	 * @param ReflectionMethod $method
 	 * @return string
 	 */
-	private function _getDummyTestCode(ReflectionMethod $method) {
+	private function _getDummyTestCode(TestData $test_data, ReflectionMethod $method) {
 		$method_name = $method->getName();
 
 		$parameter_list = [];
+		$variable_list = [];
 
 		foreach ($method->getParameters() as $parameter) {
-			$parameter_list[] = sprintf('$' . $parameter->getName());
+			$parameter_list[] = $variable_name = sprintf('$' . $parameter->getName());
+
+			$value = 'null';
+			if ($parameter->isOptional()) {
+				$value = $parameter->getDefaultValue();
+			} if ($parameter->getClass()) {
+				$class = $parameter->getClass()->name;
+				$test_data->use_statements[] = $class;
+				$value = sprintf('new %s()', $this->_getShortClassName($class));
+			}
+
+			$variable_list[] = sprintf("\t\t%s = %s;", $variable_name, $value);
 		}
 
 		$test_code = sprintf("\tpublic function test%s() {\n", ucfirst($method_name));
 		$test_code .= "\t\t\$this->markTestIncomplete('This is only a dummy implementation');\n\n";
 
+		$test_code .= implode("\n", $variable_list) . "\n";
 		$parameter_string = implode(', ', $parameter_list);
 
 		$has_return_value = strpos($method->getDocComment(), '@return') !== false;

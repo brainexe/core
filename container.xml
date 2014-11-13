@@ -101,6 +101,10 @@
 		<!--TODO-->
 		<service id="service_container" class="Symfony\Component\DependencyInjection\Container"/>
 
+		<service id="ProcessBuilder" class="Symfony\Component\Process\ProcessBuilder" public="false"/>
+		<service id="Filesystem" class="Symfony\Component\Filesystem\Filesystem" public="false"/>
+		<service id="Finder" class="Symfony\Component\Finder\Finder" public="false"/>
+
 		<service id="cache.redis" class="BrainExe\Core\Application\Cache\RedisCache" public="false">
 			<argument type="service" id="redis"/>
 		</service>
