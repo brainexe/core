@@ -30,7 +30,7 @@ class ErrorView {
 	 * @param string $error_template
 	 */
 	public function __construct($debug, $error_template) {
-		$this->_value_debug = $debug;
+		$this->_value_debug          = $debug;
 		$this->_value_error_template = $error_template;
 	}
 

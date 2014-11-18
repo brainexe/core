@@ -2,8 +2,10 @@
 
 namespace BrainExe\Core\Application;
 
-use Exception;
+use BrainExe\Core\Traits\LoggerTrait;
 use BrainExe\Core\Middleware\MiddlewareInterface;
+use Exception;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
@@ -29,6 +31,7 @@ class AppKernel implements HttpKernelInterface {
 	 * @var MiddlewareInterface[]
 	 */
 	private $_middlewares;
+use LoggerTrait;
 
 	/**
 	 * @Inject({"@ControllerResolver", "@RouteCollection"})
@@ -37,7 +40,7 @@ class AppKernel implements HttpKernelInterface {
 	 */
 	public function __construct(ControllerResolver $container_resolver, RouteCollection $routes) {
 		$this->_resolver = $container_resolver;
-		$this->_routes = $routes;
+		$this->_routes   = $routes;
 
 		include_once ROOT . 'cache/router_matcher.php';
 	}
@@ -60,15 +63,13 @@ class AppKernel implements HttpKernelInterface {
 		} catch (Exception $exception) {
 			foreach ($this->_middlewares as $middleware) {
 				$response = $middleware->processException($request, $exception);
-				if ($response) {
+				if ($response !== null) {
 					break;
 				}
 			}
 		}
 
-		if (!$response) {
-			$response = new Response();
-		}
+		$response = $this->_prepareResponse($request, $response);
 
 		$middleware_idx = count($this->_middlewares) - 1;
 		for ($i = $middleware_idx; $i >= 0; $i--) {
@@ -93,7 +94,7 @@ class AppKernel implements HttpKernelInterface {
 		$request->attributes->add($attributes);
 
 		$route_name = $attributes['_route'];
-		$route = $this->_routes->get($route_name);
+		$route      = $this->_routes->get($route_name);
 
 		foreach ($this->_middlewares as $middleware) {
 			$response = $middleware->processRequest($request, $route, $route_name);
@@ -104,10 +105,24 @@ class AppKernel implements HttpKernelInterface {
 		}
 
 		/** @var callable $callable */
-		$callable = $this->_resolver->getController($request);
+		$callable  = $this->_resolver->getController($request);
 		$arguments = $this->_resolver->getArguments($request, $callable);
 
 		return call_user_func_array($callable, $arguments);
+	}
+
+	/**
+	 * @param Request $request
+	 * @param Response|mixed $response
+	 * @return Response
+	 */
+	private function _prepareResponse(Request $request, $response) {
+		if (!$response instanceof Response) {
+			// todo support more content types
+			return new JsonResponse($response);
+		}
+
+		return $response;
 	}
 
 }

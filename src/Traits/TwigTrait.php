@@ -14,6 +14,7 @@ trait TwigTrait {
 
 	/**
 	 * @Inject("@Twig")
+	 * @param Twig_Environment $twig
 	 */
 	public function setTwig(Twig_Environment $twig) {
 		$this->_twig = $twig;
