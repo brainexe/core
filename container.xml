@@ -25,6 +25,9 @@
 		<parameter key="application.error_template">error.html.twig</parameter>
 		<parameter key="application.guests_allowed">false</parameter>
 		<parameter key="application.registration_enabled">true</parameter>
+
+		<parameter key="piwik.site"></parameter>
+		<parameter key="piwik.id"></parameter>
 	</parameters>
 
     <services>

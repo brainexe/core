@@ -47,7 +47,7 @@ class ServerRunCommand extends Command {
 
 		$output->writeln(sprintf("Server running on <info>%s</info>\n", $address));
 
-		$builder = new ProcessBuilder(array(PHP_BINARY, '-S', $address));
+		$builder = new ProcessBuilder([PHP_BINARY, '-S', $address]);
 		$builder->setWorkingDirectory(ROOT . '/web/');
 		$builder->setTimeout(null);
 		$builder->getProcess()->run(function ($type, $buffer) use ($output, $input) {

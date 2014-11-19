@@ -2,12 +2,11 @@
 
 namespace BrainExe\Core\Middleware;
 
-use BrainExe\Core\Controller\ControllerInterface;
-use Exception;
 use BrainExe\Core\Application\ErrorView;
 use BrainExe\Core\Application\UserException;
-
+use BrainExe\Core\Controller\ControllerInterface;
 use BrainExe\Core\Traits\ServiceContainerTrait;
+use Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;

@@ -57,10 +57,11 @@ class Register {
 			// all fine
 		}
 
-		if (!$this->_registration_enabled) {
-			if ($token !== null && !$this->_register_tokens->fetchToken($token)) {
+		if (!$this->_registration_enabled
+			&& $token !== null
+			&& !$this->_register_tokens->fetchToken($token)
+		) {
 				throw new UserException("You have to provide a valid register token!");
-			}
 		}
 
 		$user_id = $this->_user_provider->register($user);

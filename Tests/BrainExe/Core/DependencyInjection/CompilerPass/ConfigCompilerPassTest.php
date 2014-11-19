@@ -18,26 +18,27 @@ class ConfigCompilerPassTest extends PHPUnit_Framework_TestCase {
 	/**
 	 * @var ContainerBuilder|PHPUnit_Framework_MockObject_MockObject $container
 	 */
-	private $_mock_container;
+	private $_mockContainer;
 
 	/**
 	 * @var ParameterBag
 	 */
-	private $_mock_parameter_bag;
+	private $_mockParameterBag;
 
 	public function setUp() {
 		$this->_subject = new ConfigCompilerPass();
-		$this->_mock_container = $this->getMock('Symfony\Component\DependencyInjection\ContainerBuilder');
-		$this->_mock_parameter_bag = $this->getMock('Symfony\Component\DependencyInjection\ParameterBag\ParameterBag');
+
+		$this->_mockContainer = $this->getMock(ContainerBuilder::class);
+		$this->_mockParameterBag = $this->getMock(ParameterBag::class);
 	}
 
 	public function testProcessWithInvalidRoot() {
-		$this->_mock_container
+		$this->_mockContainer
 			->expects($this->once())
 			->method('getParameterBag')
-			->will($this->returnValue($this->_mock_parameter_bag));
+			->will($this->returnValue($this->_mockParameterBag));
 
-		$this->_subject->process($this->_mock_container);
+		$this->_subject->process($this->_mockContainer);
 	}
 
 } 

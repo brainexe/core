@@ -2,6 +2,9 @@
 
 namespace BrainExe\Core\DependencyInjection\CompilerPass;
 
+use Monolog\Handler\ChromePHPHandler;
+use Monolog\Handler\StreamHandler;
+use Monolog\Handler\TestHandlerTest;
 use Monolog\Logger;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -21,11 +24,11 @@ class LoggerCompilerPass implements CompilerPassInterface {
 		if (defined('PHPUNIT')) {
 			$logger->removeMethodCall('pushHandler');
 			$logger->removeMethodCall('pushHandler');
-			$logger->addMethodCall('pushHandler', [new Definition('Monolog\Handler\TestHandler')]);
+			$logger->addMethodCall('pushHandler', [new Definition(TestHandlerTest::class)]);
 
 		} elseif ($container->getParameter('debug')) {
-			$logger->addMethodCall('pushHandler', [new Definition('Monolog\Handler\ChromePHPHandler')]);
-			$logger->addMethodCall('pushHandler', [new Definition('Monolog\Handler\StreamHandler', ['php://stdout', Logger::INFO])]);
+			$logger->addMethodCall('pushHandler', [new Definition(ChromePHPHandler::class)]);
+			$logger->addMethodCall('pushHandler', [new Definition(StreamHandler::class, ['php://stdout', Logger::INFO])]);
 		}
 
 	}

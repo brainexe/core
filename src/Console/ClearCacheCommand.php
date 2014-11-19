@@ -7,7 +7,6 @@ use BrainExe\Core\EventDispatcher\Events\ClearCacheEvent;
 use BrainExe\Core\Traits\EventDispatcherTrait;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
-
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -58,13 +57,13 @@ class ClearCacheCommand extends Command {
 		$output->write('Set permissions...');
 		$file_system->chmod([
 			'cache/',
-			'cache/twig/',
+			'cache/',
 			'logs/',
 		] , 0777, 0000, true);
 		$output->writeln('<info>done</info>');
 
-		$input = new ArrayInput(['command' => 'assets:dump']);
-		$this->getApplication()->run($input, $output);
+//		$input = new ArrayInput(['command' => 'assets:dump']);
+//		$this->getApplication()->run($input, $output);
 
 		$input = new ArrayInput(['command' => 'templates:compile']);
 		$this->getApplication()->run($input, $output);

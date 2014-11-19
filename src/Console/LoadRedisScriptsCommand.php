@@ -50,7 +50,7 @@ class LoadRedisScriptsCommand extends AbstractCommand {
 				}
 			} else {
 				if (!$redis->script('LOAD', $script)) {
-					$output->writeln(sprintf('<error>Error in %s</error>', $redis->getLastError()));
+					$output->writeln(sprintf('<error>Error: %s</error>', $redis->getLastError()));
 					$output->writeln(sprintf('<error>%s</error>', $script));
 				} elseif (OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity()) {
 					$output->writeln(sprintf("Loaded script %s (%s)", $sha1, $script));

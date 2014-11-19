@@ -28,6 +28,10 @@ class TranslationCompileCommand extends AbstractCommand {
 	protected function doExecute(InputInterface $input, OutputInterface $output) {
 		$lang_path = ROOT . '/lang/';
 
+		if (!file_exists($lang_path)) {
+			return;
+		}
+
 		$finder = new Finder();
 		$finder
 			->directories()

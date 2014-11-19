@@ -2,10 +2,10 @@
 
 namespace Tests\BrainExe\Core\Application\SelfUpdate\SelfUpdateListener;
 
-use PHPUnit_Framework_TestCase;
-use PHPUnit_Framework_MockObject_MockObject;
-use BrainExe\Core\Application\SelfUpdate\SelfUpdateListener;
 use BrainExe\Core\Application\SelfUpdate\SelfUpdate;
+use BrainExe\Core\Application\SelfUpdate\SelfUpdateListener;
+use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit_Framework_TestCase;
 
 /**
  * @Covers BrainExe\Core\Application\SelfUpdate\SelfUpdateListener
@@ -22,10 +22,7 @@ class SelfUpdateListenerTest extends PHPUnit_Framework_TestCase {
 	 */
 	private $_mockSelfUpdate;
 
-
 	public function setUp() {
-		parent::setUp();
-
 		$this->_mockSelfUpdate = $this->getMock(SelfUpdate::class, [], [], '', false);
 
 		$this->_subject = new SelfUpdateListener($this->_mockSelfUpdate);

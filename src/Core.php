@@ -10,7 +10,9 @@ use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
-define('CORE_ROOT', __DIR__);
+if (!defined('CORE_ROOT')) {
+	define('CORE_ROOT', __DIR__);
+}
 
 if (!defined('ROOT')) {
 	define('ROOT', realpath(CORE_ROOT . '/../').'/');
@@ -18,6 +20,10 @@ if (!defined('ROOT')) {
 
 if (!defined('BRAINEXE_VENDOR_ROOT')) {
 	define('BRAINEXE_VENDOR_ROOT', ROOT . 'vendor/brainexe/');
+}
+
+if (!defined('CORE_STANDALONE')) {
+	define('CORE_STANDALONE', false);
 }
 
 class Core {
@@ -71,24 +77,25 @@ class Core {
 
 		$annotation_loader = new AnnotationLoader($container_builder);
 		$annotation_loader->load('src/');
-		$annotation_loader->load(CORE_ROOT);
+		if (!CORE_STANDALONE) {
+			$annotation_loader->load(CORE_ROOT);
 
-		$app_finder = new Finder();
-		$app_finder
-			->directories()
-			->depth(1)
-			->in(BRAINEXE_VENDOR_ROOT)
-			->name('src');
+			$app_finder = new Finder();
+			$app_finder->directories()
+				->in(BRAINEXE_VENDOR_ROOT)
+				->depth(1)
+				->name('src');
 
-		foreach ($app_finder as $dir) {
-			/** @var SplFileInfo $dir  */
-			$annotation_loader->load($dir->getPathname());
+			foreach ($app_finder as $dir) {
+				/** @var SplFileInfo $dir */
+				$annotation_loader->load($dir->getPathname());
+			}
 		}
 
 		$container_builder->addCompilerPass(new GlobalCompilerPass());
 		$container_builder->compile();
 
-		if (!defined('PHPUNIT')) {
+		if (!CORE_STANDALONE) {
 			$random_id      = mt_rand();
 			$container_name = sprintf('dic_%d', $random_id);
 			$container_file = sprintf('cache/dic_%d.php', $random_id);

@@ -68,7 +68,7 @@ class SetDefinitionFileCompilerPassTest extends \PHPUnit_Framework_TestCase {
 		$this->_mock_definition
 			->expects($this->once())
 			->method('getClass')
-			->will($this->returnValue('BrainExe\Tests\Core\DependencyInjection\CompilerPass\FooTestClass'));
+			->will($this->returnValue(FooTestClass::class));
 
 		$this->_mock_definition
 			->expects($this->once())

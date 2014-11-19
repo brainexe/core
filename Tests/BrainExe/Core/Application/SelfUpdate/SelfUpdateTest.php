@@ -2,10 +2,10 @@
 
 namespace Tests\BrainExe\Core\Application\SelfUpdate\SelfUpdate;
 
-use PHPUnit_Framework_TestCase;
-use PHPUnit_Framework_MockObject_MockObject;
 use BrainExe\Core\Application\SelfUpdate\SelfUpdate;
 use BrainExe\Core\EventDispatcher\EventDispatcher;
+use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit_Framework_TestCase;
 
 /**
  * @Covers BrainExe\Core\Application\SelfUpdate\SelfUpdate

@@ -30,6 +30,8 @@ class SelfUpdateCommand extends AbstractCommand {
 
 	/**
 	 * @Inject({"@SelfUpdate", "@EventDispatcher"})
+	 * @param SelfUpdate $self_update
+	 * @param EventDispatcher $event_dispatcher
 	 */
 	public function __construct(SelfUpdate $self_update, EventDispatcher $event_dispatcher) {
 		parent::__construct();
@@ -40,6 +42,9 @@ class SelfUpdateCommand extends AbstractCommand {
 
 	/**
 	 * @{inheritdoc}
+	 * @param InputInterface $input
+	 * @param OutputInterface $output
+	 * @return mixed|void
 	 */
 	protected function doExecute(InputInterface $input, OutputInterface $output) {
 		$this->_event_dispatcher->addListener(SelfUpdateEvent::PROCESS, function(SelfUpdateEvent $event) use ($output) {

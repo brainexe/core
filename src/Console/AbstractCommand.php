@@ -27,7 +27,7 @@ abstract class AbstractCommand extends Command {
 	 * {@inheritdoc}
 	 */
 	public function execute(InputInterface $input, OutputInterface $output) {
-		$output->write(sprintf('<comment>%s</comment>...', $this->getDescription()));
+		$output->writeln(sprintf('<comment>%s</comment>...', $this->getDescription()));
 
 		if (OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity()) {
 			$output->writeln('');

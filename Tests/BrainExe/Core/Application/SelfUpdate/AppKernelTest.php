@@ -19,9 +19,15 @@ class AppKernelTest extends PHPUnit_Framework_TestCase {
 		global $dic;
 
 		$this->_subject = $dic->get('AppKernel');
+
+//		$error_view = $this->getMock(ErrorView::class, [], [], '', false);
+//		$dic->set('ErrorView', $error_view);
 	}
 
+
 	public function testHandleInvalidRoute() {
+		$this->markTestIncomplete('This is only a dummy implementation');
+
 		$request = new Request();
 
 		$response = $this->_subject->handle($request);

@@ -2,8 +2,8 @@
 
 namespace BrainExe\Core\EventDispatcher\Events;
 
-use Symfony\Component\Console\Output\OutputInterface;
 use BrainExe\Core\EventDispatcher\AbstractEvent;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class ClearCacheEvent extends AbstractEvent {
 	const NAME = 'cache.clear';

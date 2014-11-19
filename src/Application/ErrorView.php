@@ -2,9 +2,9 @@
 
 namespace BrainExe\Core\Application;
 
-use Exception;
 use BrainExe\Core\Authentication\AnonymusUserVO;
 use BrainExe\Core\Traits\TwigTrait;
+use Exception;
 use Symfony\Component\HttpFoundation\Request;
 
 /**

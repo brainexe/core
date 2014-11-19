@@ -6,6 +6,8 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
+use Twig_Extension_Debug;
+use Twig_Loader_Array;
 
 /**
  * @CompilerPass
@@ -18,10 +20,14 @@ class TwigExtensionCompilerPass implements CompilerPassInterface {
 	 * {@inheritdoc}
 	 */
 	public function process(ContainerBuilder $container) {
-		/** @var Definition $twig_definition */
-		/** @var Definition $twig_compiler_definition */
-		$twig_definition = $container->getDefinition('Twig');
-		$twig_compiler_definition = $container->getDefinition('TwigCompiler');
+		/** @var Definition $twig */
+		/** @var Definition $twig_compiler */
+		$twig = $container->getDefinition('Twig');
+		$twig_compiler = $container->getDefinition('TwigCompiler');
+
+		if (CORE_STANDALONE) {
+			$twig->setArguments([new Definition(Twig_Loader_Array::class, [[]])]);
+		}
 
 		$tagged_services = $container->findTaggedServiceIds(self::TAG);
 
@@ -31,15 +37,15 @@ class TwigExtensionCompilerPass implements CompilerPassInterface {
 			$service->setPublic(false);
 
 			if (!$debug && $tag[0]['compiler']) {
-				$twig_compiler_definition->addMethodCall('addExtension', [new Reference($id)]);
+				$twig_compiler->addMethodCall('addExtension', [new Reference($id)]);
 			} else {
-				$twig_definition->addMethodCall('addExtension', [new Reference($id)]);
+				$twig->addMethodCall('addExtension', [new Reference($id)]);
 			}
 		}
 
 		if ($debug) {
-			$twig_definition->addMethodCall('addExtension', [new Definition('Twig_Extension_Debug')]);
-			$twig_definition->addMethodCall('enableStrictVariables');
+			$twig->addMethodCall('addExtension', [new Definition(Twig_Extension_Debug::class)]);
+			$twig->addMethodCall('enableStrictVariables');
 		}
 	}
 }

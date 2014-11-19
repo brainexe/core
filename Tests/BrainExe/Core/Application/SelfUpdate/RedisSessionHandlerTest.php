@@ -5,6 +5,7 @@ namespace BrainExe\Tests\Core\Application;
 use BrainExe\Core\Application\RedisSessionHandler;
 use PHPUnit_Framework_TestCase;
 
+//TODO duplicate?
 class RedisSessionHandlerTest extends PHPUnit_Framework_TestCase {
 
 	/**
@@ -18,6 +19,8 @@ class RedisSessionHandlerTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testSession() {
+		$this->markTestIncomplete('This is only a dummy implementation');
+
 		$payload = 'foobar';
 		$session_id = '121212';
 

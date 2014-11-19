@@ -2,11 +2,11 @@
 
 namespace Tests\BrainExe\Core\Authentication\DatabaseUserProvider;
 
-use PHPUnit_Framework_TestCase;
-use PHPUnit_Framework_MockObject_MockObject;
 use BrainExe\Core\Authentication\DatabaseUserProvider;
-use Redis;
 use BrainExe\Core\Util\IdGenerator;
+use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit_Framework_TestCase;
+use Redis;
 
 /**
  * @Covers BrainExe\Core\Authentication\DatabaseUserProvider

@@ -24,8 +24,8 @@ class ConfigCompilerPass implements CompilerPassInterface {
 		$config_finder = new Finder();
 		$config_finder
 			->files()
-			->depth(1)
-			->in(BRAINEXE_VENDOR_ROOT)
+			->depth("<= 3")
+			->in(CORE_STANDALONE ? ROOT : BRAINEXE_VENDOR_ROOT)
 			->name('container.xml');
 
 		foreach ($config_finder as $file) {

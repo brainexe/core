@@ -72,7 +72,7 @@ class DatabaseUserProvider implements UserProviderInterface {
 	 * {@inheritdoc}
 	 */
 	public function supportsClass($class) {
-		return 'BrainExe\Core\Authentication\UserVO' === $class;
+		return UserVO::class === $class;
 	}
 
 	/**

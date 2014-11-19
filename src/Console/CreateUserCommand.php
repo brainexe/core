@@ -41,19 +41,19 @@ class CreateUserCommand extends Command {
 
 		parent::__construct();
 	}
-	
+
 	/**
 	 * {@inheritdoc}
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$username = $input->getArgument('username');
 		$password = $input->getArgument('password');
-		$roles = explode(',', $input->getArgument('roles'));
+		$roles    = explode(',', $input->getArgument('roles'));
 
-		$user = new UserVO();
+		$user           = new UserVO();
 		$user->username = $username;
 		$user->password = $password;
-		$user->roles = $roles;
+		$user->roles    = $roles;
 
 		$session = new Session(new MockArraySessionStorage());
 		$user_id = $this->_register->register($user, $session, null);

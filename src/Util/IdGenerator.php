@@ -1,6 +1,7 @@
 <?php
 
 namespace BrainExe\Core\Util;
+
 use Base32\Base32;
 
 /**

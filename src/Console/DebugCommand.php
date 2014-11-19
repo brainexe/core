@@ -2,14 +2,13 @@
 
 namespace BrainExe\Core\Console;
 
+use Crunch\Inotify\Event;
+use Crunch\Inotify\Handler;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
-
-use Crunch\Inotify\Handler;
-use Crunch\Inotify\Event;
 
 /**
  * @Command

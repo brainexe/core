@@ -2,12 +2,13 @@
 
 namespace BrainExe\Core\DependencyInjection\CompilerPass;
 
-use BrainExe\Core\Annotations\Route;
+use BrainExe\Core\Annotations\Route as RouteAnnotation;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\Routing\Generator\Dumper\PhpGeneratorDumper;
 use Symfony\Component\Routing\Matcher\Dumper\PhpMatcherDumper;
+use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
 /**
@@ -17,14 +18,14 @@ class ControllerCompilerPass implements CompilerPassInterface {
 
 	/**
 	 * @todo why static?
-	 * @var Route[]
+	 * @var RouteAnnotation[]
 	 */
 	private static $routes = [];
 
 	/**
-	 * @param Route $route
+	 * @param RouteAnnotation $route
 	 */
-	public static function addRoute(Route $route) {
+	public static function addRoute(RouteAnnotation $route) {
 		self::$routes[] = $route;
 	}
 
@@ -43,7 +44,17 @@ class ControllerCompilerPass implements CompilerPassInterface {
 				$route->setOptions(['csrf' => true]);
 			}
 
-			$routes->addMethodCall('add', [$name, new Definition('Symfony\Component\Routing\Route', [$route->getPath(), $route->getDefaults(), $route->getRequirements(), $route->getOptions(), $route->getHost(), $route->getSchemes(), $route->getMethods(), $route->getCondition()])]);
+			$router_definition = new Definition(Route::class, [
+				$route->getPath(),
+				$route->getDefaults(),
+				$route->getRequirements(),
+				$route->getOptions(),
+				$route->getHost(),
+				$route->getSchemes(),
+				$route->getMethods(),
+				$route->getCondition()
+			]);
+			$routes->addMethodCall('add', [$name, $router_definition]);
 		}
 
 		self::$routes = [];
@@ -51,14 +62,14 @@ class ControllerCompilerPass implements CompilerPassInterface {
 		/** @var RouteCollection $router_collection */
 		$router_collection = $container->get('RouteCollection');
 
-		$router_file = sprintf('%scache/router_matcher.php', ROOT);
+		$router_file  = sprintf('%scache/router_matcher.php', ROOT);
 		$route_dumper = new PhpMatcherDumper($router_collection);
-		$content = $route_dumper->dump();
+		$content      = $route_dumper->dump();
 		file_put_contents($router_file, $content);
 
-		$router_file = sprintf('%scache/router_generator.php', ROOT);
+		$router_file  = sprintf('%scache/router_generator.php', ROOT);
 		$route_dumper = new PhpGeneratorDumper($router_collection);
-		$content = $route_dumper->dump();
+		$content      = $route_dumper->dump();
 		file_put_contents($router_file, $content);
 	}
 }

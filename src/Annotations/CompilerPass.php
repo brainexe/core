@@ -2,10 +2,10 @@
 
 namespace BrainExe\Core\Annotations;
 
-use Doctrine\Common\Annotations\Annotation;
-use Doctrine\Common\Annotations\Reader;
 use BrainExe\Annotations\Annotations\Service;
 use BrainExe\Core\Annotations\Builder\CompilerPassDefinitionBuilder;
+use Doctrine\Common\Annotations\Annotation;
+use Doctrine\Common\Annotations\Reader;
 
 /**
  * @Annotation

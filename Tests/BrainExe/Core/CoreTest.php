@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\Container;
 class CoreTest extends PHPUnit_Framework_TestCase {
 
 	public function testGetContainer() {
-		$dic = Core::rebuildDIC();
+		$dic = Core::rebuildDIC(false);
 		$this->assertTrue($dic instanceof Container);
 	}
 } 

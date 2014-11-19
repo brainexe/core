@@ -18,17 +18,29 @@ class ControllerCompilerPassTest extends PHPUnit_Framework_TestCase {
 	/**
 	 * @var ContainerBuilder|PHPUnit_Framework_MockObject_MockObject $container
 	 */
-	private $_mock_container;
+	private $_mockContainer;
 
 	/**
 	 * @var Definition|PHPUnit_Framework_MockObject_MockObject $container
 	 */
-	private $_mock_router_definition;
+	private $_mockRouterDefinition;
 
 	public function setUp() {
 		$this->_subject = new ControllerCompilerPass();
-		$this->_mock_container = $this->getMock('Symfony\Component\DependencyInjection\ContainerBuilder');
-		$this->_mock_router_definition = $this->getMock('Symfony\Component\DependencyInjection\Definition');
+
+		$this->_mockContainer = $this->getMock(ContainerBuilder::class);
+		$this->_mockRouterDefinition = $this->getMock(Definition::class);
 	}
 
+	public function testProcess() {
+		$this->markTestIncomplete();
+
+		$this->_mockContainer
+			->expects($this->once())
+			->method('getDefinition')
+			->with('RouteCollection')
+			->will($this->returnValue($this->_mockRouterDefinition));
+
+		$this->_subject->process($this->_mockContainer);
+	}
 } 

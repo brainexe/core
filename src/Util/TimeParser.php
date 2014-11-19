@@ -10,6 +10,9 @@ use BrainExe\Core\Application\UserException;
  */
 class TimeParser {
 
+	/**
+	 * @var integer[]
+	 */
 	private $_time_modifier = [
 		's' => 1,
 		'm' => 60,
@@ -27,8 +30,8 @@ class TimeParser {
 	public function parseString($string) {
 		if (empty($string)) {
 			return 0;
-
 		}
+
 		$now = time();
 
 		if (is_numeric($string)) {

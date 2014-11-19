@@ -2,11 +2,11 @@
 
 namespace Tests\BrainExe\Core\Authentication\Login;
 
-use PHPUnit_Framework_TestCase;
-use PHPUnit_Framework_MockObject_MockObject;
-use BrainExe\Core\Authentication\Login;
 use BrainExe\Core\Authentication\DatabaseUserProvider;
+use BrainExe\Core\Authentication\Login;
 use BrainExe\Core\DependencyInjection\ObjectFinder;
+use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit_Framework_TestCase;
 
 /**
  * @Covers BrainExe\Core\Authentication\Login

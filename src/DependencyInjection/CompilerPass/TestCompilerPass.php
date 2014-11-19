@@ -22,7 +22,7 @@ class TestCompilerPass implements CompilerPassInterface {
 	 * {@inheritdoc}
 	 */
 	public function process(ContainerBuilder $container) {
-		if (!defined('PHPUNIT')) {
+		if (!CORE_STANDALONE) {
 			return;
 		}
 

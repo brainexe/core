@@ -47,6 +47,9 @@ class CompileTemplatesCommand extends AbstractCommand {
 	 * {@inheritdoc}
 	 */
 	protected function doExecute(InputInterface $input, OutputInterface $output) {
+		if (CORE_STANDALONE) {
+			return;
+		}
 		$finder = new Finder();
 		$finder
 			->files()

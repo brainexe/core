@@ -1,6 +1,7 @@
 .idea
 vendor
 composer.phar
-/config/config.default.xml
+composer.lock
 /coverage
 /cache
+logs/*

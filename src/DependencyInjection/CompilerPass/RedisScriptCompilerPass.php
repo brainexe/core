@@ -2,8 +2,8 @@
 
 namespace BrainExe\Core\DependencyInjection\CompilerPass;
 
-use Exception;
 use BrainExe\Core\Redis\RedisScriptInterface;
+use Exception;
 use ReflectionClass;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -28,7 +28,7 @@ class RedisScriptCompilerPass implements CompilerPassInterface {
 			$class = $definition->getClass();
 
 			$reflection_class = new ReflectionClass($class);
-			if (!$reflection_class->implementsInterface('BrainExe\Core\Redis\RedisScriptInterface')) {
+			if (!$reflection_class->implementsInterface(RedisScriptInterface::class)) {
 				throw new Exception(sprintf("Class %s dies not implements the interface 'RedisScriptInterface'", $class));
 			}
 			$scripts = $class::getRedisScripts();

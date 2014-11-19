@@ -1,6 +1,6 @@
 <?php
 
-namespace Ig\StratCity\Classes\System\Commands\Test;
+namespace BrainExe\Core\Console;
 
 use BrainExe\Core\Core;
 use BrainExe\Core\Traits\ConfigTrait;
@@ -92,6 +92,11 @@ class TestCreateCommand extends Command {
 			list ($setter_name, $references) = $method_call;
 			/** @var Reference $reference */
 			foreach ($references as $reference) {
+
+				if (!$reference instanceof Reference) {
+					continue;
+				}
+
 				$reference_service_id = (string)$reference;
 
 				if ('%' === substr($reference_service_id, 0, 1)) {
@@ -307,10 +312,13 @@ class TestCreateCommand extends Command {
 			if ($reference instanceof Definition) {
 				$definition = $reference;
 				$mock_name  = $this->_getShortClassName($definition->getClass());
-			} else {
+			} elseif ($reference instanceof Reference) {
 				// add setter for model mock
 				$definition = $this->_getDefinition((string)$reference);
 				$mock_name  = $this->_getShortClassName($definition->getClass());
+			} else {
+				$test_data->constructor_arguments[] = var_export($reference, true);
+				continue;
 			}
 
 			$test_data->constructor_arguments[] = sprintf('$this->_mock%s', $mock_name);

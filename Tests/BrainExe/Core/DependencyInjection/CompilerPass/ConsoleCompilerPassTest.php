@@ -6,6 +6,7 @@ use BrainExe\Core\DependencyInjection\CompilerPass\ConsoleCompilerPass;
 use PHPUnit_Framework_MockObject_MockObject;
 use PHPUnit_Framework_TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
 class ConsoleCompilerPassTest extends PHPUnit_Framework_TestCase {
@@ -27,8 +28,8 @@ class ConsoleCompilerPassTest extends PHPUnit_Framework_TestCase {
 
 	public function setUp() {
 		$this->_subject = new ConsoleCompilerPass();
-		$this->_mock_container = $this->getMock('Symfony\Component\DependencyInjection\ContainerBuilder');
-		$this->_mock_console_definition = $this->getMock('Symfony\Component\DependencyInjection\Definition');
+		$this->_mock_container = $this->getMock(ContainerBuilder::class);
+		$this->_mock_console_definition = $this->getMock(Definition::class);
 	}
 
 	public function testAddSubscriber() {

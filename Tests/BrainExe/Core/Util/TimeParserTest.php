@@ -2,6 +2,7 @@
 
 namespace BrainExe\Tests\Core\Util;
 
+use BrainExe\Core\Application\UserException;
 use BrainExe\Core\Util\TimeParser;
 use PHPUnit_Framework_TestCase;
 
@@ -23,13 +24,13 @@ class TimeParserTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function testParse($input_string, $expected_eta) {
 		if (false === $expected_eta) {
-			$this->setExpectedException('BrainExe\Core\Application\UserException');
+			$this->setExpectedException(UserException::class);
 		}
 
 		$now = time();
 		$actual_seconds = $this->_subject->parseString($input_string);
 
-		$this->assertEquals($now + $expected_eta, $actual_seconds);
+		$this->assertEquals($now + $expected_eta, $actual_seconds, "time parser", 2);
 	}
 
 	/**
@@ -37,6 +38,7 @@ class TimeParserTest extends PHPUnit_Framework_TestCase {
 	 */
 	public static function providerTimes() {
 		return [
+			[0, -time()],
 			[2, 2],
 			[-1, false],
 			["2", 2],

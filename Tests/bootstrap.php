@@ -4,9 +4,9 @@ use BrainExe\Core\Core;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-define('ROOT', basename(__DIR__ . '/../'));
-define('PHPUNIT', true);
-define('BRAINEXE_VENDOR_ROOT', basename(__DIR__.'/../../'));
+define('ROOT', realpath(__DIR__."/..").'/');
+define('CORE_ROOT', realpath(__DIR__."/..").'/');
+define('CORE_STANDALONE', true);
 
 global $dic;
-$dic = Core::rebuildDIC();
+$dic = Core::boot();

@@ -4,6 +4,7 @@ namespace BrainExe\Tests\Core\Application;
 
 use BrainExe\Core\Application\ErrorView;
 use BrainExe\Core\Application\UserException;
+use BrainExe\Core\Authentication\AnonymusUserVO;
 use PHPUnit_Framework_MockObject_MockObject;
 use PHPUnit_Framework_TestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,13 +37,17 @@ class ErrorViewTest extends PHPUnit_Framework_TestCase {
 		$request = new Request();
 		$expected_content = 'Exception...';
 
+
+		$current_user = new AnonymusUserVO();
+
 		$this->_mock_twig
 			->expects($this->once())
 			->method('render')
 			->with($this->_value_error_template, [
 				'debug' => $this->_value_debug,
 				'exception' => $exception,
-				'request' => $request
+				'request' => $request,
+				'current_user' => $current_user
 			])
 			->will($this->returnValue($expected_content));
 
