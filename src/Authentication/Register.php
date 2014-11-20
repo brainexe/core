@@ -8,8 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
 /**
- * @todo private
- * @Service
+ * @Service(public=true)
  */
 class Register {
 
@@ -38,7 +37,6 @@ class Register {
 		$this->_user_provider = $user_provider;
 		$this->_register_tokens = $register_tokens;
 		$this->_registration_enabled = $registration_enabled;
-
 	}
 
 	/**

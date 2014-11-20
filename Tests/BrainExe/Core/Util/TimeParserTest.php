@@ -33,12 +33,16 @@ class TimeParserTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($now + $expected_eta, $actual_seconds, "time parser", 2);
 	}
 
+	public function testParseWithEmptyTime() {
+		$actual_seconds = $this->_subject->parseString(0);
+		$this->assertEquals(0, $actual_seconds);
+	}
+
 	/**
 	 * @return array[]
 	 */
 	public static function providerTimes() {
 		return [
-			[0, -time()],
 			[2, 2],
 			[-1, false],
 			["2", 2],

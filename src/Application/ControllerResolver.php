@@ -38,7 +38,6 @@ class ControllerResolver implements ControllerResolverInterface {
 			if ($attribute[0] !== '_') {
 				$arguments[] = $value;
 			}
-
 		}
 
 		return $arguments;

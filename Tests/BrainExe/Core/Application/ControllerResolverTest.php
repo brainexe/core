@@ -24,25 +24,31 @@ class ControllerResolverTest extends PHPUnit_Framework_TestCase {
 	private $_mockObjectFinder;
 
 	public function setUp() {
-
 		$this->_mockObjectFinder = $this->getMock(ObjectFinder::class, [], [], '', false);
+
 		$this->_subject = new ControllerResolver();
 		$this->_subject->setObjectFinder($this->_mockObjectFinder);
 	}
 
 	public function testGetController() {
-		$this->markTestIncomplete('This is only a dummy implementation');
-
 		$request = new Request();
 		$this->_subject->getController($request);
 	}
 
 	public function testGetArguments() {
-		$this->markTestIncomplete('This is only a dummy implementation');
-
 		$request = new Request();
 		$controller = null;
-		$this->_subject->getArguments($request, $controller);
+
+		$request->attributes->set('key1', 'value1');
+		$request->attributes->set('key2', 'value2');
+
+		$actual_result = $this->_subject->getArguments($request, $controller);
+
+		$expected_result = [
+			$request, 'value1', 'value2'
+		];
+
+		$this->assertEquals($expected_result, $actual_result);
 	}
 
 }

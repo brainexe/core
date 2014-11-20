@@ -1,17 +1,15 @@
 <?php
 
-namespace Tests\BrainExe\Core\Application\ErrorView;
+namespace BrainExe\Tests\Core\Application;
 
 use BrainExe\Core\Application\ErrorView;
-use BrainExe\Template\TwigEnvironment;
-use Exception;
+use BrainExe\Core\Application\UserException;
+use BrainExe\Core\Authentication\AnonymusUserVO;
 use PHPUnit_Framework_MockObject_MockObject;
 use PHPUnit_Framework_TestCase;
 use Symfony\Component\HttpFoundation\Request;
+use Twig_Environment;
 
-/**
- * @Covers BrainExe\Core\Application\ErrorView
- */
 class ErrorViewTest extends PHPUnit_Framework_TestCase {
 
 	/**
@@ -19,24 +17,42 @@ class ErrorViewTest extends PHPUnit_Framework_TestCase {
 	 */
 	private $_subject;
 
+	private $_value_debug = true;
+	private $_value_error_template = 'error.html.twig';
+
 	/**
-	 * @var TwigEnvironment|PHPUnit_Framework_MockObject_MockObject
+	 * @var PHPUnit_Framework_MockObject_MockObject|Twig_Environment
 	 */
-	private $_mockTwigEnvironment;
+	private $_mock_twig;
 
-	public function setUp() {
+	public function setup() {
+		$this->_mock_twig = $this->getMock('Twig_Environment');
 
-		$this->_mockTwigEnvironment = $this->getMock(TwigEnvironment::class, [], [], '', false);
-		$this->_subject = new ErrorView(false, 'error.html.twig');
-		$this->_subject->setTwig($this->_mockTwigEnvironment);
+		$this->_subject = new ErrorView($this->_value_debug, $this->_value_error_template);
+		$this->_subject->setTwig($this->_mock_twig);
 	}
 
-	public function testRenderException() {
-		$this->markTestIncomplete('This is only a dummy implementation');
-
+	public function testRender() {
+		$exception = new UserException('Test-Exception');
 		$request = new Request();
-		$exception = new Exception();
-		$actual_result = $this->_subject->renderException($request, $exception);
-	}
+		$expected_content = 'Exception...';
 
-}
+
+		$current_user = new AnonymusUserVO();
+
+		$this->_mock_twig
+			->expects($this->once())
+			->method('render')
+			->with($this->_value_error_template, [
+				'debug' => $this->_value_debug,
+				'exception' => $exception,
+				'request' => $request,
+				'current_user' => $current_user
+			])
+			->will($this->returnValue($expected_content));
+
+		$response = $this->_subject->renderException($request, $exception);
+
+		$this->assertEquals($expected_content, $response);
+	}
+} 

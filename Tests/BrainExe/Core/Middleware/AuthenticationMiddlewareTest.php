@@ -41,8 +41,9 @@ class AuthenticationMiddlewareTest extends PHPUnit_Framework_TestCase {
 		$this->markTestIncomplete('This is only a dummy implementation');
 
 		$request = new Request();
-		$route = new Route();
+		$route = new Route('/path/');
 		$route_name = null;
+
 		$this->_subject->processRequest($request, $route, $route_name);
 	}
 

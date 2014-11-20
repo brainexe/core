@@ -16,12 +16,8 @@ class MiddlewareCompilerPassTest extends PHPUnit_Framework_TestCase {
 	 */
 	private $_subject;
 
-
 	public function setUp() {
-
-
 		$this->_subject = new MiddlewareCompilerPass();
-
 	}
 
 	public function testProcess() {

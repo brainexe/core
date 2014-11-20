@@ -36,7 +36,7 @@ class UserExceptionMiddleware extends AbstractMiddleware {
 		}
 
 		if ($request->isXmlHttpRequest()) {
-			$message = $exception->getMessage() ?: 'An internal error occured';
+			$message = $exception->getMessage() ?: 'An internal error occurred';
 			$response->headers->set('X-Flash', json_encode([ControllerInterface::ALERT_DANGER, $message]));
 			$response->setStatusCode(500);
 		} else {

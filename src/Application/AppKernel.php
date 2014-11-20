@@ -31,7 +31,6 @@ class AppKernel implements HttpKernelInterface {
 	 * @var MiddlewareInterface[]
 	 */
 	private $_middlewares;
-use LoggerTrait;
 
 	/**
 	 * @Inject({"@ControllerResolver", "@RouteCollection"})

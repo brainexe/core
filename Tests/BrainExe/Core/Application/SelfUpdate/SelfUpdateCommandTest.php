@@ -38,19 +38,17 @@ class SelfUpdateCommandTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testExecute() {
-		$this->markTestIncomplete('This is only a dummy implementation');
-
 		$application = new Application();
 		$application->add($this->_subject);
 
 		$commandTester = new CommandTester($this->_subject);
 
-		// TODO
+		$this->_mockSelfUpdate
+			->expects($this->once())
+			->method('startUpdate');
 
 		$commandTester->execute([]);
 		$output = $commandTester->getDisplay();
-
-		$this->assertEquals("TODO\n", $output);
 	}
 
 }

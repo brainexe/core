@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * @todo private
- * @Service
+ * @Service(public=false)
  */
 class Login {
 
@@ -18,14 +18,14 @@ class Login {
 	/**
 	 * @var DatabaseUserProvider
 	 */
-	private $_user_provider;
+	private $_userProvider;
 
 	/**
 	 * @Inject("@DatabaseUserProvider")
 	 * @param DatabaseUserProvider $user_provider
 	 */
 	public function __construct(DatabaseUserProvider $user_provider) {
-		$this->_user_provider = $user_provider;
+		$this->_userProvider = $user_provider;
 	}
 
 	/**
@@ -37,12 +37,12 @@ class Login {
 	 * @return UserVO
 	 */
 	public function tryLogin($username, $password, $one_time_token, SessionInterface $session) {
-		$user_vo = $this->_user_provider->loadUserByUsername($username);
+		$user_vo = $this->_userProvider->loadUserByUsername($username);
 		if (empty($user_vo)) {
 			throw new UserException("Invalid Username");
 		}
 
-		if (!$this->_user_provider->verifyHash($password, $user_vo->getPassword())) {
+		if (!$this->_userProvider->verifyHash($password, $user_vo->getPassword())) {
 			throw new UserException("Invalid Password");
 		}
 

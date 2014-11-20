@@ -17,12 +17,8 @@ class LocaleMiddlewareTest extends PHPUnit_Framework_TestCase {
 	 */
 	private $_subject;
 
-
 	public function setUp() {
-
-
 		$this->_subject = new LocaleMiddleware();
-
 	}
 
 	public function testProcessRequest() {

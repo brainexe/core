@@ -2,6 +2,7 @@
 
 namespace Tests\BrainExe\Core\Middleware\GentimeMiddleware;
 
+use BrainExe\Core\Authentication\UserVO;
 use BrainExe\Core\Middleware\GentimeMiddleware;
 use Monolog\Logger;
 use PHPUnit_Framework_MockObject_MockObject;
@@ -26,26 +27,44 @@ class GentimeMiddlewareTest extends PHPUnit_Framework_TestCase {
 	private $_mockLogger;
 
 	public function setUp() {
-
 		$this->_mockLogger = $this->getMock(Logger::class, [], [], '', false);
+
 		$this->_subject = new GentimeMiddleware();
 		$this->_subject->setLogger($this->_mockLogger);
 	}
 
 	public function testProcessRequest() {
-		$this->markTestIncomplete('This is only a dummy implementation');
-
 		$request = new Request();
-		$route = new Route();
+		$route = new Route('/route/');
 		$route_name = null;
+
 		$this->_subject->processRequest($request, $route, $route_name);
 	}
 
 	public function testProcessResponse() {
-		$this->markTestIncomplete('This is only a dummy implementation');
-
 		$request = new Request();
 		$response = new Response();
+
+		$this->_mockLogger
+			->expects($this->once())
+			->method('log')
+			->with('info', $this->isType('string'), ['channel' => 'gentime']);
+
+		$this->_subject->processResponse($request, $response);
+	}
+
+	public function testProcessResponseWithUser() {
+		$request  = new Request();
+		$response = new Response();
+		$user     = new UserVO();
+
+		$request->attributes->set('user', $user);
+
+		$this->_mockLogger
+			->expects($this->once())
+			->method('log')
+			->with('info', $this->isType('string'), ['channel' => 'gentime']);
+
 		$this->_subject->processResponse($request, $response);
 	}
 

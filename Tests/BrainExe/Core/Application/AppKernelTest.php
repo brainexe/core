@@ -4,10 +4,13 @@ namespace Tests\BrainExe\Core\Application\AppKernel;
 
 use BrainExe\Core\Application\AppKernel;
 use BrainExe\Core\Application\ControllerResolver;
+use BrainExe\Core\Middleware\MiddlewareInterface;
+use Exception;
 use Monolog\Logger;
 use PHPUnit_Framework_MockObject_MockObject;
 use PHPUnit_Framework_TestCase;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouteCollection;
 
 /**
@@ -31,33 +34,42 @@ class AppKernelTest extends PHPUnit_Framework_TestCase {
 	private $_mockRouteCollection;
 
 	/**
-	 * @var Logger|PHPUnit_Framework_MockObject_MockObject
+	 * @var MiddlewareInterface|PHPUnit_Framework_MockObject_MockObject
 	 */
-	private $_mockLogger;
+	private $_mockMiddleWare;
 
 	public function setUp() {
-
 		$this->_mockControllerResolver = $this->getMock(ControllerResolver::class, [], [], '', false);
 		$this->_mockRouteCollection = $this->getMock(RouteCollection::class, [], [], '', false);
-		$this->_mockLogger = $this->getMock(Logger::class, [], [], '', false);
+		$this->_mockMiddleWare = $this->getMock(MiddlewareInterface::class, [], [], '', false);
+
 		$this->_subject = new AppKernel($this->_mockControllerResolver, $this->_mockRouteCollection);
-		$this->_subject->setLogger($this->_mockLogger);
-	}
 
-	public function testSetMiddlewares() {
-		$this->markTestIncomplete('This is only a dummy implementation');
-
-		$middlewares = null;
-		$this->_subject->setMiddlewares($middlewares);
+		$this->_subject->setMiddlewares([$this->_mockMiddleWare]);
 	}
 
 	public function testHandle() {
-		$this->markTestIncomplete('This is only a dummy implementation');
-
 		$request = new Request();
-		$type = 1;
-		$catch = 1;
-		$this->_subject->handle($request, $type, $catch);
+
+		$exception_response = new Response();
+
+		$this->_mockMiddleWare
+			->expects($this->once())
+			->method('processException')
+			->with($request, $this->isInstanceOf(Exception::class))
+			->will($this->returnValue($exception_response));
+
+		$this->_mockMiddleWare
+			->expects($this->once())
+			->method('processResponse')
+			->with($request, $exception_response)
+			->will($this->returnValue($exception_response));
+
+		$actual_result = $this->_subject->handle($request, $type = 1, $catch = 1);
+
+
+		$this->assertEquals($exception_response, $actual_result);
+//		print_r($result);
 	}
 
 }

@@ -26,17 +26,17 @@ class SelfUpdateListenerTest extends PHPUnit_Framework_TestCase {
 		$this->_mockSelfUpdate = $this->getMock(SelfUpdate::class, [], [], '', false);
 
 		$this->_subject = new SelfUpdateListener($this->_mockSelfUpdate);
-
 	}
 
 	public function testGetSubscribedEvents() {
-		$this->markTestIncomplete('This is only a dummy implementation');
-
-		$this->_subject->getSubscribedEvents();
+		$actual_result = $this->_subject->getSubscribedEvents();
+		$this->assertInternalType('array', $actual_result);
 	}
 
 	public function testStartSelfUpdate() {
-		$this->markTestIncomplete('This is only a dummy implementation');
+		$this->_mockSelfUpdate
+			->expects($this->once())
+			->method('startUpdate');
 
 		$this->_subject->startSelfUpdate();
 	}
