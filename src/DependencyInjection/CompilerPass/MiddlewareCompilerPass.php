@@ -29,14 +29,14 @@ class MiddlewareCompilerPass implements CompilerPassInterface {
 		asort($service_priorities);
 		$service_priorities = array_reverse($service_priorities);
 
-		$routes = $container->getDefinition('AppKernel');
+		$app_kernel = $container->getDefinition('AppKernel');
 
 		$references = [];
 		foreach (array_keys($service_priorities) as $service_id) {
 			$references[] = new Reference($service_id);
 		}
 
-		$routes->addMethodCall('setMiddlewares', [$references]);
+		$app_kernel->addMethodCall('setMiddlewares', [$references]);
 	}
 }
 
