@@ -26,6 +26,9 @@ if (!defined('CORE_STANDALONE')) {
 	define('CORE_STANDALONE', false);
 }
 
+/**
+ * @todo non-static
+ */
 class Core {
 
 	/**
@@ -39,10 +42,10 @@ class Core {
 
 		/** @var Container $dic */
 		if ($files) {
-			include $files[0];
+			include_once $files[0];
 			preg_match('/dic_([\d]*)/', $files[0], $matches);
-			$class_name = $matches[0];
-			$dic = new $class_name();
+			$class = $matches[0];
+			$dic   = new $class();
 		} else {
 			$dic = self::rebuildDIC();
 		}
@@ -95,23 +98,21 @@ class Core {
 		$container_builder->addCompilerPass(new GlobalCompilerPass());
 		$container_builder->compile();
 
-		if (!CORE_STANDALONE) {
-			$random_id      = mt_rand();
-			$container_name = sprintf('dic_%d', $random_id);
-			$container_file = sprintf('cache/dic_%d.php', $random_id);
+		$random_id      = mt_rand();
+		$container_name = sprintf('dic_%d', $random_id);
+		$container_file = sprintf('cache/dic_%d.php', $random_id);
 
-			foreach (glob('cache/dic_*.php') as $file) {
-				unlink($file);
-			}
+		foreach (glob('cache/dic_*.php') as $file) {
+			unlink($file);
+		}
 
-			$dumper            = new PhpDumper($container_builder);
-			$container_content = $dumper->dump(['class' => $container_name]);
-			file_put_contents($container_file, $container_content);
-			chmod($container_file, 0777);
+		$dumper            = new PhpDumper($container_builder);
+		$container_content = $dumper->dump(['class' => $container_name]);
+		file_put_contents($container_file, $container_content);
+		chmod($container_file, 0777);
 
-			if ($boot) {
-				return self::boot();
-			}
+		if ($boot) {
+			return self::boot();
 		}
 
 		return $container_builder;

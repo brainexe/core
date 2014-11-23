@@ -5,15 +5,16 @@ namespace BrainExe\Core\Annotations\Builder;
 use BrainExe\Annotations\Loader\Annotation\DefinitionBuilder\ServiceDefinitionBuilder;
 use BrainExe\Core\Annotations\CompilerPass;
 use BrainExe\Core\DependencyInjection\CompilerPass\MiddlewareCompilerPass;
+use ReflectionClass;
 use Symfony\Component\DependencyInjection\Definition;
 
 class MiddlewareDefinitionBuilder extends ServiceDefinitionBuilder {
 	/**
-	 * @param \ReflectionClass $reflection_class
+	 * @param ReflectionClass $reflection_class
 	 * @param CompilerPass $annotation
 	 * @return array
 	 */
-	public function build(\ReflectionClass $reflection_class, $annotation) {
+	public function build(ReflectionClass $reflection_class, $annotation) {
 		$definitionHolder = parent::build($reflection_class, $annotation);
 
 		/** @var Definition $definition */
@@ -22,6 +23,9 @@ class MiddlewareDefinitionBuilder extends ServiceDefinitionBuilder {
 		$definition->setPublic(false);
 		$definition->addTag(MiddlewareCompilerPass::TAG, ['priority' => $annotation->priority]);
 
-		return ['id' => $definitionHolder['id'], 'definition' => $definition];
+		return [
+			'id' => $definitionHolder['id'],
+			'definition' => $definition
+		];
 	}
 }

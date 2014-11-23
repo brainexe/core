@@ -2,11 +2,12 @@
 
 namespace Tests\BrainExe\Core\Authentication\Login;
 
-use BrainExe\Core\Application\UserException;
+use BrainExe\Core\Authentication\AuthenticationDataVO;
 use BrainExe\Core\Authentication\DatabaseUserProvider;
+use BrainExe\Core\Authentication\Event\AuthenticateUserEvent;
 use BrainExe\Core\Authentication\Login;
 use BrainExe\Core\Authentication\UserVO;
-use BrainExe\Core\DependencyInjection\ObjectFinder;
+use BrainExe\Core\EventDispatcher\EventDispatcher;
 use PHPUnit_Framework_MockObject_MockObject;
 use PHPUnit_Framework_TestCase;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -28,16 +29,16 @@ class LoginTest extends PHPUnit_Framework_TestCase {
 	private $_mockDatabaseUserProvider;
 
 	/**
-	 * @var ObjectFinder|PHPUnit_Framework_MockObject_MockObject
+	 * @var EventDispatcher|PHPUnit_Framework_MockObject_MockObject
 	 */
-	private $_mockObjectFinder;
+	private $_mockDispatcher;
 
 	public function setUp() {
 		$this->_mockDatabaseUserProvider = $this->getMock(DatabaseUserProvider::class, [], [], '', false);
-		$this->_mockObjectFinder = $this->getMock(ObjectFinder::class, [], [], '', false);
+		$this->_mockDispatcher = $this->getMock(EventDispatcher::class, [], [], '', false);
 
 		$this->_subject = new Login($this->_mockDatabaseUserProvider);
-		$this->_subject->setObjectFinder($this->_mockObjectFinder);
+		$this->_subject->setEventDispatcher($this->_mockDispatcher);
 	}
 
 	/**
@@ -93,7 +94,7 @@ class LoginTest extends PHPUnit_Framework_TestCase {
 		$password       = 'password';
 		$one_time_token = 'token';
 		$session        = new Session(new MockArraySessionStorage());
-		$user_password = 'real password';
+		$user_password  = 'real password';
 
 		$user_vo = new UserVO();
 		$user_vo->id              = $id = 42;
@@ -112,10 +113,25 @@ class LoginTest extends PHPUnit_Framework_TestCase {
 			->with($password, $user_password)
 			->will($this->returnValue(true));
 
+		$authentication_vo = new AuthenticationDataVO($user_vo, $password, $one_time_token);
+
+		$event = new AuthenticateUserEvent($authentication_vo, AuthenticateUserEvent::CHECK);
+		$this->_mockDispatcher
+			->expects($this->at(0))
+			->method('dispatchEvent')
+			->with($event);
+
+		$event = new AuthenticateUserEvent($authentication_vo, AuthenticateUserEvent::AUTHENTICATED);
+		$this->_mockDispatcher
+			->expects($this->at(01))
+			->method('dispatchEvent')
+			->with($event);
+
 		$actual_result = $this->_subject->tryLogin($username, $password, $one_time_token, $session);
 
 		$this->assertEquals($user_vo, $actual_result);
 		$this->assertEquals($id, $session->get('user_id'));
+		$this->assertEquals($event->getAuthenticationData(), $authentication_vo);
 	}
 
 }

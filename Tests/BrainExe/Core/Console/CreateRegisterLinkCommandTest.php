@@ -31,19 +31,23 @@ class CreateRegisterLinkCommandTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testExecute() {
-		$this->markTestIncomplete('This is only a dummy implementation');
-
 		$application = new Application();
 		$application->add($this->_subject);
 
 		$commandTester = new CommandTester($this->_subject);
 
-		// TODO
+		$token = 11880;
+
+		$this->_mockRegisterTokens
+			->expects($this->once())
+			->method('addToken')
+			->will($this->returnValue($token));
 
 		$commandTester->execute([]);
 		$output = $commandTester->getDisplay();
 
-		$this->assertEquals("TODO\n", $output);
+		$expected_result = sprintf("/register/?token=%s\n", $token);
+		$this->assertEquals($expected_result, $output);
 	}
 
 }

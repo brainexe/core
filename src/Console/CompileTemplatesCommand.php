@@ -50,6 +50,7 @@ class CompileTemplatesCommand extends AbstractCommand {
 		if (CORE_STANDALONE) {
 			return;
 		}
+
 		$finder = new Finder();
 		$finder
 			->files()

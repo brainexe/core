@@ -41,7 +41,7 @@ class ClearCacheCommand extends Command {
 		$finder
 			->files()
 			->in(ROOT . '/cache')
-			->name('*php')
+			->name('*.php')
 			->notName('assets.php');
 
 		foreach ($finder as $file) {
@@ -51,7 +51,9 @@ class ClearCacheCommand extends Command {
 		$output->writeln('<info>done</info>');
 
 		$output->write('Rebuild DIC...');
+
 		Core::rebuildDIC();
+
 		$output->writeln('<info>done</info>');
 
 		$output->write('Set permissions...');
@@ -62,9 +64,6 @@ class ClearCacheCommand extends Command {
 		] , 0777, 0000, true);
 		$output->writeln('<info>done</info>');
 
-//		$input = new ArrayInput(['command' => 'assets:dump']);
-//		$this->getApplication()->run($input, $output);
-
 		$input = new ArrayInput(['command' => 'templates:compile']);
 		$this->getApplication()->run($input, $output);
 
@@ -74,7 +73,7 @@ class ClearCacheCommand extends Command {
 		$input = new ArrayInput(['command' => 'redis:scripts:load']);
 		$this->getApplication()->run($input, $output);
 
-		$event = new ClearCacheEvent($output);
+		$event = new ClearCacheEvent($this->getApplication(), $input, $output);
 		$this->dispatchEvent($event);
 	}
 

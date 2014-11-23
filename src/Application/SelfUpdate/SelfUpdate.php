@@ -3,7 +3,6 @@
 namespace BrainExe\Core\Application\SelfUpdate;
 
 use BrainExe\Core\Traits\EventDispatcherTrait;
-use Symfony\Component\Process\Process;
 use Symfony\Component\Process\ProcessBuilder;
 
 /**

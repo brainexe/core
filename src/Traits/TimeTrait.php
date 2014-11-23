@@ -29,7 +29,7 @@ trait TimeTrait {
 	/**
 	 * @return int
 	 */
-	public function now() {
+	protected function now() {
 		return $this->_time->now();
 	}
 

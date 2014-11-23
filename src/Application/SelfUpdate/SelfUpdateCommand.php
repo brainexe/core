@@ -14,11 +14,12 @@ class SelfUpdateCommand extends AbstractCommand {
 	/**
 	 * @var SelfUpdate
 	 */
-	private $_self_update;
+	private $_selfUpdate;
+
 	/**
-	 * @var \Symfony\Component\EventDispatcher\EventDispatcher
+	 * @var EventDispatcher
 	 */
-	private $_event_dispatcher;
+	private $_eventDispatcher;
 
 	/**
 	 * {@inheritdoc}
@@ -36,8 +37,8 @@ class SelfUpdateCommand extends AbstractCommand {
 	public function __construct(SelfUpdate $self_update, EventDispatcher $event_dispatcher) {
 		parent::__construct();
 
-		$this->_self_update = $self_update;
-		$this->_event_dispatcher = $event_dispatcher;
+		$this->_selfUpdate = $self_update;
+		$this->_eventDispatcher = $event_dispatcher;
 	}
 
 	/**
@@ -47,14 +48,14 @@ class SelfUpdateCommand extends AbstractCommand {
 	 * @return mixed|void
 	 */
 	protected function doExecute(InputInterface $input, OutputInterface $output) {
-		$this->_event_dispatcher->addListener(SelfUpdateEvent::PROCESS, function(SelfUpdateEvent $event) use ($output) {
+		$this->_eventDispatcher->addListener(SelfUpdateEvent::PROCESS, function(SelfUpdateEvent $event) use ($output) {
 			$output->write($event->payload);
 		});
 
-		$this->_event_dispatcher->addListener(SelfUpdateEvent::ERROR, function(SelfUpdateEvent $event) use ($output) {
+		$this->_eventDispatcher->addListener(SelfUpdateEvent::ERROR, function(SelfUpdateEvent $event) use ($output) {
 			$output->writeln(sprintf('<error>Error during update: %s</error>', $event->payload));
 		});
 
-		$this->_self_update->startUpdate();
+		$this->_selfUpdate->startUpdate();
 	}
 }

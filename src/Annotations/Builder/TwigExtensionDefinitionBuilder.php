@@ -17,12 +17,16 @@ class TwigExtensionDefinitionBuilder extends ServiceDefinitionBuilder {
 	 */
 	public function build(ReflectionClass $reflection_class, $annotation) {
 		$definitionHolder = parent::build($reflection_class, $annotation);
+
 		/** @var Definition $definition */
 		$definition = $definitionHolder['definition'];
 
 		$definition->addTag(TwigExtensionCompilerPass::TAG, ['compiler' => $annotation->compiler]);
 		$definition->setPublic(false);
 
-		return ['id' => $definitionHolder['id'], 'definition' => $definition];
+		return [
+			'id' => $definitionHolder['id'],
+			'definition' => $definition
+		];
 	}
 }

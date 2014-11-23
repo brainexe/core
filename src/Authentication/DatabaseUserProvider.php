@@ -18,7 +18,7 @@ class DatabaseUserProvider implements UserProviderInterface {
 	use RedisTrait;
 	use IdGeneratorTrait;
 
-	const REDIS_USER = 'user:%d';
+	const REDIS_USER       = 'user:%d';
 	const REDIS_USER_NAMES = 'user_names';
 
 	/**
@@ -28,9 +28,7 @@ class DatabaseUserProvider implements UserProviderInterface {
 		$user_id = $this->getRedis()->HGET(self::REDIS_USER_NAMES, strtolower($username));
 
 		if (empty($user_id)) {
-			throw new UsernameNotFoundException(
-				sprintf('Username "%s" does not exist.', $username)
-			);
+			throw new UsernameNotFoundException(sprintf('Username "%s" does not exist.', $username));
 		}
 
 		return $this->loadUserById($user_id);
@@ -43,13 +41,13 @@ class DatabaseUserProvider implements UserProviderInterface {
 	public function loadUserById($user_id) {
 		$redis_user = $this->getRedis()->HGETALL($this->_getKey($user_id));
 
-		$user = new UserVO();
-		$user->id = $user_id;
-		$user->username = $redis_user['username'];
-		$user->email = isset($redis_user['email']) ? $redis_user['email'] : '';
-		$user->password_hash = $redis_user['password'];
+		$user                  = new UserVO();
+		$user->id              = $user_id;
+		$user->username        = $redis_user['username'];
+		$user->email           = isset($redis_user['email']) ? $redis_user['email'] : '';
+		$user->password_hash   = $redis_user['password'];
 		$user->one_time_secret = $redis_user['one_time_secret'];
-		$user->roles = array_filter(explode(',', $redis_user['roles']));
+		$user->roles           = array_filter(explode(',', $redis_user['roles']));
 
 		return $user;
 	}
@@ -76,6 +74,7 @@ class DatabaseUserProvider implements UserProviderInterface {
 	}
 
 	/**
+	 * @todo own service
 	 * @param string $password
 	 * @return string $hash
 	 */
@@ -97,7 +96,7 @@ class DatabaseUserProvider implements UserProviderInterface {
 	 * @param string $new_password
 	 */
 	public function changePassword(UserVO $user, $new_password) {
-		$password_hash = $this->generateHash($new_password);
+		$password_hash  = $this->generateHash($new_password);
 		$user->password = $password_hash;
 
 		$this->setUserProperty($user, 'password');
@@ -128,7 +127,7 @@ class DatabaseUserProvider implements UserProviderInterface {
 			'one_time_secret' => $user->one_time_secret
 		];
 
-		$new_user_id = mt_rand();
+		$new_user_id = $this->generateRandomNumericId();
 
 		$redis->HSET(self::REDIS_USER_NAMES, strtolower($user->getUsername()), $new_user_id);
 		$redis->HMSET($this->_getKey($new_user_id), $user_array);

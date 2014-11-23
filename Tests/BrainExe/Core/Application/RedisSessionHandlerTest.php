@@ -1,15 +1,12 @@
 <?php
 
-namespace Tests\BrainExe\Core\Application\RedisSessionHandler;
+namespace BrainExe\Tests\Core\Application;
 
 use BrainExe\Core\Application\RedisSessionHandler;
 use PHPUnit_Framework_MockObject_MockObject;
 use PHPUnit_Framework_TestCase;
 use Redis;
 
-/**
- * @Covers BrainExe\Core\Application\RedisSessionHandler
- */
 class RedisSessionHandlerTest extends PHPUnit_Framework_TestCase {
 
 	/**
@@ -23,54 +20,52 @@ class RedisSessionHandlerTest extends PHPUnit_Framework_TestCase {
 	private $_mockRedis;
 
 	public function setUp() {
-
 		$this->_mockRedis = $this->getMock(Redis::class, [], [], '', false);
+
 		$this->_subject = new RedisSessionHandler();
 		$this->_subject->setRedis($this->_mockRedis);
 	}
 
-	public function testOpen() {
-		$this->markTestIncomplete('This is only a dummy implementation');
+	public function testReadSession() {
+		$payload    = 'foobar';
+		$session_id = '121212';
 
-		$savePath = null;
-		$sessionName = null;
-		$this->_subject->open($savePath, $sessionName);
+		$this->_mockRedis
+			->expects($this->once())
+			->method('get')
+			->with("session:$session_id")
+			->will($this->returnValue($payload));
+
+		$actual_result = $this->_subject->read($session_id);
+
+		$this->assertEquals($payload, $actual_result);
 	}
 
-	public function testClose() {
-		$this->markTestIncomplete('This is only a dummy implementation');
+	public function testWriteSession() {
+		$payload    = 'foobar';
+		$session_id = '121212';
 
+		$this->_subject->open(null, $session_id);
 
-		$this->_subject->close();
+		$this->_mockRedis
+			->expects($this->once())
+			->method('setex')
+			->with("session:$session_id", $this->isType('integer'), $payload);
+
+		$this->_subject->write($session_id, $payload);
 	}
 
-	public function testRead() {
-		$this->markTestIncomplete('This is only a dummy implementation');
+	public function testDestroySession() {
+		$session_id = '121212';
 
-		$session_id = null;
-		$this->_subject->read($session_id);
-	}
+		$this->_mockRedis
+			->expects($this->once())
+			->method('del')
+			->with("session:$session_id");
 
-	public function testWrite() {
-		$this->markTestIncomplete('This is only a dummy implementation');
-
-		$session_id = null;
-		$data = null;
-		$this->_subject->write($session_id, $data);
-	}
-
-	public function testDestroy() {
-		$this->markTestIncomplete('This is only a dummy implementation');
-
-		$session_id = null;
 		$this->_subject->destroy($session_id);
+		$this->_subject->close();
+		$this->_subject->gc(0);
+
 	}
-
-	public function testGc() {
-		$this->markTestIncomplete('This is only a dummy implementation');
-
-		$lifetime = null;
-		$this->_subject->gc($lifetime);
-	}
-
-}
+} 

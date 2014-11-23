@@ -3,9 +3,12 @@
 namespace BrainExe\Core\EventDispatcher\Events;
 
 use BrainExe\Core\EventDispatcher\AbstractEvent;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class ClearCacheEvent extends AbstractEvent {
+
 	const NAME = 'cache.clear';
 
 	/**
@@ -13,8 +16,25 @@ class ClearCacheEvent extends AbstractEvent {
 	 */
 	public $output;
 
-	public function __construct(OutputInterface $output) {
+	/**
+	 * @var Application
+	 */
+	private $application;
+
+	/**
+	 * @var InputInterface
+	 */
+	private $input;
+
+	/**
+	 * @param Application $application
+	 * @param InputInterface $input
+	 * @param OutputInterface $output
+	 */
+	public function __construct(Application $application, InputInterface $input, OutputInterface $output) {
 		$this->event_name = self::NAME;
-		$this->output = $output;
+		$this->output     = $output;
+		$this->input      = $input;
+		$this->application = $application;
 	}
 } 

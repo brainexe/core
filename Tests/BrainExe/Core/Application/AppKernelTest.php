@@ -6,7 +6,6 @@ use BrainExe\Core\Application\AppKernel;
 use BrainExe\Core\Application\ControllerResolver;
 use BrainExe\Core\Middleware\MiddlewareInterface;
 use Exception;
-use Monolog\Logger;
 use PHPUnit_Framework_MockObject_MockObject;
 use PHPUnit_Framework_TestCase;
 use Symfony\Component\HttpFoundation\Request;

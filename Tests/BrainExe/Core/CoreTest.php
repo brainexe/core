@@ -8,8 +8,15 @@ use Symfony\Component\DependencyInjection\Container;
 
 class CoreTest extends PHPUnit_Framework_TestCase {
 
-	public function testGetContainer() {
+	public function testBoot() {
+		$dic = Core::boot();
+
+		$this->assertInstanceOf(Container::class, $dic);
+	}
+
+	public function testRebuildContainer() {
 		$dic = Core::rebuildDIC(false);
-		$this->assertTrue($dic instanceof Container);
+
+		$this->assertInstanceOf(Container::class, $dic);
 	}
 } 

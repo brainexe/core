@@ -2,13 +2,13 @@
 
 namespace Tests\BrainExe\Core\Application\SelfUpdate\SelfUpdate;
 
-use BrainExe\Core\Application\SelfUpdate\SelfUpdateEvent;
-use PHPUnit_Framework_TestCase;
-use PHPUnit_Framework_MockObject_MockObject;
 use BrainExe\Core\Application\SelfUpdate\SelfUpdate;
+use BrainExe\Core\Application\SelfUpdate\SelfUpdateEvent;
+use BrainExe\Core\EventDispatcher\EventDispatcher;
+use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit_Framework_TestCase;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\ProcessBuilder;
-use BrainExe\Core\EventDispatcher\EventDispatcher;
 
 /**
  * @Covers BrainExe\Core\Application\SelfUpdate\SelfUpdate

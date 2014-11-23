@@ -8,7 +8,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class UserVO implements UserInterface, JsonSerializable {
 	const ROLE_ADMIN = 'admin';
-	const ROLE_USER = 'user';
+	const ROLE_USER  = 'user';
 
 	/**
 	 * @var integer
@@ -57,7 +57,7 @@ class UserVO implements UserInterface, JsonSerializable {
 	 * {@inheritdoc}
 	 */
 	public function getRoles() {
-		return array_map(function($role_string) {
+		return array_map(function ($role_string) {
 			return new Role($role_string);
 		}, $this->roles);
 	}
@@ -88,6 +88,7 @@ class UserVO implements UserInterface, JsonSerializable {
 	 */
 	public function eraseCredentials() {
 		$this->password = null;
+		$this->password_hash = null;
 	}
 
 	/**

@@ -5,6 +5,7 @@ namespace BrainExe\Core\Annotations\Builder;
 use BrainExe\Annotations\Loader\Annotation\DefinitionBuilder\ServiceDefinitionBuilder;
 use BrainExe\Core\Annotations\Route;
 use BrainExe\Core\DependencyInjection\CompilerPass\ControllerCompilerPass;
+use ReflectionClass;
 use ReflectionMethod;
 use Symfony\Component\DependencyInjection\Definition;
 
@@ -12,7 +13,7 @@ class ControllerDefinitionBuilder extends ServiceDefinitionBuilder {
 	/**
 	 * {@inheritdoc}
 	 */
-	public function build(\ReflectionClass $reflection_class, $annotation) {
+	public function build(ReflectionClass $reflection_class, $annotation) {
 		$definitionHolder = parent::build($reflection_class, $annotation);
 		/** @var Definition $definition */
 		$definition = $definitionHolder['definition'];
@@ -32,7 +33,7 @@ class ControllerDefinitionBuilder extends ServiceDefinitionBuilder {
 
 		foreach ($methods as $method) {
 			/** @var Route $route_annotation */
-			if ($route_annotation = $this->_reader->getMethodAnnotation($method, 'Symfony\Component\Routing\Annotation\Route')) {
+			if ($route_annotation = $this->_reader->getMethodAnnotation($method, Route::class)) {
 				$defaults = $route_annotation->getDefaults();
 
 				$class_parts = explode('\\', $definition->getClass());

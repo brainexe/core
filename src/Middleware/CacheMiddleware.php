@@ -18,6 +18,8 @@ class CacheMiddleware extends AbstractMiddleware {
 	use CacheTrait;
 	use LoggerTrait;
 
+	const TTL = 60;
+
 	/**
 	 * @var string
 	 */
@@ -51,8 +53,9 @@ class CacheMiddleware extends AbstractMiddleware {
 		if ($cache->contains($this->_cache_key)) {
 			$this->debug(sprintf('fetch from cache: %s', $this->_cache_key));
 
-			$response = new Response($cache->fetch($this->_cache_key));
+			$response = $cache->fetch($this->_cache_key);
 			$this->_cache_key = null;
+
 			return $response;
 		}
 
@@ -75,7 +78,7 @@ class CacheMiddleware extends AbstractMiddleware {
 
 		$this->debug(sprintf('save into cache: %s', $this->_cache_key));
 
-		$cache->save($this->_cache_key, $response->getContent(), 60);
+		$cache->save($this->_cache_key, $response, self::TTL);
 		$this->_cache_key = null;
 	}
 } 

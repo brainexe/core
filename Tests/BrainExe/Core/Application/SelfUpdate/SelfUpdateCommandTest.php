@@ -48,7 +48,6 @@ class SelfUpdateCommandTest extends PHPUnit_Framework_TestCase {
 			->method('startUpdate');
 
 		$commandTester->execute([]);
-		$output = $commandTester->getDisplay();
 	}
 
 }

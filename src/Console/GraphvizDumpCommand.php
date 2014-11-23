@@ -27,12 +27,15 @@ class GraphvizDumpCommand extends AbstractCommand {
 	 * {@inheritdoc}
 	 */
 	protected function doExecute(InputInterface $input, OutputInterface $output) {
-		$dic = Core::rebuildDIC();
+		$dic = Core::rebuildDIC(false);
 
-		$dumper = new GraphvizDumper($dic);
+		$dumper  = new GraphvizDumper($dic);
 		$content = $dumper->dump();
 		file_put_contents('cache/dic.gv', $content);
-		exec('dot -Tpng cache/dic.gv -o graph.png; rm cache/dic.gv');
+		exec('dot -Tpng cache/dic.gv -o cache/graph.png; rm cache/dic.gv');
+
+		$output->writeln('PNG: <info>cache/graph.png</info>');
+		$output->writeln('GV:  <info>cache/dic.gv</info>');
 	}
 
 } 

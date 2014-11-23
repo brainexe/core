@@ -37,7 +37,7 @@ class RegisterTest extends PHPUnit_Framework_TestCase {
 		$this->_mockDatabaseUserProvider = $this->getMock(DatabaseUserProvider::class, [], [], '', false);
 		$this->_mockRegisterTokens = $this->getMock(RegisterTokens::class, [], [], '', false);
 
-		$this->_subject = new Register($this->_mockDatabaseUserProvider, $this->_mockRegisterTokens, true);
+		$this->_subject = new Register($this->_mockDatabaseUserProvider, $this->_mockRegisterTokens, false);
 	}
 
 	/**
@@ -60,9 +60,11 @@ class RegisterTest extends PHPUnit_Framework_TestCase {
 		$this->_subject->register($user, $session, $token);
 	}
 
-	public function testRegister() {
-		$this->markTestIncomplete('This is only a dummy implementation');
-
+	/**
+	 * @expectedException \BrainExe\Core\Application\UserException
+	 * @expectedExceptionMessage You have to provide a valid register token!
+	 */
+	public function testRegisterWithInvalidToken() {
 		$user = new UserVO();
 		$user->username = $username = 'user name';
 
@@ -81,7 +83,39 @@ class RegisterTest extends PHPUnit_Framework_TestCase {
 			->with($token)
 			->will($this->returnValue(false));
 
+		$this->_subject->register($user, $session, $token);
+	}
+
+	public function testRegisterWithValidToken() {
+		$user = new UserVO();
+		$user->username = $username = 'user name';
+
+		$user_id = 42;
+		$session = new Session(new MockArraySessionStorage());
+		$token   = 100;
+
+		$this->_mockDatabaseUserProvider
+			->expects($this->once())
+			->method('loadUserByUsername')
+			->with($username)
+			->will($this->throwException(new UsernameNotFoundException()));
+
+		$this->_mockRegisterTokens
+			->expects($this->once())
+			->method('fetchToken')
+			->with($token)
+			->will($this->returnValue(true));
+
+		$this->_mockDatabaseUserProvider
+			->expects($this->once())
+			->method('register')
+			->with($user)
+			->will($this->returnValue($user_id));
+
 		$actual_result = $this->_subject->register($user, $session, $token);
+
+		$this->assertEquals($user_id, $actual_result);
+		$this->assertEquals($user, $session->get('user'));
 	}
 
 }

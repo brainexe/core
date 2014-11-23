@@ -2,7 +2,7 @@
 	"name": "brainexe/core",
 	"description": "Framework core",
 	"minimum-stability": "dev",
-	"version": "1.0.20",
+	"version": "1.0.21",
 	"authors": [
 		{
 			"name": "Matze",
@@ -31,9 +31,9 @@
 		"symfony/routing": "~2.5",
 		"symfony/security": "~2.5",
 
-		"brainexe/annotations": "1.0.*",
-		"brainexe/message-queue": "1.0.*",
-		"brainexe/template": "1.0.*",
+		"brainexe/annotations": "dev-master",
+		"brainexe/message-queue": "dev-master",
+		"brainexe/template": "dev-master",
 
 		"monolog/monolog": "~1.9",
 		"doctrine/cache": "~1.3",

@@ -30,8 +30,6 @@ class RegisterTokensTest extends PHPUnit_Framework_TestCase {
 
 
 	public function setUp() {
-		parent::setUp();
-
 		$this->_mockRedis = $this->getMock(Redis::class, [], [], '', false);
 		$this->_mockIdGenerator = $this->getMock(IdGenerator::class, [], [], '', false);
 
@@ -41,15 +39,35 @@ class RegisterTokensTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddToken() {
-		$this->markTestIncomplete('This is only a dummy implementation');
+		$id = 11880;
+
+		$this->_mockIdGenerator
+			->expects($this->once())
+			->method('generateRandomId')
+			->will($this->returnValue($id));
+
+		$this->_mockRedis
+			->expects($this->once())
+			->method('sAdd')
+			->with(RegisterTokens::TOKEN_KEY, $id);
 
 		$actual_result = $this->_subject->addToken();
+
+		$this->assertEquals($id, $actual_result);
 	}
 
 	public function testFetchToken() {
-		$this->markTestIncomplete('This is only a dummy implementation');
+		$token = 11880;
+
+		$this->_mockRedis
+			->expects($this->once())
+			->method('sRem')
+			->with(RegisterTokens::TOKEN_KEY, $token)
+			->will($this->returnValue(true));
 
 		$actual_result = $this->_subject->fetchToken($token);
+
+		$this->assertTrue($actual_result);
 	}
 
 }

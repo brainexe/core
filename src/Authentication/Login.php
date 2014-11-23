@@ -3,17 +3,16 @@
 namespace BrainExe\Core\Authentication;
 
 use BrainExe\Core\Application\UserException;
-use BrainExe\Core\Traits\ServiceContainerTrait;
-use BrainExe\TOTP\OneTimePassword;
+use BrainExe\Core\Authentication\Event\AuthenticateUserEvent;
+use BrainExe\Core\Traits\EventDispatcherTrait;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
- * @todo private
  * @Service(public=false)
  */
 class Login {
 
-	use ServiceContainerTrait;
+	use EventDispatcherTrait;
 
 	/**
 	 * @var DatabaseUserProvider
@@ -46,13 +45,15 @@ class Login {
 			throw new UserException("Invalid Password");
 		}
 
-		if (!empty($user_vo->one_time_secret)) {
-			/** @var OneTimePassword $one_time_password */
-			$one_time_password = $this->getService('OneTimePassword');
-			$one_time_password->verifyOneTimePassword($user_vo, $one_time_token);
-		}
+		$authentication_vo = new AuthenticationDataVO($user_vo, $password, $one_time_token);
+
+		$event = new AuthenticateUserEvent($authentication_vo, AuthenticateUserEvent::CHECK);
+		$this->dispatchEvent($event);
 
 		$session->set('user_id', $user_vo->id);
+
+		$event = new AuthenticateUserEvent($authentication_vo, AuthenticateUserEvent::AUTHENTICATED);
+		$this->dispatchEvent($event);
 
 		return $user_vo;
 	}

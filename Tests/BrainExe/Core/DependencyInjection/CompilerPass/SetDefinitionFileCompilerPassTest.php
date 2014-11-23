@@ -30,8 +30,8 @@ class SetDefinitionFileCompilerPassTest extends \PHPUnit_Framework_TestCase {
 
 	public function setUp() {
 		$this->_subject = new SetDefinitionFileCompilerPass();
-		$this->_mock_container = $this->getMock('Symfony\Component\DependencyInjection\ContainerBuilder');
-		$this->_mock_definition = $this->getMock('Symfony\Component\DependencyInjection\Definition');
+		$this->_mock_container = $this->getMock(ContainerBuilder::class);
+		$this->_mock_definition = $this->getMock(Definition::class);
 	}
 
 	public function testProcessCompilerWithInvalidDefinition() {

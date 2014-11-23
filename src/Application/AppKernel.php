@@ -3,7 +3,6 @@
 namespace BrainExe\Core\Application;
 
 use BrainExe\Core\Middleware\MiddlewareInterface;
-use BrainExe\Core\Traits\LoggerTrait;
 use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

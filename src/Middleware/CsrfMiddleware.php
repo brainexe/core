@@ -42,8 +42,6 @@ class CsrfMiddleware extends AbstractMiddleware {
 		$this->_renewCsrfToken();
 
 		if (empty($given_token) || $given_token !== $expected_token) {
-			$this->_renewCsrfToken();
-
 			throw new MethodNotAllowedException(['POST'], "invalid CSRF token");
 		}
 	}

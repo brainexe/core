@@ -30,18 +30,17 @@ class RegisterController implements ControllerInterface {
 		$this->_register = $register;
 	}
 
-
 	/**
 	 * @param Request $request
 	 * @return RedirectResponse
 	 * @Route("/register/", name="authenticate.doRegister", methods="POST")
 	 */
 	public function doRegister(Request $request) {
-		$username = $request->request->get('username');
+		$username       = $request->request->get('username');
 		$plain_password = $request->request->get('password');
-		$token = $request->cookies->get('token');
+		$token          = $request->cookies->get('token');
 
-		$user_vo = new UserVO();
+		$user_vo           = new UserVO();
 		$user_vo->username = $username;
 		$user_vo->password = $plain_password;
 

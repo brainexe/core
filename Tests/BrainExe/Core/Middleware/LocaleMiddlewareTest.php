@@ -5,6 +5,8 @@ namespace Tests\BrainExe\Core\Middleware\LocaleMiddleware;
 use BrainExe\Core\Middleware\LocaleMiddleware;
 use PHPUnit_Framework_TestCase;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\Routing\Route;
 
 /**
@@ -25,7 +27,12 @@ class LocaleMiddlewareTest extends PHPUnit_Framework_TestCase {
 		$this->markTestIncomplete('This is only a dummy implementation');
 
 		$request = new Request();
-		$route = new Route();
+		$route = new Route('/route/');
+		$session = new Session(new MockArraySessionStorage());
+		$request->setSession($session);
+		$request->query->set('locate', 'en_EN');
+
+
 		$route_name = null;
 		$this->_subject->processRequest($request, $route, $route_name);
 	}

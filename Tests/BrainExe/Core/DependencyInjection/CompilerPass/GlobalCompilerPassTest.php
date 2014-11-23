@@ -3,7 +3,9 @@
 namespace BrainExe\Tests\Core\DependencyInjection\CompilerPass;
 
 use BrainExe\Core\DependencyInjection\CompilerPass\GlobalCompilerPass;
+use Monolog\Logger;
 use PHPUnit_Framework_MockObject_MockObject;
+use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class GlobalCompilerPassTest extends \PHPUnit_Framework_TestCase {
@@ -20,14 +22,14 @@ class GlobalCompilerPassTest extends \PHPUnit_Framework_TestCase {
 
 	public function setUp() {
 		$this->_subject = new GlobalCompilerPass();
-		$this->_mock_container = $this->getMock('Symfony\Component\DependencyInjection\ContainerBuilder');
+		$this->_mock_container = $this->getMock(ContainerBuilder::class);
 	}
 
 	public function testProcessCompiler() {
 		$service_id = 'FooCompilerPass';
 
-		$compiler_mock = $this->getMock('Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface');
-		$logger_mock = $this->getMock('Monolog\Logger', [], [], '', false);
+		$compiler_mock = $this->getMock(CompilerPassInterface::class);
+		$logger_mock = $this->getMock(Logger::class, [], [], '', false);
 
 		$this->_mock_container
 			->expects($this->at(0))

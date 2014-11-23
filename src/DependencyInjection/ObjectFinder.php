@@ -5,6 +5,7 @@ namespace BrainExe\Core\DependencyInjection;
 use Symfony\Component\DependencyInjection\Container;
 
 /**
+ * @todo prepare whitelist
  * @Service(public=false)
  */
 class ObjectFinder {

@@ -2,7 +2,7 @@
 
 namespace BrainExe\Core\Util;
 
-use Base32\Base32;
+use Base32\Base32; //TODO remove dependency
 
 /**
  * @Service(public=false)

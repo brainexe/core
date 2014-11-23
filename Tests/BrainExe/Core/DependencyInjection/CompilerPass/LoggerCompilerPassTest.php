@@ -27,8 +27,8 @@ class LoggerCompilerPassTest extends PHPUnit_Framework_TestCase {
 
 	public function setUp() {
 		$this->_subject = new LoggerCompilerPass();
-		$this->_mock_container = $this->getMock('Symfony\Component\DependencyInjection\ContainerBuilder');
-		$this->_mock_logger_definition = $this->getMock('Symfony\Component\DependencyInjection\Definition');
+		$this->_mock_container = $this->getMock(ContainerBuilder::class);
+		$this->_mock_logger_definition = $this->getMock(Definition::class);
 	}
 
 	public function testProcessCompiler() {

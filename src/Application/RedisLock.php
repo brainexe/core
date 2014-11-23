@@ -3,12 +3,14 @@
 namespace BrainExe\Core\Application;
 
 use BrainExe\Core\Traits\RedisTrait;
+use BrainExe\Core\Traits\TimeTrait;
 
 /**
  * @Service(public=false)
  * @todo improve locking
  */
 class RedisLock {
+	const REDIS_PREFIX = 'lock:';
 
 	use RedisTrait;
 
@@ -18,17 +20,11 @@ class RedisLock {
 	 * @return boolean $got_lock
 	 */
 	public function lock($name, $lock_time) {
-		$now = time();
 		$redis = $this->getRedis();
 
-		$result = $redis->SETNX($name, $now + $lock_time);
-		if ($result) {
-			return true;
-		}
-
-		$lock_time = $redis->GET($name);
-		if ($now > $lock_time) {
-			$redis->SET($name, $now + $lock_time);
+		$exists = $redis->EXISTS(self::REDIS_PREFIX . $name);
+		if (!$exists) {
+			$redis->SETEX($name, $lock_time, 1);
 			return true;
 		}
 
@@ -39,6 +35,6 @@ class RedisLock {
 	 * @param string $name
 	 */
 	public function unlock($name) {
-		$this->getRedis()->DEL($name);
+		$this->getRedis()->DEL(self::REDIS_PREFIX . $name);
 	}
 } 

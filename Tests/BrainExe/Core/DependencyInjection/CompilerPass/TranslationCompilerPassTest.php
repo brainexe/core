@@ -21,7 +21,8 @@ class TranslationCompilerPassTest extends PHPUnit_Framework_TestCase {
 
 	public function setUp() {
 		$this->_subject = new TranslationCompilerPass();
-		$this->_mock_container = $this->getMock('Symfony\Component\DependencyInjection\ContainerBuilder');
+
+		$this->_mock_container = $this->getMock(ContainerBuilder::class);
 	}
 
 	public function testProcessWithInvalidRoot() {
