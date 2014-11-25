@@ -16,49 +16,62 @@ use Symfony\Component\Routing\RouteCollection;
  */
 class ControllerCompilerPass implements CompilerPassInterface {
 
-	/**
-	 * @todo why static?
-	 * @var RouteAnnotation[]
-	 */
-	private static $routes = [];
-
-	/**
-	 * @param RouteAnnotation $route
-	 */
-	public static function addRoute(RouteAnnotation $route) {
-		self::$routes[] = $route;
-	}
-
-	const TAG = 'controller';
+	const CONTROLLER_TAG = 'controller';
+	const ROUTE_TAG = 'route';
 
 	/**
 	 * {@inheritdoc}
 	 */
 	public function process(ContainerBuilder $container) {
-		$routes = $container->getDefinition('RouteCollection');
+		$route_collector = $container->getDefinition('RouteCollection');
 
-		foreach (self::$routes as $route) {
-			$name = $route->getName() ?: str_replace('/', '.', trim($route->getPath(), './'));
+		$controllers = $container->findTaggedServiceIds(self::ROUTE_TAG);
 
-			if ($route->isCsrf()) {
-				$route->setOptions(['csrf' => true]);
+		foreach ($controllers as $id => $routes) {
+			foreach ($routes as $route_raw) {
+				/** @var RouteAnnotation $route */
+				$route = $route_raw[0];
+
+				$name = $route->getName() ?: str_replace('/', '.', trim($route->getPath(), './'));
+
+				$router_definition = $this->_createDefinition($route);
+				$route_collector->addMethodCall('add', [$name, $router_definition]);
 			}
 
-			$router_definition = new Definition(Route::class, [
-				$route->getPath(),
-				$route->getDefaults(),
-				$route->getRequirements(),
-				$route->getOptions(),
-				$route->getHost(),
-				$route->getSchemes(),
-				$route->getMethods(),
-				$route->getCondition()
-			]);
-			$routes->addMethodCall('add', [$name, $router_definition]);
+			$controller = $container->getDefinition($id);
+			$controller->clearTag(self::ROUTE_TAG);
 		}
 
-		self::$routes = [];
+		$this->_dumpMatcher($container);
+	}
 
+	/**
+	 * @param RouteAnnotation $route
+	 * @return Definition
+	 */
+	private function _createDefinition(RouteAnnotation $route) {
+		if ($route->isCsrf()) {
+			$route->setOptions(['csrf' => true]);
+		}
+
+		$router_definition = new Definition(Route::class, [
+			$route->getPath(),
+			$route->getDefaults(),
+			$route->getRequirements(),
+			$route->getOptions(),
+			$route->getHost(),
+			$route->getSchemes(),
+			$route->getMethods(),
+			$route->getCondition()
+		]);
+
+		return $router_definition;
+	}
+
+	/**
+	 * @param ContainerBuilder $container
+	 */
+	private function _dumpMatcher(ContainerBuilder $container) {
 		/** @var RouteCollection $router_collection */
 		$router_collection = $container->get('RouteCollection');
 

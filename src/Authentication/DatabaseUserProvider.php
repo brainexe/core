@@ -10,8 +10,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 /**
- * @todo private
- * @Service(public=true)
+ * @Service(public=false)
  */
 class DatabaseUserProvider implements UserProviderInterface {
 

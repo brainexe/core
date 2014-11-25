@@ -11,6 +11,7 @@ use Doctrine\Common\Annotations\Reader;
  * @Annotation
  */
 class Controller extends Service {
+
 	/**
 	 * {@inheritdoc}
 	 */

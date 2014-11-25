@@ -15,11 +15,12 @@ class ControllerDefinitionBuilder extends ServiceDefinitionBuilder {
 	 */
 	public function build(ReflectionClass $reflection_class, $annotation) {
 		$definitionHolder = parent::build($reflection_class, $annotation);
+
 		/** @var Definition $definition */
 		$definition = $definitionHolder['definition'];
 
 		$id = sprintf('Controller.%s', str_replace('Controller', '', $definitionHolder['id']));
-		$definition->addTag(ControllerCompilerPass::TAG);
+		$definition->addTag(ControllerCompilerPass::CONTROLLER_TAG);
 
 		return ['id' => $id, 'definition' => $definition];
 	}
@@ -43,7 +44,7 @@ class ControllerDefinitionBuilder extends ServiceDefinitionBuilder {
 				$defaults['_controller'] = [$class, $method->getName()];
 				$route_annotation->setDefaults($defaults);
 
-				ControllerCompilerPass::addRoute($route_annotation);
+				$definition->addTag(ControllerCompilerPass::ROUTE_TAG, [$route_annotation]);
 			}
 		}
 	}

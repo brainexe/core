@@ -5,7 +5,7 @@ namespace BrainExe\Core\DependencyInjection;
 use Symfony\Component\DependencyInjection\Container;
 
 /**
- * @todo prepare whitelist
+ * @todo prepare whitelist -> "lazy loader"
  * @Service(public=false)
  */
 class ObjectFinder {

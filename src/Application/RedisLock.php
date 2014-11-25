@@ -7,7 +7,6 @@ use BrainExe\Core\Traits\TimeTrait;
 
 /**
  * @Service(public=false)
- * @todo improve locking
  */
 class RedisLock {
 	const REDIS_PREFIX = 'lock:';
