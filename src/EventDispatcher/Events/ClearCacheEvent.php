@@ -19,12 +19,12 @@ class ClearCacheEvent extends AbstractEvent {
 	/**
 	 * @var Application
 	 */
-	private $application;
+	public $application;
 
 	/**
 	 * @var InputInterface
 	 */
-	private $input;
+	public $input;
 
 	/**
 	 * @param Application $application
@@ -32,9 +32,9 @@ class ClearCacheEvent extends AbstractEvent {
 	 * @param OutputInterface $output
 	 */
 	public function __construct(Application $application, InputInterface $input, OutputInterface $output) {
-		$this->event_name = self::NAME;
-		$this->output     = $output;
-		$this->input      = $input;
+		$this->event_name  = self::NAME;
+		$this->output      = $output;
+		$this->input       = $input;
 		$this->application = $application;
 	}
 } 
