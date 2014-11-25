@@ -2,7 +2,7 @@
 	"name": "brainexe/core",
 	"description": "Framework core",
 	"minimum-stability": "dev",
-	"version": "1.1.0",
+	"version": "1.1.1",
 	"authors": [
 		{
 			"name": "Matze",
@@ -50,5 +50,10 @@
 
 	"bin": [
 		"console"
-	]
+	],
+	"extra": {
+		"branch-alias": {
+			"dev-master": "*"
+		}
+	}
 }
