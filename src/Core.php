@@ -7,6 +7,7 @@ use BrainExe\Core\DependencyInjection\CompilerPass\GlobalCompilerPass;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
+use Symfony\Component\DependencyInjection\Dumper\XmlDumper;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -27,7 +28,7 @@ if (!defined('CORE_STANDALONE')) {
 }
 
 /**
- * @todo non-static
+ * @todo non-static class for rebuild dic
  */
 class Core {
 
@@ -110,6 +111,10 @@ class Core {
 		$container_content = $dumper->dump(['class' => $container_name]);
 		file_put_contents($container_file, $container_content);
 		chmod($container_file, 0777);
+
+		$dumper            = new XmlDumper($container_builder);
+		$container_content = $dumper->dump();
+		file_put_contents('cache/dic.xml', $container_content);
 
 		if ($boot) {
 			return self::boot();
