@@ -33,6 +33,7 @@ class LoginController implements ControllerInterface {
 	 * @param Request $request
 	 * @return RedirectResponse
 	 * @Route("/login/", name="authenticate.doLogin", methods="POST")
+	 * @Guest
 	 */
 	public function doLogin(Request $request) {
 		$username       = $request->request->get('username');

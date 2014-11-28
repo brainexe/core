@@ -7,6 +7,7 @@ use Symfony\Component\Security\Core\Role\Role;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class UserVO implements UserInterface, JsonSerializable {
+
 	const ROLE_ADMIN = 'admin';
 	const ROLE_USER  = 'user';
 

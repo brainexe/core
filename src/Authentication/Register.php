@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
 /**
- * @Service(public=true)
+ * @Service(public=false)
  */
 class Register {
 

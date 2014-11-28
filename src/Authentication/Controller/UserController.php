@@ -15,6 +15,7 @@ class UserController implements ControllerInterface {
 	 * @param Request $request
 	 * @return UserVO
 	 * @Route("/user/current/", name="authenticate.current_user")
+	 * @Guest
 	 */
 	public function getCurrentUser(Request $request) {
 		return $request->attributes->get('user');

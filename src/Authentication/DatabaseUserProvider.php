@@ -21,6 +21,19 @@ class DatabaseUserProvider implements UserProviderInterface {
 	const REDIS_USER_NAMES = 'user_names';
 
 	/**
+	 * @var PasswordHasher
+	 */
+	private $passwordHasher;
+
+	/**
+	 * @inject({"@PasswordHasher"})
+	 * @param PasswordHasher $passwordHasher
+	 */
+	public function __construct(PasswordHasher $passwordHasher) {
+		$this->passwordHasher = $passwordHasher;
+	}
+
+	/**
 	 * {@inheritdoc}
 	 */
 	public function loadUserByUsername($username) {
@@ -73,12 +86,11 @@ class DatabaseUserProvider implements UserProviderInterface {
 	}
 
 	/**
-	 * @todo own service
 	 * @param string $password
 	 * @return string $hash
 	 */
 	public function generateHash($password) {
-		return password_hash($password, PASSWORD_BCRYPT);
+		return $this->passwordHasher->generateHash($password);
 	}
 
 	/**
@@ -87,7 +99,7 @@ class DatabaseUserProvider implements UserProviderInterface {
 	 * @return boolean
 	 */
 	public function verifyHash($password, $hash) {
-		return password_verify($password, $hash);
+		return $this->passwordHasher->verifyHash($password, $hash);
 	}
 
 	/**

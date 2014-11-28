@@ -60,8 +60,7 @@ class AuthenticationMiddleware extends AbstractMiddleware {
 			return null;
 		}
 
-		// todo create @guest annotation
-		if (strpos($route_name, 'authenticate.') === 0 || $route_name === 'index') {
+		if ($route->hasDefault('guest')) {
 			return null;
 		}
 
