@@ -18,6 +18,8 @@ class ConfigCompilerPass implements CompilerPassInterface {
 	 * {@inheritdoc}
 	 */
 	public function process(ContainerBuilder $container) {
+		$container->setParameter('core_standalone', CORE_STANDALONE);
+
 		$xml_loader = new XmlFileLoader($container, new FileLocator('config'));
 
 		// load container.xml file from all "brainexe" components

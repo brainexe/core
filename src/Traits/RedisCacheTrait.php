@@ -15,7 +15,7 @@ trait RedisCacheTrait {
 	 * @param integer $ttl
 	 * @return mixed
 	 */
-	protected function wrapCache($key, $callback, $ttl = 3600) {
+	public function wrapCache($key, $callback, $ttl = 3600) {
 		$cached_value = $this->_redis->GET($key);
 		if ($cached_value) {
 			return unserialize($cached_value);
@@ -31,7 +31,7 @@ trait RedisCacheTrait {
 	/**
 	 * @param string $key
 	 */
-	protected function invalidate($key) {
+	public function invalidate($key) {
 		$this->_redis->DEL($key);
 	}
 

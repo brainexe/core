@@ -2,6 +2,7 @@
 
 use BrainExe\Core\Traits\TimeTrait;
 use BrainExe\Core\Util\Time;
+use PHPUnit_Framework_MockObject_MockObject as MockObject;
 
 class TimeTraitTest extends PHPUnit_Framework_TestCase {
 
@@ -11,7 +12,7 @@ class TimeTraitTest extends PHPUnit_Framework_TestCase {
 	private $_subject;
 
 	/**
-	 * @var Time
+	 * @var Time|MockObject
 	 */
 	private $_mockTime;
 
@@ -23,8 +24,15 @@ class TimeTraitTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetTime() {
-		$this->markTestIncomplete('This is only a dummy implementation');
+		$now = 100;
+
+		$this->_mockTime
+			->expects($this->once())
+			->method('now')
+			->will($this->returnValue($now));
 
 		$actual_result = $this->_subject->now();
+
+		$this->assertEquals($now, $actual_result);
 	}
 }

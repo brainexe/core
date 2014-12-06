@@ -13,15 +13,15 @@ class IdGeneratorTest extends PHPUnit_Framework_TestCase {
 	/**
 	 * @var IdGenerator
 	 */
-	private $_subject;
+	private $subject;
 
 	public function setUp() {
-		$this->_subject = new IdGenerator();
+		$this->subject = new IdGenerator();
 	}
 
 	public function testGenerateRandomNumericId() {
-		$actual_result = $this->_subject->generateRandomNumericId();
-		$actual_result2 = $this->_subject->generateRandomNumericId();
+		$actual_result = $this->subject->generateRandomNumericId();
+		$actual_result2 = $this->subject->generateRandomNumericId();
 
 		$this->assertInternalType('integer', $actual_result);
 		$this->assertGreaterThan(0, $actual_result);
@@ -30,8 +30,8 @@ class IdGeneratorTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testGenerateRandomId() {
-		$actual_result = $this->_subject->generateRandomId(10);
-		$actual_result2 = $this->_subject->generateRandomId(10);
+		$actual_result = $this->subject->generateRandomId(10);
+		$actual_result2 = $this->subject->generateRandomId(10);
 
 		$this->assertInternalType('string', $actual_result);
 		$this->assertInternalType('string', $actual_result2);

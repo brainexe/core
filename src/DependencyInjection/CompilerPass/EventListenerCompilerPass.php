@@ -26,29 +26,40 @@ class EventListenerCompilerPass implements CompilerPassInterface {
 			$subscriber = $container->get($service_id);
 
 			foreach ($subscriber->getSubscribedEvents() as $eventName => $params) {
-				if (is_string($params)) {
-					$this->_addListener($dispatcher, $eventName, $service_id, $params, 0);
-				} elseif (is_string($params[0])) {
-					$this->_addListener($dispatcher, $eventName, $service_id, $params[0], isset($params[1]) ? $params[1] : 0);
-				} else {
-					foreach ($params as $listener) {
-						$this->_addListener($dispatcher, $eventName, $service_id, $listener[0], isset($listener[1]) ? $listener[1] : 0);
-					}
-				}
+				$this->_addEvent($dispatcher, $params, $eventName, $service_id);
 			}
 		}
 	}
 
 	/**
-	 * @param Definition $event_dispatcher
-	 * @param string $event_name
+	 * @param Definition$dispatcher
+	 * @param string|array $params
+	 * @param string $name
+	 * @param string $service_id
+	 */
+	private function _addEvent(Definition $dispatcher, $params, $name, $service_id) {
+		if (is_string($params)) {
+			$this->_addListener($dispatcher, $name, $service_id, $params, 0);
+		} elseif (is_string($params[0])) {
+			$this->_addListener($dispatcher, $name, $service_id, $params[0], isset($params[1]) ? $params[1] : 0);
+		} else {
+			foreach ($params as $listener) {
+				$this->_addListener($dispatcher, $name, $service_id, $listener[0], isset($listener[1]) ? $listener[1] : 0);
+			}
+		}
+	}
+
+	/**
+	 * @param Definition $dispatcher
+	 * @param string $name
 	 * @param string $service_id
 	 * @param string $action
 	 * @param integer $priority
 	 */
-	private function _addListener(Definition $event_dispatcher, $event_name, $service_id, $action, $priority = 0) {
-		$parameters = [$event_name, [$service_id, $action], $priority];
+	private function _addListener(Definition $dispatcher, $name, $service_id, $action, $priority = 0) {
+		$parameters = [$name, [$service_id, $action], $priority];
 
-		$event_dispatcher->addMethodCall('addListenerService', $parameters);
+		$dispatcher->addMethodCall('addListenerService', $parameters);
 	}
+
 }

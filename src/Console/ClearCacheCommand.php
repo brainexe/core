@@ -2,16 +2,15 @@
 
 namespace BrainExe\Core\Console;
 
-use BrainExe\Core\Core;
+use BrainExe\Core\DependencyInjection\Rebuild;
 use BrainExe\Core\EventDispatcher\Events\ClearCacheEvent;
 use BrainExe\Core\Traits\EventDispatcherTrait;
+use BrainExe\Core\Util\FileSystem;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\Finder\SplFileInfo;
 
 /**
  * @Command
@@ -19,6 +18,21 @@ use Symfony\Component\Finder\SplFileInfo;
 class ClearCacheCommand extends Command {
 
 	use EventDispatcherTrait;
+
+	/**
+	 * @var Finder
+	 */
+	private $finder;
+
+	/**
+	 * @var FileSystem
+	 */
+	private $filesystem;
+
+	/**
+	 * @var Rebuild
+	 */
+	private $rebuild;
 
 	/**
 	 * {@inheritdoc}
@@ -30,34 +44,41 @@ class ClearCacheCommand extends Command {
 	}
 
 	/**
+	 * @Inject({"@Finder", "@FileSystem", "@Core.Rebuild"})
+	 * @param Finder $finder
+	 * @param FileSystem $filesystem
+	 * @param Rebuild $rebuild
+	 */
+	public function __construct(Finder $finder, FileSystem $filesystem, Rebuild $rebuild) {
+		$this->finder = $finder;
+		$this->filesystem = $filesystem;
+		$this->rebuild = $rebuild;
+
+		parent::__construct();
+	}
+
+	/**
 	 * {@inheritdoc}
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output) {
-		$file_system = new Filesystem();
-
 		$output->write('Clear Cache...');
 
-		$finder = new Finder();
-		$finder
+		$files = $this->finder
 			->files()
-			->in(ROOT . '/cache')
+			->in(ROOT . 'cache')
 			->name('*.php')
 			->notName('assets.php');
 
-		foreach ($finder as $file) {
-			/** @var SplFileInfo $file */
-			unlink($file->getPathname());
-		}
+		$this->filesystem->remove($files);
+
 		$output->writeln('<info>done</info>');
 
 		$output->write('Rebuild DIC...');
-
-		Core::rebuildDIC();
-
+		$this->rebuild->rebuildDIC(true);
 		$output->writeln('<info>done</info>');
 
 		$output->write('Set permissions...');
-		$file_system->chmod([
+		$this->filesystem->chmod([
 			'cache/',
 			'cache/',
 			'logs/',
@@ -71,4 +92,4 @@ class ClearCacheCommand extends Command {
 		$this->dispatchEvent($event);
 	}
 
-} 
+}

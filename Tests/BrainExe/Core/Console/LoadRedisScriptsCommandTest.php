@@ -4,15 +4,13 @@ namespace Tests\BrainExe\Core\Console\LoadRedisScriptsCommand;
 
 use BrainExe\Core\Console\LoadRedisScriptsCommand;
 use BrainExe\Core\Redis\RedisScripts;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase;
 use Redis;
 use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
 
-/**
- * @Covers BrainExe\Core\Console\LoadRedisScriptsCommand
- */
 class LoadRedisScriptsCommandTest extends PHPUnit_Framework_TestCase {
 
 	/**
@@ -21,12 +19,12 @@ class LoadRedisScriptsCommandTest extends PHPUnit_Framework_TestCase {
 	private $_subject;
 
 	/**
-	 * @var RedisScripts|PHPUnit_Framework_MockObject_MockObject
+	 * @var RedisScripts|MockObject
 	 */
 	private $_mockRedisScripts;
 
 	/**
-	 * @var Redis|PHPUnit_Framework_MockObject_MockObject
+	 * @var Redis|MockObject
 	 */
 	private $_mockRedis;
 
@@ -43,7 +41,6 @@ class LoadRedisScriptsCommandTest extends PHPUnit_Framework_TestCase {
 		$application->add($this->_subject);
 
 		$commandTester = new CommandTester($this->_subject);
-
 		$scripts = [
 			$sha1_1 = 'hash_1' => $script_1 = 'script 1',
 			$sha1_2 = 'hash_2' => $script_2 = 'script 2',
@@ -90,15 +87,17 @@ class LoadRedisScriptsCommandTest extends PHPUnit_Framework_TestCase {
 			->method('getLastError')
 			->will($this->returnValue('error'));
 
-		$commandTester->execute([]);
+		$commandTester->execute([], ['verbosity' => OutputInterface::VERBOSITY_VERBOSE]);
 		$output = $commandTester->getDisplay();
 
 		$expected_result = "Load Redis Scrips...
+Script hash_1 was already loaded
+Loaded script hash_2 (script 2)
 Error: error
 script 3
-done\n";
+done in";
 
-		$this->assertEquals($expected_result, $output);
+		$this->assertStringStartsWith($expected_result, $output);
 	}
 
 }

@@ -6,6 +6,7 @@ use Symfony\Component\DependencyInjection\Container;
 
 /**
  * @todo prepare whitelist -> "lazy loader"
+ * @codeCoverageIgnore
  * @Service(public=false)
  */
 class LazyLoader {
@@ -31,4 +32,4 @@ class LazyLoader {
 		return $this->_container->get($service_id);
 	}
 
-} 
+}

@@ -12,6 +12,7 @@ use Symfony\Component\Finder\SplFileInfo;
 
 /**
  * @Command
+ * @codeCoverageIgnore
  */
 class DebugCommand extends AbstractCommand {
 
@@ -50,4 +51,4 @@ class DebugCommand extends AbstractCommand {
 		});
 	}
 
-} 
+}

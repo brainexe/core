@@ -3,6 +3,7 @@
 namespace Tests\BrainExe\Core\Authentication\DatabaseUserProvider;
 
 use BrainExe\Core\Authentication\DatabaseUserProvider;
+use BrainExe\Core\Authentication\PasswordHasher;
 use BrainExe\Core\Authentication\UserVO;
 use BrainExe\Core\Util\IdGenerator;
 use PHPUnit_Framework_MockObject_MockObject;
@@ -29,12 +30,17 @@ class DatabaseUserProviderTest extends PHPUnit_Framework_TestCase {
 	 */
 	private $_mockIdGenerator;
 
+	/**
+	 * @var PasswordHasher|PHPUnit_Framework_MockObject_MockObject
+	 */
+	private $_mockPasswordHasher;
 
 	public function setUp() {
 		$this->_mockRedis = $this->getMock(Redis::class, [], [], '', false);
 		$this->_mockIdGenerator = $this->getMock(IdGenerator::class, [], [], '', false);
+		$this->_mockPasswordHasher = $this->getMock(PasswordHasher::class, [], [], '', false);
 
-		$this->_subject = new DatabaseUserProvider();
+		$this->_subject = new DatabaseUserProvider($this->_mockPasswordHasher);
 		$this->_subject->setRedis($this->_mockRedis);
 		$this->_subject->setIdGenerator($this->_mockIdGenerator);
 	}
@@ -130,27 +136,32 @@ class DatabaseUserProviderTest extends PHPUnit_Framework_TestCase {
 
 	public function testGenerateHash() {
 		$password = 'password';
+		$hash     = 'hash';
 
-		$actual_result1 = $this->_subject->generateHash($password);
-		$actual_result2 = $this->_subject->generateHash($password);
+		$this->_mockPasswordHasher
+			->expects($this->once())
+			->method('generateHash')
+			->with($password)
+			->will($this->returnValue($hash));
 
-		$this->assertInternalType('string', $actual_result1);
-		$this->assertInternalType('string', $actual_result2);
+		$actual_result = $this->_subject->generateHash($password);
 
-		$this->assertNotEquals($actual_result1, $actual_result2);
+		$this->assertEquals($hash, $actual_result);
 	}
 
 	public function testVerifyHash() {
 		$password = 'password';
+		$hash     = 'hash';
 
-		$valid_hash = '$2y$10$lQfIxHU96v5QVjWdbHz13OWnKSRfNcEnrC.L1Fr.LDfLWeHGyQu.6';
-		$invalid_hash = '$2y$10$lQfIxHU96vsdfsdfdsfsfggsfs.6';
+		$this->_mockPasswordHasher
+			->expects($this->once())
+			->method('verifyHash')
+			->with($password, $hash)
+			->will($this->returnValue(true));
 
-		$actual_result = $this->_subject->verifyHash($password, $valid_hash);
+		$actual_result = $this->_subject->verifyHash($password, $hash);
+
 		$this->assertTrue($actual_result);
-
-		$actual_result = $this->_subject->verifyHash($password, $invalid_hash);
-		$this->assertFalse($actual_result);
 	}
 
 	public function testChangePassword() {
@@ -158,11 +169,18 @@ class DatabaseUserProviderTest extends PHPUnit_Framework_TestCase {
 		$user->id = $user_id = 42;
 
 		$new_password = 'new_password';
+		$hash         = 'hash';
+
+		$this->_mockPasswordHasher
+			->expects($this->once())
+			->method('generateHash')
+			->with($new_password)
+			->will($this->returnValue($hash));
 
 		$this->_mockRedis
 			->expects($this->once())
 			->method('hSet')
-			->with("user:$user_id", 'password', $this->isType('string'));
+			->with("user:$user_id", 'password', $hash);
 
 		$this->_subject->changePassword($user, $new_password);
 	}

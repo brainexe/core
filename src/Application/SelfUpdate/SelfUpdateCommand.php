@@ -11,6 +11,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
  * @Command
  */
 class SelfUpdateCommand extends AbstractCommand {
+
 	/**
 	 * @var SelfUpdate
 	 */

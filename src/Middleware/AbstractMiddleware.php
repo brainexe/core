@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Route;
 
-class AbstractMiddleware implements MiddlewareInterface {
+abstract class AbstractMiddleware implements MiddlewareInterface {
 
 	/**
 	 * {@inheritdoc}

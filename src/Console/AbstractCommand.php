@@ -15,7 +15,7 @@ abstract class AbstractCommand extends Command {
 	 */
 	protected function _checkProcess(OutputInterface $output, Process $process) {
 		if (!$process->isSuccessful()) {
-			$error = $process->getErrorOutput();
+			$error   = $process->getErrorOutput();
 			$command = $process->getCommandLine();
 
 			$output->writeln(sprintf('<error>Error in command: %s</error>', $command));
@@ -27,7 +27,7 @@ abstract class AbstractCommand extends Command {
 	 * {@inheritdoc}
 	 */
 	public function execute(InputInterface $input, OutputInterface $output) {
-		$output->writeln(sprintf('<comment>%s</comment>...', $this->getDescription()));
+		$output->write(sprintf('<comment>%s</comment>...', $this->getDescription()));
 
 		if (OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity()) {
 			$output->writeln('');
@@ -50,4 +50,4 @@ abstract class AbstractCommand extends Command {
 	 * @return mixed
 	 */
 	abstract protected function doExecute(InputInterface $input, OutputInterface $output);
-} 
+}

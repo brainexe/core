@@ -4,7 +4,6 @@ namespace BrainExe\Core;
 
 use BrainExe\Core\DependencyInjection\Rebuild;
 use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 if (!defined('CORE_ROOT')) {
 	define('CORE_ROOT', __DIR__);
@@ -40,7 +39,8 @@ class Core {
 			$class = $matches[0];
 			$dic   = new $class();
 		} else {
-			$dic = self::rebuildDIC();
+			$rebuild = new Rebuild();
+			$dic = $rebuild->rebuildDIC(true);
 		}
 
 		date_default_timezone_set($dic->getParameter('timezone'));
@@ -51,26 +51,4 @@ class Core {
 		return $dic;
 	}
 
-	/**
-	 * @param string $locale
-	 */
-	public static function setLocale($locale) {
-		putenv("LANG=$locale.UTF-8");
-		setlocale(LC_MESSAGES, "$locale.UTF-8");
-
-		$domain = 'messages';
-		bindtextdomain($domain, ROOT . "/lang/");
-		bind_textdomain_codeset($domain, 'UTF-8');
-		textdomain($domain);
-	}
-
-	/**
-	 * @param boolean $boot
-	 * @return ContainerBuilder
-	 */
-	public static function rebuildDIC($boot = true) {
-		$rebuild = new Rebuild();
-
-		return $rebuild->rebuildDIC($boot);
-	}
-} 
+}

@@ -29,8 +29,8 @@ trait TimeTrait {
 	/**
 	 * @return int
 	 */
-	protected function now() {
+	public function now() {
 		return $this->_time->now();
 	}
 
-} 
+}

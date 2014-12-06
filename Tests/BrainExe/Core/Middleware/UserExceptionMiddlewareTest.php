@@ -2,11 +2,16 @@
 
 namespace Tests\BrainExe\Core\Middleware\UserExceptionMiddleware;
 
+use BrainExe\Core\Application\ErrorView;
+use BrainExe\Core\Application\UserException;
 use BrainExe\Core\DependencyInjection\ObjectFinder;
 use BrainExe\Core\Middleware\UserExceptionMiddleware;
-use PHPUnit_Framework_MockObject_MockObject;
+use BrainExe\Tests\Core\Application\ErrorViewTest;
+use Exception;
+use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 /**
@@ -20,7 +25,7 @@ class UserExceptionMiddlewareTest extends PHPUnit_Framework_TestCase {
 	private $_subject;
 
 	/**
-	 * @var ObjectFinder|PHPUnit_Framework_MockObject_MockObject
+	 * @var ObjectFinder|MockObject
 	 */
 	private $_mockObjectFinder;
 
@@ -31,11 +36,14 @@ class UserExceptionMiddlewareTest extends PHPUnit_Framework_TestCase {
 		$this->_subject->setObjectFinder($this->_mockObjectFinder);
 	}
 
-	public function testProcessResourceNotFoundException() {
-		/** @var Request|PHPUnit_Framework_MockObject_MockObject $request */
+	/**
+	 * @dataProvider provideExceptionsForAjax
+	 * @param Exception $exception
+	 * @param int $expected_status_code
+	 */
+	public function testProcessExceptionWithAjax($exception, $expected_status_code) {
+		/** @var Request|MockObject $request */
 		$request = $this->getMock(Request::class, ['isXmlHttpRequest']);
-
-		$exception = new ResourceNotFoundException();
 
 		$request
 			->expects($this->once())
@@ -44,8 +52,48 @@ class UserExceptionMiddlewareTest extends PHPUnit_Framework_TestCase {
 
 		$actual_result = $this->_subject->processException($request, $exception);
 
-		$this->assertEquals(500, $actual_result->getStatusCode());
+		$this->assertEquals($expected_status_code, $actual_result->getStatusCode());
 		$this->assertTrue($actual_result->headers->has('X-Flash'));
+	}
+
+	public function testProcessExceptionErrorView() {
+		/** @var Request|MockObject $request */
+		$request = $this->getMock(Request::class, ['isXmlHttpRequest']);
+		/** @var ErrorView|MockObject $error_view */
+		$error_view = $this->getMock(ErrorView::class, [], [], '', false);
+
+		$exception = new ResourceNotFoundException();
+		$response_string = 'response_string';
+
+		$request
+			->expects($this->once())
+			->method('isXmlHttpRequest')
+			->willReturn(false);
+
+		$this->_mockObjectFinder
+			->expects($this->once())
+			->method('getService')
+			->with('ErrorView')
+			->willReturn($error_view);
+
+		$error_view
+			->expects($this->once())
+			->method('renderException')
+			->with($request, $this->isInstanceOf(UserException::class))
+			->willReturn($response_string);
+
+		$actual_result = $this->_subject->processException($request, $exception);
+
+		$this->assertEquals(404, $actual_result->getStatusCode());
+		$this->assertEquals($response_string, $actual_result->getContent());
+	}
+
+	public function provideExceptionsForAjax() {
+		return [
+			[new ResourceNotFoundException(), 404],
+			[new MethodNotAllowedException(['POST']), 405],
+			[new Exception('test'), 500],
+		];
 	}
 
 }

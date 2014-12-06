@@ -12,4 +12,4 @@ abstract class AbstractVO {
 			$this->$key = $value;
 		}
 	}
-} 
+}

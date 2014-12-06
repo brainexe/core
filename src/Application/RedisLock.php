@@ -3,7 +3,6 @@
 namespace BrainExe\Core\Application;
 
 use BrainExe\Core\Traits\RedisTrait;
-use BrainExe\Core\Traits\TimeTrait;
 
 /**
  * @Service(public=false)
@@ -36,4 +35,4 @@ class RedisLock {
 	public function unlock($name) {
 		$this->getRedis()->DEL(self::REDIS_PREFIX . $name);
 	}
-} 
+}

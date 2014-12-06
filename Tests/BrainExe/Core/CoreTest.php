@@ -14,9 +14,4 @@ class CoreTest extends PHPUnit_Framework_TestCase {
 		$this->assertInstanceOf(Container::class, $dic);
 	}
 
-	public function testRebuildContainer() {
-		$dic = Core::rebuildDIC(false);
-
-		$this->assertInstanceOf(Container::class, $dic);
-	}
-} 
+}

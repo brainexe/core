@@ -21,7 +21,7 @@ class IdGenerator {
 	 * @return string
 	 */
 	public function generateRandomId($length = self::ID_LENGTH) {
-		$id = md5(microtime() . mt_rand());
+		$id = md5(microtime() . mt_rand()) . mt_rand();
 
 		return substr(base_convert($id, 10, 36), 0, $length);
 	}

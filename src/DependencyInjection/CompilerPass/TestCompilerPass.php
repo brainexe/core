@@ -22,7 +22,7 @@ class TestCompilerPass implements CompilerPassInterface {
 	 * {@inheritdoc}
 	 */
 	public function process(ContainerBuilder $container) {
-		if (!CORE_STANDALONE) {
+		if (!$container->getParameter('core_standalone')) {
 			return;
 		}
 
@@ -30,7 +30,7 @@ class TestCompilerPass implements CompilerPassInterface {
 			$definition->setPublic(true);
 		}
 
+		// @todo still needed here?
 		$container->set(MessageQueueTestService::ID, new MessageQueueTestService());
-
 	}
 }

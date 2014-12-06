@@ -21,7 +21,7 @@ class LoggerCompilerPass implements CompilerPassInterface {
 	public function process(ContainerBuilder $container) {
 		$logger = $container->getDefinition('monolog.Logger');
 
-		if (CORE_STANDALONE) {
+		if ($container->getParameter('core_standalone')) {
 			// we have to remove all handlers...
 			$logger->removeMethodCall('pushHandler');
 			$logger->removeMethodCall('pushHandler');

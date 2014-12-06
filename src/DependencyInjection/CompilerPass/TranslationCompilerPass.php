@@ -9,6 +9,7 @@ use Symfony\Component\Finder\SplFileInfo;
 
 /**
  * @CompilerPass
+ * @codeCoverageIgnore
  */
 class TranslationCompilerPass implements CompilerPassInterface {
 

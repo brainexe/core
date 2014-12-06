@@ -2,7 +2,7 @@
 
 namespace BrainExe\Core\Console;
 
-use BrainExe\Core\Core;
+use BrainExe\Core\DependencyInjection\Rebuild;
 use BrainExe\Core\Traits\ConfigTrait;
 use PHPUnit_Framework_MockObject_MockObject;
 use PHPUnit_Framework_TestCase;
@@ -29,6 +29,7 @@ class TestData {
 
 /**
  * @Command
+ * @codeCoverageIgnore
  */
 class TestCreateCommand extends Command {
 
@@ -41,6 +42,11 @@ class TestCreateCommand extends Command {
 	private $_container_builder = null;
 
 	/**
+	 * @var Rebuild
+	 */
+	private $rebuild;
+
+	/**
 	 * {@inheritdoc}
 	 */
 	protected function configure() {
@@ -48,6 +54,16 @@ class TestCreateCommand extends Command {
 			->setName('test:create')
 			->addArgument('service', InputArgument::REQUIRED, 'service id, e.g. IndexController')
 			->addOption('dry', 'd', InputOption::VALUE_NONE, 'only display the generated test');
+	}
+
+	/**
+	 * @inject("@Core.Rebuild")
+	 * @param Rebuild $rebuild
+	 */
+	public function __construct(Rebuild $rebuild) {
+		$this->rebuild = $rebuild;
+
+		parent::__construct();
 	}
 
 	/**
@@ -68,7 +84,7 @@ class TestCreateCommand extends Command {
 		$test_data = new TestData();
 
 		$test_data->use_statements[] = PHPUnit_Framework_TestCase::class;
-		$test_data->use_statements[] = PHPUnit_Framework_MockObject_MockObject::class;
+		$test_data->use_statements['MockObject'] = PHPUnit_Framework_MockObject_MockObject::class;
 		$test_data->use_statements[] = $service_namespace;
 
 		$blacklisted_methods = $this->_getBlacklistedMethods($service_reflection);
@@ -106,14 +122,14 @@ class TestCreateCommand extends Command {
 
 					$formatted_parameter = var_export($parameter_value, true);
 
-					$test_data->setter_calls[] = sprintf("\t\t\$this->_subject->%s(%s);", $setter_name, $formatted_parameter);
+					$test_data->setter_calls[] = sprintf("\t\t\$this->subject->%s(%s);", $setter_name, $formatted_parameter);
 
 				} else {
 					// add setter for model mock
 					$reference_service = $this->_getDefinition($reference_service_id);
 					$mock_name         = $this->_getShortClassName($reference_service->getClass());
 
-					$test_data->setter_calls[]    = sprintf("\t\t\$this->_subject->%s(\$this->_mock%s);", $setter_name,
+					$test_data->setter_calls[]    = sprintf("\t\t\$this->subject->%s(\$this->mock%s);", $setter_name,
 															$mock_name);
 					$this->_addMock($reference_service, $test_data, $mock_name);
 				}
@@ -121,7 +137,7 @@ class TestCreateCommand extends Command {
 		}
 
 		$test_data->use_statements = array_map(function($class_name) {
-			return sprintf('use %s;', $class_name);
+			return sprintf('use %s;', $class_name); // todo alias
 		}, array_unique($test_data->use_statements));
 
 		$test_template = file_get_contents(CORE_ROOT . '/../scripts/phpunit_template.php.tpl');
@@ -148,7 +164,7 @@ class TestCreateCommand extends Command {
 				$output->writeln(sprintf("Test for '<info>%s</info>' already exist", $service_id));
 				return;
 			}
-			
+
 			/** @var DialogHelper $dialog */
 			$dialog = $this->getHelper('dialog');
 
@@ -202,7 +218,7 @@ class TestCreateCommand extends Command {
 	 * @return string
 	 */
 	private function _getTestNamespace($service_namespace, $service_class_name) {
-		return "Tests\\" . $service_namespace;
+		return "Tests\\" . $service_namespace; //todo without class name
 	}
 
 	/**
@@ -241,9 +257,9 @@ class TestCreateCommand extends Command {
 
 		$has_return_value = strpos($method->getDocComment(), '@return') !== false;
 		if ($has_return_value) {
-			$test_code .= sprintf("\t\t\$actual_result = \$this->_subject->%s(%s);\n", $method_name, $parameter_string);
+			$test_code .= sprintf("\t\t\$actual_result = \$this->subject->%s(%s);\n", $method_name, $parameter_string);
 		} else {
-			$test_code .= sprintf("\t\t\$this->_subject->%s(%s);\n", $method_name, $parameter_string);
+			$test_code .= sprintf("\t\t\$this->subject->%s(%s);\n", $method_name, $parameter_string);
 		}
 
 		$test_code .= "\t}\n";
@@ -256,7 +272,7 @@ class TestCreateCommand extends Command {
 			return;
 		}
 
-		$this->_container_builder = Core::rebuildDIC(false);
+		$this->_container_builder = $this->rebuild->rebuildDIC(false);
 	}
 
 	/**
@@ -299,8 +315,8 @@ class TestCreateCommand extends Command {
 	 */
 	protected function _addMock(Definition $reference_service, TestData $test_data, $mock_name) {
 		$test_data->use_statements[]  = $reference_service->getClass();
-		$test_data->local_mocks[]     = sprintf("\t\t\$this->_mock%s = \$this->getMock(%s::class, [], [], '', false);", $mock_name,	$mock_name);
-		$test_data->mock_properties[] = sprintf("\t/**\n\t * @var %s|PHPUnit_Framework_MockObject_MockObject\n\t */\n\tprivate \$_mock%s;\n", $mock_name, $mock_name);
+		$test_data->local_mocks[]     = sprintf("\t\t\$this->mock%s = \$this->getMock(%s::class, [], [], '', false);", $mock_name,	$mock_name);
+		$test_data->mock_properties[] = sprintf("\t/**\n\t * @var %s|MockObject\n\t */\n\tprivate \$mock%s;\n", $mock_name, $mock_name);
 	}
 
 	/**
@@ -321,7 +337,7 @@ class TestCreateCommand extends Command {
 				continue;
 			}
 
-			$test_data->constructor_arguments[] = sprintf('$this->_mock%s', $mock_name);
+			$test_data->constructor_arguments[] = sprintf('$this->mock%s', $mock_name);
 
 			$this->_addMock($definition, $test_data, $mock_name);
 		}

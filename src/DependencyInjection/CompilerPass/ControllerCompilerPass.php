@@ -27,12 +27,12 @@ class ControllerCompilerPass implements CompilerPassInterface {
 
 		$controllers = $container->findTaggedServiceIds(self::ROUTE_TAG);
 
-		foreach ($controllers as $id => $routes) {
-			foreach ($routes as $route_raw) {
+		foreach ($controllers as $id => $tag) {
+			foreach ($tag as $route_raw) {
 				/** @var RouteAnnotation $route */
 				$route = $route_raw[0];
 
-				$name = $route->getName() ?: str_replace('/', '.', trim($route->getPath(), './'));
+				$name = $route->getName() ?: md5($route->getPath());
 
 				$router_definition = $this->_createDefinition($route);
 				$route_collector->addMethodCall('add', [$name, $router_definition]);
@@ -70,8 +70,9 @@ class ControllerCompilerPass implements CompilerPassInterface {
 
 	/**
 	 * @param ContainerBuilder $container
+	 * @codeCoverageIgnore
 	 */
-	private function _dumpMatcher(ContainerBuilder $container) {
+	protected function _dumpMatcher(ContainerBuilder $container) {
 		/** @var RouteCollection $router_collection */
 		$router_collection = $container->get('RouteCollection');
 

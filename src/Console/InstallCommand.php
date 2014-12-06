@@ -16,7 +16,9 @@ class InstallCommand extends Command {
 	 * {@inheritdoc}
 	 */
 	protected function configure() {
-		$this->setName('app:install')->setDescription('Install application');
+		$this
+			->setName('app:install')
+			->setDescription('Install application');
 	}
 
 	/**
@@ -27,4 +29,4 @@ class InstallCommand extends Command {
 		$this->getApplication()->run($input, $output);
 	}
 
-} 
+}

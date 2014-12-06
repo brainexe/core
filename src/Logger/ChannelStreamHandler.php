@@ -5,8 +5,9 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 
 class ChannelStreamHandler extends StreamHandler {
+
 	/**
-	 * @var null
+	 * @var string
 	 */
 	private $channel;
 
@@ -18,6 +19,14 @@ class ChannelStreamHandler extends StreamHandler {
 	 */
 	public function __construct($stream, $level = Logger::DEBUG, $channel = null, $bubble = true) {
 		parent::__construct($stream, $level, $bubble);
+
+		$this->channel = $channel;
+	}
+
+	/**
+	 * @param $channel
+	 */
+	public function setChannel($channel) {
 		$this->channel = $channel;
 	}
 
@@ -37,14 +46,16 @@ class ChannelStreamHandler extends StreamHandler {
 			return false;
 		}
 
-		return $this->channel == $record['context']['channel'];
+		return $this->channel === $record['context']['channel'];
 	}
 
     /**
+	 * @codeCoverageIgnore
      * {@inheritdoc}
      */
     protected function write(array $record) {
         unset($record['context']['channel']);
+
         parent::write($record);
     }
 

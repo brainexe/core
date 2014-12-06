@@ -17,14 +17,21 @@ class ServerRunCommand extends Command {
 	/**
 	 * @var string
 	 */
-	private $_value_address;
+	private $serverAddress;
+	/**
+	 * @var ProcessBuilder
+	 */
+	private $processBuilder;
 
 	/**
-	 * @Inject("%server.address%")
+	 * @Inject({"@ProcessBuilder", "%server.address%"})
+	 * @param ProcessBuilder $processBuilder
 	 * @param string $value_address
 	 */
-	public function __construct($value_address) {
-		$this->_value_address = $value_address;
+	public function __construct(ProcessBuilder $processBuilder, $value_address) {
+		$this->serverAddress = $value_address;
+		$this->processBuilder = $processBuilder;
+
 		parent::__construct(null);
 	}
 
@@ -39,18 +46,18 @@ class ServerRunCommand extends Command {
 			->setDescription('Runs PHP built-in web server');;
 	}
 
-	/**
-	 * {@inheritdoc}
-	 */
 	protected function execute(InputInterface $input, OutputInterface $output) {
-		$address = $input->getArgument('address') ?: $this->_value_address;
+		$address = $input->getArgument('address') ?: $this->serverAddress;
 
 		$output->writeln(sprintf("Server running on <info>%s</info>\n", $address));
 
-		$builder = new ProcessBuilder([PHP_BINARY, '-S', $address]);
-		$builder->setWorkingDirectory(ROOT . '/web/');
-		$builder->setTimeout(null);
-		$builder->getProcess()->run(function ($type, $buffer) use ($output, $input) {
+		$process = $this->processBuilder
+			->setArguments([PHP_BINARY, '-S', $address])
+			->setWorkingDirectory(ROOT . 'web/')
+			->setTimeout(null)
+			->getProcess();
+
+		$process->run(function ($type, $buffer) use ($output, $input) {
 			unset($type);
 			if (!$input->getOption('quiet')) {
 				$output->write($buffer);

@@ -12,11 +12,14 @@ use Symfony\Component\DependencyInjection\Dumper\XmlDumper;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
+/**
+ * @service("Core.Rebuild", public=false)
+ */
 class Rebuild {
 
 	/**
 	 * @param bool $boot
-	 * @return Container
+	 * @return Container|ContainerBuilder
 	 */
 	public function rebuildDIC($boot = true) {
 		$container_builder = new ContainerBuilder();

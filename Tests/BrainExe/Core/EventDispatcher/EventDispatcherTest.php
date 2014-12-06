@@ -93,7 +93,6 @@ class EventDispatcherTest extends PHPUnit_Framework_TestCase {
 			->with(DelayedEvent::DELAYED, $wrapped_event);
 
 		$this->_subject->dispatchInBackground($event, $timestamp);
-
 	}
 
 }

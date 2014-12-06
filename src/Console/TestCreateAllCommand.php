@@ -2,7 +2,8 @@
 
 namespace BrainExe\Core\Console;
 
-use BrainExe\Core\Core;
+use BrainExe\Core\DependencyInjection\Rebuild;
+use Exception;
 use ReflectionClass;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -14,6 +15,7 @@ use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 
 /**
  * @Command
+ * @codeCoverageIgnore
  */
 class TestCreateAllCommand extends Command {
 
@@ -24,12 +26,27 @@ class TestCreateAllCommand extends Command {
 	private $_container_builder = null;
 
 	/**
+	 * @var Rebuild
+	 */
+	private $rebuild;
+
+	/**
 	 * {@inheritdoc}
 	 */
 	protected function configure() {
 		$this
 			->setName('test:create:all')
-			->addArgument('root', InputArgument::OPTIONAL, 'source root directory (without src)', ROOT);
+			->addArgument('root', InputArgument::OPTIONAL, 'source root directory (default: src)', 'src');
+	}
+
+	/**
+	 * @inject("@Core.Rebuild")
+	 * @param Rebuild $rebuild
+	 */
+	public function __construct(Rebuild $rebuild) {
+		$this->rebuild = $rebuild;
+
+		parent::__construct();
 	}
 
 	/**
@@ -71,8 +88,8 @@ class TestCreateAllCommand extends Command {
 	/**
 	 * @param InputInterface $input
 	 * @param OutputInterface $output
-	 * @param $service_id
-	 * @throws \Exception
+	 * @param string $service_id
+	 * @throws Exception
 	 */
 	protected function _handleService(InputInterface $input, OutputInterface $output, $service_id) {
 		$service_object     = $this->_getService($service_id);
@@ -80,7 +97,8 @@ class TestCreateAllCommand extends Command {
 		$service_reflection = new ReflectionClass($service_object);
 		$service_namespace  = $service_reflection->getName();
 
-		$src = $input->getArgument('root') . 'src/';
+		$src = ROOT . $input->getArgument('root');
+		echo $src."\n";
 		if (strpos($service_reflection->getFileName(), $src) !== 0) {
 			return;
 		}
@@ -97,7 +115,7 @@ class TestCreateAllCommand extends Command {
 	}
 
 	private function _initContainerBuilder() {
-		$this->_container_builder = Core::rebuildDIC(false);
+		$this->_container_builder = $this->rebuild->rebuildDIC(false);
 	}
 
 }
