@@ -30,9 +30,23 @@ class TestCompilerPassTest extends PHPUnit_Framework_TestCase {
 		$this->_subject = new TestCompilerPass();
 	}
 
+	public function testProcessWithoutStandalone() {
+		$this->_mockContainer
+			->expects($this->once())
+			->method('getParameter')
+			->willReturn(false);
+
+		$this->_subject->process($this->_mockContainer);
+	}
+
 	public function testProcess() {
 		$definition_1 = $this->getMock(Definition::class);
 		$definition_2 = $this->getMock(Definition::class);
+
+		$this->_mockContainer
+			->expects($this->once())
+			->method('getParameter')
+			->willReturn(true);
 
 		$this->_mockContainer
 			->expects($this->once())
@@ -53,7 +67,7 @@ class TestCompilerPassTest extends PHPUnit_Framework_TestCase {
 			->expects($this->once())
 			->method('set')
 			->with(MessageQueueTestService::ID, $this->isInstanceOf(MessageQueueTestService::class));
-		
+
 		$this->_subject->process($this->_mockContainer);
 	}
 

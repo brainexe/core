@@ -98,7 +98,6 @@ class TestCreateAllCommand extends Command {
 		$service_namespace  = $service_reflection->getName();
 
 		$src = ROOT . $input->getArgument('root');
-		echo $src."\n";
 		if (strpos($service_reflection->getFileName(), $src) !== 0) {
 			return;
 		}

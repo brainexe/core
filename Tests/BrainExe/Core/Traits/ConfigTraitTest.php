@@ -3,7 +3,6 @@
 use BrainExe\Core\Traits\ConfigTrait;
 use BrainExe\Core\Util\Config;
 use Symfony\Component\DependencyInjection\Container;
-use PHPUnit_Framework_MockObject_MockObject as MockObject;
 
 class ConfigTest {
 	use ConfigTrait;

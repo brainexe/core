@@ -2,10 +2,8 @@
 
 namespace Tests\BrainExe\Core\Util\AbstractVO;
 
-use BrainExe\Core\EventDispatcher\AbstractEvent;
-use PHPUnit_Framework_TestCase;
-use PHPUnit_Framework_MockObject_MockObject;
 use BrainExe\Core\Util\AbstractVO;
+use PHPUnit_Framework_TestCase;
 
 class TestVO extends AbstractVO {
 	public $test_1;

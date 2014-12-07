@@ -1,8 +1,6 @@
 <?php
 
 use BrainExe\Core\Traits\RedisCacheTrait;
-use BrainExe\Core\Traits\TimeTrait;
-use BrainExe\Core\Util\Time;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 
 class RedisCacheTraitTest extends PHPUnit_Framework_TestCase {

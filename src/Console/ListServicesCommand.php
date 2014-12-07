@@ -5,6 +5,7 @@ namespace BrainExe\Core\Console;
 use BrainExe\Core\DependencyInjection\Rebuild;
 use BrainExe\Core\Traits\EventDispatcherTrait;
 use Symfony\Component\Console\Helper\Table;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -24,7 +25,9 @@ class ListServicesCommand extends AbstractCommand {
 	 * {@inheritdoc}
 	 */
 	protected function configure() {
-		$this->setName('debug:list:services')->setDescription('List all services');
+		$this->setName('debug:list:services')
+			->setDescription('List all services')
+			->addArgument('visibility', InputArgument::OPTIONAL, 'public or private');
 	}
 
 	/**
@@ -44,10 +47,13 @@ class ListServicesCommand extends AbstractCommand {
 		$dic = $this->rebuild->rebuildDIC(false);
 
 		$table = new Table($output);
-		$table->setHeaders(['service-id', 'public']);
+		$table->setHeaders(['service-id', 'visibility']);
 
 		$ids = $dic->getServiceIds();
+
 		sort($ids);
+
+		$visibility = $input->getArgument('visibility');
 
 		foreach ($ids as $id) {
 			if (!$dic->hasDefinition($id)) {
@@ -55,9 +61,19 @@ class ListServicesCommand extends AbstractCommand {
 			}
 			$definition = $dic->getDefinition($id);
 
+			$is_public = $definition->isPublic();
+
+			if ($visibility) {
+				if ($visibility === 'public' && !$is_public) {
+					continue;
+				} elseif ($visibility === 'private' && $is_public) {
+					continue;
+				}
+			}
+
 			$table->addRow([
 				$id,
-				$definition->isPublic() ? '1' : '0'
+				$is_public ? 'public' : 'private'
 			]);
 		}
 

@@ -2,9 +2,8 @@
 
 namespace Tests\BrainExe\Core\Util\QRCode;
 
-use PHPUnit_Framework_TestCase;
-use PHPUnit_Framework_MockObject_MockObject;
 use BrainExe\Core\Util\QRCode;
+use PHPUnit_Framework_TestCase;
 
 /**
  * @Covers BrainExe\Core\Util\QRCode

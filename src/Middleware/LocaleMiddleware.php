@@ -3,7 +3,6 @@
 namespace BrainExe\Core\Middleware;
 
 use BrainExe\Core\Application\Locale;
-use BrainExe\Core\Core;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Route;
 

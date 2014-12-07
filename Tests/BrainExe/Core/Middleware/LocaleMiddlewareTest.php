@@ -7,6 +7,7 @@ use BrainExe\Core\Middleware\LocaleMiddleware;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\Routing\Route;
@@ -19,7 +20,7 @@ class LocaleMiddlewareTest extends PHPUnit_Framework_TestCase {
 	/**
 	 * @var LocaleMiddleware
 	 */
-	private $_subject;
+	private $subject;
 
 	/**
 	 * @var Locale|MockObject
@@ -29,7 +30,7 @@ class LocaleMiddlewareTest extends PHPUnit_Framework_TestCase {
 	public function setUp() {
 		$this->mockLocale = $this->getMock(Locale::class);
 
-		$this->_subject = new LocaleMiddleware($this->mockLocale);
+		$this->subject = new LocaleMiddleware($this->mockLocale);
 	}
 
 	public function testProcessRequestWithLocaleInQuery() {
@@ -51,7 +52,7 @@ class LocaleMiddlewareTest extends PHPUnit_Framework_TestCase {
 			->method('getLocales')
 			->willReturn(['en_EN', 'de_DE']);
 
-		$this->_subject->processRequest($request, $route, $route_name);
+		$this->subject->processRequest($request, $route, $route_name);
 	}
 	public function testProcessRequestWithInvalueLocaleInQuery() {
 		$request    = new Request();
@@ -72,7 +73,7 @@ class LocaleMiddlewareTest extends PHPUnit_Framework_TestCase {
 			->method('getLocales')
 			->willReturn(['en_EN', 'de_DE']);
 
-		$this->_subject->processRequest($request, $route, $route_name);
+		$this->subject->processRequest($request, $route, $route_name);
 	}
 
 	public function testProcessRequestWithoutLocaleInQuery() {
@@ -83,7 +84,15 @@ class LocaleMiddlewareTest extends PHPUnit_Framework_TestCase {
 
 		$request->setSession($session);
 
-		$this->_subject->processRequest($request, $route, $route_name);
+		$this->subject->processRequest($request, $route, $route_name);
 	}
 
+	public function testProcessResponse() {
+		$request   = new Request();
+		$response  = new Response();
+
+		$this->subject->processResponse($request, $response);
+
+		$this->assertEquals('', $response->getContent());
+	}
 }

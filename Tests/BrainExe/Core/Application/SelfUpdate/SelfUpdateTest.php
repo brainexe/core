@@ -18,41 +18,41 @@ class SelfUpdateTest extends PHPUnit_Framework_TestCase {
 	/**
 	 * @var SelfUpdate
 	 */
-	private $_subject;
+	private $subject;
 
 	/**
 	 * @var ProcessBuilder|PHPUnit_Framework_MockObject_MockObject
 	 */
-	private $_mockProcessBuilder;
+	private $mockProcessBuilder;
 
 	/**
 	 * @var EventDispatcher|PHPUnit_Framework_MockObject_MockObject
 	 */
-	private $_mockEventDispatcher;
+	private $mockEventDispatcher;
 
 	public function setUp() {
-		$this->_mockProcessBuilder = $this->getMock(ProcessBuilder::class, [], [], '', false);
-		$this->_mockEventDispatcher = $this->getMock(EventDispatcher::class, [], [], '', false);
+		$this->mockProcessBuilder = $this->getMock(ProcessBuilder::class, [], [], '', false);
+		$this->mockEventDispatcher = $this->getMock(EventDispatcher::class, [], [], '', false);
 
-		$this->_subject = new SelfUpdate($this->_mockProcessBuilder);
-		$this->_subject->setEventDispatcher($this->_mockEventDispatcher);
+		$this->subject = new SelfUpdate($this->mockProcessBuilder);
+		$this->subject->setEventDispatcher($this->mockEventDispatcher);
 	}
 
 	public function testStartUpdate() {
 		$process = $this->getMock(Process::class, [], [], '', false);
 
-		$this->_mockProcessBuilder
+		$this->mockProcessBuilder
 			->expects($this->once())
 			->method('setArguments')
-			->will($this->returnValue($this->_mockProcessBuilder));
+			->will($this->returnValue($this->mockProcessBuilder));
 
-		$this->_mockProcessBuilder
+		$this->mockProcessBuilder
 			->expects($this->once())
 			->method('setTimeout')
 			->with(0)
-			->will($this->returnValue($this->_mockProcessBuilder));
+			->will($this->returnValue($this->mockProcessBuilder));
 
-		$this->_mockProcessBuilder
+		$this->mockProcessBuilder
 			->expects($this->once())
 			->method('getProcess')
 			->will($this->returnValue($process));
@@ -68,12 +68,50 @@ class SelfUpdateTest extends PHPUnit_Framework_TestCase {
 
 		$event = new SelfUpdateEvent(SelfUpdateEvent::DONE);
 
-		$this->_mockEventDispatcher
+		$this->mockEventDispatcher
 			->expects($this->once())
 			->method('dispatchEvent')
 			->with($event);
 
-		$this->_subject->startUpdate();
+		$this->subject->startUpdate();
+	}
+
+	public function testStartUpdateWithError() {
+		$process = $this->getMock(Process::class, [], [], '', false);
+
+		$this->mockProcessBuilder
+			->expects($this->once())
+			->method('setArguments')
+			->will($this->returnValue($this->mockProcessBuilder));
+
+		$this->mockProcessBuilder
+			->expects($this->once())
+			->method('setTimeout')
+			->with(0)
+			->will($this->returnValue($this->mockProcessBuilder));
+
+		$this->mockProcessBuilder
+			->expects($this->once())
+			->method('getProcess')
+			->will($this->returnValue($process));
+
+		$process
+			->expects($this->once())
+			->method('run');
+
+		$process
+			->expects($this->once())
+			->method('isSuccessful')
+			->will($this->returnValue(false));
+
+		$event = new SelfUpdateEvent(SelfUpdateEvent::ERROR);
+
+		$this->mockEventDispatcher
+			->expects($this->once())
+			->method('dispatchEvent')
+			->with($event);
+
+		$this->subject->startUpdate();
 	}
 
 }

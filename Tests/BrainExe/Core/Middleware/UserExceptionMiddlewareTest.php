@@ -6,13 +6,13 @@ use BrainExe\Core\Application\ErrorView;
 use BrainExe\Core\Application\UserException;
 use BrainExe\Core\DependencyInjection\ObjectFinder;
 use BrainExe\Core\Middleware\UserExceptionMiddleware;
-use BrainExe\Tests\Core\Application\ErrorViewTest;
 use Exception;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
+use Symfony\Component\Routing\Route;
 
 /**
  * @Covers BrainExe\Core\Middleware\UserExceptionMiddleware
@@ -86,6 +86,17 @@ class UserExceptionMiddlewareTest extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(404, $actual_result->getStatusCode());
 		$this->assertEquals($response_string, $actual_result->getContent());
+	}
+
+	public function testProcessRequest() {
+		/** @var Route|MockObject $route */
+		$route      = $this->getMock(Route::class, [], [], '', false);
+		$request    = new Request();
+		$route_name = 'route';
+
+		$actual_result = $this->_subject->processRequest($request, $route, $route_name);
+
+		$this->assertNull($actual_result);
 	}
 
 	public function provideExceptionsForAjax() {

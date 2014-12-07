@@ -6,6 +6,7 @@ use BrainExe\Core\Authentication\AnonymusUserVO;
 use BrainExe\Core\Authentication\DatabaseUserProvider;
 use BrainExe\Core\Authentication\UserVO;
 use BrainExe\Core\Middleware\AuthenticationMiddleware;
+use Exception;
 use PHPUnit_Framework_MockObject_MockObject;
 use PHPUnit_Framework_TestCase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -70,7 +71,7 @@ class AuthenticationMiddlewareTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($user, $request->attributes->get('user'));
 	}
 
-	public function testProcessRequestForAuthenticateRoutes() {
+	public function testProcessRequestForGuestRoutes() {
 		$this->_subject = new AuthenticationMiddleware(false, $this->_mockDatabaseUserProvider);
 
 		$user_id = 42;
@@ -83,7 +84,8 @@ class AuthenticationMiddlewareTest extends PHPUnit_Framework_TestCase {
 		$request->setSession($session);
 
 		$route = new Route('/path/');
-		$route_name = 'authenticate.login';
+		$route->setDefault('guest', true);
+		$route_name = 'public stuff';
 
 		$this->_mockDatabaseUserProvider
 			->expects($this->once())
@@ -122,6 +124,15 @@ class AuthenticationMiddlewareTest extends PHPUnit_Framework_TestCase {
 		$this->assertInstanceOf(RedirectResponse::class, $actual_result);
 		$this->assertEquals($user_id, $request->attributes->get('user_id'));
 		$this->assertEquals($user, $request->attributes->get('user'));
+	}
+
+	public function testProcessException() {
+		$request   = new Request();
+		$exception = new Exception("exception");
+
+		$result = $this->_subject->processException($request, $exception);
+
+		$this->assertNull($result);
 	}
 
 	public function testProcessRequest() {

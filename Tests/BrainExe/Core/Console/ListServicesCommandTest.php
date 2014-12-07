@@ -107,12 +107,12 @@ class ListServicesCommandTest extends PHPUnit_Framework_TestCase {
 		$commandTester->execute([]);
 		$output = $commandTester->getDisplay();
 
-		$this->assertEquals("List all services...+------------+--------+
-| service-id | public |
-+------------+--------+
-| service_1  | 1      |
-| service_2  | 0      |
-+------------+--------+
+		$this->assertEquals("List all services...+------------+------------+
+| service-id | visibility |
++------------+------------+
+| service_1  | public     |
+| service_2  | private    |
++------------+------------+
 done\n", $output);
 	}
 

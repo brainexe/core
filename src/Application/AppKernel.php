@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouteCollection;
 
 /**
@@ -19,12 +18,12 @@ class AppKernel implements HttpKernelInterface {
 	/**
 	 * @var RouteCollection
 	 */
-	private $_routes;
+	private $routes;
 
 	/**
 	 * @var ControllerResolver
 	 */
-	private $_resolver;
+	private $resolver;
 
 	/**
 	 * @var MiddlewareInterface[]
@@ -32,15 +31,20 @@ class AppKernel implements HttpKernelInterface {
 	private $_middlewares;
 
 	/**
-	 * @Inject({"@ControllerResolver", "@RouteCollection"})
+	 * @var UrlMatcher
+	 */
+	private $urlMatcher;
+
+	/**
+	 * @Inject({"@ControllerResolver", "@RouteCollection", "@UrlMatcher"})
 	 * @param ControllerResolver $container_resolver
 	 * @param RouteCollection $routes
+	 * @param UrlMatcher $urlMatcher
 	 */
-	public function __construct(ControllerResolver $container_resolver, RouteCollection $routes) {
-		$this->_resolver = $container_resolver;
-		$this->_routes   = $routes;
-
-		include_once ROOT . 'cache/router_matcher.php';
+	public function __construct(ControllerResolver $container_resolver, RouteCollection $routes, UrlMatcher $urlMatcher) {
+		$this->resolver = $container_resolver;
+		$this->routes   = $routes;
+		$this->urlMatcher = $urlMatcher;
 	}
 
 	/**
@@ -83,16 +87,12 @@ class AppKernel implements HttpKernelInterface {
 	 * @return Response
 	 */
 	private function _handleRequest(Request $request) {
-		$context = new RequestContext();
-		$context->fromRequest($request);
+		$attributes = $this->urlMatcher->match($request);
 
-		$url_matcher = new \ProjectUrlMatcher($context);
-
-		$attributes = $url_matcher->matchRequest($request);
 		$request->attributes->add($attributes);
 
 		$route_name = $attributes['_route'];
-		$route      = $this->_routes->get($route_name);
+		$route      = $this->routes->get($route_name);
 
 		foreach ($this->_middlewares as $middleware) {
 			$response = $middleware->processRequest($request, $route, $route_name);
@@ -103,8 +103,8 @@ class AppKernel implements HttpKernelInterface {
 		}
 
 		/** @var callable $callable */
-		$callable  = $this->_resolver->getController($request);
-		$arguments = $this->_resolver->getArguments($request, $callable);
+		$callable  = $this->resolver->getController($request);
+		$arguments = $this->resolver->getArguments($request, $callable);
 
 		return call_user_func_array($callable, $arguments);
 	}

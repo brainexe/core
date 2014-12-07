@@ -44,7 +44,7 @@
 			<call method="registerFatalHandler"/>
 		</service>
 
-        <service id="monolog.logger" class="Monolog\Logger">
+        <service id="monolog.logger" class="Monolog\Logger" public="false">
             <argument>%application.name%</argument>
 			<call method="pushHandler">
 				<argument type="service">
@@ -102,7 +102,7 @@
 		</service>
 
 		<!--TODO-->
-		<service id="service_container" class="Symfony\Component\DependencyInjection\Container"/>
+		<service id="service_container" class="Symfony\Component\DependencyInjection\Container" public="false"/>
 
 		<service id="ProcessBuilder" class="Symfony\Component\Process\ProcessBuilder" public="false"/>
 		<service id="Filesystem" class="BrainExe\Core\Util\Filesystem" public="false"/>

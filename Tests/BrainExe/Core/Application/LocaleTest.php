@@ -2,9 +2,8 @@
 
 namespace Tests\BrainExe\Core\Application\Locale;
 
-use PHPUnit_Framework_TestCase;
-use PHPUnit_Framework_MockObject_MockObject;
 use BrainExe\Core\Application\Locale;
+use PHPUnit_Framework_TestCase;
 
 /**
  * @Covers BrainExe\Core\Application\Locale

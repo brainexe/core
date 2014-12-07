@@ -3,9 +3,8 @@
 namespace BrainExe\Tests\Core\DependencyInjection\CompilerPass;
 
 use BrainExe\Core\Annotations\Route;
-use BrainExe\Core\Controller\ControllerInterface;
 use BrainExe\Core\DependencyInjection\CompilerPass\ControllerCompilerPass;
-use PHPUnit_Framework_MockObject_MockObject as MockObject ;
+use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
