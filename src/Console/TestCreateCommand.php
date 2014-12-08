@@ -14,17 +14,53 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
 class TestData {
-	public $setter_calls = [];
-	public $default_tests = [];
-	public $mock_properties = [];
-	public $use_statements = [];
-	public $local_mocks = [];
+	public $setter_calls          = [];
+	public $default_tests         = [];
+	public $mock_properties       = [];
+	public $local_mocks           = [];
 	public $constructor_arguments = [];
+
+	/**
+	 * @var string[]
+	 */
+	private $use_statements = [];
+
+	/**
+	 * @param string $class
+	 * @param string|null $alias
+	 */
+	public function addUse($class, $alias = null) {
+		if ($alias) {
+			$this->use_statements[$alias] = $class;
+		} else {
+			$this->use_statements[] = $class;
+		}
+	}
+
+	/**
+	 * @return string
+	 */
+	public function renderUse() {
+		$parts = [];
+
+		asort($this->use_statements);
+
+		foreach ($this->use_statements as $alias => $class) {
+			if (is_numeric($alias)) {
+				$parts[] = sprintf('use %s;', $class);
+			} else {
+				$parts[] = sprintf('use %s as %s;', $class, $alias);
+			}
+		}
+
+		return implode("\n", $parts);
+	}
 }
 
 /**
@@ -74,18 +110,18 @@ class TestCreateCommand extends Command {
 
 		$service_id = $input->getArgument('service');
 
-		$service_object = $this->_getService($service_id);
+		$service_object     = $this->_getService($service_id);
 		$service_definition = $this->_getDefinition($service_id);
 
-		$service_reflection = new ReflectionClass($service_object);
-		$service_namespace = $service_reflection->getName();
-		$service_class_name = $this->_getShortClassName($service_namespace);
+		$service_reflection      = new ReflectionClass($service_object);
+		$service_full_class_name = $service_reflection->getName();
+		$service_class_name      = $this->_getShortClassName($service_full_class_name);
 
 		$test_data = new TestData();
 
-		$test_data->use_statements[] = PHPUnit_Framework_TestCase::class;
-		$test_data->use_statements['MockObject'] = PHPUnit_Framework_MockObject_MockObject::class;
-		$test_data->use_statements[] = $service_namespace;
+		$test_data->addUse(PHPUnit_Framework_TestCase::class, 'TestCase');
+		$test_data->addUse(PHPUnit_Framework_MockObject_MockObject::class, 'MockObject');
+		$test_data->addUse($service_full_class_name);
 
 		$blacklisted_methods = $this->_getBlacklistedMethods($service_reflection);
 
@@ -129,29 +165,27 @@ class TestCreateCommand extends Command {
 					$reference_service = $this->_getDefinition($reference_service_id);
 					$mock_name         = $this->_getShortClassName($reference_service->getClass());
 
-					$test_data->setter_calls[]    = sprintf("\t\t\$this->subject->%s(\$this->mock%s);", $setter_name,
-															$mock_name);
+					$test_data->setter_calls[] = sprintf("\t\t\$this->subject->%s(\$this->mock%s);",
+						 $setter_name,
+						 $mock_name
+					);
 					$this->_addMock($reference_service, $test_data, $mock_name);
 				}
 			}
 		}
 
-		$test_data->use_statements = array_map(function($class_name) {
-			return sprintf('use %s;', $class_name); // todo alias
-		}, array_unique($test_data->use_statements));
-
 		$test_template = file_get_contents(CORE_ROOT . '/../scripts/phpunit_template.php.tpl');
-		$test_template = str_replace('%test_namespace%', $this->_getTestNamespace($service_namespace, $service_class_name), $test_template);
-		$test_template = str_replace('%service_namespace%', $service_namespace, $test_template);
+		$test_template = str_replace('%test_namespace%', $this->_getTestNamespace($service_reflection->getNamespaceName()), $test_template);
+		$test_template = str_replace('%service_namespace%', $service_full_class_name, $test_template);
 		$test_template = str_replace('%class_name%', $service_class_name, $test_template);
 		$test_template = str_replace('%setters%', implode("\n", $test_data->setter_calls), $test_template);
 		$test_template = str_replace('%default_tests%', implode("\n", $test_data->default_tests), $test_template);
 		$test_template = str_replace('%mock_properties%', implode("\n", $test_data->mock_properties), $test_template);
-		$test_template = str_replace('%use_statements%', implode("\n", $test_data->use_statements), $test_template);
+		$test_template = str_replace('%use_statements%', $test_data->renderUse(), $test_template);
 		$test_template = str_replace('%local_mocks%', implode("\n", $test_data->local_mocks), $test_template);
 		$test_template = str_replace('%constructor_arguments%', implode(", ", $test_data->constructor_arguments), $test_template);
 
-		$test_file_name = $this->_getTestFileName($input, $service_namespace);
+		$test_file_name = $this->_getTestFileName($input, $service_full_class_name);
 
 		if ($input->getOption('dry')) {
 			$output->writeln($test_template);
@@ -165,11 +199,10 @@ class TestCreateCommand extends Command {
 				return;
 			}
 
-			/** @var DialogHelper $dialog */
-			$dialog = $this->getHelper('dialog');
+			$helper = $this->getHelper('question');
+			$question = new ConfirmationQuestion('<error>The test file already exist. Do you want to override it?</error> (y/n)', false);
 
-
-			if (!$dialog->askConfirmation($output, '<error>The test file already exist. Do you want to override it?</error> (y/n)')) {
+			if (!$helper->ask($input, $output, $question)) {
 				return;
 			}
 		}
@@ -214,11 +247,10 @@ class TestCreateCommand extends Command {
 
 	/**
 	 * @param string $service_namespace
-	 * @param string $service_class_name
 	 * @return string
 	 */
-	private function _getTestNamespace($service_namespace, $service_class_name) {
-		return "Tests\\" . $service_namespace; //todo without class name
+	private function _getTestNamespace($service_namespace) {
+		return "Tests\\" . $service_namespace;
 	}
 
 	/**
@@ -242,7 +274,7 @@ class TestCreateCommand extends Command {
 				$value = $parameter->getDefaultValue();
 			} if ($parameter->getClass()) {
 				$class = $parameter->getClass()->name;
-				$test_data->use_statements[] = $class;
+				$test_data->addUse($class);
 				$value = sprintf('new %s()', $this->_getShortClassName($class));
 			}
 
@@ -305,6 +337,7 @@ class TestCreateCommand extends Command {
 		}
 
 		$blacklisted_methods[] = '__construct';
+
 		return $blacklisted_methods;
 	}
 
@@ -314,7 +347,7 @@ class TestCreateCommand extends Command {
 	 * @param $mock_name
 	 */
 	protected function _addMock(Definition $reference_service, TestData $test_data, $mock_name) {
-		$test_data->use_statements[]  = $reference_service->getClass();
+		$test_data->addUse($reference_service->getClass());
 		$test_data->local_mocks[]     = sprintf("\t\t\$this->mock%s = \$this->getMock(%s::class, [], [], '', false);", $mock_name,	$mock_name);
 		$test_data->mock_properties[] = sprintf("\t/**\n\t * @var %s|MockObject\n\t */\n\tprivate \$mock%s;\n", $mock_name, $mock_name);
 	}
