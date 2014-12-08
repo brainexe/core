@@ -33,14 +33,6 @@ class GentimeMiddlewareTest extends PHPUnit_Framework_TestCase {
 		$this->_subject->setLogger($this->_mockLogger);
 	}
 
-	public function testProcessRequest() {
-		$request = new Request();
-		$route = new Route('/route/');
-		$route_name = null;
-
-		$this->_subject->processRequest($request, $route, $route_name);
-	}
-
 	public function testProcessResponse() {
 		$request = new Request();
 		$response = new Response();

@@ -2,7 +2,6 @@
 
 namespace Tests\BrainExe\Core\DependencyInjection\CompilerPass\TestCompilerPass;
 
-use BrainExe\Core\DependencyInjection\CompilerPass\MessageQueueTestService;
 use BrainExe\Core\DependencyInjection\CompilerPass\TestCompilerPass;
 use PHPUnit_Framework_MockObject_MockObject;
 use PHPUnit_Framework_TestCase;
@@ -62,11 +61,6 @@ class TestCompilerPassTest extends PHPUnit_Framework_TestCase {
 			->expects($this->once())
 			->method('setPublic')
 			->with(true);
-
-		$this->_mockContainer
-			->expects($this->once())
-			->method('set')
-			->with(MessageQueueTestService::ID, $this->isInstanceOf(MessageQueueTestService::class));
 
 		$this->_subject->process($this->_mockContainer);
 	}

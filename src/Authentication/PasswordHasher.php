@@ -12,7 +12,9 @@ class PasswordHasher {
 	 * @return string $hash
 	 */
 	public function generateHash($password) {
-		return password_hash($password, PASSWORD_BCRYPT);
+		return password_hash($password, PASSWORD_BCRYPT, [
+			'cost' => 7
+		]);
 	}
 
 	/**

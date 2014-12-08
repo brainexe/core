@@ -6,17 +6,6 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
- * @codeCoverageIgnore
- */
-class MessageQueueTestService {
-	const ID = 'MessageQueueTestService';
-
-	public function run() {
-
-	}
-}
-
-/**
  * @CompilerPass(priority=1)
  */
 class TestCompilerPass implements CompilerPassInterface {
@@ -32,8 +21,5 @@ class TestCompilerPass implements CompilerPassInterface {
 		foreach ($container->getDefinitions() as $definition) {
 			$definition->setPublic(true);
 		}
-
-		// @todo still needed here?
-		$container->set(MessageQueueTestService::ID, new MessageQueueTestService());
 	}
 }

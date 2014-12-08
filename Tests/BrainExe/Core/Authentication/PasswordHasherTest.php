@@ -34,7 +34,7 @@ class PasswordHasherTest extends PHPUnit_Framework_TestCase {
 	public function testVerifyHash() {
 		$password = 'password';
 
-		$valid_hash = '$2y$10$lQfIxHU96v5QVjWdbHz13OWnKSRfNcEnrC.L1Fr.LDfLWeHGyQu.6';
+		$valid_hash = '$2y$07$bSguPj.ceocK7qSeYh9kS.d1ZgwRrcsoVBl.59dcLVy7Dwd3sQ8le';
 		$invalid_hash = '$2y$10$lQfIxHU96vsdfsdfdsfsfggsfs.6';
 
 		$actual_result = $this->_subject->verifyHash($password, $valid_hash);

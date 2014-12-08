@@ -5,3 +5,4 @@ composer.lock
 /coverage
 /cache
 logs/*
+/.phpunit-cas.db

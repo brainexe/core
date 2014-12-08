@@ -18,16 +18,6 @@ class GentimeMiddleware extends AbstractMiddleware {
 	/**
 	 * {@inheritdoc}
 	 */
-	public function processRequest(Request $request, Route $route, $route_name) {
-		// todo fix for application server
-//		if (empty($_SERVER['REQUEST_TIME_FLOAT'])) {
-//			$_SERVER['REQUEST_TIME_FLOAT'] = microtime(true);
-//		}
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
 	public function processResponse(Request $request, Response $response) {
 		$start_time = $_SERVER['REQUEST_TIME_FLOAT'];
 		$diff = microtime(true) - $start_time;
@@ -42,4 +32,4 @@ class GentimeMiddleware extends AbstractMiddleware {
 
 		$this->info(sprintf('%0.2fms (route: %s, user:%s)', $diff*1000, $request->getRequestUri(), $username), ['channel' => 'gentime']);
 	}
-} 
+}
