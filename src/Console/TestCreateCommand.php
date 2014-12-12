@@ -4,21 +4,28 @@ namespace BrainExe\Core\Console;
 
 use BrainExe\Core\DependencyInjection\Rebuild;
 use BrainExe\Core\Traits\ConfigTrait;
+use Exception;
 use PHPUnit_Framework_MockObject_MockObject;
 use PHPUnit_Framework_TestCase;
 use ReflectionClass;
 use ReflectionMethod;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\DialogHelper;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
+use Symfony\Component\Console\Question\Question;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
+/**
+ * @codeCoverageIgnore
+ */
 class TestData {
 	public $setter_calls          = [];
 	public $default_tests         = [];
@@ -199,11 +206,32 @@ class TestCreateCommand extends Command {
 				return;
 			}
 
+			/** @var QuestionHelper $helper */
 			$helper = $this->getHelper('question');
-			$question = new ConfirmationQuestion('<error>The test file already exist. Do you want to override it?</error> (y/n)', false);
 
-			if (!$helper->ask($input, $output, $question)) {
-				return;
+			$choices = [
+				'stop' => 'Stop',
+				'replace' => 'Replace full test file',
+				'diff' => 'Display the diff',
+				'header' => 'full setup only',
+			];
+			$question = new ChoiceQuestion('<error>The test file already exist. What should i do now?</error>', $choices);
+
+			$answer = $helper->ask($input, $output, $question);
+
+			$original_test = file_get_contents($test_file_name);
+			switch (array_flip($choices)[$answer]) {
+				case 'replace':
+					break;
+				case 'diff':
+					$this->_displayPatch($original_test, $test_template, $output);
+					return;
+				case 'header';
+					$test_template = $this->_replaceHeaderOnly($original_test, $test_template, $output);
+					break;
+				case 'stop':
+				default:
+					return;
 			}
 		}
 
@@ -342,13 +370,24 @@ class TestCreateCommand extends Command {
 	}
 
 	/**
-	 * @param $reference_service
-	 * @param $test_data
-	 * @param $mock_name
+	 * @param Definition $reference_service
+	 * @param TestData $test_data
+	 * @param string $mock_name
 	 */
 	protected function _addMock(Definition $reference_service, TestData $test_data, $mock_name) {
-		$test_data->addUse($reference_service->getClass());
-		$test_data->local_mocks[]     = sprintf("\t\t\$this->mock%s = \$this->getMock(%s::class, [], [], '', false);", $mock_name,	$mock_name);
+		$class = $reference_service->getClass();
+		$test_data->addUse($class);
+
+		$reflection = new ReflectionClass($class);
+		$constructor = $reflection->getConstructor();
+
+		if ($constructor && $constructor->getNumberOfParameters()) {
+			$mock = sprintf("\t\t\$this->mock%s = \$this->getMock(%s::class, [], [], '', false);", $mock_name,	$mock_name);
+		} else {
+			$mock = sprintf("\t\t\$this->mock%s = \$this->getMock(%s::class);", $mock_name,	$mock_name);
+		}
+
+		$test_data->local_mocks[]     = $mock;
 		$test_data->mock_properties[] = sprintf("\t/**\n\t * @var %s|MockObject\n\t */\n\tprivate \$mock%s;\n", $mock_name, $mock_name);
 	}
 
@@ -374,5 +413,32 @@ class TestCreateCommand extends Command {
 
 			$this->_addMock($definition, $test_data, $mock_name);
 		}
+	}
+
+	/**
+	 * @param string $original_test
+	 * @param string $new_test
+	 * @param OutputInterface $output
+	 */
+	private function _displayPatch($original_test, $new_test, OutputInterface $output) {
+		$output->writeln('<info>Diff: Not implemented yet</info>');
+	}
+
+	/**
+	 * @param string $original_test
+	 * @param string $new_test
+	 * @param OutputInterface $output
+	 * @throws Exception
+	 * @return string
+	 */
+	private function _replaceHeaderOnly($original_test, $new_test, OutputInterface $output) {
+		if (!preg_match('/^.*?}/s', $new_test, $matches)) {
+			throw new Exception('No header found in new test');
+		}
+
+		print_r($matches);
+		$header = $matches[0];
+
+		return preg_replace('/^.*?}/s', $header, $original_test);
 	}
 }
