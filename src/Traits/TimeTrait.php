@@ -22,7 +22,7 @@ trait TimeTrait {
 	/**
 	 * @return Time
 	 */
-	protected function getTime() {
+	public function getTime() {
 		return $this->_time;
 	}
 

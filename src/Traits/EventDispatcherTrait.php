@@ -21,16 +21,9 @@ trait EventDispatcherTrait {
 	}
 
 	/**
-	 * @return EventDispatcher
-	 */
-	protected function getEventDispatcher() {
-		return $this->_event_dispatcher;
-	}
-
-	/**
 	 * @param AbstractEvent $event
 	 */
-	protected function dispatchEvent(AbstractEvent $event) {
+	public function dispatchEvent(AbstractEvent $event) {
 		$this->_event_dispatcher->dispatchEvent($event);
 	}
 
@@ -38,8 +31,8 @@ trait EventDispatcherTrait {
 	 * @param AbstractEvent $event
 	 * @param integer|null $timestamp
 	 */
-	protected function dispatchInBackground(AbstractEvent $event, $timestamp = 0) {
+	public function dispatchInBackground(AbstractEvent $event, $timestamp = 0) {
 		$this->_event_dispatcher->dispatchInBackground($event, $timestamp);
 	}
 
-} 
+}
