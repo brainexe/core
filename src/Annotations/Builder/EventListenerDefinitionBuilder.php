@@ -18,7 +18,7 @@ class EventListenerDefinitionBuilder extends ServiceDefinitionBuilder {
 		/** @var Definition $definition */
 		$definition = $definitionHolder['definition'];
 
-		$id = sprintf('Listener.%s', str_replace('Listener', '', $definitionHolder['id']));
+		$id = sprintf('__Listener.%s', str_replace('Listener', '', $definitionHolder['id']));
 
 		$definition->addTag(EventListenerCompilerPass::TAG);
 

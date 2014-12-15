@@ -60,7 +60,7 @@ class AuthenticationMiddleware extends AbstractMiddleware {
 			return null;
 		}
 
-		if ($route->hasDefault('guest')) {
+		if ($route->hasDefault('_guest')) {
 			return null;
 		}
 
@@ -70,4 +70,4 @@ class AuthenticationMiddleware extends AbstractMiddleware {
 
 		return null;
 	}
-} 
+}

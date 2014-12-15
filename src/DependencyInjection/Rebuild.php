@@ -25,10 +25,7 @@ class Rebuild {
 		$container_builder = new ContainerBuilder();
 
 		$annotation_loader = new AnnotationLoader($container_builder);
-		$annotation_loader->load('src/');
 		if (!CORE_STANDALONE) {
-			$annotation_loader->load(CORE_ROOT);
-
 			$app_finder = new Finder();
 			$app_finder->directories()
 				->in(BRAINEXE_VENDOR_ROOT)
@@ -37,9 +34,21 @@ class Rebuild {
 
 			foreach ($app_finder as $dir) {
 				/** @var SplFileInfo $dir */
+				$config_file = $dir->getPathname() . '/../config.php';
+				if (is_file($config_file)) {
+					require $config_file;
+				}
+			}
+
+			$annotation_loader->load('src/');
+			$annotation_loader->load(CORE_ROOT);
+
+			foreach ($app_finder as $dir) {
+				/** @var SplFileInfo $dir */
 				$annotation_loader->load($dir->getPathname());
 			}
 		}
+
 
 		$container_builder->addCompilerPass(new GlobalCompilerPass());
 		$container_builder->compile();

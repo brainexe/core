@@ -20,7 +20,7 @@ class ControllerDefinitionBuilder extends ServiceDefinitionBuilder {
 		/** @var Definition $definition */
 		$definition = $definitionHolder['definition'];
 
-		$id = sprintf('Controller.%s', str_replace('Controller', '', $definitionHolder['id']));
+		$id = sprintf('__Controller.%s', str_replace('Controller', '', $definitionHolder['id']));
 		$definition->addTag(ControllerCompilerPass::CONTROLLER_TAG);
 
 		return [
