@@ -73,6 +73,10 @@ class ControllerCompilerPass implements CompilerPassInterface {
 	 * @codeCoverageIgnore
 	 */
 	protected function _dumpMatcher(ContainerBuilder $container) {
+		if (!is_dir(ROOT . 'cache')) {
+			return;
+		}
+
 		/** @var RouteCollection $router_collection */
 		$router_collection = $container->get('RouteCollection');
 

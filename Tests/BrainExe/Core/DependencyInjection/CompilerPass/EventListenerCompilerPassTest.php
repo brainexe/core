@@ -63,11 +63,16 @@ class EventListenerCompilerPassTest extends PHPUnit_Framework_TestCase {
 			->with(EventListenerCompilerPass::TAG)
 			->will($this->returnValue([$service_id => []]));
 
+		$definition = $this->getMock(Definition::class);
+		$definition
+			->expects($this->once())
+			->method('getClass')
+			->willReturn(TestEventDispatcher::class);
 		$this->_mockContainer
 			->expects($this->at(2))
-			->method('get')
+			->method('getDefinition')
 			->with($service_id)
-			->will($this->returnValue($foo_service_mock));
+			->will($this->returnValue($definition));
 
 		$this->_mockEventDispatcher
 			->expects($this->at(0))
@@ -92,4 +97,4 @@ class EventListenerCompilerPassTest extends PHPUnit_Framework_TestCase {
 		$this->_subject->process($this->_mockContainer);
 	}
 
-} 
+}

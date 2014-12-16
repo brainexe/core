@@ -109,7 +109,8 @@ class AppKernelTest extends PHPUnit_Framework_TestCase {
 
 		$actual_result = $this->subject->handle($request, $type = 1, $catch = 1);
 
-		$this->assertEquals($expected_response, $actual_result);
+		$this->assertEquals($expected_response->getContent(), $actual_result->getContent());
+		$this->assertEquals($expected_response->getStatusCode(), $actual_result->getStatusCode());
 	}
 
 	public function testHandleRequestMiddleware() {

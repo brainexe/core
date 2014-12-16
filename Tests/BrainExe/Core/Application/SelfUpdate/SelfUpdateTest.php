@@ -43,19 +43,30 @@ class SelfUpdateTest extends PHPUnit_Framework_TestCase {
 
 		$this->mockProcessBuilder
 			->expects($this->once())
+			->method('setWorkingDirectory')
+			->with(ROOT)
+			->willReturnSelf();
+
+		$this->mockProcessBuilder
+			->expects($this->once())
+			->method('setPrefix')
+			->willReturnSelf();
+
+		$this->mockProcessBuilder
+			->expects($this->once())
 			->method('setArguments')
-			->will($this->returnValue($this->mockProcessBuilder));
+			->willReturnSelf();
 
 		$this->mockProcessBuilder
 			->expects($this->once())
 			->method('setTimeout')
 			->with(0)
-			->will($this->returnValue($this->mockProcessBuilder));
+			->willReturnSelf();
 
 		$this->mockProcessBuilder
 			->expects($this->once())
 			->method('getProcess')
-			->will($this->returnValue($process));
+			->willReturn($process);
 
 		$process
 			->expects($this->once())
@@ -81,19 +92,30 @@ class SelfUpdateTest extends PHPUnit_Framework_TestCase {
 
 		$this->mockProcessBuilder
 			->expects($this->once())
+			->method('setWorkingDirectory')
+			->with(ROOT)
+			->willReturnSelf();
+
+		$this->mockProcessBuilder
+			->expects($this->once())
+			->method('setPrefix')
+			->willReturnSelf();
+
+		$this->mockProcessBuilder
+			->expects($this->once())
 			->method('setArguments')
-			->will($this->returnValue($this->mockProcessBuilder));
+			->willReturnSelf();
 
 		$this->mockProcessBuilder
 			->expects($this->once())
 			->method('setTimeout')
 			->with(0)
-			->will($this->returnValue($this->mockProcessBuilder));
+			->willReturnSelf();
 
 		$this->mockProcessBuilder
 			->expects($this->once())
 			->method('getProcess')
-			->will($this->returnValue($process));
+			->willReturn($process);
 
 		$process
 			->expects($this->once())

@@ -29,13 +29,10 @@ class SelfUpdate {
 	 * @return void
 	 */
 	public function startUpdate() {
-        $commands = [];
-        $commands[] = sprintf('cd %s', ROOT);
-        $commands[] = 'git pull';
-        $commands[] = 'php composer.phar update -o';
-
 		$process = $this->processBuilder
-			->setArguments([implode('&&', $commands)])
+			->setWorkingDirectory(ROOT)
+			->setPrefix('composer')
+			->setArguments(['update', '-o'])
 			->setTimeout(0)
 			->getProcess();
 
@@ -57,4 +54,4 @@ class SelfUpdate {
 
 		$this->dispatchEvent($event);
     }
-} 
+}

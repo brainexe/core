@@ -23,32 +23,30 @@ class Rebuild {
 	 */
 	public function rebuildDIC($boot = true) {
 		$container_builder = new ContainerBuilder();
-
 		$annotation_loader = new AnnotationLoader($container_builder);
-		if (!CORE_STANDALONE) {
-			$app_finder = new Finder();
-			$app_finder->directories()
-				->in(BRAINEXE_VENDOR_ROOT)
-				->depth(1)
-				->name('src');
+		$app_finder        = new Finder();
 
-			foreach ($app_finder as $dir) {
-				/** @var SplFileInfo $dir */
-				$config_file = $dir->getPathname() . '/../config.php';
-				if (is_file($config_file)) {
-					require $config_file;
-				}
-			}
+		$app_finder
+			->directories()
+			->in([ROOT, CORE_ROOT, BRAINEXE_VENDOR_ROOT])
+			->depth("<=1")
+			->name('src');
 
-			$annotation_loader->load('src/');
-			$annotation_loader->load(CORE_ROOT);
-
-			foreach ($app_finder as $dir) {
-				/** @var SplFileInfo $dir */
-				$annotation_loader->load($dir->getPathname());
+		foreach ($app_finder as $dir) {
+			/** @var SplFileInfo $dir */
+			$config_file = $dir->getPathname() . '/../config.php';
+			if (is_file($config_file)) {
+				require $config_file;
 			}
 		}
 
+		$annotation_loader->load('src/');
+		$annotation_loader->load(CORE_ROOT);
+
+		foreach ($app_finder as $dir) {
+			/** @var SplFileInfo $dir */
+			$annotation_loader->load($dir->getPathname());
+		}
 
 		$container_builder->addCompilerPass(new GlobalCompilerPass());
 		$container_builder->compile();
