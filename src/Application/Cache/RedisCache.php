@@ -4,7 +4,7 @@ namespace BrainExe\Core\Application\Cache;
 
 use Doctrine\Common\Cache\Cache;
 use Doctrine\Common\Cache\CacheProvider;
-use Redis;
+use BrainExe\Core\Redis\Redis;
 
 class RedisCache extends CacheProvider {
 	/**

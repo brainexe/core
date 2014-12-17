@@ -3,9 +3,10 @@
 namespace Tests\BrainExe\Core\Application\RedisLock;
 
 use BrainExe\Core\Application\RedisLock;
+use BrainExe\Core\Redis\Redis\Redis;
 use PHPUnit_Framework_MockObject_MockObject;
 use PHPUnit_Framework_TestCase;
-use Redis;
+use BrainExe\Core\Redis\Redis;
 
 /**
  * @Covers BrainExe\Core\Application\RedisLock

@@ -4,7 +4,7 @@ namespace BrainExe\Core\Authentication;
 
 use BrainExe\Core\Traits\IdGeneratorTrait;
 use BrainExe\Core\Traits\RedisTrait;
-use Redis;
+use BrainExe\Core\Redis\Redis;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;

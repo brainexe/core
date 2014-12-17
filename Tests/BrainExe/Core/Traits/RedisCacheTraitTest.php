@@ -5,7 +5,7 @@ namespace BrainExe\Tests\Core\Traits;
 use BrainExe\Core\Traits\RedisCacheTrait;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase;
-use Redis;
+use BrainExe\Core\Redis\Redis;
 
 class RedisCacheTraitTest extends PHPUnit_Framework_TestCase {
 

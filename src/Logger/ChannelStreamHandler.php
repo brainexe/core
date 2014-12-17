@@ -1,6 +1,7 @@
 <?php
 namespace BrainExe\Core\Logger;
 
+use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 
@@ -19,6 +20,8 @@ class ChannelStreamHandler extends StreamHandler {
 	 */
 	public function __construct($stream, $level = Logger::DEBUG, $channel = null, $bubble = true) {
 		parent::__construct($stream, $level, $bubble);
+
+		$this->setFormatter(new LineFormatter("[%datetime%] %level_name%: %message% %context% %extra%\n", null, false, true));
 
 		$this->channel = $channel;
 	}
@@ -46,7 +49,11 @@ class ChannelStreamHandler extends StreamHandler {
 			return false;
 		}
 
-		return $this->channel === $record['context']['channel'];
+		$supported = $this->channel === $record['context']['channel'];
+
+		unset($record['context']['channel']);
+
+		return $supported;
 	}
 
     /**
@@ -54,8 +61,6 @@ class ChannelStreamHandler extends StreamHandler {
      * {@inheritdoc}
      */
     protected function write(array $record) {
-        unset($record['context']['channel']);
-
         parent::write($record);
     }
 

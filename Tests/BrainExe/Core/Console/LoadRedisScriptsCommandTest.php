@@ -6,7 +6,7 @@ use BrainExe\Core\Console\LoadRedisScriptsCommand;
 use BrainExe\Core\Redis\RedisScripts;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase;
-use Redis;
+use BrainExe\Core\Redis\Redis;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;

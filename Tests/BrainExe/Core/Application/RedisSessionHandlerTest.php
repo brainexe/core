@@ -5,7 +5,7 @@ namespace BrainExe\Tests\Core\Application;
 use BrainExe\Core\Application\RedisSessionHandler;
 use PHPUnit_Framework_MockObject_MockObject;
 use PHPUnit_Framework_TestCase;
-use Redis;
+use BrainExe\Core\Redis\Redis;
 
 class RedisSessionHandlerTest extends PHPUnit_Framework_TestCase {
 
@@ -68,4 +68,4 @@ class RedisSessionHandlerTest extends PHPUnit_Framework_TestCase {
 		$this->_subject->gc(0);
 
 	}
-} 
+}

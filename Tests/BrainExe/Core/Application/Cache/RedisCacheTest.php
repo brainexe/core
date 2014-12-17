@@ -3,10 +3,10 @@
 namespace Tests\BrainExe\Core\Application\Cache\RedisCache;
 
 use BrainExe\Core\Application\Cache\RedisCache;
+use BrainExe\Core\Redis\Redis;
 use Doctrine\Common\Cache\Cache;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase;
-use Redis;
 
 /**
  * @Covers BrainExe\Core\Application\Cache\RedisCache

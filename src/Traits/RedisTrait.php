@@ -2,20 +2,21 @@
 
 namespace BrainExe\Core\Traits;
 
-use Redis;
+use BrainExe\Core\Redis\Redis;
+use BrainExe\Core\Redis\RedisInterface;
 
 trait RedisTrait {
 
 	/**
-	 * @var Redis
+	 * @var Redis|RedisInterface
 	 */
 	private $_redis;
 
 	/**
 	 * @Inject("@Redis")
-	 * @param Redis $client
+	 * @param Redis|RedisInterface $client
 	 */
-	public function setRedis(Redis $client) {
+	public function setRedis(RedisInterface $client) {
 		$this->_redis = $client;
 	}
 

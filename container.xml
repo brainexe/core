@@ -19,6 +19,7 @@
 		<parameter key="logger.error.log">%logger.dir%error.log</parameter>
 		<parameter key="logger.info.log">%logger.dir%info.log</parameter>
 		<parameter key="logger.message_queue.log">%logger.dir%message_queue.log</parameter>
+		<parameter key="logger.redis.log">%logger.dir%redis.log</parameter>
 
 		<parameter key="application.name" on-invalid="exception"/>
 		<parameter key="application.layout_template">layout.html.twig</parameter>
@@ -31,7 +32,7 @@
 	</parameters>
 
     <services>
-        <service id="redis" class="Redis" public="false">
+        <service id="redis" class="BrainExe\Core\Redis\Redis" public="false">
 			<call method="connect">
 				<argument key="host">%redis.host%</argument>
 			</call>
@@ -46,6 +47,7 @@
 
         <service id="monolog.logger" class="Monolog\Logger" public="false">
             <argument>%application.name%</argument>
+			<!--TODO generic solution-->
 			<call method="pushHandler">
 				<argument type="service">
 					<service class="BrainExe\Core\Logger\ChannelStreamHandler">
@@ -77,6 +79,15 @@
 						<argument>%logger.dir%gentime.log</argument>
 						<argument type="constant">Monolog\Logger::DEBUG</argument>
 						<argument>gentime</argument>
+					</service>
+				</argument>
+			</call>
+			<call method="pushHandler">
+				<argument type="service">
+					<service class="BrainExe\Core\Logger\ChannelStreamHandler">
+						<argument>%logger.dir%redis.log</argument>
+						<argument type="constant">Monolog\Logger::DEBUG</argument>
+						<argument>redis</argument>
 					</service>
 				</argument>
 			</call>
