@@ -8,15 +8,14 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Symfony\Component\Routing\RouteCollection;
 
 /**
- * @Service
+ * @Service(public=true)
  */
 class AppKernel implements HttpKernelInterface {
 
 	/**
-	 * @var RouteCollection
+	 * @var SerializedRouteCollection
 	 */
 	private $routes;
 
@@ -28,7 +27,7 @@ class AppKernel implements HttpKernelInterface {
 	/**
 	 * @var MiddlewareInterface[]
 	 */
-	private $_middlewares;
+	private $middlewares;
 
 	/**
 	 * @var UrlMatcher
@@ -36,14 +35,14 @@ class AppKernel implements HttpKernelInterface {
 	private $urlMatcher;
 
 	/**
-	 * @Inject({"@ControllerResolver", "@RouteCollection", "@UrlMatcher"})
+	 * @Inject({"@ControllerResolver", "@Core.RouteCollection", "@UrlMatcher"})
 	 * @param ControllerResolver $container_resolver
-	 * @param RouteCollection $routes
+	 * @param SerializedRouteCollection $routes
 	 * @param UrlMatcher $urlMatcher
 	 */
-	public function __construct(ControllerResolver $container_resolver, RouteCollection $routes, UrlMatcher $urlMatcher) {
-		$this->resolver = $container_resolver;
-		$this->routes   = $routes;
+	public function __construct(ControllerResolver $container_resolver, SerializedRouteCollection $routes, UrlMatcher $urlMatcher) {
+		$this->resolver  = $container_resolver;
+		$this->routes    = $routes;
 		$this->urlMatcher = $urlMatcher;
 	}
 
@@ -51,7 +50,7 @@ class AppKernel implements HttpKernelInterface {
 	 * @param MiddlewareInterface[] $middlewares
 	 */
 	public function setMiddlewares(array $middlewares) {
-		$this->_middlewares = $middlewares;
+		$this->middlewares = $middlewares;
 	}
 
 	/**
@@ -61,9 +60,9 @@ class AppKernel implements HttpKernelInterface {
 		$response = null;
 
 		try {
-			$response = $this->_handleRequest($request);
+			$response = $this->handleRequest($request);
 		} catch (Exception $exception) {
-			foreach ($this->_middlewares as $middleware) {
+			foreach ($this->middlewares as $middleware) {
 				$response = $middleware->processException($request, $exception);
 				if ($response !== null) {
 					break;
@@ -73,9 +72,9 @@ class AppKernel implements HttpKernelInterface {
 
 		$response = $this->_prepareResponse($request, $response);
 
-		$middleware_idx = count($this->_middlewares) - 1;
+		$middleware_idx = count($this->middlewares) - 1;
 		for ($i = $middleware_idx; $i >= 0; $i--) {
-			$middleware = $this->_middlewares[$i];
+			$middleware = $this->middlewares[$i];
 			$middleware->processResponse($request, $response);
 		}
 
@@ -86,7 +85,7 @@ class AppKernel implements HttpKernelInterface {
 	 * @param Request $request
 	 * @return Response
 	 */
-	private function _handleRequest(Request $request) {
+	private function handleRequest(Request $request) {
 		$attributes = $this->urlMatcher->match($request);
 
 		$request->attributes->add($attributes);
@@ -94,7 +93,7 @@ class AppKernel implements HttpKernelInterface {
 		$route_name = $attributes['_route'];
 		$route      = $this->routes->get($route_name);
 
-		foreach ($this->_middlewares as $middleware) {
+		foreach ($this->middlewares as $middleware) {
 			$response = $middleware->processRequest($request, $route, $route_name);
 			if ($response) {
 				// e.g. RedirectResponse or rendered error page

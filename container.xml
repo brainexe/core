@@ -124,9 +124,8 @@
 		</service>
 		<service id="cache" alias="cache.redis" public="false" />
 
-		<service id="RouteCollection" class="Symfony\Component\Routing\RouteCollection" public="false"/>
 		<service id="UrlGenerator" class="Symfony\Component\Routing\Generator\UrlGenerator" public="false">
-			<argument type="service" id="RouteCollection"/>
+			<argument type="service" id="Core.RouteCollection"/>
 			<argument type="service">
 				<service class="Symfony\Component\Routing\RequestContext"/>
 			</argument>
