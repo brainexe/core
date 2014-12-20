@@ -8,33 +8,35 @@ use PHPUnit_Framework_TestCase;
 /**
  * @Covers BrainExe\Core\Util\FileSystem
  */
-class FileSystemTest extends PHPUnit_Framework_TestCase {
+class FileSystemTest extends PHPUnit_Framework_TestCase
+{
 
-	/**
-	 * @var FileSystem
-	 */
-	private $subject;
+    /**
+     * @var FileSystem
+     */
+    private $subject;
 
-	public function setUp() {
-		$this->subject = new FileSystem();
-	}
+    public function setUp()
+    {
+        $this->subject = new FileSystem();
+    }
 
-	public function testFileGetContents() {
-		$file_name = ROOT . '/cache/test.php';
-		$content = 'content';
+    public function testFileGetContents()
+    {
+        $file_name = ROOT . '/cache/test.php';
+        $content = 'content';
 
-		// dump
-		$this->subject->dumpFile($file_name, $content);
-		$this->assertTrue($this->subject->exists($file_name));
+     // dump
+        $this->subject->dumpFile($file_name, $content);
+        $this->assertTrue($this->subject->exists($file_name));
 
-		// check
-		$actual_result = $this->subject->fileGetContents($file_name);
-		$this->assertEquals($content, $actual_result);
+     // check
+        $actualResult = $this->subject->fileGetContents($file_name);
+        $this->assertEquals($content, $actualResult);
 
-		// remove
-		$this->subject->remove($file_name);
-		$this->assertFalse($this->subject->exists($file_name));
+     // remove
+        $this->subject->remove($file_name);
+        $this->assertFalse($this->subject->exists($file_name));
 
-	}
-
+    }
 }

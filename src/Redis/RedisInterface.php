@@ -2,6 +2,7 @@
 
 namespace BrainExe\Core\Redis;
 
-interface RedisInterface {
+interface RedisInterface
+{
 
 }

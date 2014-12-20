@@ -8,18 +8,20 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 /**
  * @CompilerPass(priority=1)
  */
-class TestCompilerPass implements CompilerPassInterface {
+class TestCompilerPass implements CompilerPassInterface
+{
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function process(ContainerBuilder $container) {
-		if (!$container->getParameter('core_standalone')) {
-			return;
-		}
+    /**
+     * {@inheritdoc}
+     */
+    public function process(ContainerBuilder $container)
+    {
+        if (!$container->getParameter('core_standalone')) {
+            return;
+        }
 
-		foreach ($container->getDefinitions() as $definition) {
-			$definition->setPublic(true);
-		}
-	}
+        foreach ($container->getDefinitions() as $definition) {
+            $definition->setPublic(true);
+        }
+    }
 }

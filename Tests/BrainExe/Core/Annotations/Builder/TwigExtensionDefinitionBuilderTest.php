@@ -11,55 +11,56 @@ use PHPUnit_Framework_TestCase;
 use ReflectionClass;
 use Symfony\Component\DependencyInjection\Definition;
 
-class TwigExtensionDefinitionBuilderTest extends PHPUnit_Framework_TestCase {
+class TwigExtensionDefinitionBuilderTest extends PHPUnit_Framework_TestCase
+{
 
-	/**
-	 * @var TwigExtensionDefinitionBuilder
-	 */
-	private $subject;
+    /**
+     * @var TwigExtensionDefinitionBuilder
+     */
+    private $subject;
 
-	/**
-	 * @var MockObject|Reader
-	 */
-	private $mockReader;
+    /**
+     * @var MockObject|Reader
+     */
+    private $mockReader;
 
-	public function __construct() {
-		$this->mockReader = $this->getMock(Reader::class);
+    public function __construct()
+    {
+        $this->mockReader = $this->getMock(Reader::class);
 
-		$this->subject = new TwigExtensionDefinitionBuilder($this->mockReader);
-	}
+        $this->subject = new TwigExtensionDefinitionBuilder($this->mockReader);
+    }
 
-	public function testBuild() {
-		$annotation = new TwigExtension([]);
-		$annotation->compiler = $compiler = false;
-		$annotation->name     = $name = 'name';
+    public function testBuild()
+    {
+        $annotation = new TwigExtension([]);
+        $annotation->compiler = $compiler = false;
+        $annotation->name     = $name = 'name';
 
-		/** @var MockObject|ReflectionClass $reflection_class */
-		$reflection_class = $this->getMock(ReflectionClass::class, [], [], '', false);
+        /** @var MockObject|ReflectionClass $reflection_class */
+        $reflection_class = $this->getMock(ReflectionClass::class, [], [], '', false);
 
-		$reflection_class
-			->expects($this->any())
-			->method('getProperties')
-			->willReturn([]);
-		$reflection_class
-			->expects($this->any())
-			->method('getMethods')
-			->willReturn([]);
+        $reflection_class
+            ->expects($this->any())
+            ->method('getProperties')
+            ->willReturn([]);
+        $reflection_class
+            ->expects($this->any())
+            ->method('getMethods')
+            ->willReturn([]);
 
-		$actual_result = $this->subject->build($reflection_class, $annotation);
+        $actualResult = $this->subject->build($reflection_class, $annotation);
 
-		$definition = new Definition();
-		$definition->setPublic(false);
-		$definition->addTag(TwigExtensionCompilerPass::TAG, ['compiler' => $compiler]);
+        $definition = new Definition();
+        $definition->setPublic(false);
+        $definition->addTag(TwigExtensionCompilerPass::TAG, ['compiler' => $compiler]);
 
-		$expected_result = [
-			'id'         => $name,
-			'definition' => $definition
-		];
+        $expectedResult = [
+            'id'         => $name,
+            'definition' => $definition
+        ];
 
-		$this->assertEquals($expected_result, $actual_result);
+        $this->assertEquals($expectedResult, $actualResult);
 
-	}
-
-
+    }
 }

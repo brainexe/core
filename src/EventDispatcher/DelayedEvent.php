@@ -4,22 +4,24 @@ namespace BrainExe\Core\EventDispatcher;
 
 use BrainExe\MessageQueue\Event\AbstractMessageQueueEvent;
 
-class DelayedEvent extends AbstractMessageQueueEvent {
+class DelayedEvent extends AbstractMessageQueueEvent
+{
 
-	const DELAYED = 'message_queue.delayed';
+    const DELAYED = 'message_queue.delayed';
 
-	/**
-	 * @var integer
-	 */
-	public $timestamp;
+    /**
+     * @var integer
+     */
+    public $timestamp;
 
-	/**
-	 * @param AbstractEvent $event
-	 * @param integer $timestamp
-	 */
-	function __construct(AbstractEvent $event, $timestamp) {
-		$this->event_name = self::DELAYED;
-		$this->event = $event;
-		$this->timestamp = $timestamp;
-	}
-} 
+    /**
+     * @param AbstractEvent $event
+     * @param integer $timestamp
+     */
+    function __construct(AbstractEvent $event, $timestamp)
+    {
+        $this->event_name = self::DELAYED;
+        $this->event = $event;
+        $this->timestamp = $timestamp;
+    }
+}

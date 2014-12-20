@@ -10,17 +10,19 @@ use Doctrine\Common\Annotations\Reader;
 /**
  * @Annotation
  */
-class TwigExtension extends Service {
+class TwigExtension extends Service
+{
 
-	/**
-	 * @var boolean
-	 */
-	public $compiler = false;
+    /**
+     * @var boolean
+     */
+    public $compiler = false;
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public static function getBuilder(Reader $reader) {
-		return new TwigExtensionDefinitionBuilder($reader);
-	}
-} 
+    /**
+     * {@inheritdoc}
+     */
+    public static function getBuilder(Reader $reader)
+    {
+        return new TwigExtensionDefinitionBuilder($reader);
+    }
+}

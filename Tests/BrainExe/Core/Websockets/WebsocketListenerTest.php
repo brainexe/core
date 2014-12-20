@@ -13,48 +13,51 @@ use BrainExe\Core\Redis\Redis;
 /**
  * @Covers BrainExe\Core\Websockets\WebsocketListener
  */
-class WebsocketListenerTest extends PHPUnit_Framework_TestCase {
+class WebsocketListenerTest extends PHPUnit_Framework_TestCase
+{
 
-	/**
-	 * @var WebsocketListener
-	 */
-	private $_subject;
+    /**
+     * @var WebsocketListener
+     */
+    private $subject;
 
-	/**
-	 * @var Redis|PHPUnit_Framework_MockObject_MockObject
-	 */
-	private $_mockRedis;
+    /**
+     * @var Redis|MockObject
+     */
+    private $mockRedis;
 
-	/**
-	 * @var EventDispatcher|PHPUnit_Framework_MockObject_MockObject
-	 */
-	private $_mockEventDispatcher;
+    /**
+     * @var EventDispatcher|MockObject
+     */
+    private $mockEventDispatcher;
 
 
-	public function setUp() {
-		$this->_mockRedis = $this->getMock(Redis::class, [], [], '', false);
-		$this->_mockEventDispatcher = $this->getMock(EventDispatcher::class, [], [], '', false);
+    public function setUp()
+    {
+        $this->mockRedis = $this->getMock(Redis::class, [], [], '', false);
+        $this->mockEventDispatcher = $this->getMock(EventDispatcher::class, [], [], '', false);
 
-		$this->_subject = new WebsocketListener();
-		$this->_subject->setRedis($this->_mockRedis);
-		$this->_subject->setEventDispatcher($this->_mockEventDispatcher);
-	}
+        $this->subject = new WebsocketListener();
+        $this->subject->setRedis($this->mockRedis);
+        $this->subject->setEventDispatcher($this->mockEventDispatcher);
+    }
 
-	public function testGetSubscribedEvents() {
-		$events = $this->_subject->getSubscribedEvents();
-		$this->assertInternalType('array', $events);
-	}
+    public function testGetSubscribedEvents()
+    {
+        $events = $this->subject->getSubscribedEvents();
+        $this->assertInternalType('array', $events);
+    }
 
-	public function testHandlePushEvent() {
-		$payload = new SelfUpdateEvent(SelfUpdateEvent::TRIGGER);
-		$event = new WebSocketEvent($payload);
+    public function testHandlePushEvent()
+    {
+        $payload = new SelfUpdateEvent(SelfUpdateEvent::TRIGGER);
+        $event = new WebSocketEvent($payload);
 
-		$this->_mockRedis
-			->expects($this->once())
-			->method('publish')
-			->with(WebsocketListener::CHANNEL, json_encode($payload));
+        $this->mockRedis
+        ->expects($this->once())
+        ->method('publish')
+        ->with(WebsocketListener::CHANNEL, json_encode($payload));
 
-		$this->_subject->handlePushEvent($event);
-	}
-
+        $this->subject->handlePushEvent($event);
+    }
 }

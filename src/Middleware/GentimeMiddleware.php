@@ -11,25 +11,27 @@ use Symfony\Component\Routing\Route;
 /**
  * @Middleware(priority=1)
  */
-class GentimeMiddleware extends AbstractMiddleware {
+class GentimeMiddleware extends AbstractMiddleware
+{
 
-	use LoggerTrait;
+    use LoggerTrait;
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function processResponse(Request $request, Response $response) {
-		$start_time = $_SERVER['REQUEST_TIME_FLOAT'];
-		$diff = microtime(true) - $start_time;
+    /**
+     * {@inheritdoc}
+     */
+    public function processResponse(Request $request, Response $response)
+    {
+        $start_time = $_SERVER['REQUEST_TIME_FLOAT'];
+        $diff = microtime(true) - $start_time;
 
-		$user = $request->attributes->get('user');
-		if ($user) {
-			/** @var UserVO $user */
-			$username = $user->getUsername();
-		} else {
-			$username = '-anonymous-';
-		}
+        $user = $request->attributes->get('user');
+        if ($user) {
+            /** @var UserVO $user */
+            $username = $user->getUsername();
+        } else {
+            $username = '-anonymous-';
+        }
 
-		$this->info(sprintf('%0.2fms (route: %s, user:%s)', $diff*1000, $request->getRequestUri(), $username), ['channel' => 'gentime']);
-	}
+        $this->info(sprintf('%0.2fms (route: %s, user:%s)', $diff*1000, $request->getRequestUri(), $username), ['channel' => 'gentime']);
+    }
 }

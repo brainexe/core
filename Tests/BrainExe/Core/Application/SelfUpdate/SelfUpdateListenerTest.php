@@ -10,35 +10,38 @@ use PHPUnit_Framework_TestCase;
 /**
  * @Covers BrainExe\Core\Application\SelfUpdate\SelfUpdateListener
  */
-class SelfUpdateListenerTest extends PHPUnit_Framework_TestCase {
+class SelfUpdateListenerTest extends PHPUnit_Framework_TestCase
+{
 
-	/**
-	 * @var SelfUpdateListener
-	 */
-	private $_subject;
+    /**
+     * @var SelfUpdateListener
+     */
+    private $subject;
 
-	/**
-	 * @var SelfUpdate|PHPUnit_Framework_MockObject_MockObject
-	 */
-	private $_mockSelfUpdate;
+    /**
+     * @var SelfUpdate|MockObject
+     */
+    private $mockSelfUpdate;
 
-	public function setUp() {
-		$this->_mockSelfUpdate = $this->getMock(SelfUpdate::class, [], [], '', false);
+    public function setUp()
+    {
+        $this->mockSelfUpdate = $this->getMock(SelfUpdate::class, [], [], '', false);
 
-		$this->_subject = new SelfUpdateListener($this->_mockSelfUpdate);
-	}
+        $this->subject = new SelfUpdateListener($this->mockSelfUpdate);
+    }
 
-	public function testGetSubscribedEvents() {
-		$actual_result = $this->_subject->getSubscribedEvents();
-		$this->assertInternalType('array', $actual_result);
-	}
+    public function testGetSubscribedEvents()
+    {
+        $actualResult = $this->subject->getSubscribedEvents();
+        $this->assertInternalType('array', $actualResult);
+    }
 
-	public function testStartSelfUpdate() {
-		$this->_mockSelfUpdate
-			->expects($this->once())
-			->method('startUpdate');
+    public function testStartSelfUpdate()
+    {
+        $this->mockSelfUpdate
+        ->expects($this->once())
+        ->method('startUpdate');
 
-		$this->_subject->startSelfUpdate();
-	}
-
+        $this->subject->startSelfUpdate();
+    }
 }

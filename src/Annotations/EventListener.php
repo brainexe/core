@@ -10,12 +10,14 @@ use Doctrine\Common\Annotations\Reader;
 /**
  * @Annotation
  */
-class EventListener extends Service {
+class EventListener extends Service
+{
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public static function getBuilder(Reader $reader) {
-		return new EventListenerDefinitionBuilder($reader);
-	}
-} 
+    /**
+     * {@inheritdoc}
+     */
+    public static function getBuilder(Reader $reader)
+    {
+        return new EventListenerDefinitionBuilder($reader);
+    }
+}

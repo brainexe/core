@@ -10,45 +10,51 @@ use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase;
 use Symfony\Component\DependencyInjection\Container;
 
-class TestEvent extends AbstractEvent {}
+class TestEvent extends AbstractEvent
+{
+}
 
-class EventDispatcherTraitTest extends PHPUnit_Framework_TestCase {
+class EventDispatcherTraitTest extends PHPUnit_Framework_TestCase
+{
 
-	/**
-	 * @var EventDispatcherTrait
-	 */
-	private $subject;
+    /**
+     * @var EventDispatcherTrait
+     */
+    private $subject;
 
-	/**
-	 * @var EventDispatcher|MockObject
-	 */
-	private $mockDispatcher;
+    /**
+     * @var EventDispatcher|MockObject
+     */
+    private $mockDispatcher;
 
-	public function setUp() {
-		$this->mockDispatcher = $this->getMock(EventDispatcher::class, [], [], '', false);
+    public function setUp()
+    {
+        $this->mockDispatcher = $this->getMock(EventDispatcher::class, [], [], '', false);
 
-		$this->subject = $this->getMockForTrait(EventDispatcherTrait::class);
-		$this->subject->setEventDispatcher($this->mockDispatcher);
-	}
+        $this->subject = $this->getMockForTrait(EventDispatcherTrait::class);
+        $this->subject->setEventDispatcher($this->mockDispatcher);
+    }
 
-	public function testDispatchEvent() {
-		$event = new TestEvent('test');
+    public function testDispatchEvent()
+    {
+        $event = new TestEvent('test');
 
-		$this->mockDispatcher
-			->expects($this->once())
-			->method('dispatchEvent')
-			->with($event);
+        $this->mockDispatcher
+        ->expects($this->once())
+        ->method('dispatchEvent')
+        ->with($event);
 
-		$this->subject->dispatchEvent($event);
-	}
-	public function testDispatchEventInBackground() {
-		$event = new TestEvent('test');
+        $this->subject->dispatchEvent($event);
+    }
+    public function testDispatchEventInBackground()
+    {
+        $event = new TestEvent('test');
 
-		$this->mockDispatcher
-			->expects($this->once())
-			->method('dispatchInBackground')
-			->with($event);
+        $this->mockDispatcher
+        ->expects($this->once())
+        ->method('dispatchInBackground')
+        ->with($event);
 
-		$this->subject->dispatchInBackground($event);
-	}
+        $this->subject->dispatchInBackground($event);
+    }
 }

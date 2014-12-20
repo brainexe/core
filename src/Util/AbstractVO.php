@@ -2,14 +2,16 @@
 
 namespace BrainExe\Core\Util;
 
-abstract class AbstractVO {
+abstract class AbstractVO
+{
 
-	/**
-	 * @param array $values
-	 */
-	public function fillValues(array $values) {
-		foreach ($values as $key => $value) {
-			$this->$key = $value;
-		}
-	}
+    /**
+     * @param array $values
+     */
+    public function fillValues(array $values)
+    {
+        foreach ($values as $key => $value) {
+            $this->$key = $value;
+        }
+    }
 }

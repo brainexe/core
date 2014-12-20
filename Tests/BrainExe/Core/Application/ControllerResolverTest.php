@@ -11,44 +11,47 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * @Covers BrainExe\Core\Application\ControllerResolver
  */
-class ControllerResolverTest extends PHPUnit_Framework_TestCase {
+class ControllerResolverTest extends PHPUnit_Framework_TestCase
+{
 
-	/**
-	 * @var ControllerResolver
-	 */
-	private $_subject;
+    /**
+     * @var ControllerResolver
+     */
+    private $subject;
 
-	/**
-	 * @var ObjectFinder|PHPUnit_Framework_MockObject_MockObject
-	 */
-	private $_mockObjectFinder;
+    /**
+     * @var ObjectFinder|MockObject
+     */
+    private $mockObjectFinder;
 
-	public function setUp() {
-		$this->_mockObjectFinder = $this->getMock(ObjectFinder::class, [], [], '', false);
+    public function setUp()
+    {
+        $this->mockObjectFinder = $this->getMock(ObjectFinder::class, [], [], '', false);
 
-		$this->_subject = new ControllerResolver();
-		$this->_subject->setObjectFinder($this->_mockObjectFinder);
-	}
+        $this->subject = new ControllerResolver();
+        $this->subject->setObjectFinder($this->mockObjectFinder);
+    }
 
-	public function testGetController() {
-		$request = new Request();
-		$this->_subject->getController($request);
-	}
+    public function testGetController()
+    {
+        $request = new Request();
+        $this->subject->getController($request);
+    }
 
-	public function testGetArguments() {
-		$request = new Request();
-		$controller = null;
+    public function testGetArguments()
+    {
+        $request = new Request();
+        $controller = null;
 
-		$request->attributes->set('key1', 'value1');
-		$request->attributes->set('key2', 'value2');
+        $request->attributes->set('key1', 'value1');
+        $request->attributes->set('key2', 'value2');
 
-		$actual_result = $this->_subject->getArguments($request, $controller);
+        $actualResult = $this->subject->getArguments($request, $controller);
 
-		$expected_result = [
-			$request, 'value1', 'value2'
-		];
+        $expectedResult = [
+        $request, 'value1', 'value2'
+        ];
 
-		$this->assertEquals($expected_result, $actual_result);
-	}
-
+        $this->assertEquals($expectedResult, $actualResult);
+    }
 }

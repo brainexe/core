@@ -11,59 +11,61 @@ use Symfony\Component\DependencyInjection\Definition;
 /**
  * @Covers BrainExe\Core\DependencyInjection\CompilerPass\RedisCompilerPass
  */
-class RedisCompilerPassTest extends PHPUnit_Framework_TestCase {
+class RedisCompilerPassTest extends PHPUnit_Framework_TestCase
+{
 
-	/**
-	 * @var RedisCompilerPass
-	 */
-	private $_subject;
+    /**
+     * @var RedisCompilerPass
+     */
+    private $subject;
 
-	/**
-	 * @var ContainerBuilder|PHPUnit_Framework_MockObject_MockObject
-	 */
-	private $_mock_container;
+    /**
+     * @var ContainerBuilder|MockObject
+     */
+    private $mock_container;
 
-	public function setUp() {
-		$this->_mock_container = $this->getMock(ContainerBuilder::class);
+    public function setUp()
+    {
+        $this->mock_container = $this->getMock(ContainerBuilder::class);
 
-		$this->_subject = new RedisCompilerPass();
-	}
+        $this->subject = new RedisCompilerPass();
+    }
 
-	public function testProcess() {
-		$password = 'testetst';
-		$database = 12;
+    public function testProcess()
+    {
+        $password = 'testetst';
+        $database = 12;
 
-		$redis = $this->getMock(Definition::class);
+        $redis = $this->getMock(Definition::class);
 
-		$this->_mock_container
-			->expects($this->at(0))
-			->method('getDefinition')
-			->with('redis')
-			->will($this->returnValue($redis));
+        $this->mock_container
+        ->expects($this->at(0))
+        ->method('getDefinition')
+        ->with('redis')
+        ->will($this->returnValue($redis));
 
-		$this->_mock_container
-			->expects($this->at(1))
-			->method('getParameter')
-			->with('redis.password')
-			->will($this->returnValue($password));
+        $this->mock_container
+        ->expects($this->at(1))
+        ->method('getParameter')
+        ->with('redis.password')
+        ->will($this->returnValue($password));
 
-		$this->_mock_container
-			->expects($this->at(2))
-			->method('getParameter')
-			->with('redis.database')
-			->will($this->returnValue($database));
+        $this->mock_container
+        ->expects($this->at(2))
+        ->method('getParameter')
+        ->with('redis.database')
+        ->will($this->returnValue($database));
 
-		$redis
-			->expects($this->at(0))
-			->method('addMethodCall')
-			->with('auth', [$password]);
+        $redis
+        ->expects($this->at(0))
+        ->method('addMethodCall')
+        ->with('auth', [$password]);
 
-		$redis
-			->expects($this->at(1))
-			->method('addMethodCall')
-			->with('select', [$database]);
+        $redis
+        ->expects($this->at(1))
+        ->method('addMethodCall')
+        ->with('select', [$database]);
 
-		$this->_subject->process($this->_mock_container);
-	}
-
+        $this->subject->process($this->mock_container);
+    }
 }

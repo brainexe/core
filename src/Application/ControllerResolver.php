@@ -9,37 +9,40 @@ use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
 /**
  * @Service(public=false)
  */
-class ControllerResolver implements ControllerResolverInterface {
+class ControllerResolver implements ControllerResolverInterface
+{
 
-	use ServiceContainerTrait;
+    use ServiceContainerTrait;
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getController(Request $request) {
-		$controller = $request->attributes->get('_controller');
+    /**
+     * {@inheritdoc}
+     */
+    public function getController(Request $request)
+    {
+        $controller = $request->attributes->get('_controller');
 
-		list($service_id, $method) = $controller;
+        list($service_id, $method) = $controller;
 
-		$service = $this->getService($service_id);
+        $service = $this->getService($service_id);
 
-		return [$service, $method];
-	}
+        return [$service, $method];
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getArguments(Request $request, $controller) {
-		$arguments = [
-			$request
-		];
+    /**
+     * {@inheritdoc}
+     */
+    public function getArguments(Request $request, $controller)
+    {
+        $arguments = [
+        $request
+        ];
 
-		foreach ($request->attributes->all() as $attribute => $value) {
-			if ($attribute[0] !== '_') {
-				$arguments[] = $value;
-			}
-		}
+        foreach ($request->attributes->all() as $attribute => $value) {
+            if ($attribute[0] !== '_') {
+                $arguments[] = $value;
+            }
+        }
 
-		return $arguments;
-	}
+        return $arguments;
+    }
 }

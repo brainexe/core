@@ -11,63 +11,66 @@ use BrainExe\Core\Redis\Redis;
 /**
  * @Covers BrainExe\Core\Authentication\RegisterTokens
  */
-class RegisterTokensTest extends PHPUnit_Framework_TestCase {
+class RegisterTokensTest extends PHPUnit_Framework_TestCase
+{
 
-	/**
-	 * @var RegisterTokens
-	 */
-	private $_subject;
+    /**
+     * @var RegisterTokens
+     */
+    private $subject;
 
-	/**
-	 * @var Redis|PHPUnit_Framework_MockObject_MockObject
-	 */
-	private $_mockRedis;
+    /**
+     * @var Redis|MockObject
+     */
+    private $mockRedis;
 
-	/**
-	 * @var IdGenerator|PHPUnit_Framework_MockObject_MockObject
-	 */
-	private $_mockIdGenerator;
+    /**
+     * @var IdGenerator|MockObject
+     */
+    private $mockIdGenerator;
 
 
-	public function setUp() {
-		$this->_mockRedis = $this->getMock(Redis::class, [], [], '', false);
-		$this->_mockIdGenerator = $this->getMock(IdGenerator::class, [], [], '', false);
+    public function setUp()
+    {
+        $this->mockRedis = $this->getMock(Redis::class, [], [], '', false);
+        $this->mockIdGenerator = $this->getMock(IdGenerator::class, [], [], '', false);
 
-		$this->_subject = new RegisterTokens();
-		$this->_subject->setRedis($this->_mockRedis);
-		$this->_subject->setIdGenerator($this->_mockIdGenerator);
-	}
+        $this->subject = new RegisterTokens();
+        $this->subject->setRedis($this->mockRedis);
+        $this->subject->setIdGenerator($this->mockIdGenerator);
+    }
 
-	public function testAddToken() {
-		$id = 11880;
+    public function testAddToken()
+    {
+        $id = 11880;
 
-		$this->_mockIdGenerator
-			->expects($this->once())
-			->method('generateRandomId')
-			->will($this->returnValue($id));
+        $this->mockIdGenerator
+        ->expects($this->once())
+        ->method('generateRandomId')
+        ->will($this->returnValue($id));
 
-		$this->_mockRedis
-			->expects($this->once())
-			->method('sAdd')
-			->with(RegisterTokens::TOKEN_KEY, $id);
+        $this->mockRedis
+        ->expects($this->once())
+        ->method('sAdd')
+        ->with(RegisterTokens::TOKEN_KEY, $id);
 
-		$actual_result = $this->_subject->addToken();
+        $actualResult = $this->subject->addToken();
 
-		$this->assertEquals($id, $actual_result);
-	}
+        $this->assertEquals($id, $actualResult);
+    }
 
-	public function testFetchToken() {
-		$token = 11880;
+    public function testFetchToken()
+    {
+        $token = 11880;
 
-		$this->_mockRedis
-			->expects($this->once())
-			->method('sRem')
-			->with(RegisterTokens::TOKEN_KEY, $token)
-			->will($this->returnValue(true));
+        $this->mockRedis
+        ->expects($this->once())
+        ->method('sRem')
+        ->with(RegisterTokens::TOKEN_KEY, $token)
+        ->will($this->returnValue(true));
 
-		$actual_result = $this->_subject->fetchToken($token);
+        $actualResult = $this->subject->fetchToken($token);
 
-		$this->assertTrue($actual_result);
-	}
-
+        $this->assertTrue($actualResult);
+    }
 }

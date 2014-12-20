@@ -15,57 +15,59 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 /**
  * @Covers BrainExe\Core\Console\CreateUserCommand
  */
-class CreateUserCommandTest extends PHPUnit_Framework_TestCase {
+class CreateUserCommandTest extends PHPUnit_Framework_TestCase
+{
 
-	/**
-	 * @var CreateUserCommand
-	 */
-	private $_subject;
+    /**
+     * @var CreateUserCommand
+     */
+    private $subject;
 
-	/**
-	 * @var Register|PHPUnit_Framework_MockObject_MockObject
-	 */
-	private $_mockRegister;
+    /**
+     * @var Register|MockObject
+     */
+    private $mockRegister;
 
-	public function setUp() {
-		$this->_mockRegister = $this->getMock(Register::class, [], [], '', false);
+    public function setUp()
+    {
+        $this->mockRegister = $this->getMock(Register::class, [], [], '', false);
 
-		$this->_subject = new CreateUserCommand($this->_mockRegister);
-	}
+        $this->subject = new CreateUserCommand($this->mockRegister);
+    }
 
-	public function testExecute() {
-		$application = new Application();
-		$application->add($this->_subject);
+    public function testExecute()
+    {
+        $application = new Application();
+        $application->add($this->subject);
 
-		$commandTester = new CommandTester($this->_subject);
+        $commandTester = new CommandTester($this->subject);
 
-		$username = 'username';
-		$password = 'password';
-		$roles    = 'role1,role2';
-		$user_id  = 42;
+        $username = 'username';
+        $password = 'password';
+        $roles    = 'role1,role2';
+        $user_id  = 42;
 
-		$session = new Session(new MockArraySessionStorage());
+        $session = new Session(new MockArraySessionStorage());
 
-		$user = new UserVO();
-		$user->username = $username;
-		$user->password = $password;
-		$user->roles    = ['role1', 'role2'];
+        $user = new UserVO();
+        $user->username = $username;
+        $user->password = $password;
+        $user->roles    = ['role1', 'role2'];
 
-		$this->_mockRegister
-			->expects($this->once())
-			->method('register')
-			->with($user, $session, null)
-			->will($this->returnValue($user_id));
+        $this->mockRegister
+        ->expects($this->once())
+        ->method('register')
+        ->with($user, $session, null)
+        ->will($this->returnValue($user_id));
 
-		$commandTester->execute([
-			'username' => $username,
-			'password' => $password,
-			'roles'    => $roles
-		]);
+        $commandTester->execute([
+        'username' => $username,
+        'password' => $password,
+        'roles'    => $roles
+        ]);
 
-		$output = $commandTester->getDisplay();
+        $output = $commandTester->getDisplay();
 
-		$this->assertEquals("New user-id: $user_id\n", $output);
-	}
-
+        $this->assertEquals("New user-id: $user_id\n", $output);
+    }
 }

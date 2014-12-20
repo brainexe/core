@@ -10,17 +10,19 @@ use Doctrine\Common\Annotations\Reader;
 /**
  * @Annotation
  */
-class Middleware extends Service {
+class Middleware extends Service
+{
 
-	/**
-	 * @var integer
-	 */
-	public $priority = 5;
+    /**
+     * @var integer
+     */
+    public $priority = 5;
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public static function getBuilder(Reader $reader) {
-		return new MiddlewareDefinitionBuilder($reader);
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public static function getBuilder(Reader $reader)
+    {
+        return new MiddlewareDefinitionBuilder($reader);
+    }
 }

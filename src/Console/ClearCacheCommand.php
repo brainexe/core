@@ -15,81 +15,84 @@ use Symfony\Component\Finder\Finder;
 /**
  * @Command
  */
-class ClearCacheCommand extends Command {
+class ClearCacheCommand extends Command
+{
 
-	use EventDispatcherTrait;
+    use EventDispatcherTrait;
 
-	/**
-	 * @var Finder
-	 */
-	private $finder;
+    /**
+     * @var Finder
+     */
+    private $finder;
 
-	/**
-	 * @var FileSystem
-	 */
-	private $filesystem;
+    /**
+     * @var FileSystem
+     */
+    private $filesystem;
 
-	/**
-	 * @var Rebuild
-	 */
-	private $rebuild;
+    /**
+     * @var Rebuild
+     */
+    private $rebuild;
 
-	/**
-	 * {@inheritdoc}
-	 */
-	protected function configure() {
-		$this->setName('cache:clear')
-			->setDescription('Clears the local cache')
-			->setAliases(['cc']);
-	}
+    /**
+     * {@inheritdoc}
+     */
+    protected function configure()
+    {
+        $this->setName('cache:clear')
+        ->setDescription('Clears the local cache')
+        ->setAliases(['cc']);
+    }
 
-	/**
-	 * @Inject({"@Finder", "@FileSystem", "@Core.Rebuild"})
-	 * @param Finder $finder
-	 * @param FileSystem $filesystem
-	 * @param Rebuild $rebuild
-	 */
-	public function __construct(Finder $finder, FileSystem $filesystem, Rebuild $rebuild) {
-		$this->finder = $finder;
-		$this->filesystem = $filesystem;
-		$this->rebuild = $rebuild;
+    /**
+     * @Inject({"@Finder", "@FileSystem", "@Core.Rebuild"})
+     * @param Finder $finder
+     * @param FileSystem $filesystem
+     * @param Rebuild $rebuild
+     */
+    public function __construct(Finder $finder, FileSystem $filesystem, Rebuild $rebuild)
+    {
+        $this->finder = $finder;
+        $this->filesystem = $filesystem;
+        $this->rebuild = $rebuild;
 
-		parent::__construct();
-	}
+        parent::__construct();
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	protected function execute(InputInterface $input, OutputInterface $output) {
-		$output->write('Clear Cache...');
+    /**
+     * {@inheritdoc}
+     */
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $output->write('Clear Cache...');
 
-		$files = $this->finder
-			->files()
-			->in(ROOT . 'cache')
-			->name('*.php')
-			->notName('assets.php');
+        $files = $this->finder
+        ->files()
+        ->in(ROOT . 'cache')
+        ->name('*.php')
+        ->notName('assets.php');
 
-		$this->filesystem->remove($files);
+        $this->filesystem->remove($files);
 
-		$output->writeln('<info>done</info>');
+        $output->writeln('<info>done</info>');
 
-		$output->write('Rebuild DIC...');
-		$this->rebuild->rebuildDIC(true);
-		$output->writeln('<info>done</info>');
+        $output->write('Rebuild DIC...');
+        $this->rebuild->rebuildDIC(true);
+        $output->writeln('<info>done</info>');
 
-		$output->write('Set permissions...');
-		$this->filesystem->chmod([
-			'cache/',
-			'cache/',
-			'logs/',
-		] , 0777, 0000, true);
-		$output->writeln('<info>done</info>');
+        $output->write('Set permissions...');
+        $this->filesystem->chmod([
+        'cache/',
+        'cache/',
+        'logs/',
+        ], 0777, 0000, true);
+        $output->writeln('<info>done</info>');
 
-		$input = new ArrayInput(['command' => 'redis:scripts:load']);
-		$this->getApplication()->run($input, $output);
+        $input = new ArrayInput(['command' => 'redis:scripts:load']);
+        $this->getApplication()->run($input, $output);
 
-		$event = new ClearCacheEvent($this->getApplication(), $input, $output);
-		$this->dispatchEvent($event);
-	}
-
+        $event = new ClearCacheEvent($this->getApplication(), $input, $output);
+        $this->dispatchEvent($event);
+    }
 }

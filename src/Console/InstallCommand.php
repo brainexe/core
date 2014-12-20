@@ -10,23 +10,25 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * @Command
  */
-class InstallCommand extends Command {
+class InstallCommand extends Command
+{
 
-	/**
-	 * {@inheritdoc}
-	 */
-	protected function configure() {
-		$this
-			->setName('app:install')
-			->setDescription('Install application');
-	}
+    /**
+     * {@inheritdoc}
+     */
+    protected function configure()
+    {
+        $this
+        ->setName('app:install')
+        ->setDescription('Install application');
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	protected function execute(InputInterface $input, OutputInterface $output) {
-		$input = new ArrayInput(['command' => 'cache:clear']);
-		$this->getApplication()->run($input, $output);
-	}
-
+    /**
+     * {@inheritdoc}
+     */
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $input = new ArrayInput(['command' => 'cache:clear']);
+        $this->getApplication()->run($input, $output);
+    }
 }

@@ -11,58 +11,61 @@ use Symfony\Component\DependencyInjection\Definition;
 /**
  * @Covers BrainExe\Core\DependencyInjection\CompilerPass\TestCompilerPass
  */
-class TestCompilerPassTest extends PHPUnit_Framework_TestCase {
+class TestCompilerPassTest extends PHPUnit_Framework_TestCase
+{
 
-	/**
-	 * @var TestCompilerPass
-	 */
-	private $_subject;
+    /**
+     * @var TestCompilerPass
+     */
+    private $subject;
 
-	/**
-	 * @var ContainerBuilder|PHPUnit_Framework_MockObject_MockObject
-	 */
-	private $_mockContainer;
+    /**
+     * @var ContainerBuilder|MockObject
+     */
+    private $mockContainer;
 
-	public function setUp() {
-		$this->_mockContainer = $this->getMock(ContainerBuilder::class);
+    public function setUp()
+    {
+        $this->mockContainer = $this->getMock(ContainerBuilder::class);
 
-		$this->_subject = new TestCompilerPass();
-	}
+        $this->subject = new TestCompilerPass();
+    }
 
-	public function testProcessWithoutStandalone() {
-		$this->_mockContainer
-			->expects($this->once())
-			->method('getParameter')
-			->willReturn(false);
+    public function testProcessWithoutStandalone()
+    {
+        $this->mockContainer
+        ->expects($this->once())
+        ->method('getParameter')
+        ->willReturn(false);
 
-		$this->_subject->process($this->_mockContainer);
-	}
+        $this->subject->process($this->mockContainer);
+    }
 
-	public function testProcess() {
-		$definition_1 = $this->getMock(Definition::class);
-		$definition_2 = $this->getMock(Definition::class);
+    public function testProcess()
+    {
+        $definition_1 = $this->getMock(Definition::class);
+        $definition_2 = $this->getMock(Definition::class);
 
-		$this->_mockContainer
-			->expects($this->once())
-			->method('getParameter')
-			->willReturn(true);
+        $this->mockContainer
+        ->expects($this->once())
+        ->method('getParameter')
+        ->willReturn(true);
 
-		$this->_mockContainer
-			->expects($this->once())
-			->method('getDefinitions')
-			->will($this->returnValue([$definition_1, $definition_2]));
+        $this->mockContainer
+        ->expects($this->once())
+        ->method('getDefinitions')
+        ->will($this->returnValue([$definition_1, $definition_2]));
 
-		$definition_1
-			->expects($this->once())
-			->method('setPublic')
-			->with(true);
+        $definition_1
+        ->expects($this->once())
+        ->method('setPublic')
+        ->with(true);
 
-		$definition_2
-			->expects($this->once())
-			->method('setPublic')
-			->with(true);
+        $definition_2
+        ->expects($this->once())
+        ->method('setPublic')
+        ->with(true);
 
-		$this->_subject->process($this->_mockContainer);
-	}
-
+        $this->subject->process($this->mockContainer);
+    }
 }

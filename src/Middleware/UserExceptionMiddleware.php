@@ -15,36 +15,38 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 /**
  * @Middleware
  */
-class UserExceptionMiddleware extends AbstractMiddleware {
+class UserExceptionMiddleware extends AbstractMiddleware
+{
 
-	use ServiceContainerTrait;
+    use ServiceContainerTrait;
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function processException(Request $request, Exception $exception) {
-		if ($exception instanceof ResourceNotFoundException) {
-			$exception = new UserException(sprintf('Page not found: %s', $request->getRequestUri()), 0, $exception);
+    /**
+     * {@inheritdoc}
+     */
+    public function processException(Request $request, Exception $exception)
+    {
+        if ($exception instanceof ResourceNotFoundException) {
+            $exception = new UserException(sprintf('Page not found: %s', $request->getRequestUri()), 0, $exception);
 
-			$response = new Response('', 404);
-		} elseif ($exception instanceof MethodNotAllowedException) {
-			$exception = new UserException('You are not allowed to access the page', 0, $exception);
-			$response = new Response('', 405);
-		} else {
-			$exception = new UserException($exception->getMessage(), 0, $exception);
-			$response = new Response('', 500);
-		}
+            $response = new Response('', 404);
+        } elseif ($exception instanceof MethodNotAllowedException) {
+            $exception = new UserException('You are not allowed to access the page', 0, $exception);
+            $response = new Response('', 405);
+        } else {
+            $exception = new UserException($exception->getMessage(), 0, $exception);
+            $response = new Response('', 500);
+        }
 
-		if ($request->isXmlHttpRequest()) {
-			$message = $exception->getMessage() ?: 'An internal error occurred';
-			$response->headers->set('X-Flash', json_encode([ControllerInterface::ALERT_DANGER, $message]));
-		} else {
-			/** @var ErrorView $error_view */
-			$error_view = $this->getService('ErrorView');
-			$response_string = $error_view->renderException($request, $exception);
-			$response->setContent($response_string);
-		}
+        if ($request->isXmlHttpRequest()) {
+            $message = $exception->getMessage() ?: 'An internal error occurred';
+            $response->headers->set('X-Flash', json_encode([ControllerInterface::ALERT_DANGER, $message]));
+        } else {
+            /** @var ErrorView $error_view */
+            $error_view = $this->getService('ErrorView');
+            $response_string = $error_view->renderException($request, $exception);
+            $response->setContent($response_string);
+        }
 
-		return $response;
-	}
+        return $response;
+    }
 }

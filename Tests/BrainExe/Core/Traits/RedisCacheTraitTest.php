@@ -7,78 +7,83 @@ use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase;
 use BrainExe\Core\Redis\Redis;
 
-class RedisCacheTraitTest extends PHPUnit_Framework_TestCase {
+class RedisCacheTraitTest extends PHPUnit_Framework_TestCase
+{
 
-	/**
-	 * @var RedisCacheTrait
-	 */
-	private $_subject;
+    /**
+     * @var RedisCacheTrait
+     */
+    private $subject;
 
-	/**
-	 * @var Redis|MockObject
-	 */
-	private $_mockRedis;
+    /**
+     * @var Redis|MockObject
+     */
+    private $mockRedis;
 
-	public function setUp() {
-		$this->_mockRedis = $this->getMock(Redis::class);
+    public function setUp()
+    {
+        $this->mockRedis = $this->getMock(Redis::class);
 
-		$this->_subject = $this->getMockForTrait(RedisCacheTrait::class);
-		$this->_subject->setRedis($this->_mockRedis);
-	}
+        $this->subject = $this->getMockForTrait(RedisCacheTrait::class);
+        $this->subject->setRedis($this->mockRedis);
+    }
 
-	public function testInvalidate() {
-		$key = 'key';
+    public function testInvalidate()
+    {
+        $key = 'key';
 
-		$this->_mockRedis
-			->expects($this->once())
-			->method('DEL')
-			->with($key);
+        $this->mockRedis
+        ->expects($this->once())
+        ->method('DEL')
+        ->with($key);
 
-		$this->_subject->invalidate($key);
-	}
+        $this->subject->invalidate($key);
+    }
 
-	public function testWrapWhenCached() {
-		$key   = 'key';
-		$ttl   = 100;
-		$value = 'value';
+    public function testWrapWhenCached()
+    {
+        $key   = 'key';
+        $ttl   = 100;
+        $value = 'value';
 
-		$callback = function() use ($value){
-			return $value;
-		};
+        $callback = function() use ($value){
+            return $value;
+        };
 
-		$this->_mockRedis
-			->expects($this->once())
-			->method('GET')
-			->with($key)
-			->willReturn(serialize($value));
+        $this->mockRedis
+        ->expects($this->once())
+        ->method('GET')
+        ->with($key)
+        ->willReturn(serialize($value));
 
-		$actual_result = $this->_subject->wrapCache($key, $callback, $ttl);
+        $actualResult = $this->subject->wrapCache($key, $callback, $ttl);
 
-		$this->assertEquals($value, $actual_result);
-	}
+        $this->assertEquals($value, $actualResult);
+    }
 
-	public function testWrap() {
-		$key   = 'key';
-		$ttl   = 100;
-		$value = 'value';
+    public function testWrap()
+    {
+        $key   = 'key';
+        $ttl   = 100;
+        $value = 'value';
 
-		$callback = function() use ($value){
-			return $value;
-		};
+        $callback = function() use ($value){
+            return $value;
+        };
 
-		$this->_mockRedis
-			->expects($this->once())
-			->method('GET')
-			->with($key)
-			->willReturn(null);
+        $this->mockRedis
+        ->expects($this->once())
+        ->method('GET')
+        ->with($key)
+        ->willReturn(null);
 
-		$this->_mockRedis
-			->expects($this->once())
-			->method('SETEX')
-			->with($key, $ttl, serialize($value));
+        $this->mockRedis
+        ->expects($this->once())
+        ->method('SETEX')
+        ->with($key, $ttl, serialize($value));
 
-		$actual_result = $this->_subject->wrapCache($key, $callback, $ttl);
+        $actualResult = $this->subject->wrapCache($key, $callback, $ttl);
 
-		$this->assertEquals($value, $actual_result);
-	}
+        $this->assertEquals($value, $actualResult);
+    }
 }

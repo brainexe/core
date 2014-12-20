@@ -11,35 +11,38 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * @Controller
  */
-class PasswordController implements ControllerInterface {
+class PasswordController implements ControllerInterface
+{
 
-	use AddFlashTrait;
+    use AddFlashTrait;
 
-	/**
-	 * @var DatabaseUserProvider
-	 */
-	private $_databaseUserProvider;
+    /**
+     * @var DatabaseUserProvider
+     */
+    private $_databaseUserProvider;
 
-	/**
-	 * @inject("@DatabaseUserProvider")
-	 * @param DatabaseUserProvider $user_provider
-	 */
-	public function __construct(DatabaseUserProvider $user_provider) {
-		$this->_databaseUserProvider = $user_provider;
-	}
+    /**
+     * @inject("@DatabaseUserProvider")
+     * @param DatabaseUserProvider $user_provider
+     */
+    public function __construct(DatabaseUserProvider $user_provider)
+    {
+        $this->_databaseUserProvider = $user_provider;
+    }
 
-	/**
-	 * @param Request $request
-	 * @return boolean
-	 * @Route("/user/change_password/", name="user.change_password", methods="POST")
-	 */
-	public function changePassword(Request $request) {
-		$new_password = $request->request->get('password');
-		/** @var UserVO $user */
-		$user = $request->attributes->get('user');
+    /**
+     * @param Request $request
+     * @return boolean
+     * @Route("/user/change_password/", name="user.change_password", methods="POST")
+     */
+    public function changePassword(Request $request)
+    {
+        $new_password = $request->request->get('password');
+        /** @var UserVO $user */
+        $user = $request->attributes->get('user');
 
-		$this->_databaseUserProvider->changePassword($user, $new_password);
+        $this->_databaseUserProvider->changePassword($user, $new_password);
 
-		return true;
-	}
+        return true;
+    }
 }

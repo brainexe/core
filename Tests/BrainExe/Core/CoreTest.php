@@ -6,12 +6,13 @@ use BrainExe\Core\Core;
 use PHPUnit_Framework_TestCase;
 use Symfony\Component\DependencyInjection\Container;
 
-class CoreTest extends PHPUnit_Framework_TestCase {
+class CoreTest extends PHPUnit_Framework_TestCase
+{
 
-	public function testBoot() {
-		$dic = Core::boot();
+    public function testBoot()
+    {
+        $dic = Core::boot();
 
-		$this->assertInstanceOf(Container::class, $dic);
-	}
-
+        $this->assertInstanceOf(Container::class, $dic);
+    }
 }

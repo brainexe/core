@@ -10,68 +10,71 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 /**
  * @CompilerPass
  */
-class EventListenerCompilerPass implements CompilerPassInterface {
+class EventListenerCompilerPass implements CompilerPassInterface
+{
 
-	const TAG = 'event_subscriber';
+    const TAG = 'event_subscriber';
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function process(ContainerBuilder $container) {
-		$dispatcher = $container->getDefinition('EventDispatcher');
-		$services   = $container->findTaggedServiceIds(self::TAG);
+    /**
+     * {@inheritdoc}
+     */
+    public function process(ContainerBuilder $container)
+    {
+        $dispatcher = $container->getDefinition('EventDispatcher');
+        $services   = $container->findTaggedServiceIds(self::TAG);
 
-		foreach (array_keys($services) as $service_id) {
-			/** @var EventSubscriberInterface $class */
-			$class = $container->getDefinition($service_id)->getClass();
+        foreach (array_keys($services) as $service_id) {
+            /** @var EventSubscriberInterface $class */
+            $class = $container->getDefinition($service_id)->getClass();
 
-			foreach ($class::getSubscribedEvents() as $eventName => $params) {
-				$this->_addEvent($dispatcher, $params, $eventName, $service_id);
-			}
-		}
-	}
+            foreach ($class::getSubscribedEvents() as $eventName => $params) {
+                $this->_addEvent($dispatcher, $params, $eventName, $service_id);
+            }
+        }
+    }
 
-	/**
-	 * @param Definition$dispatcher
-	 * @param string|array $params
-	 * @param string $name
-	 * @param string $service_id
-	 */
-	private function _addEvent(Definition $dispatcher, $params, $name, $service_id) {
-		if (is_string($params)) {
-			$this->_addListener($dispatcher, $name, $service_id, $params, 0);
-		} elseif (is_string($params[0])) {
-			$this->_addListener(
-				$dispatcher,
-				$name,
-				$service_id,
-				$params[0],
-				isset($params[1]) ? $params[1] : 0
-			);
-		} else {
-			foreach ($params as $listener) {
-				$this->_addListener(
-					$dispatcher,
-					$name,
-					$service_id,
-					$listener[0],
-					isset($listener[1]) ? $listener[1] : 0
-				);
-			}
-		}
-	}
+    /**
+     * @param Definition$dispatcher
+     * @param string|array $params
+     * @param string $name
+     * @param string $service_id
+     */
+    private function _addEvent(Definition $dispatcher, $params, $name, $service_id)
+    {
+        if (is_string($params)) {
+            $this->_addListener($dispatcher, $name, $service_id, $params, 0);
+        } elseif (is_string($params[0])) {
+            $this->_addListener(
+                $dispatcher,
+                $name,
+                $service_id,
+                $params[0],
+                isset($params[1]) ? $params[1] : 0
+            );
+        } else {
+            foreach ($params as $listener) {
+                $this->_addListener(
+                    $dispatcher,
+                    $name,
+                    $service_id,
+                    $listener[0],
+                    isset($listener[1]) ? $listener[1] : 0
+                );
+            }
+        }
+    }
 
-	/**
-	 * @param Definition $dispatcher
-	 * @param string $name
-	 * @param string $service_id
-	 * @param string $action
-	 * @param integer $priority
-	 */
-	private function _addListener(Definition $dispatcher, $name, $service_id, $action, $priority = 0) {
-		$parameters = [$name, [$service_id, $action], $priority];
+    /**
+     * @param Definition $dispatcher
+     * @param string $name
+     * @param string $service_id
+     * @param string $action
+     * @param integer $priority
+     */
+    private function _addListener(Definition $dispatcher, $name, $service_id, $action, $priority = 0)
+    {
+        $parameters = [$name, [$service_id, $action], $priority];
 
-		$dispatcher->addMethodCall('addListenerService', $parameters);
-	}
-
+        $dispatcher->addMethodCall('addListenerService', $parameters);
+    }
 }

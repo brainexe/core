@@ -2,10 +2,11 @@
 
 namespace BrainExe\Core\Redis;
 
-interface RedisScriptInterface {
+interface RedisScriptInterface
+{
 
-	/**
-	 * @return string[]
-	 */
-	public static function getRedisScripts();
+    /**
+     * @return string[]
+     */
+    public static function getRedisScripts();
 }

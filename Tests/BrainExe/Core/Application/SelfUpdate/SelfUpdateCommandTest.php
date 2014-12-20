@@ -13,41 +13,43 @@ use Symfony\Component\Console\Tester\CommandTester;
 /**
  * @Covers BrainExe\Core\Application\SelfUpdate\SelfUpdateCommand
  */
-class SelfUpdateCommandTest extends PHPUnit_Framework_TestCase {
+class SelfUpdateCommandTest extends PHPUnit_Framework_TestCase
+{
 
-	/**
-	 * @var SelfUpdateCommand
-	 */
-	private $_subject;
+    /**
+     * @var SelfUpdateCommand
+     */
+    private $subject;
 
-	/**
-	 * @var SelfUpdate|PHPUnit_Framework_MockObject_MockObject
-	 */
-	private $_mockSelfUpdate;
+    /**
+     * @var SelfUpdate|MockObject
+     */
+    private $mockSelfUpdate;
 
-	/**
-	 * @var EventDispatcher|PHPUnit_Framework_MockObject_MockObject
-	 */
-	private $_mockEventDispatcher;
+    /**
+     * @var EventDispatcher|MockObject
+     */
+    private $mockEventDispatcher;
 
-	public function setUp() {
-		$this->_mockSelfUpdate = $this->getMock(SelfUpdate::class, [], [], '', false);
-		$this->_mockEventDispatcher = $this->getMock(EventDispatcher::class, [], [], '', false);
+    public function setUp()
+    {
+        $this->mockSelfUpdate = $this->getMock(SelfUpdate::class, [], [], '', false);
+        $this->mockEventDispatcher = $this->getMock(EventDispatcher::class, [], [], '', false);
 
-		$this->_subject = new SelfUpdateCommand($this->_mockSelfUpdate, $this->_mockEventDispatcher);
-	}
+        $this->subject = new SelfUpdateCommand($this->mockSelfUpdate, $this->mockEventDispatcher);
+    }
 
-	public function testExecute() {
-		$application = new Application();
-		$application->add($this->_subject);
+    public function testExecute()
+    {
+        $application = new Application();
+        $application->add($this->subject);
 
-		$commandTester = new CommandTester($this->_subject);
+        $commandTester = new CommandTester($this->subject);
 
-		$this->_mockSelfUpdate
-			->expects($this->once())
-			->method('startUpdate');
+        $this->mockSelfUpdate
+        ->expects($this->once())
+        ->method('startUpdate');
 
-		$commandTester->execute([]);
-	}
-
+        $commandTester->execute([]);
+    }
 }

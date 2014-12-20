@@ -8,42 +8,47 @@ use PHPUnit_Framework_TestCase;
 /**
  * @Covers BrainExe\Core\Util\Time
  */
-class TimeTest extends PHPUnit_Framework_TestCase {
+class TimeTest extends PHPUnit_Framework_TestCase
+{
 
-	/**
-	 * @var Time
-	 */
-	private $_subject;
+    /**
+     * @var Time
+     */
+    private $subject;
 
-	public function setUp() {
-		$this->_subject = new Time();
-	}
+    public function setUp()
+    {
+        $this->subject = new Time();
+    }
 
-	public function testNow() {
-		$actual_result = $this->_subject->now();
+    public function testNow()
+    {
+        $actualResult = $this->subject->now();
 
-		$this->assertEquals(time(), $actual_result, "current time", 1);
-	}
+        $this->assertEquals(time(), $actualResult, "current time", 1);
+    }
 
-	public function testDate() {
-		$actual_result = $this->_subject->date('y');
-		$expected_result = date('y');
+    public function testDate()
+    {
+        $actualResult = $this->subject->date('y');
+        $expectedResult = date('y');
 
-		$this->assertEquals($expected_result, $actual_result);
-	}
+        $this->assertEquals($expectedResult, $actualResult);
+    }
 
-	public function testMicrotime() {
-		$actual_result = $this->_subject->microtime();
-		$this->assertEquals(microtime(true), $actual_result, "microtime", 100);
-	}
+    public function testMicrotime()
+    {
+        $actualResult = $this->subject->microtime();
+        $this->assertEquals(microtime(true), $actualResult, "microtime", 100);
+    }
 
-	public function testStrtotime() {
-		$string = 'tomorrow';
+    public function testStrtotime()
+    {
+        $string = 'tomorrow';
 
-		$actual_result = $this->_subject->strtotime($string);
+        $actualResult = $this->subject->strtotime($string);
 
-		$this->assertInternalType('integer', $actual_result);
+        $this->assertInternalType('integer', $actualResult);
 
-	}
-
+    }
 }

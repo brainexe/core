@@ -14,50 +14,53 @@ use Symfony\Component\Routing\Route;
 /**
  * @Covers BrainExe\Core\Middleware\GentimeMiddleware
  */
-class GentimeMiddlewareTest extends PHPUnit_Framework_TestCase {
+class GentimeMiddlewareTest extends PHPUnit_Framework_TestCase
+{
 
-	/**
-	 * @var GentimeMiddleware
-	 */
-	private $_subject;
+    /**
+     * @var GentimeMiddleware
+     */
+    private $subject;
 
-	/**
-	 * @var Logger|PHPUnit_Framework_MockObject_MockObject
-	 */
-	private $_mockLogger;
+    /**
+     * @var Logger|MockObject
+     */
+    private $mockLogger;
 
-	public function setUp() {
-		$this->_mockLogger = $this->getMock(Logger::class, [], [], '', false);
+    public function setUp()
+    {
+        $this->mockLogger = $this->getMock(Logger::class, [], [], '', false);
 
-		$this->_subject = new GentimeMiddleware();
-		$this->_subject->setLogger($this->_mockLogger);
-	}
+        $this->subject = new GentimeMiddleware();
+        $this->subject->setLogger($this->mockLogger);
+    }
 
-	public function testProcessResponse() {
-		$request = new Request();
-		$response = new Response();
+    public function testProcessResponse()
+    {
+        $request = new Request();
+        $response = new Response();
 
-		$this->_mockLogger
-			->expects($this->once())
-			->method('log')
-			->with('info', $this->isType('string'), ['channel' => 'gentime']);
+        $this->mockLogger
+        ->expects($this->once())
+        ->method('log')
+        ->with('info', $this->isType('string'), ['channel' => 'gentime']);
 
-		$this->_subject->processResponse($request, $response);
-	}
+        $this->subject->processResponse($request, $response);
+    }
 
-	public function testProcessResponseWithUser() {
-		$request  = new Request();
-		$response = new Response();
-		$user     = new UserVO();
+    public function testProcessResponseWithUser()
+    {
+        $request  = new Request();
+        $response = new Response();
+        $user     = new UserVO();
 
-		$request->attributes->set('user', $user);
+        $request->attributes->set('user', $user);
 
-		$this->_mockLogger
-			->expects($this->once())
-			->method('log')
-			->with('info', $this->isType('string'), ['channel' => 'gentime']);
+        $this->mockLogger
+        ->expects($this->once())
+        ->method('log')
+        ->with('info', $this->isType('string'), ['channel' => 'gentime']);
 
-		$this->_subject->processResponse($request, $response);
-	}
-
+        $this->subject->processResponse($request, $response);
+    }
 }

@@ -12,34 +12,36 @@ use Symfony\Component\Console\Tester\CommandTester;
 /**
  * @Covers BrainExe\Core\Console\InstallCommand
  */
-class InstallCommandTest extends PHPUnit_Framework_TestCase {
+class InstallCommandTest extends PHPUnit_Framework_TestCase
+{
 
-	/**
-	 * @var InstallCommand
-	 */
-	private $_subject;
+    /**
+     * @var InstallCommand
+     */
+    private $subject;
 
-	public function setUp() {
-		$this->_subject = new InstallCommand();
-	}
+    public function setUp()
+    {
+        $this->subject = new InstallCommand();
+    }
 
-	public function testExecute() {
-		/** @var Application|PHPUnit_Framework_MockObject_MockObject $application */
-		$application = $this->getMock(Application::class, ['run']);
-		$this->_subject->setApplication($application);
+    public function testExecute()
+    {
+        /** @var Application|MockObject $application */
+        $application = $this->getMock(Application::class, ['run']);
+        $this->subject->setApplication($application);
 
-		$commandTester = new CommandTester($this->_subject);
+        $commandTester = new CommandTester($this->subject);
 
-		$input = new ArrayInput(['command' => 'cache:clear']);
-		$application
-			->expects($this->once())
-			->method('run')
-			->with($input);
+        $input = new ArrayInput(['command' => 'cache:clear']);
+        $application
+        ->expects($this->once())
+        ->method('run')
+        ->with($input);
 
-		$commandTester->execute([]);
-		$output = $commandTester->getDisplay();
+        $commandTester->execute([]);
+        $output = $commandTester->getDisplay();
 
-		$this->assertEquals("", $output);
-	}
-
+        $this->assertEquals("", $output);
+    }
 }

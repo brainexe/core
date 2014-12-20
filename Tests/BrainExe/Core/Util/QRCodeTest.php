@@ -8,26 +8,28 @@ use PHPUnit_Framework_TestCase;
 /**
  * @Covers BrainExe\Core\Util\QRCode
  */
-class QRCodeTest extends PHPUnit_Framework_TestCase {
+class QRCodeTest extends PHPUnit_Framework_TestCase
+{
 
-	/**
-	 * @var QRCode
-	 */
-	private $subject;
+    /**
+     * @var QRCode
+     */
+    private $subject;
 
-	public function setUp() {
-		$this->subject = new QRCode();
-	}
+    public function setUp()
+    {
+        $this->subject = new QRCode();
+    }
 
-	public function testGeneratreQRLink() {
-		$data = 'data';
-		$size = 250;
+    public function testGeneratreQRLink()
+    {
+        $data = 'data';
+        $size = 250;
 
-		$actual_result = $this->subject->generatreQRLink($data, $size);
+        $actualResult = $this->subject->generatreQRLink($data, $size);
 
-		$expected_result = 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=data';
+        $expectedResult = 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=data';
 
-		$this->assertEquals($expected_result, $actual_result);
-	}
-
+        $this->assertEquals($expectedResult, $actualResult);
+    }
 }

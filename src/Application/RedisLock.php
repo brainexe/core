@@ -7,32 +7,35 @@ use BrainExe\Core\Traits\RedisTrait;
 /**
  * @Service(public=false)
  */
-class RedisLock {
-	const REDIS_PREFIX = 'lock:';
+class RedisLock
+{
+    const REDIS_PREFIX = 'lock:';
 
-	use RedisTrait;
+    use RedisTrait;
 
-	/**
-	 * @param string $name
-	 * @param integer $lock_time
-	 * @return boolean $got_lock
-	 */
-	public function lock($name, $lock_time) {
-		$redis = $this->getRedis();
+    /**
+     * @param string $name
+     * @param integer $lockTime
+     * @return boolean $got_lock
+     */
+    public function lock($name, $lockTime)
+    {
+        $redis = $this->getRedis();
 
-		$exists = $redis->EXISTS(self::REDIS_PREFIX . $name);
-		if (!$exists) {
-			$redis->SETEX($name, $lock_time, 1);
-			return true;
-		}
+        $exists = $redis->EXISTS(self::REDIS_PREFIX . $name);
+        if (!$exists) {
+            $redis->SETEX($name, $lockTime, 1);
+            return true;
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	/**
-	 * @param string $name
-	 */
-	public function unlock($name) {
-		$this->getRedis()->DEL(self::REDIS_PREFIX . $name);
-	}
+    /**
+     * @param string $name
+     */
+    public function unlock($name)
+    {
+        $this->getRedis()->DEL(self::REDIS_PREFIX . $name);
+    }
 }

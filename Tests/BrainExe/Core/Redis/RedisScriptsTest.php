@@ -8,35 +8,38 @@ use PHPUnit_Framework_TestCase;
 /**
  * @Covers BrainExe\Core\Redis\RedisScripts
  */
-class RedisScriptsTest extends PHPUnit_Framework_TestCase {
+class RedisScriptsTest extends PHPUnit_Framework_TestCase
+{
 
-	/**
-	 * @var RedisScripts
-	 */
-	private $_subject;
+    /**
+     * @var RedisScripts
+     */
+    private $subject;
 
-	public function setUp() {
-		$this->_subject = new RedisScripts();
-	}
+    public function setUp()
+    {
+        $this->subject = new RedisScripts();
+    }
 
-	public function testGetSha1() {
-		$name = 'name';
-		$sha1 = 'sha1';
-		$script = 'script';
-		$this->_subject->registerScript($name, $sha1, $script);
+    public function testGetSha1()
+    {
+        $name = 'name';
+        $sha1 = 'sha1';
+        $script = 'script';
+        $this->subject->registerScript($name, $sha1, $script);
 
-		$actual_result = $this->_subject->getSha1($name);
-		$this->assertEquals($sha1, $actual_result);
-	}
+        $actualResult = $this->subject->getSha1($name);
+        $this->assertEquals($sha1, $actualResult);
+    }
 
-	public function testGetAllScripts() {
-		$name = 'name';
-		$sha1 = 'sha1';
-		$script = 'script';
-		$this->_subject->registerScript($name, $sha1, $script);
+    public function testGetAllScripts()
+    {
+        $name = 'name';
+        $sha1 = 'sha1';
+        $script = 'script';
+        $this->subject->registerScript($name, $sha1, $script);
 
-		$actual_result = $this->_subject->getAllScripts($name);
-		$this->assertEquals([$sha1 => $script], $actual_result);
-	}
-
+        $actualResult = $this->subject->getAllScripts($name);
+        $this->assertEquals([$sha1 => $script], $actualResult);
+    }
 }

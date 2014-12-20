@@ -10,13 +10,14 @@ use Doctrine\Common\Annotations\Reader;
 /**
  * @Annotation
  */
-class Controller extends Service {
+class Controller extends Service
+{
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public static function getBuilder(Reader $reader) {
-		return new ControllerDefinitionBuilder($reader);
-	}
-
+    /**
+     * {@inheritdoc}
+     */
+    public static function getBuilder(Reader $reader)
+    {
+        return new ControllerDefinitionBuilder($reader);
+    }
 }

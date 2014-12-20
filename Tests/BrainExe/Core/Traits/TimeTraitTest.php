@@ -7,41 +7,45 @@ use BrainExe\Core\Util\Time;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase;
 
-class TimeTraitTest extends PHPUnit_Framework_TestCase {
+class TimeTraitTest extends PHPUnit_Framework_TestCase
+{
 
-	/**
-	 * @var TimeTrait
-	 */
-	private $_subject;
+    /**
+     * @var TimeTrait
+     */
+    private $subject;
 
-	/**
-	 * @var Time|MockObject
-	 */
-	private $_mockTime;
+    /**
+     * @var Time|MockObject
+     */
+    private $mockTime;
 
-	public function setUp() {
-		$this->_mockTime = $this->getMock(Time::class);
+    public function setUp()
+    {
+        $this->mockTime = $this->getMock(Time::class);
 
-		$this->_subject = $this->getMockForTrait(TimeTrait::class);
-		$this->_subject->setTime($this->_mockTime);
-	}
+        $this->subject = $this->getMockForTrait(TimeTrait::class);
+        $this->subject->setTime($this->mockTime);
+    }
 
-	public function testNow() {
-		$now = 100;
+    public function testNow()
+    {
+        $now = 100;
 
-		$this->_mockTime
-			->expects($this->once())
-			->method('now')
-			->will($this->returnValue($now));
+        $this->mockTime
+        ->expects($this->once())
+        ->method('now')
+        ->will($this->returnValue($now));
 
-		$actual_result = $this->_subject->now();
+        $actualResult = $this->subject->now();
 
-		$this->assertEquals($now, $actual_result);
-	}
+        $this->assertEquals($now, $actualResult);
+    }
 
-	public function testGetTime() {
-		$actual_result = $this->_subject->getTime();
+    public function testGetTime()
+    {
+        $actualResult = $this->subject->getTime();
 
-		$this->assertEquals($this->_mockTime, $actual_result);
-	}
+        $this->assertEquals($this->mockTime, $actualResult);
+    }
 }

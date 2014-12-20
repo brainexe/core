@@ -10,26 +10,28 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * @Covers BrainExe\Core\Authentication\Controller\UserController
  */
-class UserControllerTest extends PHPUnit_Framework_TestCase {
+class UserControllerTest extends PHPUnit_Framework_TestCase
+{
 
-	/**
-	 * @var UserController
-	 */
-	private $_subject;
+    /**
+     * @var UserController
+     */
+    private $subject;
 
-	public function setUp() {
-		$this->_subject = new UserController();
-	}
+    public function setUp()
+    {
+        $this->subject = new UserController();
+    }
 
-	public function testGetCurrentUser() {
-		$user_vo = new UserVO();
-		$request = new Request();
+    public function testGetCurrentUser()
+    {
+        $user_vo = new UserVO();
+        $request = new Request();
 
-		$request->attributes->set('user', $user_vo);
+        $request->attributes->set('user', $user_vo);
 
-		$actual_result = $this->_subject->getCurrentUser($request);
+        $actualResult = $this->subject->getCurrentUser($request);
 
-		$this->assertEquals($user_vo, $actual_result);
-	}
-
+        $this->assertEquals($user_vo, $actualResult);
+    }
 }

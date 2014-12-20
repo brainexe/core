@@ -8,50 +8,53 @@ use Symfony\Component\Process\ProcessBuilder;
 /**
  * @Service(public=false)
  */
-class SelfUpdate {
+class SelfUpdate
+{
 
-	use EventDispatcherTrait;
+    use EventDispatcherTrait;
 
-	/**
-	 * @var ProcessBuilder
-	 */
-	private $processBuilder;
+    /**
+     * @var ProcessBuilder
+     */
+    private $processBuilder;
 
-	/**
-	 * @inject("@ProcessBuilder")
-	 * @param ProcessBuilder $processBuilder
-	 */
-	public function __construct(ProcessBuilder $processBuilder) {
-		$this->processBuilder = $processBuilder;
-	}
+    /**
+     * @inject("@ProcessBuilder")
+     * @param ProcessBuilder $processBuilder
+     */
+    public function __construct(ProcessBuilder $processBuilder)
+    {
+        $this->processBuilder = $processBuilder;
+    }
 
-	/**
-	 * @return void
-	 */
-	public function startUpdate() {
-		$process = $this->processBuilder
-			->setWorkingDirectory(ROOT)
-			->setPrefix('composer')
-			->setArguments(['update', '-o'])
-			->setTimeout(0)
-			->getProcess();
+    /**
+     * @return void
+     */
+    public function startUpdate()
+    {
+        $process = $this->processBuilder
+            ->setWorkingDirectory(ROOT)
+            ->setPrefix('composer')
+            ->setArguments(['update', '-o'])
+            ->setTimeout(0)
+            ->getProcess();
 
-		$process->run(function($type, $buffer) {
-			unset($type);
-			$event = new SelfUpdateEvent(SelfUpdateEvent::PROCESS);
-			$event->payload = $buffer;
+        $process->run(function($type, $buffer) {
+            unset($type);
+            $event = new SelfUpdateEvent(SelfUpdateEvent::PROCESS);
+            $event->payload = $buffer;
 
-			$this->dispatchEvent($event);
-		});
+            $this->dispatchEvent($event);
+        });
 
-		if ($process->isSuccessful()) {
-			$event = new SelfUpdateEvent(SelfUpdateEvent::DONE);
-			$event->payload = $process->getOutput();
-		} else {
-			$event = new SelfUpdateEvent(SelfUpdateEvent::ERROR);
-			$event->payload = $process->getErrorOutput();
-		}
+        if ($process->isSuccessful()) {
+            $event = new SelfUpdateEvent(SelfUpdateEvent::DONE);
+            $event->payload = $process->getOutput();
+        } else {
+            $event = new SelfUpdateEvent(SelfUpdateEvent::ERROR);
+            $event->payload = $process->getErrorOutput();
+        }
 
-		$this->dispatchEvent($event);
+        $this->dispatchEvent($event);
     }
 }

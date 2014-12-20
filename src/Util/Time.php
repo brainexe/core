@@ -5,35 +5,40 @@ namespace BrainExe\Core\Util;
 /**
  * @Service(public=false)
  */
-class Time {
+class Time
+{
 
-	/**
-	 * @return integer
-	 */
-	public function now() {
-		return time();
-	}
+    /**
+     * @return integer
+     */
+    public function now()
+    {
+        return time();
+    }
 
-	/**
-	 * @param string $format
-	 * @return string
-	 */
-	public function date($format) {
-		return date($format);
-	}
+    /**
+     * @param string $format
+     * @return string
+     */
+    public function date($format)
+    {
+        return date($format);
+    }
 
-	/**
-	 * @return integer
-	 */
-	public function microtime() {
-		return microtime(true);
-	}
+    /**
+     * @return integer
+     */
+    public function microtime()
+    {
+        return microtime(true);
+    }
 
-	/**
-	 * @param string $string
-	 * @return integer
-	 */
-	public function strtotime($string) {
-		return strtotime($string);
-	}
+    /**
+     * @param string $string
+     * @return integer
+     */
+    public function strtotime($string)
+    {
+        return strtotime($string);
+    }
 }

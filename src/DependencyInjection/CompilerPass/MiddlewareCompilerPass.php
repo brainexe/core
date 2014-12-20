@@ -9,34 +9,35 @@ use Symfony\Component\DependencyInjection\Reference;
 /**
  * @CompilerPass
  */
-class MiddlewareCompilerPass implements CompilerPassInterface {
+class MiddlewareCompilerPass implements CompilerPassInterface
+{
 
-	const TAG = 'middleware';
+    const TAG = 'middleware';
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function process(ContainerBuilder $container) {
-		$service_ids = $container->findTaggedServiceIds(self::TAG);
-		$service_priorities = [];
-		foreach ($service_ids as $service_id => $tag) {
-			if (null === $tag[0]['priority']) {
-				continue;
-			}
-			$service_priorities[$service_id] = $tag[0]['priority'];
-		}
+    /**
+     * {@inheritdoc}
+     */
+    public function process(ContainerBuilder $container)
+    {
+        $service_ids = $container->findTaggedServiceIds(self::TAG);
+        $service_priorities = [];
+        foreach ($service_ids as $service_id => $tag) {
+            if (null === $tag[0]['priority']) {
+                continue;
+            }
+            $service_priorities[$service_id] = $tag[0]['priority'];
+        }
 
-		asort($service_priorities);
-		$service_priorities = array_reverse($service_priorities);
+        asort($service_priorities);
+        $service_priorities = array_reverse($service_priorities);
 
-		$app_kernel = $container->getDefinition('AppKernel');
+        $app_kernel = $container->getDefinition('AppKernel');
 
-		$references = [];
-		foreach (array_keys($service_priorities) as $service_id) {
-			$references[] = new Reference($service_id);
-		}
+        $references = [];
+        foreach (array_keys($service_priorities) as $service_id) {
+            $references[] = new Reference($service_id);
+        }
 
-		$app_kernel->addMethodCall('setMiddlewares', [$references]);
-	}
+        $app_kernel->addMethodCall('setMiddlewares', [$references]);
+    }
 }
-

@@ -7,6 +7,7 @@ use Doctrine\Common\Annotations\Annotation;
 /**
  * @Annotation
  */
-class Guest {
+class Guest
+{
 
 }

@@ -13,32 +13,34 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 /**
  * @Covers BrainExe\Core\Authentication\Controller\LogoutController
  */
-class LogoutControllerTest extends PHPUnit_Framework_TestCase {
+class LogoutControllerTest extends PHPUnit_Framework_TestCase
+{
 
-	/**
-	 * @var LogoutController
-	 */
-	private $_subject;
+    /**
+     * @var LogoutController
+     */
+    private $subject;
 
-	public function setUp() {
-		$this->_subject = new LogoutController();
-	}
+    public function setUp()
+    {
+        $this->subject = new LogoutController();
+    }
 
-	public function testLogout() {
-		$user = new UserVO();
+    public function testLogout()
+    {
+        $user = new UserVO();
 
-		$session = new Session(new MockArraySessionStorage());
-		$session->set('user', $user);
+        $session = new Session(new MockArraySessionStorage());
+        $session->set('user', $user);
 
-		$request = new Request();
-		$request->setSession($session);
+        $request = new Request();
+        $request->setSession($session);
 
-		$this->assertEquals($user, $session->get('user'));
+        $this->assertEquals($user, $session->get('user'));
 
-		$actual_result = $this->_subject->logout($request);
+        $actualResult = $this->subject->logout($request);
 
-		$this->assertNull($session->get('user'));
-		$this->assertInstanceOf(AnonymusUserVO::class, $actual_result);
-	}
-
+        $this->assertNull($session->get('user'));
+        $this->assertInstanceOf(AnonymusUserVO::class, $actualResult);
+    }
 }

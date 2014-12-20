@@ -7,27 +7,29 @@ use Symfony\Component\DependencyInjection\Container;
 /**
  * @Service(public=false)
  */
-class ObjectFinder {
+class ObjectFinder
+{
 
-	/**
-	 * @var Container
-	 */
-	private $_container;
+    /**
+     * @var Container
+     */
+    private $_container;
 
-	/**
-	 * @Inject("@service_container")
-	 * @param Container $container
-	 */
-	public function __construct(Container $container) {
-		$this->_container = $container;
-	}
+    /**
+     * @Inject("@service_container")
+     * @param Container $container
+     */
+    public function __construct(Container $container)
+    {
+        $this->_container = $container;
+    }
 
-	/**
-	 * @param string $service_id
-	 * @return mixed
-	 */
-	public function getService($service_id) {
-		return $this->_container->get($service_id);
-	}
-
+    /**
+     * @param string $service_id
+     * @return mixed
+     */
+    public function getService($service_id)
+    {
+        return $this->_container->get($service_id);
+    }
 }

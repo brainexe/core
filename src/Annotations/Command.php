@@ -10,11 +10,13 @@ use Doctrine\Common\Annotations\Reader;
 /**
  * @Annotation
  */
-class Command extends Service {
-	/**
-	 * {@inheritdoc}
-	 */
-	public static function getBuilder(Reader $reader) {
-		return new CommandDefinitionBuilder($reader);
-	}
+class Command extends Service
+{
+    /**
+     * {@inheritdoc}
+     */
+    public static function getBuilder(Reader $reader)
+    {
+        return new CommandDefinitionBuilder($reader);
+    }
 }

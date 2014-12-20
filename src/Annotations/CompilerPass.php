@@ -10,13 +10,15 @@ use Doctrine\Common\Annotations\Reader;
 /**
  * @Annotation
  */
-class CompilerPass extends Service {
-	public $priority = 1;
+class CompilerPass extends Service
+{
+    public $priority = 1;
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public static function getBuilder(Reader $reader) {
-		return new CompilerPassDefinitionBuilder($reader);
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public static function getBuilder(Reader $reader)
+    {
+        return new CompilerPassDefinitionBuilder($reader);
+    }
 }

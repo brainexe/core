@@ -9,72 +9,75 @@ use PHPUnit_Framework_TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
-class ControllerCompilerPassTest extends PHPUnit_Framework_TestCase {
+class ControllerCompilerPassTest extends PHPUnit_Framework_TestCase
+{
 
-	/**
-	 * @var ControllerCompilerPass|MockObject
-	 */
-	private $_subject;
+    /**
+     * @var ControllerCompilerPass|MockObject
+     */
+    private $subject;
 
-	/**
-	 * @var ContainerBuilder|MockObject $container
-	 */
-	private $_mockContainer;
+    /**
+     * @var ContainerBuilder|MockObject $container
+     */
+    private $mockContainer;
 
-	/**
-	 * @var Definition|MockObject $container
-	 */
-	private $_mockRouterDefinition;
+    /**
+     * @var Definition|MockObject $container
+     */
+    private $mockRouterDefinition;
 
-	public function setUp() {
-		$this->_subject = $this->getMock(ControllerCompilerPass::class, ['_dumpMatcher']);
+    public function setUp()
+    {
+        $this->subject = $this->getMock(ControllerCompilerPass::class, ['_dumpMatcher']);
 
-		$this->_mockContainer        = $this->getMock(ContainerBuilder::class);
-		$this->_mockRouterDefinition = $this->getMock(Definition::class);
-	}
+        $this->mockContainer        = $this->getMock(ContainerBuilder::class);
+        $this->mockRouterDefinition = $this->getMock(Definition::class);
+    }
 
-	public function testProcess() {
-		$route_1 = new Route([]);
-		$route_2 = new Route([]);
+    public function testProcess()
+    {
+        $route1 = new Route([]);
+        $route2 = new Route([]);
 
-		$route_1->setCsrf(true);
+        $route1->setCsrf(true);
 
-		$service = $this->getMock(Definition::class);
-		$service_ids = [
-			$service_id = 'service_id' => [
-				[$route_1],
-				[$route_2],
-			]
-		];
+        $service = $this->getMock(Definition::class);
+        $serviceIds = [
+            $serviceId = 'service_id' => [
+                [$route1],
+                [$route2],
+            ]
+        ];
 
-		$this->_mockContainer
-			->expects($this->at(0))
-			->method('getDefinition')
-			->with('RouteCollection')
-			->willReturn($this->_mockRouterDefinition);
+        $this->mockContainer
+            ->expects($this->at(0))
+            ->method('getDefinition')
+            ->with('Core.RouteCollection')
+            ->willReturn($this->mockRouterDefinition);
 
-		$this->_mockContainer
-			->expects($this->at(1))
-			->method('findTaggedServiceIds')
-			->with(ControllerCompilerPass::ROUTE_TAG)
-			->willReturn($service_ids);
+        $this->mockContainer
+            ->expects($this->at(1))
+            ->method('findTaggedServiceIds')
+            ->with(ControllerCompilerPass::ROUTE_TAG)
+            ->willReturn($serviceIds);
 
-		$this->_mockContainer
-			->expects($this->at(2))
-			->method('getDefinition')
-			->with($service_id)
-			->willReturn($service);
+        $this->mockContainer
+            ->expects($this->at(2))
+            ->method('getDefinition')
+            ->with($serviceId)
+            ->willReturn($service);
 
-		$service
-			->expects($this->once())
-			->method('clearTag')
-			->with(ControllerCompilerPass::ROUTE_TAG);
+        $service
+            ->expects($this->once())
+            ->method('clearTag')
+            ->with(ControllerCompilerPass::ROUTE_TAG);
 
-		$this->_subject
-			->expects($this->once())
-			->method('_dumpMatcher')
-			->with($this->_mockContainer);
+        $this->subject
+            ->expects($this->once())
+            ->method('_dumpMatcher')
+            ->with($this->mockContainer);
 
-		$this->_subject->process($this->_mockContainer);
-	}
+        $this->subject->process($this->mockContainer);
+    }
 }

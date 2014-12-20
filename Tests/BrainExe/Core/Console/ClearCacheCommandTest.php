@@ -16,102 +16,104 @@ use Symfony\Component\Finder\Finder;
 /**
  * @Covers BrainExe\Core\Console\ClearCacheCommand
  */
-class ClearCacheCommandTest extends PHPUnit_Framework_TestCase {
+class ClearCacheCommandTest extends PHPUnit_Framework_TestCase
+{
 
-	/**
-	 * @var ClearCacheCommand
-	 */
-	private $_subject;
+    /**
+     * @var ClearCacheCommand
+     */
+    private $subject;
 
-	/**
-	 * @var Finder|MockObject
-	 */
-	private $mockFinder;
+    /**
+     * @var Finder|MockObject
+     */
+    private $mockFinder;
 
-	/**
-	 * @var FileSystem|MockObject
-	 */
-	private $mockFilesystem;
+    /**
+     * @var FileSystem|MockObject
+     */
+    private $mockFilesystem;
 
-	/**
-	 * @var Rebuild|MockObject
-	 */
-	private $mockRebuild;
+    /**
+     * @var Rebuild|MockObject
+     */
+    private $mockRebuild;
 
-	/**
-	 * @var EventDispatcher|MockObject
-	 */
-	private $mockEventDispatcher;
+    /**
+     * @var EventDispatcher|MockObject
+     */
+    private $mockEventDispatcher;
 
-	public function setUp() {
-		$this->mockFinder = $this->getMock(Finder::class, [], [], '', false);
-		$this->mockFilesystem = $this->getMock(FileSystem::class, [], [], '', false);
-		$this->mockRebuild = $this->getMock(Rebuild::class, [], [], '', false);
-		$this->mockEventDispatcher = $this->getMock(EventDispatcher::class, [], [], '', false);
+    public function setUp()
+    {
+        $this->mockFinder = $this->getMock(Finder::class, [], [], '', false);
+        $this->mockFilesystem = $this->getMock(FileSystem::class, [], [], '', false);
+        $this->mockRebuild = $this->getMock(Rebuild::class, [], [], '', false);
+        $this->mockEventDispatcher = $this->getMock(EventDispatcher::class, [], [], '', false);
 
-		$this->_subject = new ClearCacheCommand($this->mockFinder, $this->mockFilesystem, $this->mockRebuild);
-		$this->_subject->setEventDispatcher($this->mockEventDispatcher);
-	}
+        $this->subject = new ClearCacheCommand($this->mockFinder, $this->mockFilesystem, $this->mockRebuild);
+        $this->subject->setEventDispatcher($this->mockEventDispatcher);
+    }
 
-	public function testExecute() {
-		/** @var Application|MockObject $application */
-		$application = $this->getMock(Application::class, ['run']);
-		$this->_subject->setApplication($application);
+    public function testExecute()
+    {
+        /** @var Application|MockObject $application */
+        $application = $this->getMock(Application::class, ['run']);
+        $this->subject->setApplication($application);
 
-		$commandTester = new CommandTester($this->_subject);
+        $commandTester = new CommandTester($this->subject);
 
-		$files = [];
+        $files = [];
 
-		$this->mockFinder
-			->expects($this->once())
-			->method('files')
-			->will($this->returnValue($this->mockFinder));
+        $this->mockFinder
+        ->expects($this->once())
+        ->method('files')
+        ->will($this->returnValue($this->mockFinder));
 
-		$this->mockFinder
-			->expects($this->once())
-			->method('in')
-			->with(ROOT . 'cache')
-			->will($this->returnValue($this->mockFinder));
+        $this->mockFinder
+        ->expects($this->once())
+        ->method('in')
+        ->with(ROOT . 'cache')
+        ->will($this->returnValue($this->mockFinder));
 
-		$this->mockFinder
-			->expects($this->once())
-			->method('name')
-			->with('*.php')
-			->will($this->returnValue($this->mockFinder));
+        $this->mockFinder
+        ->expects($this->once())
+        ->method('name')
+        ->with('*.php')
+        ->will($this->returnValue($this->mockFinder));
 
-		$this->mockFinder
-			->expects($this->once())
-			->method('notname')
-			->with('assets.php')
-			->will($this->returnValue($files));
+        $this->mockFinder
+        ->expects($this->once())
+        ->method('notname')
+        ->with('assets.php')
+        ->will($this->returnValue($files));
 
-		$this->mockFilesystem
-			->expects($this->once())
-			->method('remove')
-			->with($files);
+        $this->mockFilesystem
+        ->expects($this->once())
+        ->method('remove')
+        ->with($files);
 
-		$this->mockRebuild
-			->expects($this->once())
-			->method('rebuildDIC')
-			->with(true);
+        $this->mockRebuild
+        ->expects($this->once())
+        ->method('rebuildDIC')
+        ->with(true);
 
-		$this->mockFilesystem
-			->expects($this->once())
-			->method('chmod')
-			->with($this->isType('array'),  0777, 0000, true);
+        $this->mockFilesystem
+        ->expects($this->once())
+        ->method('chmod')
+        ->with($this->isType('array'), 0777, 0000, true);
 
-		$input = new ArrayInput(['command' => 'redis:scripts:load']);
-		$application
-			->expects($this->once())
-			->method('run')
-			->with($input);
+        $input = new ArrayInput(['command' => 'redis:scripts:load']);
+        $application
+        ->expects($this->once())
+        ->method('run')
+        ->with($input);
 
-		$commandTester->execute([]);
-		$output = $commandTester->getDisplay();
+        $commandTester->execute([]);
+        $output = $commandTester->getDisplay();
 
-		$this->assertEquals("Clear Cache...done
+        $this->assertEquals("Clear Cache...done
 Rebuild DIC...done
 Set permissions...done\n", $output);
-	}
-
+    }
 }

@@ -13,26 +13,28 @@ use Symfony\Component\DependencyInjection\Definition;
 /**
  * @CompilerPass
  */
-class LoggerCompilerPass implements CompilerPassInterface {
+class LoggerCompilerPass implements CompilerPassInterface
+{
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function process(ContainerBuilder $container) {
-		$logger = $container->getDefinition('monolog.Logger');
+    /**
+     * {@inheritdoc}
+     */
+    public function process(ContainerBuilder $container)
+    {
+        $logger = $container->getDefinition('monolog.Logger');
 
-		if ($container->getParameter('core_standalone')) {
-			// we have to remove all handlers...
-			$logger->removeMethodCall('pushHandler');
-			$logger->removeMethodCall('pushHandler');
+        if ($container->getParameter('core_standalone')) {
+         // we have to remove all handlers...
+            $logger->removeMethodCall('pushHandler');
+            $logger->removeMethodCall('pushHandler');
 
-			// ...and add the TestHandler
-			$logger->addMethodCall('pushHandler', [new Definition(TestHandler::class)]);
+         // ...and add the TestHandler
+            $logger->addMethodCall('pushHandler', [new Definition(TestHandler::class)]);
 
-		} elseif ($container->getParameter('debug')) {
-			$logger->addMethodCall('pushHandler', [new Definition(ChromePHPHandler::class)]);
-			$logger->addMethodCall('pushHandler', [new Definition(StreamHandler::class, ['php://stdout', Logger::INFO])]);
-		}
+        } elseif ($container->getParameter('debug')) {
+            $logger->addMethodCall('pushHandler', [new Definition(ChromePHPHandler::class)]);
+            $logger->addMethodCall('pushHandler', [new Definition(StreamHandler::class, ['php://stdout', Logger::INFO])]);
+        }
 
-	}
+    }
 }

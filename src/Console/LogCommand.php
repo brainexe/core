@@ -13,56 +13,58 @@ use Symfony\Component\Process\Process;
  * @Command
  * @codeCoverageIgnore
  */
-class LogCommand extends Command {
+class LogCommand extends Command
+{
 
-	/**
-	 * {@inheritdoc}
-	 */
-	protected function configure() {
-		$this
-			->setName('debug:log')
-			->setDescription('tail -f on log files');
-	}
+    /**
+     * {@inheritdoc}
+     */
+    protected function configure()
+    {
+        $this
+        ->setName('debug:log')
+        ->setDescription('tail -f on log files');
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	protected function execute(InputInterface $input, OutputInterface $output) {
-		$finder = new Finder();
-		$finder
-			->files()
-			->in(ROOT . 'logs')
-			->name("*.log");
+    /**
+     * {@inheritdoc}
+     */
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $finder = new Finder();
+        $finder
+        ->files()
+        ->in(ROOT . 'logs')
+        ->name("*.log");
 
-		$colors = [
-			'cyan',
-			'magenta',
-			'red',
-			'yellow',
-			'black',
-			'blue',
-			'green',
-			'white'
-		];
+        $colors = [
+        'cyan',
+        'magenta',
+        'red',
+        'yellow',
+        'black',
+        'blue',
+        'green',
+        'white'
+        ];
 
-		$i = 0;
-		foreach ($finder as $file) {
-			$color = $colors[$i++ % (count($colors) - 1)];
+        $i = 0;
+        foreach ($finder as $file) {
+            $color = $colors[$i++ % (count($colors) - 1)];
 
-			/** @var SplFileInfo $file */
-			$filename = $file->getFilename();
+            /** @var SplFileInfo $file */
+            $filename = $file->getFilename();
 
-			$output->writeln(sprintf("<fg=%s>%s</>", $color, $filename));
+            $output->writeln(sprintf("<fg=%s>%s</>", $color, $filename));
 
-			$process = new Process(sprintf('tail -fn0 %s', $file->getPathname()));
-			$process->setTimeout(0);
-			$process->setIdleTimeout(0);
+            $process = new Process(sprintf('tail -fn0 %s', $file->getPathname()));
+            $process->setTimeout(0);
+            $process->setIdleTimeout(0);
 
-			$process->start(function($type, $buffer) use ($output, $filename, $color) {
-				$output->write(sprintf("<fg=yellow>%s: %s</>", $filename, $buffer));
-			});
-		}
-		sleep(100);
-	}
-
+            $process->start(function($type, $buffer) use ($output, $filename, $color) {
+                $output->write(sprintf("<fg=yellow>%s: %s</>", $filename, $buffer));
+            });
+        }
+        sleep(100);
+    }
 }

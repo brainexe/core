@@ -9,28 +9,30 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 /**
  * @EventListener
  */
-class WebsocketListener implements EventSubscriberInterface {
+class WebsocketListener implements EventSubscriberInterface
+{
 
-	const CHANNEL = 'websocket:push';
+    const CHANNEL = 'websocket:push';
 
-	use RedisTrait;
-	use EventDispatcherTrait;
+    use RedisTrait;
+    use EventDispatcherTrait;
 
-	/**
-	 * @{@inheritdoc}
-	 */
-	public static function getSubscribedEvents() {
-		return [
-			WebSocketEvent::PUSH => 'handlePushEvent',
-		];
-	}
+    /**
+     * @{@inheritdoc}
+     */
+    public static function getSubscribedEvents()
+    {
+        return [
+        WebSocketEvent::PUSH => 'handlePushEvent',
+        ];
+    }
 
-	/**
-	 * @param WebSocketEvent $event
-	 */
-	public function handlePushEvent(WebSocketEvent $event) {
-		$redis = $this->getRedis();
-		$redis->publish(self::CHANNEL, json_encode($event->payload));
-	}
-
+    /**
+     * @param WebSocketEvent $event
+     */
+    public function handlePushEvent(WebSocketEvent $event)
+    {
+        $redis = $this->getRedis();
+        $redis->publish(self::CHANNEL, json_encode($event->payload));
+    }
 }

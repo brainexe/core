@@ -13,127 +13,130 @@ use Symfony\Component\Process\ProcessBuilder;
 /**
  * @Covers BrainExe\Core\Application\SelfUpdate\SelfUpdate
  */
-class SelfUpdateTest extends PHPUnit_Framework_TestCase {
+class SelfUpdateTest extends PHPUnit_Framework_TestCase
+{
 
-	/**
-	 * @var SelfUpdate
-	 */
-	private $subject;
+    /**
+     * @var SelfUpdate
+     */
+    private $subject;
 
-	/**
-	 * @var ProcessBuilder|PHPUnit_Framework_MockObject_MockObject
-	 */
-	private $mockProcessBuilder;
+    /**
+     * @var ProcessBuilder|MockObject
+     */
+    private $mockProcessBuilder;
 
-	/**
-	 * @var EventDispatcher|PHPUnit_Framework_MockObject_MockObject
-	 */
-	private $mockEventDispatcher;
+    /**
+     * @var EventDispatcher|MockObject
+     */
+    private $mockEventDispatcher;
 
-	public function setUp() {
-		$this->mockProcessBuilder = $this->getMock(ProcessBuilder::class, [], [], '', false);
-		$this->mockEventDispatcher = $this->getMock(EventDispatcher::class, [], [], '', false);
+    public function setUp()
+    {
+        $this->mockProcessBuilder = $this->getMock(ProcessBuilder::class, [], [], '', false);
+        $this->mockEventDispatcher = $this->getMock(EventDispatcher::class, [], [], '', false);
 
-		$this->subject = new SelfUpdate($this->mockProcessBuilder);
-		$this->subject->setEventDispatcher($this->mockEventDispatcher);
-	}
+        $this->subject = new SelfUpdate($this->mockProcessBuilder);
+        $this->subject->setEventDispatcher($this->mockEventDispatcher);
+    }
 
-	public function testStartUpdate() {
-		$process = $this->getMock(Process::class, [], [], '', false);
+    public function testStartUpdate()
+    {
+        $process = $this->getMock(Process::class, [], [], '', false);
 
-		$this->mockProcessBuilder
-			->expects($this->once())
-			->method('setWorkingDirectory')
-			->with(ROOT)
-			->willReturnSelf();
+        $this->mockProcessBuilder
+        ->expects($this->once())
+        ->method('setWorkingDirectory')
+        ->with(ROOT)
+        ->willReturnSelf();
 
-		$this->mockProcessBuilder
-			->expects($this->once())
-			->method('setPrefix')
-			->willReturnSelf();
+        $this->mockProcessBuilder
+        ->expects($this->once())
+        ->method('setPrefix')
+        ->willReturnSelf();
 
-		$this->mockProcessBuilder
-			->expects($this->once())
-			->method('setArguments')
-			->willReturnSelf();
+        $this->mockProcessBuilder
+        ->expects($this->once())
+        ->method('setArguments')
+        ->willReturnSelf();
 
-		$this->mockProcessBuilder
-			->expects($this->once())
-			->method('setTimeout')
-			->with(0)
-			->willReturnSelf();
+        $this->mockProcessBuilder
+        ->expects($this->once())
+        ->method('setTimeout')
+        ->with(0)
+        ->willReturnSelf();
 
-		$this->mockProcessBuilder
-			->expects($this->once())
-			->method('getProcess')
-			->willReturn($process);
+        $this->mockProcessBuilder
+        ->expects($this->once())
+        ->method('getProcess')
+        ->willReturn($process);
 
-		$process
-			->expects($this->once())
-			->method('run');
+        $process
+        ->expects($this->once())
+        ->method('run');
 
-		$process
-			->expects($this->once())
-			->method('isSuccessful')
-			->will($this->returnValue(true));
+        $process
+        ->expects($this->once())
+        ->method('isSuccessful')
+        ->will($this->returnValue(true));
 
-		$event = new SelfUpdateEvent(SelfUpdateEvent::DONE);
+        $event = new SelfUpdateEvent(SelfUpdateEvent::DONE);
 
-		$this->mockEventDispatcher
-			->expects($this->once())
-			->method('dispatchEvent')
-			->with($event);
+        $this->mockEventDispatcher
+        ->expects($this->once())
+        ->method('dispatchEvent')
+        ->with($event);
 
-		$this->subject->startUpdate();
-	}
+        $this->subject->startUpdate();
+    }
 
-	public function testStartUpdateWithError() {
-		$process = $this->getMock(Process::class, [], [], '', false);
+    public function testStartUpdateWithError()
+    {
+        $process = $this->getMock(Process::class, [], [], '', false);
 
-		$this->mockProcessBuilder
-			->expects($this->once())
-			->method('setWorkingDirectory')
-			->with(ROOT)
-			->willReturnSelf();
+        $this->mockProcessBuilder
+        ->expects($this->once())
+        ->method('setWorkingDirectory')
+        ->with(ROOT)
+        ->willReturnSelf();
 
-		$this->mockProcessBuilder
-			->expects($this->once())
-			->method('setPrefix')
-			->willReturnSelf();
+        $this->mockProcessBuilder
+        ->expects($this->once())
+        ->method('setPrefix')
+        ->willReturnSelf();
 
-		$this->mockProcessBuilder
-			->expects($this->once())
-			->method('setArguments')
-			->willReturnSelf();
+        $this->mockProcessBuilder
+        ->expects($this->once())
+        ->method('setArguments')
+        ->willReturnSelf();
 
-		$this->mockProcessBuilder
-			->expects($this->once())
-			->method('setTimeout')
-			->with(0)
-			->willReturnSelf();
+        $this->mockProcessBuilder
+        ->expects($this->once())
+        ->method('setTimeout')
+        ->with(0)
+        ->willReturnSelf();
 
-		$this->mockProcessBuilder
-			->expects($this->once())
-			->method('getProcess')
-			->willReturn($process);
+        $this->mockProcessBuilder
+        ->expects($this->once())
+        ->method('getProcess')
+        ->willReturn($process);
 
-		$process
-			->expects($this->once())
-			->method('run');
+        $process
+        ->expects($this->once())
+        ->method('run');
 
-		$process
-			->expects($this->once())
-			->method('isSuccessful')
-			->will($this->returnValue(false));
+        $process
+        ->expects($this->once())
+        ->method('isSuccessful')
+        ->will($this->returnValue(false));
 
-		$event = new SelfUpdateEvent(SelfUpdateEvent::ERROR);
+        $event = new SelfUpdateEvent(SelfUpdateEvent::ERROR);
 
-		$this->mockEventDispatcher
-			->expects($this->once())
-			->method('dispatchEvent')
-			->with($event);
+        $this->mockEventDispatcher
+        ->expects($this->once())
+        ->method('dispatchEvent')
+        ->with($event);
 
-		$this->subject->startUpdate();
-	}
-
+        $this->subject->startUpdate();
+    }
 }

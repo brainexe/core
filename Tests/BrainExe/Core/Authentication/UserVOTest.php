@@ -9,65 +9,70 @@ use Symfony\Component\Security\Core\Role\Role;
 /**
  * @Covers BrainExe\Core\Authentication\UserVO
  */
-class UserVOTest extends PHPUnit_Framework_TestCase {
+class UserVOTest extends PHPUnit_Framework_TestCase
+{
 
-	/**
-	 * @var UserVO
-	 */
-	private $_subject;
+    /**
+     * @var UserVO
+     */
+    private $subject;
 
-	public function setUp() {
-		$this->_subject = new UserVO();
-	}
+    public function setUp()
+    {
+        $this->subject = new UserVO();
+    }
 
-	public function testRoles() {
-		$this->_subject->roles = [
-			'role_1',
-			'role_2'
-		];
+    public function testRoles()
+    {
+        $this->subject->roles = [
+        'role_1',
+        'role_2'
+        ];
 
-		$this->assertTrue($this->_subject->hasRole('role_1'));
-		$this->assertTrue($this->_subject->hasRole('role_2'));
-		$this->assertFalse($this->_subject->hasRole('role_444'));
+        $this->assertTrue($this->subject->hasRole('role_1'));
+        $this->assertTrue($this->subject->hasRole('role_2'));
+        $this->assertFalse($this->subject->hasRole('role_444'));
 
-		$actual_roles   = $this->_subject->getRoles();
-		$expected_roles = [
-			new Role('role_1'),
-			new Role('role_2'),
-		];
+        $actual_roles   = $this->subject->getRoles();
+        $expected_roles = [
+        new Role('role_1'),
+        new Role('role_2'),
+        ];
 
-		$this->assertEquals($expected_roles, $actual_roles);
-	}
+        $this->assertEquals($expected_roles, $actual_roles);
+    }
 
-	public function testToJson() {
-		$this->_subject->username      = $username = 'username';
-		$this->_subject->id            = $id = 42;
-		$this->_subject->password      = 'password';
-		$this->_subject->password_hash = 'password_hash';
+    public function testToJson()
+    {
+        $this->subject->username      = $username = 'username';
+        $this->subject->id            = $id = 42;
+        $this->subject->password      = 'password';
+        $this->subject->password_hash = 'password_hash';
 
-		$actual_result = $this->_subject->jsonSerialize();
+        $actualResult = $this->subject->jsonSerialize();
 
-		$expected_result = [
-			'username' => $username,
-			'id' => $id,
-		];
-		$this->assertEquals($expected_result, $actual_result);
-	}
+        $expectedResult = [
+        'username' => $username,
+        'id' => $id,
+        ];
+        $this->assertEquals($expectedResult, $actualResult);
+    }
 
-	public function testPassword() {
-		$this->_subject->password = 'password';
-		$this->_subject->password_hash = 'password_hash';
+    public function testPassword()
+    {
+        $this->subject->password = 'password';
+        $this->subject->password_hash = 'password_hash';
 
-		$this->_subject->eraseCredentials();
+        $this->subject->eraseCredentials();
 
-		$this->assertNull($this->_subject->password);
-		$this->assertNull($this->_subject->password_hash);
-	}
+        $this->assertNull($this->subject->password);
+        $this->assertNull($this->subject->password_hash);
+    }
 
-	public function testGetSalt() {
-		$this->_subject->username = $username = 'username';
+    public function testGetSalt()
+    {
+        $this->subject->username = $username = 'username';
 
-		$this->assertEquals($username, $this->_subject->getSalt());
-	}
-
+        $this->assertEquals($username, $this->subject->getSalt());
+    }
 }

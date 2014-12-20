@@ -7,7 +7,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 /**
  * @EventListener
  */
-class SelfUpdateListener implements EventSubscriberInterface {
+class SelfUpdateListener implements EventSubscriberInterface
+{
 
     /**
      * @var SelfUpdate
@@ -18,21 +19,23 @@ class SelfUpdateListener implements EventSubscriberInterface {
      * @inject("@SelfUpdate")
      * @param SelfUpdate $selfUpdate
      */
-    public function __construct(SelfUpdate $selfUpdate) {
+    public function __construct(SelfUpdate $selfUpdate)
+    {
         $this->_selfUpdate = $selfUpdate;
     }
 
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents() {
+    public static function getSubscribedEvents()
+    {
         return [
             SelfUpdateEvent::TRIGGER => 'startSelfUpdate',
         ];
     }
 
-    public function startSelfUpdate() {
-		$this->_selfUpdate->startUpdate();
+    public function startSelfUpdate()
+    {
+        $this->_selfUpdate->startUpdate();
     }
-
 }

@@ -8,29 +8,32 @@ use BrainExe\Core\Traits\RedisTrait;
 /**
  * @Service(public=false)
  */
-class RegisterTokens {
+class RegisterTokens
+{
 
-	const TOKEN_KEY = 'register_tokens';
+    const TOKEN_KEY = 'register_tokens';
 
-	use RedisTrait;
-	use IdGeneratorTrait;
+    use RedisTrait;
+    use IdGeneratorTrait;
 
-	/**
-	 * @return string
-	 */
-	public function addToken() {
-		$token = $this->generateRandomId();
+    /**
+     * @return string
+     */
+    public function addToken()
+    {
+        $token = $this->generateRandomId();
 
-		$this->getRedis()->sAdd(self::TOKEN_KEY, $token);
+        $this->getRedis()->sAdd(self::TOKEN_KEY, $token);
 
-		return $token;
-	}
+        return $token;
+    }
 
-	/**
-	 * @param string $token
-	 * @return boolean
-	 */
-	public function fetchToken($token) {
-		return (bool)$this->getRedis()->sRem(self::TOKEN_KEY, $token);
-	}
-} 
+    /**
+     * @param string $token
+     * @return boolean
+     */
+    public function fetchToken($token)
+    {
+        return (bool)$this->getRedis()->sRem(self::TOKEN_KEY, $token);
+    }
+}

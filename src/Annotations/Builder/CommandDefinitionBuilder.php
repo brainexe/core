@@ -7,22 +7,24 @@ use BrainExe\Core\DependencyInjection\CompilerPass\ConsoleCompilerPass;
 use ReflectionClass;
 use Symfony\Component\DependencyInjection\Definition;
 
-class CommandDefinitionBuilder extends ServiceDefinitionBuilder {
-	/**
-	 * {@inheritdoc}
-	 */
-	public function build(ReflectionClass $reflection_class, $annotation) {
-		$definitionHolder = parent::build($reflection_class, $annotation);
+class CommandDefinitionBuilder extends ServiceDefinitionBuilder
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function build(ReflectionClass $reflection_class, $annotation)
+    {
+        $definitionHolder = parent::build($reflection_class, $annotation);
 
-		/** @var Definition $definition */
-		$definition = $definitionHolder['definition'];
+        /** @var Definition $definition */
+        $definition = $definitionHolder['definition'];
 
-		$definition->setPublic(false);
-		$definition->addTag(ConsoleCompilerPass::TAG);
+        $definition->setPublic(false);
+        $definition->addTag(ConsoleCompilerPass::TAG);
 
-		return [
-			'id' => $definitionHolder['id'],
-			'definition' => $definition
-		];
-	}
+        return [
+        'id' => $definitionHolder['id'],
+        'definition' => $definition
+        ];
+    }
 }

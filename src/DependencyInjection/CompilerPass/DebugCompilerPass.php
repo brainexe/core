@@ -11,23 +11,25 @@ use Symfony\Component\DependencyInjection\Reference;
 /**
  * @CompilerPass(priority=1)
  */
-class DebugCompilerPass implements CompilerPassInterface {
+class DebugCompilerPass implements CompilerPassInterface
+{
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function process(ContainerBuilder $container) {
-		if (!$container->getParameter('debug')) {
-			return;
-		}
+    /**
+     * {@inheritdoc}
+     */
+    public function process(ContainerBuilder $container)
+    {
+        if (!$container->getParameter('debug')) {
+            return;
+        }
 
-		$redis = $container->getDefinition('redis');
+        $redis = $container->getDefinition('redis');
 
-		$redis_logger = new Definition(RedisLogger::class, [
-			$redis,
-			new Reference('monolog.logger')
-		]);
+        $redis_logger = new Definition(RedisLogger::class, [
+        $redis,
+        new Reference('monolog.logger')
+        ]);
 
-		$container->setDefinition('redis', $redis_logger);
-	}
+        $container->setDefinition('redis', $redis_logger);
+    }
 }

@@ -13,32 +13,34 @@ use Symfony\Component\Routing\Route;
 /**
  * @Covers BrainExe\Core\Middleware\SessionMiddleware
  */
-class SessionMiddlewareTest extends PHPUnit_Framework_TestCase {
+class SessionMiddlewareTest extends PHPUnit_Framework_TestCase
+{
 
-	/**
-	 * @var SessionMiddleware
-	 */
-	private $_subject;
+    /**
+     * @var SessionMiddleware
+     */
+    private $subject;
 
-	/**
-	 * @var Session|PHPUnit_Framework_MockObject_MockObject
-	 */
-	private $_mockSession;
+    /**
+     * @var Session|MockObject
+     */
+    private $mockSession;
 
-	public function setUp() {
-		$this->_mockSession = $this->getMock(Session::class, [], [], '', false);
+    public function setUp()
+    {
+        $this->mockSession = $this->getMock(Session::class, [], [], '', false);
 
-		$this->_subject = new SessionMiddleware($this->_mockSession);
-	}
+        $this->subject = new SessionMiddleware($this->mockSession);
+    }
 
-	public function testProcessRequest() {
-		$request    = new Request();
-		$route      = new Route('/route/');
-		$route_name = null;
+    public function testProcessRequest()
+    {
+        $request    = new Request();
+        $route      = new Route('/route/');
+        $route_name = null;
 
-		$this->_subject->processRequest($request, $route, $route_name);
+        $this->subject->processRequest($request, $route, $route_name);
 
-		$this->assertInstanceOf(SessionInterface::class, $request->getSession());
-	}
-
+        $this->assertInstanceOf(SessionInterface::class, $request->getSession());
+    }
 }

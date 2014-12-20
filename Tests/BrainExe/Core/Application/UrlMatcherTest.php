@@ -9,24 +9,26 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * @Covers BrainExe\Core\Application\UrlMatcher
  */
-class UrlMatcherTest extends PHPUnit_Framework_TestCase {
+class UrlMatcherTest extends PHPUnit_Framework_TestCase
+{
 
-	/**
-	 * @var UrlMatcher
-	 */
-	private $subject;
+    /**
+     * @var UrlMatcher
+     */
+    private $subject;
 
-	public function setUp() {
-		$this->subject = new UrlMatcher();
-	}
+    public function setUp()
+    {
+        $this->subject = new UrlMatcher();
+    }
 
-	/**
-	 * @expectedException \Symfony\Component\Routing\Exception\ResourceNotFoundException
-	 */
-	public function testMatch() {
-		$request = new Request();
+    /**
+     * @expectedException \Symfony\Component\Routing\Exception\ResourceNotFoundException
+     */
+    public function testMatch()
+    {
+        $request = new Request();
 
-		$this->subject->match($request);
-	}
-
+        $this->subject->match($request);
+    }
 }
