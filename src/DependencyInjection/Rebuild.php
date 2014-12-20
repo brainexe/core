@@ -24,56 +24,56 @@ class Rebuild
      */
     public function rebuildDIC($boot = true)
     {
-        $container_builder = new ContainerBuilder();
-        $annotation_loader = new AnnotationLoader($container_builder);
-        $app_finder        = new Finder();
+        $containerBuilder = new ContainerBuilder();
+        $annotationLoader = new AnnotationLoader($containerBuilder);
+        $appFinder        = new Finder();
 
-        $app_finder
-        ->directories()
-        ->in([ROOT, CORE_ROOT, BRAINEXE_VENDOR_ROOT])
-        ->depth("<=1")
-        ->name('src');
+        $appFinder
+            ->directories()
+            ->in([ROOT, CORE_ROOT, BRAINEXE_VENDOR_ROOT])
+            ->depth("<=1")
+            ->name('src');
 
-        foreach ($app_finder as $dir) {
+        foreach ($appFinder as $dir) {
             /** @var SplFileInfo $dir */
-            $config_file = $dir->getPathname() . '/../config.php';
-            if (is_file($config_file)) {
-                require $config_file;
+            $configFile = $dir->getPathname() . '/../config.php';
+            if (is_file($configFile)) {
+                require $configFile;
             }
         }
 
-        $annotation_loader->load('src/');
-        $annotation_loader->load(CORE_ROOT);
+        $annotationLoader->load('src/');
+        $annotationLoader->load(CORE_ROOT);
 
-        foreach ($app_finder as $dir) {
+        foreach ($appFinder as $dir) {
             /** @var SplFileInfo $dir */
-            $annotation_loader->load($dir->getPathname());
+            $annotationLoader->load($dir->getPathname());
         }
 
-        $container_builder->addCompilerPass(new GlobalCompilerPass());
-        $container_builder->compile();
+        $containerBuilder->addCompilerPass(new GlobalCompilerPass());
+        $containerBuilder->compile();
 
-        $random_id      = mt_rand();
-        $container_name = sprintf('dic_%d', $random_id);
-        $container_file = sprintf('cache/dic_%d.php', $random_id);
+        $randomId      = mt_rand();
+        $containerName = sprintf('dic_%d', $randomId);
+        $containerFile = sprintf('cache/dic_%d.php', $randomId);
 
         foreach (glob('cache/dic_*.php') as $file) {
             unlink($file);
         }
 
-        $dumper            = new PhpDumper($container_builder);
-        $container_content = $dumper->dump(['class' => $container_name]);
-        file_put_contents($container_file, $container_content);
-        chmod($container_file, 0777);
+        $dumper            = new PhpDumper($containerBuilder);
+        $containerContent  = $dumper->dump(['class' => $containerName]);
+        file_put_contents($containerFile, $containerContent);
+        chmod($containerFile, 0777);
 
-        $dumper            = new XmlDumper($container_builder);
-        $container_content = $dumper->dump();
-        file_put_contents('cache/dic.xml', $container_content);
+        $dumper            = new XmlDumper($containerBuilder);
+        $containerContent = $dumper->dump();
+        file_put_contents('cache/dic.xml', $containerContent);
 
         if ($boot) {
             return Core::boot();
         }
 
-        return $container_builder;
+        return $containerBuilder;
     }
 }

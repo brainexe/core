@@ -24,7 +24,7 @@ class TestCreateAllCommand extends Command
      * Cached container builder
      * @var ContainerBuilder|null
      */
-    private $_container_builder = null;
+    private $containerBuilder = null;
 
     /**
      * @var Rebuild
@@ -57,71 +57,71 @@ class TestCreateAllCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->_initContainerBuilder();
+        $this->initContainerBuilder();
 
-        $ids = $this->_container_builder->getServiceIds();
+        $ids = $this->containerBuilder->getServiceIds();
 
-        foreach ($ids as $service_id) {
+        foreach ($ids as $serviceId) {
             try {
-                $this->_handleService($input, $output, $service_id);
+                $this->handleService($input, $output, $serviceId);
             } catch (InvalidArgumentException $e) {
-                $output->writeln(sprintf('<error>%s: %s</error>', $service_id, $e->getMessage()));
+                $output->writeln(sprintf('<error>%s: %s</error>', $serviceId, $e->getMessage()));
             }
         }
     }
 
     /**
-     * @param string $service_namespace
+     * @param string $serviceNamespace
      * @return string
      */
-    private function _getTestFileName($service_namespace)
+    private function getTestFileName($serviceNamespace)
     {
-        $path = str_replace('\\', DIRECTORY_SEPARATOR, $service_namespace);
+        $path = str_replace('\\', DIRECTORY_SEPARATOR, $serviceNamespace);
 
         return sprintf('%sTests/%sTest.php', ROOT, $path);
     }
 
 
     /**
-     * @param string $service_id
+     * @param string $serviceId
      * @return object
      */
-    private function _getService($service_id)
+    private function getService($serviceId)
     {
-        return $this->_container_builder->get($service_id);
+        return $this->containerBuilder->get($serviceId);
     }
 
     /**
      * @param InputInterface $input
      * @param OutputInterface $output
-     * @param string $service_id
+     * @param string $serviceId
      * @throws Exception
      */
-    protected function _handleService(InputInterface $input, OutputInterface $output, $service_id)
+    private function handleService(InputInterface $input, OutputInterface $output, $serviceId)
     {
-        $service_object     = $this->_getService($service_id);
+        $serviceObject     = $this->getService($serviceId);
 
-        $service_reflection = new ReflectionClass($service_object);
-        $service_namespace  = $service_reflection->getName();
+        $serviceReflection = new ReflectionClass($serviceObject);
+        $serviceNamespace  = $serviceReflection->getName();
 
         $src = ROOT . $input->getArgument('root');
-        if (strpos($service_reflection->getFileName(), $src) !== 0) {
+        if (strpos($serviceReflection->getFileName(), $src) !== 0) {
             return;
         }
 
-        $test_file_name = $this->_getTestFileName($service_namespace);
+        $testFileName = $this->getTestFileName($serviceNamespace);
 
-        if (!file_exists($test_file_name)) {
-            $output->writeln("create: <info>$service_id</info> - <info>" . $service_reflection->getFileName()."<info>");
+        if (!file_exists($testFileName)) {
+            $output->writeln("create: <info>$serviceId</info> - <info>" . $serviceReflection->getFileName()."<info>");
 
-            $input = new ArrayInput(['command' => 'test:create', 'service' => $service_id]);
+            $input = new ArrayInput(['command' => 'test:create', 'service' => $serviceId]);
             $this->getApplication()->run($input, $output);
 
         }
     }
 
-    private function _initContainerBuilder()
+    private function initContainerBuilder()
     {
-        $this->_container_builder = $this->rebuild->rebuildDIC(false);
+        $this->containerBuilder = $this->rebuild->rebuildDIC(false);
     }
 }

@@ -23,12 +23,12 @@ class EventListenerCompilerPass implements CompilerPassInterface
         $dispatcher = $container->getDefinition('EventDispatcher');
         $services   = $container->findTaggedServiceIds(self::TAG);
 
-        foreach (array_keys($services) as $service_id) {
+        foreach (array_keys($services) as $serviceId) {
             /** @var EventSubscriberInterface $class */
-            $class = $container->getDefinition($service_id)->getClass();
+            $class = $container->getDefinition($serviceId)->getClass();
 
             foreach ($class::getSubscribedEvents() as $eventName => $params) {
-                $this->addEvent($dispatcher, $params, $eventName, $service_id);
+                $this->addEvent($dispatcher, $params, $eventName, $serviceId);
             }
         }
     }
@@ -42,9 +42,9 @@ class EventListenerCompilerPass implements CompilerPassInterface
     private function addEvent(Definition $dispatcher, $params, $name, $serviceId)
     {
         if (is_string($params)) {
-            $this->_addListener($dispatcher, $name, $serviceId, $params, 0);
+            $this->addListener($dispatcher, $name, $serviceId, $params, 0);
         } elseif (is_string($params[0])) {
-            $this->_addListener(
+            $this->addListener(
                 $dispatcher,
                 $name,
                 $serviceId,
@@ -53,7 +53,7 @@ class EventListenerCompilerPass implements CompilerPassInterface
             );
         } else {
             foreach ($params as $listener) {
-                $this->_addListener(
+                $this->addListener(
                     $dispatcher,
                     $name,
                     $serviceId,
@@ -67,13 +67,13 @@ class EventListenerCompilerPass implements CompilerPassInterface
     /**
      * @param Definition $dispatcher
      * @param string $name
-     * @param string $service_id
+     * @param string $serviceId
      * @param string $action
      * @param integer $priority
      */
-    private function _addListener(Definition $dispatcher, $name, $service_id, $action, $priority = 0)
+    private function addListener(Definition $dispatcher, $name, $serviceId, $action, $priority = 0)
     {
-        $parameters = [$name, [$service_id, $action], $priority];
+        $parameters = [$name, [$serviceId, $action], $priority];
 
         $dispatcher->addMethodCall('addListenerService', $parameters);
     }

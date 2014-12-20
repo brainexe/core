@@ -18,12 +18,12 @@ class SetDefinitionFileCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        foreach ($container->getServiceIds() as $service_id) {
-            if (!$container->hasDefinition($service_id)) {
+        foreach ($container->getServiceIds() as $serviceId) {
+            if (!$container->hasDefinition($serviceId)) {
                 continue;
             }
 
-            $definition = $container->getDefinition($service_id);
+            $definition = $container->getDefinition($serviceId);
 
             try {
                 $reflection = new ReflectionClass($definition->getClass());

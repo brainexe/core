@@ -15,18 +15,18 @@ class ControllerDefinitionBuilder extends ServiceDefinitionBuilder
     /**
      * {@inheritdoc}
      */
-    public function build(ReflectionClass $reflection_class, $annotation)
+    public function build(ReflectionClass $reflectionClass, $annotation)
     {
-        $definitionHolder = parent::build($reflection_class, $annotation);
+        $definitionHolder = parent::build($reflectionClass, $annotation);
 
         /** @var Definition $definition */
         $definition = $definitionHolder['definition'];
 
-        $id = sprintf('__Controller.%s', str_replace('Controller', '', $definitionHolder['id']));
+        $serviceId = sprintf('__Controller.%s', str_replace('Controller', '', $definitionHolder['id']));
         $definition->addTag(ControllerCompilerPass::CONTROLLER_TAG);
 
         return [
-        'id' => $id,
+        'id' => $serviceId,
         'definition' => $definition
         ];
     }
@@ -40,26 +40,26 @@ class ControllerDefinitionBuilder extends ServiceDefinitionBuilder
         parent::_processMethods($methods, $definition);
 
         foreach ($methods as $method) {
-            /** @var Route $route_annotation */
-            $route_annotation = $this->_reader->getMethodAnnotation($method, Route::class);
+            /** @var Route $routeAnnotation */
+            $routeAnnotation = $this->_reader->getMethodAnnotation($method, Route::class);
 
-            if ($route_annotation) {
-                /** @var Guest $guest_annotation */
-                $guest_annotation = $this->_reader->getMethodAnnotation($method, Guest::class);
+            if ($routeAnnotation) {
+                /** @var Guest $guestAnnotation */
+                $guestAnnotation = $this->_reader->getMethodAnnotation($method, Guest::class);
 
-                $class_parts = explode('\\', $definition->getClass());
-                $class = str_replace('Controller', '', $class_parts[count($class_parts)-1]);
+                $classParts = explode('\\', $definition->getClass());
+                $class = str_replace('Controller', '', $classParts[count($classParts)-1]);
                 $class = 'Controller.' . $class;
 
-                $defaults = $route_annotation->getDefaults();
+                $defaults = $routeAnnotation->getDefaults();
                 $defaults['_controller'] = [$class, $method->getName()];
-                if ($guest_annotation) {
+                if ($guestAnnotation) {
                     $defaults['_guest'] = true;
                 }
 
-                $route_annotation->setDefaults($defaults);
+                $routeAnnotation->setDefaults($defaults);
 
-                $definition->addTag(ControllerCompilerPass::ROUTE_TAG, [$route_annotation]);
+                $definition->addTag(ControllerCompilerPass::ROUTE_TAG, [$routeAnnotation]);
             }
         }
     }

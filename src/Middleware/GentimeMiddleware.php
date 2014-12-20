@@ -21,10 +21,10 @@ class GentimeMiddleware extends AbstractMiddleware
      */
     public function processResponse(Request $request, Response $response)
     {
-        $start_time = $_SERVER['REQUEST_TIME_FLOAT'];
-        $diff = microtime(true) - $start_time;
+        $startTime = $_SERVER['REQUEST_TIME_FLOAT']; //todo use $request object
+        $diff      = microtime(true) - $startTime;
+        $user      = $request->attributes->get('user');
 
-        $user = $request->attributes->get('user');
         if ($user) {
             /** @var UserVO $user */
             $username = $user->getUsername();
@@ -32,6 +32,14 @@ class GentimeMiddleware extends AbstractMiddleware
             $username = '-anonymous-';
         }
 
-        $this->info(sprintf('%0.2fms (route: %s, user:%s)', $diff*1000, $request->getRequestUri(), $username), ['channel' => 'gentime']);
+        $this->info(
+            sprintf(
+                '%0.2fms (route: %s, user:%s)',
+                $diff * 1000,
+                $request->getRequestUri(),
+                $username
+            ),
+            ['channel' => 'gentime']
+        );
     }
 }

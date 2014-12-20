@@ -33,7 +33,7 @@ class AuthenticationMiddleware extends AbstractMiddleware
     public function __construct($guestsAllowed, DatabaseUserProvider $userProvider)
     {
         $this->guestsAllowed = $guestsAllowed;
-        $this->userProvider     = $userProvider;
+        $this->userProvider  = $userProvider;
     }
 
     /**
@@ -49,17 +49,17 @@ class AuthenticationMiddleware extends AbstractMiddleware
     public function processRequest(Request $request, Route $route, $routeName)
     {
         $session   = $request->getSession();
-        $user_id   = $session->get('user_id');
-        $loggedId  = $user_id > 0;
+        $userId    = $session->get('user_id');
+        $loggedId  = $userId > 0;
 
         if ($loggedId) {
-            $user = $this->userProvider->loadUserById($user_id);
+            $user = $this->userProvider->loadUserById($userId);
         } else {
             $user = new AnonymusUserVO();
         }
 
         $request->attributes->set('user', $user);
-        $request->attributes->set('user_id', $user_id);
+        $request->attributes->set('user_id', $userId);
 
         if ($this->guestsAllowed) {
             return null;

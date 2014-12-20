@@ -34,11 +34,11 @@ class LocaleMiddleware extends AbstractMiddleware
         $session = $request->getSession();
 
         if ($request->query->has('locale')) {
-            $available_locales = $this->locale->getLocales();
+            $availableLocales = $this->locale->getLocales();
 
             $locale = $request->query->get('locale');
-            if (!in_array($locale, $available_locales)) {
-                $locale = $available_locales[0];
+            if (!in_array($locale, $availableLocales)) {
+                $locale = $availableLocales[0];
             }
 
             $session->set('locale', $locale);

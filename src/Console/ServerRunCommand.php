@@ -27,11 +27,11 @@ class ServerRunCommand extends Command
     /**
      * @Inject({"@ProcessBuilder", "%server.address%"})
      * @param ProcessBuilder $processBuilder
-     * @param string $value_address
+     * @param string $address
      */
-    public function __construct(ProcessBuilder $processBuilder, $value_address)
+    public function __construct(ProcessBuilder $processBuilder, $address)
     {
-        $this->serverAddress = $value_address;
+        $this->serverAddress = $address;
         $this->processBuilder = $processBuilder;
 
         parent::__construct(null);

@@ -29,7 +29,7 @@ class ControllerCompilerPassTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->subject = $this->getMock(ControllerCompilerPass::class, ['_dumpMatcher']);
+        $this->subject = $this->getMock(ControllerCompilerPass::class, ['dumpMatcher']);
 
         $this->mockContainer        = $this->getMock(ContainerBuilder::class);
         $this->mockRouterDefinition = $this->getMock(Definition::class);
@@ -75,7 +75,7 @@ class ControllerCompilerPassTest extends PHPUnit_Framework_TestCase
 
         $this->subject
             ->expects($this->once())
-            ->method('_dumpMatcher')
+            ->method('dumpMatcher')
             ->with($this->mockContainer);
 
         $this->subject->process($this->mockContainer);

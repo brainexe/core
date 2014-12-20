@@ -6,6 +6,7 @@ use BrainExe\Core\DependencyInjection\Rebuild;
 use BrainExe\Core\Traits\ConfigTrait;
 use Exception;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
+use PHPUnit_Framework_MockObject_MockObject;
 use PHPUnit_Framework_TestCase;
 use ReflectionClass;
 use ReflectionMethod;
@@ -28,11 +29,11 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class TestData
 {
-    public $setter_calls          = [];
-    public $default_tests         = [];
-    public $mock_properties       = [];
-    public $local_mocks           = [];
-    public $constructor_arguments = [];
+    public $setterCalls          = [];
+    public $defaultTests         = [];
+    public $mockProperties       = [];
+    public $localMocks           = [];
+    public $constructorArguments = [];
 
     /**
      * @var string[]
@@ -86,7 +87,7 @@ class TestCreateCommand extends Command
      * Cached container builder
      * @var ContainerBuilder|null
      */
-    private $_container_builder = null;
+    private $container = null;
 
     /**
      * @var Rebuild
@@ -98,10 +99,9 @@ class TestCreateCommand extends Command
      */
     protected function configure()
     {
-        $this
-        ->setName('test:create')
-        ->addArgument('service', InputArgument::REQUIRED, 'service id, e.g. IndexController')
-        ->addOption('dry', 'd', InputOption::VALUE_NONE, 'only display the generated test');
+        $this->setName('test:create')
+            ->addArgument('service', InputArgument::REQUIRED, 'service id, e.g. IndexController')
+            ->addOption('dry', 'd', InputOption::VALUE_NONE, 'only display the generated test');
     }
 
     /**
@@ -122,342 +122,364 @@ class TestCreateCommand extends Command
     {
         $this->initContainerBuilder();
 
-        $service_id = $input->getArgument('service');
+        $serviceId = $input->getArgument('service');
 
-        $service_object     = $this->_getService($service_id);
-        $service_definition = $this->_getDefinition($service_id);
+        $serviceObject     = $this->getService($serviceId);
+        $serviceDefinition = $this->getServiceDefinition($serviceId);
 
-        $service_reflection      = new ReflectionClass($service_object);
-        $service_full_class_name = $service_reflection->getName();
-        $service_class_name      = $this->getShortClassName($service_full_class_name);
+        $serviceReflection    = new ReflectionClass($serviceObject);
+        $serviceFullClassName = $serviceReflection->getName();
+        $serviceClassName     = $this->getShortClassName($serviceFullClassName);
 
-        $test_data = new TestData();
+        $testData = new TestData();
 
-        $test_data->addUse(PHPUnit_Framework_TestCase::class, 'TestCase');
-        $test_data->addUse(PHPUnit_Framework_MockObject_MockObject::class, 'MockObject');
-        $test_data->addUse($service_full_class_name);
+        $testData->addUse(PHPUnit_Framework_TestCase::class, 'TestCase');
+        $testData->addUse(PHPUnit_Framework_MockObject_MockObject::class, 'MockObject');
+        $testData->addUse($serviceFullClassName);
 
-        $blacklisted_methods = $this->_getBlacklistedMethods($service_reflection);
+        $blacklistedMethods = $this->getBlacklistedMethods($serviceReflection);
 
-        $methods = $service_reflection->getMethods(ReflectionMethod::IS_PUBLIC);
+        $methods = $serviceReflection->getMethods(ReflectionMethod::IS_PUBLIC);
         foreach ($methods as $method) {
-            $method_name = $method->getName();
+            $methodName = $method->getName();
 
-            if (in_array($method_name, $blacklisted_methods)) {
+            if (in_array($methodName, $blacklistedMethods)) {
                 continue;
             }
 
-            if ($method->getDeclaringClass() == $service_reflection) {
-                $test_data->default_tests[] = $this->_getDummyTestCode($test_data, $method);
+            if ($method->getDeclaringClass() == $serviceReflection) {
+                $testData->defaultTests[] = $this->getDummyTestCode($testData, $method);
             }
         }
 
-        $this->_setupConstructor($service_definition, $test_data);
+        $this->setupConstructor($serviceDefinition, $testData);
 
-        foreach ($service_definition->getMethodCalls() as $method_call) {
-            list ($setter_name, $references) = $method_call;
+        foreach ($serviceDefinition->getMethodCalls() as $methodCall) {
+            list ($setterName, $references) = $methodCall;
             /** @var Reference $reference */
             foreach ($references as $reference) {
                 if (!$reference instanceof Reference) {
                     continue;
                 }
 
-                $reference_service_id = (string)$reference;
+                $referenceServiceId = (string)$reference;
 
-                if ('%' === substr($reference_service_id, 0, 1)) {
-                 // add config setter with current config value
-                    $parameter_name  = substr($reference, 1, -1);
-                    $parameter_value = $this->getParameter($parameter_name);
+                if ('%' === substr($referenceServiceId, 0, 1)) {
+                    // add config setter with current config value
+                    $parameterName  = substr($reference, 1, -1);
+                    $parameterValue = $this->getParameter($parameterName);
 
-                    $formatted_parameter = var_export($parameter_value, true);
+                    $formattedParameter = var_export($parameterValue, true);
 
-                    $test_data->setter_calls[] = sprintf("\t\t\$this->subject->%s(%s);", $setter_name, $formatted_parameter);
+                    $testData->setterCalls[] = sprintf(
+                        "\t\t\$this->subject->%s(%s);",
+                        $setterName,
+                        $formattedParameter
+                    );
 
                 } else {
-                 // add setter for model mock
-                    $reference_service = $this->_getDefinition($reference_service_id);
-                    $mock_name         = $this->getShortClassName($reference_service->getClass());
+                    // add setter for model mock
+                    $referenceService = $this->getServiceDefinition($referenceServiceId);
+                    $mockName         = $this->getShortClassName($referenceService->getClass());
 
-                    $test_data->setter_calls[] = sprintf(
+                    $testData->setterCalls[] = sprintf(
                         "\t\t\$this->subject->%s(\$this->mock%s);",
-                        $setter_name,
-                        $mock_name
+                        $setterName,
+                        $mockName
                     );
-                    $this->_addMock($reference_service, $test_data, $mock_name);
+                    $this->addMock($referenceService, $testData, $mockName);
                 }
             }
         }
 
-        $test_template = file_get_contents(CORE_ROOT . '/../scripts/phpunit_template.php.tpl');
-        $test_template = str_replace('%test_namespace%', $this->_getTestNamespace($service_reflection->getNamespaceName()), $test_template);
-        $test_template = str_replace('%service_namespace%', $service_full_class_name, $test_template);
-        $test_template = str_replace('%class_name%', $service_class_name, $test_template);
-        $test_template = str_replace('%setters%', implode("\n", $test_data->setter_calls), $test_template);
-        $test_template = str_replace('%default_tests%', implode("\n", $test_data->default_tests), $test_template);
-        $test_template = str_replace('%mock_properties%', implode("\n", $test_data->mock_properties), $test_template);
-        $test_template = str_replace('%use_statements%', $test_data->renderUse(), $test_template);
-        $test_template = str_replace('%local_mocks%', implode("\n", $test_data->local_mocks), $test_template);
-        $test_template = str_replace('%constructor_arguments%', implode(", ", $test_data->constructor_arguments), $test_template);
+        $template = file_get_contents(CORE_ROOT . '/../scripts/phpunit_template.php.tpl');
+        $template = str_replace(
+            '%test_namespace%',
+            $this->getTestNamespace($serviceReflection->getNamespaceName()),
+            $template
+        );
+        $template = str_replace('%service_namespace%', $serviceFullClassName, $template);
+        $template = str_replace('%class_name%', $serviceClassName, $template);
+        $template = str_replace('%setters%', implode("\n", $testData->setterCalls), $template);
+        $template = str_replace('%default_tests%', implode("\n", $testData->defaultTests), $template);
+        $template = str_replace('%mock_properties%', implode("\n", $testData->mockProperties), $template);
+        $template = str_replace('%use_statements%', $testData->renderUse(), $template);
+        $template = str_replace('%local_mocks%', implode("\n", $testData->localMocks), $template);
+        $template = str_replace('%constructor_arguments%', implode(", ", $testData->constructorArguments), $template);
 
-        $test_file_name = $this->_getTestFileName($input, $service_full_class_name);
+        $testFileName = $this->getTestFileName($input, $serviceFullClassName);
 
         if ($input->getOption('dry')) {
-            $output->writeln($test_template);
+            $output->writeln($template);
             return;
         }
 
-     // handle already existing test file
-        if (file_exists($test_file_name)) {
+        // handle already existing test file
+        if (file_exists($testFileName)) {
             if ($input->getOption('no-interaction')) {
-                $output->writeln(sprintf("Test for '<info>%s</info>' already exist", $service_id));
+                $output->writeln(sprintf("Test for '<info>%s</info>' already exist", $serviceId));
                 return;
             }
 
             /** @var QuestionHelper $helper */
             $helper = $this->getHelper('question');
 
-            $choices = [
-            'stop' => 'Stop',
-            'replace' => 'Replace full test file',
-            'diff' => 'Display the diff',
-            'header' => 'full setup only',
+            $choices  = [
+                'stop' => 'Stop',
+                'replace' => 'Replace full test file',
+                'diff' => 'Display the diff',
+                'header' => 'full setup only',
             ];
-            $question = new ChoiceQuestion('<error>The test file already exist. What should i do now?</error>', $choices);
+            $question = new ChoiceQuestion(
+                '<error>The test file already exist. What should i do now?</error>',
+                $choices
+            );
 
             $answer = $helper->ask($input, $output, $question);
 
-            $original_test = file_get_contents($test_file_name);
+            $originalTest = file_get_contents($testFileName);
             switch (array_flip($choices)[$answer]) {
                 case 'replace':
                     break;
-                case 'diff':
-                    $this->_displayPatch($original_test, $test_template, $output);
-                    return;
                 case 'header';
-                    $test_template = $this->_replaceHeaderOnly($original_test, $test_template, $output);
+                    $template = $this->replaceHeaderOnly($originalTest, $template, $output);
                     break;
+                case 'diff':
+                    $this->displayPatch($originalTest, $template, $output);
+                    return;
                 case 'stop':
                 default:
                     return;
             }
         }
 
-        $test_dir = dirname($test_file_name);
+        $testDir = dirname($testFileName);
 
-        if (!is_dir($test_dir)) {
-            mkdir($test_dir, 0777, true);
+        if (!is_dir($testDir)) {
+            mkdir($testDir, 0777, true);
         }
 
-        file_put_contents($test_file_name, $test_template);
+        file_put_contents($testFileName, $template);
 
-        $output->writeln(sprintf("Created Test for '<info>%s</info>' in <info>%s</info>", $service_id, $test_file_name));
+        $output->writeln(
+            sprintf("Created Test for '<info>%s</info>' in <info>%s</info>", $serviceId, $testFileName)
+        );
     }
 
     /**
      * @param InputInterface $input
-     * @param string $service_namespace
+     * @param string $serviceNamespace
      * @return string
      */
-    private function _getTestFileName(InputInterface $input, $service_namespace)
+    private function getTestFileName(InputInterface $input, $serviceNamespace)
     {
-        $path = str_replace('\\', DIRECTORY_SEPARATOR, $service_namespace);
+        $path = str_replace('\\', DIRECTORY_SEPARATOR, $serviceNamespace);
 
         return sprintf('%sTests/%sTest.php', ROOT, $path);
     }
 
     /**
-     * @param string $service_id
+     * @param string $serviceId
      * @return Definition
      */
-    private function _getDefinition($service_id)
+    private function getServiceDefinition($serviceId)
     {
-        return $this->_container_builder->getDefinition($service_id);
+        return $this->container->getDefinition($serviceId);
     }
 
     /**
-     * @param string $service_id
+     * @param string $serviceId
      * @return object
      */
-    private function _getService($service_id)
+    private function getService($serviceId)
     {
-        return $this->_container_builder->get($service_id);
+        return $this->container->get($serviceId);
     }
 
     /**
-     * @param string $service_namespace
+     * @param string $serviceNamespace
      * @return string
      */
-    private function _getTestNamespace($service_namespace)
+    private function getTestNamespace($serviceNamespace)
     {
-        return "Tests\\" . $service_namespace;
+        return "Tests\\" . $serviceNamespace;
     }
 
     /**
      * Generated dummy test code for a given service method
      *
-     * @param TestData $test_data
+     * @param TestData $data
      * @param ReflectionMethod $method
      * @return string
      */
-    private function _getDummyTestCode(TestData $test_data, ReflectionMethod $method)
+    private function getDummyTestCode(TestData $data, ReflectionMethod $method)
     {
-        $method_name = $method->getName();
+        $methodName = $method->getName();
 
-        $parameter_list = [];
-        $variable_list = [];
+        $parameterList = [];
+        $variableList  = [];
 
         foreach ($method->getParameters() as $parameter) {
-            $parameter_list[] = $variable_name = sprintf('$' . $parameter->getName());
+            $parameterList[] = $variableName = sprintf('$' . $parameter->getName());
 
             $value = 'null';
             if ($parameter->isOptional()) {
                 $value = $parameter->getDefaultValue();
-            } if ($parameter->getClass()) {
+            }
+            if ($parameter->getClass()) {
                 $class = $parameter->getClass()->name;
-                $test_data->addUse($class);
+                $data->addUse($class);
                 $value = sprintf('new %s()', $this->getShortClassName($class));
             }
 
-            $variable_list[] = sprintf("\t\t%s = %s;", $variable_name, $value);
+            $variableList[] = sprintf("\t\t%s = %s;", $variableName, $value);
         }
 
-        $test_code = sprintf("\tpublic function test%s() {\n", ucfirst($method_name));
-        $test_code .= "\t\t\$this->markTestIncomplete('This is only a dummy implementation');\n\n";
+        $code = sprintf("\tpublic function test%s() {\n", ucfirst($methodName));
+        $code .= "\t\t\$this->markTestIncomplete('This is only a dummy implementation');\n\n";
 
-        $test_code .= implode("\n", $variable_list) . "\n";
-        $parameter_string = implode(', ', $parameter_list);
+        $code .= implode("\n", $variableList) . "\n";
+        $parameterString = implode(', ', $parameterList);
 
-        $has_return_value = strpos($method->getDocComment(), '@return') !== false;
-        if ($has_return_value) {
-            $test_code .= sprintf("\t\t\$actual_result = \$this->subject->%s(%s);\n", $method_name, $parameter_string);
+        $hasReturnValue = strpos($method->getDocComment(), '@return') !== false;
+        if ($hasReturnValue) {
+            $code .= sprintf("\t\t\$actual_result = \$this->subject->%s(%s);\n", $methodName, $parameterString);
         } else {
-            $test_code .= sprintf("\t\t\$this->subject->%s(%s);\n", $method_name, $parameter_string);
+            $code .= sprintf("\t\t\$this->subject->%s(%s);\n", $methodName, $parameterString);
         }
 
-        $test_code .= "\t}\n";
+        $code .= "\t}\n";
 
-        return $test_code;
+        return $code;
     }
 
     private function initContainerBuilder()
     {
-        if ($this->_container_builder !== null) {
+        if ($this->container !== null) {
             return;
         }
 
-        $this->_container_builder = $this->rebuild->rebuildDIC(false);
+        $this->container = $this->rebuild->rebuildDIC(false);
     }
 
     /**
      * @param string
      * @return string
      */
-    private function getShortClassName($full_class_name)
+    private function getShortClassName($fullClassName)
     {
-     // Strip off namespace
-        $last_backslash_pos = strrpos($full_class_name, '\\');
+        // Strip off namespace
+        $lastBackslashPos = strrpos($fullClassName, '\\');
 
-        if (!$last_backslash_pos) {
-            return $full_class_name;
+        if (!$lastBackslashPos) {
+            return $fullClassName;
         }
 
-        return substr($full_class_name, $last_backslash_pos + 1);
+        return substr($fullClassName, $lastBackslashPos + 1);
     }
 
     /**
-     * @param ReflectionClass $service_reflection
+     * @param ReflectionClass $serviceReflection
      * @return string[]
      */
-    protected function _getBlacklistedMethods(ReflectionClass $service_reflection)
+    private function getBlacklistedMethods(ReflectionClass $serviceReflection)
     {
-        $blacklisted_methods = [];
+        $blacklistedMethods = [];
 
-        foreach ($service_reflection->getTraitNames() as $trait) {
+        foreach ($serviceReflection->getTraitNames() as $trait) {
             $reflection = new ReflectionClass($trait);
             foreach ($reflection->getMethods() as $method) {
-                $blacklisted_methods[] = $method->getName();
+                $blacklistedMethods[] = $method->getName();
             }
         }
 
-        $blacklisted_methods[] = '__construct';
+        $blacklistedMethods[] = '__construct';
 
-        return $blacklisted_methods;
+        return $blacklistedMethods;
     }
 
     /**
-     * @param Definition $reference_service
-     * @param TestData $test_data
-     * @param string $mock_name
+     * @param Definition $referenceService
+     * @param TestData $testData
+     * @param string $mockName
      */
-    protected function _addMock(Definition $reference_service, TestData $test_data, $mock_name)
+    protected function addMock(Definition $referenceService, TestData $testData, $mockName)
     {
-        $class = $reference_service->getClass();
-        $test_data->addUse($class);
+        $class = $referenceService->getClass();
+        $testData->addUse($class);
 
-        $reflection = new ReflectionClass($class);
+        $reflection  = new ReflectionClass($class);
         $constructor = $reflection->getConstructor();
 
         if ($constructor && $constructor->getNumberOfParameters()) {
-            $mock = sprintf("\t\t\$this->mock%s = \$this->getMock(%s::class, [], [], '', false);", $mock_name, $mock_name);
+            $mock = sprintf(
+                "\t\t\$this->mock%s = \$this->getMock(%s::class, [], [], '', false);",
+                $mockName,
+                $mockName
+            );
         } else {
-            $mock = sprintf("\t\t\$this->mock%s = \$this->getMock(%s::class);", $mock_name, $mock_name);
+            $mock = sprintf("\t\t\$this->mock%s = \$this->getMock(%s::class);", $mockName, $mockName);
         }
 
-        $test_data->local_mocks[]     = $mock;
-        $test_data->mock_properties[] = sprintf("\t/**\n\t * @var %s|MockObject\n\t */\n\tprivate \$mock%s;\n", $mock_name, $mock_name);
+        $testData->localMocks[]     = $mock;
+        $testData->mockProperties[] = sprintf(
+            "\t/**\n\t * @var %s|MockObject\n\t */\n\tprivate \$mock%s;\n",
+            $mockName,
+            $mockName
+        );
     }
 
     /**
-     * @param Definition $service_definition
-     * @param TestData $test_data
+     * @param Definition $serviceDefinition
+     * @param TestData $data
      */
-    protected function _setupConstructor(Definition $service_definition, TestData $test_data)
+    private function setupConstructor(Definition $serviceDefinition, TestData $data)
     {
-        foreach ($service_definition->getArguments() as $reference) {
+        foreach ($serviceDefinition->getArguments() as $reference) {
             if ($reference instanceof Definition) {
                 $definition = $reference;
-                $mock_name  = $this->getShortClassName($definition->getClass());
+                $mockName  = $this->getShortClassName($definition->getClass());
             } elseif ($reference instanceof Reference) {
-             // add setter for model mock
-                $definition = $this->_getDefinition((string)$reference);
-                $mock_name  = $this->getShortClassName($definition->getClass());
+                // add setter for model mock
+                $definition = $this->getServiceDefinition((string)$reference);
+                $mockName  = $this->getShortClassName($definition->getClass());
             } else {
-                $test_data->constructor_arguments[] = var_export($reference, true);
+                $data->constructorArguments[] = var_export($reference, true);
                 continue;
             }
 
-            $test_data->constructor_arguments[] = sprintf('$this->mock%s', $mock_name);
+            $data->constructorArguments[] = sprintf('$this->mock%s', $mockName);
 
-            $this->_addMock($definition, $test_data, $mock_name);
+            $this->addMock($definition, $data, $mockName);
         }
     }
 
     /**
-     * @param string $original_test
-     * @param string $new_test
+     * @param string $originaTest
+     * @param string $newTest
      * @param OutputInterface $output
      */
-    private function _displayPatch($original_test, $new_test, OutputInterface $output)
+    private function displayPatch($originaTest, $newTest, OutputInterface $output)
     {
         $output->writeln('<info>Diff: Not implemented yet</info>');
     }
 
     /**
-     * @param string $original_test
-     * @param string $new_test
+     * @param string $originalTest
+     * @param string $newTest
      * @param OutputInterface $output
      * @throws Exception
      * @return string
      */
-    private function _replaceHeaderOnly($original_test, $new_test, OutputInterface $output)
+    private function replaceHeaderOnly($originalTest, $newTest, OutputInterface $output)
     {
-        if (!preg_match('/^.*?}/s', $new_test, $matches)) {
+        if (!preg_match('/^.*?}/s', $newTest, $matches)) {
             throw new Exception('No header found in new test');
         }
 
         print_r($matches);
         $header = $matches[0];
 
-        return preg_replace('/^.*?}/s', $header, $original_test);
+        return preg_replace('/^.*?}/s', $header, $originalTest);
     }
 }

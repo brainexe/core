@@ -40,30 +40,30 @@ class DatabaseUserProvider implements UserProviderInterface
      */
     public function loadUserByUsername($username)
     {
-        $user_id = $this->getRedis()->HGET(self::REDIS_USER_NAMES, strtolower($username));
+        $userId = $this->getRedis()->HGET(self::REDIS_USER_NAMES, strtolower($username));
 
-        if (empty($user_id)) {
+        if (empty($userId)) {
             throw new UsernameNotFoundException(sprintf('Username "%s" does not exist.', $username));
         }
 
-        return $this->loadUserById($user_id);
+        return $this->loadUserById($userId);
     }
 
     /**
-     * @param integer $user_id
+     * @param integer $userId
      * @return UserVO
      */
-    public function loadUserById($user_id)
+    public function loadUserById($userId)
     {
-        $redis_user = $this->getRedis()->HGETALL($this->_getKey($user_id));
+        $redisUser = $this->getRedis()->HGETALL($this->getKey($userId));
 
         $user                  = new UserVO();
-        $user->id              = $user_id;
-        $user->username        = $redis_user['username'];
-        $user->email           = isset($redis_user['email']) ? $redis_user['email'] : '';
-        $user->password_hash   = $redis_user['password'];
-        $user->one_time_secret = $redis_user['one_time_secret'];
-        $user->roles           = array_filter(explode(',', $redis_user['roles']));
+        $user->id              = $userId;
+        $user->username        = $redisUser['username'];
+        $user->email           = isset($redisUser['email']) ? $redisUser['email'] : '';
+        $user->password_hash   = $redisUser['password'];
+        $user->one_time_secret = $redisUser['one_time_secret'];
+        $user->roles           = array_filter(explode(',', $redisUser['roles']));
 
         return $user;
     }
@@ -113,26 +113,26 @@ class DatabaseUserProvider implements UserProviderInterface
 
     /**
      * @param UserVO $user
-     * @param string $new_password
+     * @param string $newPassword
      */
-    public function changePassword(UserVO $user, $new_password)
+    public function changePassword(UserVO $user, $newPassword)
     {
-        $password_hash  = $this->generateHash($new_password);
-        $user->password = $password_hash;
+        $hash  = $this->generateHash($newPassword);
+        $user->password = $hash;
 
         $this->setUserProperty($user, 'password');
     }
 
     /**
-     * @param UserVO $user_vo
+     * @param UserVO $userVo
      * @param string $property
      */
-    public function setUserProperty(UserVO $user_vo, $property)
+    public function setUserProperty(UserVO $userVo, $property)
     {
         $redis = $this->getRedis();
 
-        $value = $user_vo->$property;
-        $redis->HSET($this->_getKey($user_vo->id), $property, $value);
+        $value = $userVo->$property;
+        $redis->HSET($this->getKey($userVo->id), $property, $value);
     }
 
     /**
@@ -141,33 +141,34 @@ class DatabaseUserProvider implements UserProviderInterface
      */
     public function register(UserVO $user)
     {
-        $redis = $this->getRedis()->multi(Redis::PIPELINE);
+        $redis        = $this->getRedis()->multi(Redis::PIPELINE);
+        $passwordHash = $this->generateHash($user->password);
 
-        $user_array = [
-        'username' => $user->getUsername(),
-        'password' => $password_hash = $this->generateHash($user->password),
-        'roles' => implode(',', $user->roles),
-        'one_time_secret' => $user->one_time_secret
+        $userArray = [
+            'username' => $user->getUsername(),
+            'password' => $passwordHash,
+            'roles' => implode(',', $user->roles),
+            'one_time_secret' => $user->one_time_secret
         ];
 
-        $new_user_id = $this->generateRandomNumericId();
+        $newUserId = $this->generateRandomNumericId();
 
-        $redis->HSET(self::REDIS_USER_NAMES, strtolower($user->getUsername()), $new_user_id);
-        $redis->HMSET($this->_getKey($new_user_id), $user_array);
+        $redis->HSET(self::REDIS_USER_NAMES, strtolower($user->getUsername()), $newUserId);
+        $redis->HMSET($this->getKey($newUserId), $userArray);
 
         $redis->exec();
 
-        $user->id = $new_user_id;
+        $user->id = $newUserId;
 
-        return $new_user_id;
+        return $newUserId;
     }
 
     /**
-     * @param integer $user_id
+     * @param integer $userId
      * @return string
      */
-    private function _getKey($user_id)
+    private function getKey($userId)
     {
-        return sprintf(self::REDIS_USER, $user_id);
+        return sprintf(self::REDIS_USER, $userId);
     }
 }

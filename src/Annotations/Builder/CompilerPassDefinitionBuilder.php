@@ -11,13 +11,13 @@ use Symfony\Component\DependencyInjection\Definition;
 class CompilerPassDefinitionBuilder extends ServiceDefinitionBuilder
 {
     /**
-     * @param ReflectionClass $reflection_class
+     * @param ReflectionClass $reflectionClass
      * @param CompilerPass $annotation
      * @return array
      */
-    public function build(ReflectionClass $reflection_class, $annotation)
+    public function build(ReflectionClass $reflectionClass, $annotation)
     {
-        $definitionHolder = parent::build($reflection_class, $annotation);
+        $definitionHolder = parent::build($reflectionClass, $annotation);
 
         /** @var Definition $definition */
         $definition = $definitionHolder['definition'];

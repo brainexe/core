@@ -8,12 +8,12 @@ class FileSystem extends SymfonyFilesystem
 {
 
     /**
-     * @param string $file_name
+     * @param string $fileName
      * @param integer|null $flags
      * @return string
      */
-    public function fileGetContents($file_name, $flags = null)
+    public function fileGetContents($fileName, $flags = null)
     {
-        return file_get_contents($file_name, $flags);
+        return file_get_contents($fileName, $flags);
     }
 }

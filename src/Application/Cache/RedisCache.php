@@ -26,9 +26,9 @@ class RedisCache extends CacheProvider
     /**
      * {@inheritdoc}
      */
-    protected function doFetch($id)
+    protected function doFetch($cacheId)
     {
-        $result = $this->redis->get($id);
+        $result = $this->redis->get($cacheId);
 
         return null === $result ? false : unserialize($result);
     }
@@ -36,18 +36,18 @@ class RedisCache extends CacheProvider
     /**
      * {@inheritdoc}
      */
-    protected function doContains($id)
+    protected function doContains($cacheId)
     {
-        return (bool)$this->redis->exists($id);
+        return (bool)$this->redis->exists($cacheId);
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function doSave($id, $data, $life_time = false)
+    protected function doSave($id, $data, $lifeTime = false)
     {
-        if (0 < $life_time) {
-            $result = $this->redis->setex($id, (int)$life_time, serialize($data));
+        if (0 < $lifeTime) {
+            $result = $this->redis->setex($id, (int)$lifeTime, serialize($data));
         } else {
             $result = $this->redis->set($id, serialize($data));
         }
@@ -79,11 +79,19 @@ class RedisCache extends CacheProvider
         $stats = $this->redis->info();
 
         return [
-        Cache::STATS_HITS => isset($stats['keyspace_hits']) ? $stats['keyspace_hits'] : $stats['Stats']['keyspace_hits'],
-        Cache::STATS_MISSES => isset($stats['keyspace_misses']) ? $stats['keyspace_misses'] : $stats['Stats']['keyspace_misses'],
-        Cache::STATS_UPTIME => isset($stats['uptime_in_seconds']) ? $stats['uptime_in_seconds'] : $stats['Server']['uptime_in_seconds'],
-        Cache::STATS_MEMORY_USAGE => isset($stats['used_memory']) ? $stats['used_memory'] : $stats['Memory']['used_memory'],
-        Cache::STATS_MEMORY_AVAILIABLE => null,
+            Cache::STATS_HITS =>isset($stats['keyspace_hits']) ?
+                $stats['keyspace_hits'] :
+                $stats['Stats']['keyspace_hits'],
+            Cache::STATS_MISSES => isset($stats['keyspace_misses']) ?
+                $stats['keyspace_misses'] :
+                $stats['Stats']['keyspace_misses'],
+            Cache::STATS_UPTIME => isset($stats['uptime_in_seconds']) ?
+                $stats['uptime_in_seconds'] :
+                $stats['Server']['uptime_in_seconds'],
+            Cache::STATS_MEMORY_USAGE => isset($stats['used_memory']) ?
+                $stats['used_memory'] :
+                $stats['Memory']['used_memory'],
+            Cache::STATS_MEMORY_AVAILIABLE => null,
         ];
     }
 }

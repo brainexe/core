@@ -25,9 +25,9 @@ class EventDispatcher extends SymfonyEventDispatcher
      */
     public function dispatchAsWebsocketEvent(AbstractEvent $event)
     {
-        $wrapped_event = new WebSocketEvent($event);
+        $wrappedEvent = new WebSocketEvent($event);
 
-        $this->dispatch($wrapped_event->event_name, $wrapped_event);
+        $this->dispatch($wrappedEvent->event_name, $wrappedEvent);
     }
 
     /**

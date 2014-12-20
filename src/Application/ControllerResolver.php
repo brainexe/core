@@ -2,6 +2,7 @@
 
 namespace BrainExe\Core\Application;
 
+use BrainExe\Core\DependencyInjection\ObjectFinder;
 use BrainExe\Core\Traits\ServiceContainerTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
@@ -12,7 +13,19 @@ use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
 class ControllerResolver implements ControllerResolverInterface
 {
 
-    use ServiceContainerTrait;
+    /**
+     * @var ObjectFinder
+     */
+    private $objectFinder;
+
+    /**
+     * @Inject("@ObjectFinder")
+     * @param ObjectFinder $objectFinder
+     */
+    public function setObjectFinder(ObjectFinder $objectFinder)
+    {
+        $this->objectFinder = $objectFinder;
+    }
 
     /**
      * {@inheritdoc}
@@ -21,9 +34,9 @@ class ControllerResolver implements ControllerResolverInterface
     {
         $controller = $request->attributes->get('_controller');
 
-        list($service_id, $method) = $controller;
+        list($serviceId, $method) = $controller;
 
-        $service = $this->getService($service_id);
+        $service = $this->objectFinder->getService($serviceId);
 
         return [$service, $method];
     }
@@ -34,7 +47,7 @@ class ControllerResolver implements ControllerResolverInterface
     public function getArguments(Request $request, $controller)
     {
         $arguments = [
-        $request
+            $request
         ];
 
         foreach ($request->attributes->all() as $attribute => $value) {

@@ -21,11 +21,11 @@ trait ConfigTrait
     }
 
     /**
-     * @param string $parameter_id
+     * @param string $parameterId
      * @return mixed
      */
-    protected function getParameter($parameter_id)
+    protected function getParameter($parameterId)
     {
-        return $this->container->getParameter($parameter_id);
+        return $this->container->getParameter($parameterId);
     }
 }

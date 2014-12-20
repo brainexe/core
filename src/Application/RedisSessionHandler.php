@@ -33,18 +33,18 @@ class RedisSessionHandler implements SessionHandlerInterface
     /**
      * {@inheritDoc}
      */
-    public function read($session_id)
+    public function read($sessionId)
     {
-        $key = $this->_getKey($session_id);
+        $key = $this->getKey($sessionId);
         return $this->getRedis()->GET($key) ? : '';
     }
 
     /**
      * {@inheritDoc}
      */
-    public function write($session_id, $data)
+    public function write($sessionId, $data)
     {
-        $key = $this->_getKey($session_id);
+        $key = $this->getKey($sessionId);
 
         $this->getRedis()->setex($key, 86400 * 7, $data);
     }
@@ -52,9 +52,9 @@ class RedisSessionHandler implements SessionHandlerInterface
     /**
      * {@inheritDoc}
      */
-    public function destroy($session_id)
+    public function destroy($sessionId)
     {
-        return $this->getRedis()->DEL($this->_getKey($session_id));
+        return $this->getRedis()->DEL($this->getKey($sessionId));
     }
 
     /**
@@ -62,15 +62,16 @@ class RedisSessionHandler implements SessionHandlerInterface
      */
     public function gc($lifetime)
     {
+        unset($lifetime);
         return true;
     }
 
     /**
-     * @param string $session_id
+     * @param string $sessionId
      * @return string
      */
-    private function _getKey($session_id)
+    private function getKey($sessionId)
     {
-        return self::PREFIX . $session_id;
+        return self::PREFIX . $sessionId;
     }
 }

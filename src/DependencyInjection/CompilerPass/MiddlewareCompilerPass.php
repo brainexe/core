@@ -19,25 +19,25 @@ class MiddlewareCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $service_ids = $container->findTaggedServiceIds(self::TAG);
-        $service_priorities = [];
-        foreach ($service_ids as $service_id => $tag) {
+        $serviceIds = $container->findTaggedServiceIds(self::TAG);
+        $servicePriorities = [];
+        foreach ($serviceIds as $serviceId => $tag) {
             if (null === $tag[0]['priority']) {
                 continue;
             }
-            $service_priorities[$service_id] = $tag[0]['priority'];
+            $servicePriorities[$serviceId] = $tag[0]['priority'];
         }
 
-        asort($service_priorities);
-        $service_priorities = array_reverse($service_priorities);
+        asort($servicePriorities);
+        $servicePriorities = array_reverse($servicePriorities);
 
-        $app_kernel = $container->getDefinition('AppKernel');
+        $appKernel = $container->getDefinition('AppKernel');
 
         $references = [];
-        foreach (array_keys($service_priorities) as $service_id) {
-            $references[] = new Reference($service_id);
+        foreach (array_keys($servicePriorities) as $serviceId) {
+            $references[] = new Reference($serviceId);
         }
 
-        $app_kernel->addMethodCall('setMiddlewares', [$references]);
+        $appKernel->addMethodCall('setMiddlewares', [$references]);
     }
 }

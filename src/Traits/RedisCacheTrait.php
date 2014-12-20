@@ -15,9 +15,9 @@ trait RedisCacheTrait
      */
     public function wrapCache($key, $callback, $ttl = 3600)
     {
-        $cached_value = $this->redis->GET($key);
-        if ($cached_value) {
-            return unserialize($cached_value);
+        $cachedValue = $this->redis->GET($key);
+        if ($cachedValue) {
+            return unserialize($cachedValue);
         }
 
         $value = $callback();

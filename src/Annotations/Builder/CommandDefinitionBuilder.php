@@ -12,9 +12,9 @@ class CommandDefinitionBuilder extends ServiceDefinitionBuilder
     /**
      * {@inheritdoc}
      */
-    public function build(ReflectionClass $reflection_class, $annotation)
+    public function build(ReflectionClass $reflectionClass, $annotation)
     {
-        $definitionHolder = parent::build($reflection_class, $annotation);
+        $definitionHolder = parent::build($reflectionClass, $annotation);
 
         /** @var Definition $definition */
         $definition = $definitionHolder['definition'];

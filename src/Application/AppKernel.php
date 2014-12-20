@@ -76,8 +76,8 @@ class AppKernel implements HttpKernelInterface
 
         $response = $this->prepareResponse($request, $response);
 
-        $middleware_idx = count($this->middlewares) - 1;
-        for ($i = $middleware_idx; $i >= 0; $i--) {
+        $middlewareIdx = count($this->middlewares) - 1;
+        for ($i = $middlewareIdx; $i >= 0; $i--) {
             $middleware = $this->middlewares[$i];
             $middleware->processResponse($request, $response);
         }

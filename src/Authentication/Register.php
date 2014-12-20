@@ -37,7 +37,8 @@ class Register
     public function __construct(
         DatabaseUserProvider $userProvider,
         RegisterTokens $tokens,
-        $registrationEnabled) {
+        $registrationEnabled
+    ) {
         $this->userProvider = $userProvider;
         $this->registerTokens = $tokens;
         $this->registrationEnabled = $registrationEnabled;

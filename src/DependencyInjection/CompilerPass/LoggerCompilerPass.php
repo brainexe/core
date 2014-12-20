@@ -34,9 +34,8 @@ class LoggerCompilerPass implements CompilerPassInterface
         } elseif ($container->getParameter('debug')) {
             $logger->addMethodCall('pushHandler', [new Definition(ChromePHPHandler::class)]);
             $logger->addMethodCall('pushHandler', [
-                new Definition(StreamHandler::class,
-                ['php://stdout', Logger::INFO]
-            )]);
+                new Definition(StreamHandler::class, ['php://stdout', Logger::INFO])
+            ]);
         }
 
     }

@@ -3,6 +3,7 @@
 namespace BrainExe\Core\DependencyInjection\CompilerPass;
 
 use BrainExe\Core\Annotations\Route as RouteAnnotation;
+use BrainExe\Core\Application\SerializedRouteCollection;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -25,38 +26,37 @@ class ControllerCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $core_collector = $container->getDefinition('Core.RouteCollection');
-
-        $controllers = $container->findTaggedServiceIds(self::ROUTE_TAG);
+        $coreCollector = $container->getDefinition('Core.RouteCollection');
+        $controllers   = $container->findTaggedServiceIds(self::ROUTE_TAG);
 
         $serialized = [];
-        foreach ($controllers as $id => $tag) {
-            foreach ($tag as $route_raw) {
+        foreach ($controllers as $controllerId => $tag) {
+            foreach ($tag as $routeRaw) {
                 /** @var RouteAnnotation $route */
-                $route = $route_raw[0];
+                $route = $routeRaw[0];
 
                 $name = $route->getName() ?: md5($route->getPath());
                 if ($route->isCsrf()) {
                     $route->setOptions(['csrf' => true]);
                 }
 
-                $serialized[$name] = serialize($this->_createRoute($route));
+                $serialized[$name] = serialize($this->createRoute($route));
             }
 
-            $controller = $container->getDefinition($id);
+            $controller = $container->getDefinition($controllerId);
             $controller->clearTag(self::ROUTE_TAG);
         }
 
-        $core_collector->addArgument($serialized);
+        $coreCollector->addArgument($serialized);
 
-        $this->_dumpMatcher($container);
+        $this->dumpMatcher($container);
     }
 
     /**
      * @param RouteAnnotation $route
      * @return Route
      */
-    private function _createRoute(RouteAnnotation $route)
+    private function createRoute(RouteAnnotation $route)
     {
         if ($route->isCsrf()) {
             $route->setOptions(['csrf' => true]);
@@ -78,23 +78,23 @@ class ControllerCompilerPass implements CompilerPassInterface
      * @param ContainerBuilder $container
      * @codeCoverageIgnore
      */
-    protected function _dumpMatcher(ContainerBuilder $container)
+    protected function dumpMatcher(ContainerBuilder $container)
     {
         if (!is_dir(ROOT . 'cache')) {
             return;
         }
 
-        /** @var RouteCollection $routerCollection */
+        /** @var SerializedRouteCollection $routerCollection */
         $routerCollection = $container->get('Core.RouteCollection');
 
-        $router_file  = sprintf('%scache/router_matcher.php', ROOT);
-        $route_dumper = new PhpMatcherDumper($routerCollection);
-        $content      = $route_dumper->dump();
-        file_put_contents($router_file, $content);
+        $routerFile  = sprintf('%scache/router_matcher.php', ROOT);
+        $routeDumper = new PhpMatcherDumper($routerCollection);
+        $content     = $routeDumper->dump();
+        file_put_contents($routerFile, $content);
 
-        $router_file  = sprintf('%scache/router_generator.php', ROOT);
-        $route_dumper = new PhpGeneratorDumper($routerCollection);
-        $content      = $route_dumper->dump();
-        file_put_contents($router_file, $content);
+        $routerFile  = sprintf('%scache/router_generator.php', ROOT);
+        $routeDumper = new PhpGeneratorDumper($routerCollection);
+        $content     = $routeDumper->dump();
+        file_put_contents($routerFile, $content);
     }
 }

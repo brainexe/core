@@ -22,28 +22,28 @@ class CsrfMiddleware extends AbstractMiddleware
     /**
      * @var string
      */
-    private $_new_token = null;
+    private $newToken = null;
 
     /**
      * {@inheritdoc}
      */
     public function processRequest(Request $request, Route $route, $routeName)
     {
-        $given_token = $request->cookies->get(self::CSRF);
+        $givenToken = $request->cookies->get(self::CSRF);
 
-        if (empty($given_token)) {
-            $this->_renewCsrfToken();
+        if (empty($givenToken)) {
+            $this->renewCsrfToken();
         }
 
         if (!$request->isMethod('POST') && !$route->hasOption(self::CSRF)) {
             return;
         }
 
-        $expected_token = $request->getSession()->get(self::CSRF);
+        $expectedToken = $request->getSession()->get(self::CSRF);
 
-        $this->_renewCsrfToken();
+        $this->renewCsrfToken();
 
-        if (empty($given_token) || $given_token !== $expected_token) {
+        if (empty($givenToken) || $givenToken !== $expectedToken) {
             throw new MethodNotAllowedException(['POST'], "invalid CSRF token");
         }
     }
@@ -53,18 +53,18 @@ class CsrfMiddleware extends AbstractMiddleware
      */
     public function processResponse(Request $request, Response $response)
     {
-        if ($this->_new_token) {
-            $request->getSession()->set(self::CSRF, $this->_new_token);
-            $response->headers->setCookie(new Cookie(self::CSRF, $this->_new_token));
-            $this->_new_token = null;
+        if ($this->newToken) {
+            $request->getSession()->set(self::CSRF, $this->newToken);
+            $response->headers->setCookie(new Cookie(self::CSRF, $this->newToken));
+            $this->newToken = null;
         }
     }
 
     /**
      * @return void
      */
-    private function _renewCsrfToken()
+    private function renewCsrfToken()
     {
-        $this->_new_token = $this->generateRandomId();
+        $this->newToken = $this->generateRandomId();
     }
 }

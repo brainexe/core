@@ -25,11 +25,11 @@ class DebugCompilerPass implements CompilerPassInterface
 
         $redis = $container->getDefinition('redis');
 
-        $redis_logger = new Definition(RedisLogger::class, [
-        $redis,
-        new Reference('monolog.logger')
+        $redisLogger = new Definition(RedisLogger::class, [
+            $redis,
+            new Reference('monolog.logger')
         ]);
 
-        $container->setDefinition('redis', $redis_logger);
+        $container->setDefinition('redis', $redisLogger);
     }
 }

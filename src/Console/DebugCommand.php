@@ -41,11 +41,15 @@ class DebugCommand extends AbstractCommand
         $events = Event::CREATE | Event::MODIFY | Event::MOVE | Event::MOVE_SELF | Event::DELETE | Event::DELETE_SELF;
         foreach ($finder as $file) {
             /** @var SplFileInfo $file */
-            $handler->register(ROOT . 'assets/' . $file->getRelativePathname(), $events, function (Event $event, Handler $handler) {
-            });
+            $handler->register(
+                ROOT . 'assets/' . $file->getRelativePathname(),
+                $events,
+                function (Event $event, Handler $handler) {
+                }
+            );
         }
 
-        $handler->cyclicWait(5, function (Handler $handler, $count) use ($output){
+        $handler->cyclicWait(5, function (Handler $handler, $count) use ($output) {
             $output->write('.');
             if ($count) {
                 $input = new ArrayInput(['command' => 'assets:dump']);

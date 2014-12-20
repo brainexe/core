@@ -21,16 +21,16 @@ class RedisScriptCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $redis_script = $container->getDefinition('RedisScripts');
+        $redisScript = $container->getDefinition('RedisScripts');
 
-        $tagged_services = $container->findTaggedServiceIds(self::TAG);
-        foreach (array_keys($tagged_services) as $service_id) {
-            $definition = $container->getDefinition($service_id);
+        $taggedServices = $container->findTaggedServiceIds(self::TAG);
+        foreach (array_keys($taggedServices) as $serviceId) {
+            $definition = $container->getDefinition($serviceId);
             /** @var RedisScriptInterface $class */
             $class = $definition->getClass();
 
-            $reflection_class = new ReflectionClass($class);
-            if (!$reflection_class->implementsInterface(RedisScriptInterface::class)) {
+            $reflection = new ReflectionClass($class);
+            if (!$reflection->implementsInterface(RedisScriptInterface::class)) {
                 throw new Exception(sprintf(
                     "Class %s dies not implements the interface 'RedisScriptInterface'",
                     $class
@@ -40,7 +40,7 @@ class RedisScriptCompilerPass implements CompilerPassInterface
 
             foreach ($scripts as $name => $script) {
                 $sha1 = sha1($script);
-                $redis_script->addMethodCall('registerScript', [$name, $sha1, $script]);
+                $redisScript->addMethodCall('registerScript', [$name, $sha1, $script]);
             }
         }
     }

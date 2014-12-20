@@ -18,12 +18,12 @@ class RedisCompilerPass implements CompilerPassInterface
     {
         $redis = $container->getDefinition('redis');
 
-        if ($redis_password = $container->getParameter('redis.password')) {
-            $redis->addMethodCall('auth', [$redis_password]);
+        if ($password = $container->getParameter('redis.password')) {
+            $redis->addMethodCall('auth', [$password]);
         }
 
-        if ($redis_database = $container->getParameter('redis.database')) {
-            $redis->addMethodCall('select', [$redis_database]);
+        if ($database = $container->getParameter('redis.database')) {
+            $redis->addMethodCall('select', [$database]);
         }
     }
 }

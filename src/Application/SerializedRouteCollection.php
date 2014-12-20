@@ -88,11 +88,13 @@ class SerializedRouteCollection extends RouteCollection
 
     public function add($name, Route $route)
     {
+        unset($name, $route);
         throw new RuntimeException("RoutCollection::add is not implemented");
     }
 
     public function remove($name)
     {
+        unset($name);
         throw new RuntimeException("RoutCollection::remove is not implemented");
     }
 }

@@ -20,14 +20,14 @@ class AuthenticationDataVO
     public $one_time_token;
 
     /**
-     * @param UserVO $user_vo
+     * @param UserVO $userVo
      * @param string $password
-     * @param string $one_time_token
+     * @param string $oneTimeToken
      */
-    function __construct(UserVO $user_vo, $password, $one_time_token)
+    public function __construct(UserVO $userVo, $password, $oneTimeToken)
     {
-        $this->user_vo        = $user_vo;
+        $this->user_vo        = $userVo;
         $this->password       = $password;
-        $this->one_time_token = $one_time_token;
+        $this->one_time_token = $oneTimeToken;
     }
 }

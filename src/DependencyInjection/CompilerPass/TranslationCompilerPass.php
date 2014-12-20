@@ -19,17 +19,17 @@ class TranslationCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $lang_path = ROOT . '/lang/';
+        $langPath = ROOT . '/lang/';
 
-        if (!is_dir($lang_path)) {
+        if (!is_dir($langPath)) {
             return;
         }
 
         $finder = new Finder();
         $finder
-        ->directories()
-        ->in($lang_path)
-        ->depth(0);
+            ->directories()
+            ->in($langPath)
+            ->depth(0);
 
         foreach ($finder as $dir) {
             /** @var SplFileInfo $dir */

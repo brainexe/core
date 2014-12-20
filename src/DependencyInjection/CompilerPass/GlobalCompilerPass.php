@@ -19,34 +19,34 @@ class GlobalCompilerPass implements CompilerPassInterface
         $container->setParameter('application.root', ROOT);
         $container->setParameter('application.vendor_root', BRAINEXE_VENDOR_ROOT);
 
-        $service_ids = $container->findTaggedServiceIds(self::TAG);
-        $service_priorities = [];
+        $serviceIds = $container->findTaggedServiceIds(self::TAG);
+        $servicePriorities = [];
 
-        foreach ($service_ids as $service_id => $tag) {
-            $service_priorities[$service_id] = $tag[0]['priority'];
+        foreach ($serviceIds as $serviceId => $tag) {
+            $servicePriorities[$serviceId] = $tag[0]['priority'];
         }
 
-        asort($service_priorities);
-        $service_priorities = array_reverse($service_priorities);
+        asort($servicePriorities);
+        $servicePriorities = array_reverse($servicePriorities);
 
         /** @var Logger $logger */
-        $total_time = 0;
-        $logger_store = [];
-        foreach (array_keys($service_priorities) as $service_id) {
-            $start_time = microtime(true);
+        $totalTime = 0;
+        $loggerStore = [];
+        foreach (array_keys($servicePriorities) as $serviceId) {
+            $startTime = microtime(true);
 
-            $container->get($service_id)->process($container);
+            $container->get($serviceId)->process($container);
 
-            $total_time += $diff = microtime(true)-$start_time;
+            $totalTime += $diff = microtime(true) - $startTime;
 
-            $logger_store[] = sprintf('DIC: %0.2fms %s\n', $diff * 1000, $service_id);
+            $loggerStore[] = sprintf('DIC: %0.2fms %s\n', $diff * 1000, $serviceId);
         }
 
         /** @var Logger $logger */
         $logger = $container->get('monolog.logger');
-        foreach ($logger_store as $log) {
+        foreach ($loggerStore as $log) {
             $logger->debug($log);
         }
-        $logger->debug(sprintf('DIC: %0.2fms total time\n', $total_time * 1000));
+        $logger->debug(sprintf('DIC: %0.2fms total time\n', $totalTime * 1000));
     }
 }
