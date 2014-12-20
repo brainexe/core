@@ -5,7 +5,7 @@ namespace BrainExe\Tests\Core\Application;
 use BrainExe\Core\Application\ErrorView;
 use BrainExe\Core\Application\UserException;
 use BrainExe\Core\Authentication\AnonymusUserVO;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Twig_Environment;
@@ -55,4 +55,4 @@ class ErrorViewTest extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals($expected_content, $response);
 	}
-} 
+}

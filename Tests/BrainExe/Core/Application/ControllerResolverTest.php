@@ -4,7 +4,7 @@ namespace Tests\BrainExe\Core\Application\ControllerResolver;
 
 use BrainExe\Core\Application\ControllerResolver;
 use BrainExe\Core\DependencyInjection\ObjectFinder;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase;
 use Symfony\Component\HttpFoundation\Request;
 

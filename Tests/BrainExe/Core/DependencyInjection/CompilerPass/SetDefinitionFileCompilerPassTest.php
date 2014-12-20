@@ -3,7 +3,7 @@
 namespace BrainExe\Tests\Core\DependencyInjection\CompilerPass;
 
 use BrainExe\Core\DependencyInjection\CompilerPass\SetDefinitionFileCompilerPass;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
@@ -116,4 +116,4 @@ class SetDefinitionFileCompilerPassTest extends \PHPUnit_Framework_TestCase {
 		$this->_subject->process($this->_mock_container);
 	}
 
-} 
+}

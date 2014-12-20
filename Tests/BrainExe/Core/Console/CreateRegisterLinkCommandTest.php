@@ -4,7 +4,7 @@ namespace Tests\BrainExe\Core\Console\CreateRegisterLinkCommand;
 
 use BrainExe\Core\Authentication\RegisterTokens;
 use BrainExe\Core\Console\CreateRegisterLinkCommand;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;

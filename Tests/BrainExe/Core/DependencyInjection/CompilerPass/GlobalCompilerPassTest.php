@@ -4,7 +4,7 @@ namespace BrainExe\Tests\Core\DependencyInjection\CompilerPass;
 
 use BrainExe\Core\DependencyInjection\CompilerPass\GlobalCompilerPass;
 use Monolog\Logger;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -65,4 +65,4 @@ class GlobalCompilerPassTest extends \PHPUnit_Framework_TestCase {
 		$this->_subject->process($this->_mock_container);
 	}
 
-} 
+}

@@ -5,7 +5,7 @@ namespace Tests\BrainExe\Core\Authentication\Controller\RegisterController;
 use BrainExe\Core\Authentication\Controller\RegisterController;
 use BrainExe\Core\Authentication\Register;
 use BrainExe\Core\Authentication\UserVO;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

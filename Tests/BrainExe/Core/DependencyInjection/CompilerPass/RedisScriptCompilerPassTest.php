@@ -4,7 +4,7 @@ namespace Tests\BrainExe\Core\DependencyInjection\CompilerPass\RedisScriptCompil
 
 use BrainExe\Core\DependencyInjection\CompilerPass\RedisScriptCompilerPass;
 use BrainExe\Core\Redis\RedisScriptInterface;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase;
 use SebastianBergmann\Exporter\Exception;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

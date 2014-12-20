@@ -6,7 +6,7 @@ use BrainExe\Core\Authentication\DatabaseUserProvider;
 use BrainExe\Core\Authentication\PasswordHasher;
 use BrainExe\Core\Authentication\UserVO;
 use BrainExe\Core\Util\IdGenerator;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase;
 use BrainExe\Core\Redis\Redis;
 
@@ -18,31 +18,31 @@ class DatabaseUserProviderTest extends PHPUnit_Framework_TestCase {
 	/**
 	 * @var DatabaseUserProvider
 	 */
-	private $_subject;
+	private $subject;
 
 	/**
-	 * @var Redis|PHPUnit_Framework_MockObject_MockObject
+	 * @var Redis|MockObject
 	 */
-	private $_mockRedis;
+	private $mockRedis;
 
 	/**
-	 * @var IdGenerator|PHPUnit_Framework_MockObject_MockObject
+	 * @var IdGenerator|MockObject
 	 */
-	private $_mockIdGenerator;
+	private $mockIdGenerator;
 
 	/**
-	 * @var PasswordHasher|PHPUnit_Framework_MockObject_MockObject
+	 * @var PasswordHasher|MockObject
 	 */
-	private $_mockPasswordHasher;
+	private $mockPasswordHasher;
 
 	public function setUp() {
-		$this->_mockRedis = $this->getMock(Redis::class, [], [], '', false);
-		$this->_mockIdGenerator = $this->getMock(IdGenerator::class, [], [], '', false);
-		$this->_mockPasswordHasher = $this->getMock(PasswordHasher::class, [], [], '', false);
+		$this->mockRedis = $this->getMock(Redis::class, [], [], '', false);
+		$this->mockIdGenerator = $this->getMock(IdGenerator::class, [], [], '', false);
+		$this->mockPasswordHasher = $this->getMock(PasswordHasher::class, [], [], '', false);
 
-		$this->_subject = new DatabaseUserProvider($this->_mockPasswordHasher);
-		$this->_subject->setRedis($this->_mockRedis);
-		$this->_subject->setIdGenerator($this->_mockIdGenerator);
+		$this->subject = new DatabaseUserProvider($this->mockPasswordHasher);
+		$this->subject->setRedis($this->mockRedis);
+		$this->subject->setIdGenerator($this->mockIdGenerator);
 	}
 
 	/**
@@ -52,13 +52,13 @@ class DatabaseUserProviderTest extends PHPUnit_Framework_TestCase {
 	public function testLoadUserByUsernameWithInvalidUser() {
 		$username = 'UserName';
 
-		$this->_mockRedis
+		$this->mockRedis
 			->expects($this->once())
 			->method('HGET')
 			->with(DatabaseUserProvider::REDIS_USER_NAMES, 'username')
 			->will($this->returnValue(null));
 
-		$this->_subject->loadUserByUsername($username);
+		$this->subject->loadUserByUsername($username);
 	}
 
 	public function testLoadUserByUsername() {
@@ -73,19 +73,19 @@ class DatabaseUserProviderTest extends PHPUnit_Framework_TestCase {
 			'roles' => 'role_1,role_2'
 		];
 
-		$this->_mockRedis
+		$this->mockRedis
 			->expects($this->once())
 			->method('HGET')
 			->with(DatabaseUserProvider::REDIS_USER_NAMES, 'username')
 			->will($this->returnValue($user_id));
 
-		$this->_mockRedis
+		$this->mockRedis
 			->expects($this->once())
 			->method('HGETALL')
 			->with("user:$user_id")
 			->will($this->returnValue($user_raw));
 
-		$actual_result = $this->_subject->loadUserByUsername($username);
+		$actual_result = $this->subject->loadUserByUsername($username);
 
 		$expected_user = new UserVO();
 		$expected_user->id = $user_id;
@@ -101,13 +101,13 @@ class DatabaseUserProviderTest extends PHPUnit_Framework_TestCase {
 	public function testGetAllUserNames() {
 		$user_names = [1 => 'john', 12 => 'jane'];
 
-		$this->_mockRedis
+		$this->mockRedis
 			->expects($this->once())
 			->method('hGetAll')
 			->with(DatabaseUserProvider::REDIS_USER_NAMES)
 			->will($this->returnValue($user_names));
 
-		$actual_result = $this->_subject->getAllUserNames();
+		$actual_result = $this->subject->getAllUserNames();
 
 		$this->assertEquals($user_names, $actual_result);
 	}
@@ -119,18 +119,18 @@ class DatabaseUserProviderTest extends PHPUnit_Framework_TestCase {
 		$user = new UserVO();
 		$user->username = $username = 'username';
 
-		$this->_mockRedis
+		$this->mockRedis
 			->expects($this->once())
 			->method('HGET')
 			->with(DatabaseUserProvider::REDIS_USER_NAMES, $username)
 			->will($this->returnValue(false));
 
 
-		$this->_subject->refreshUser($user);
+		$this->subject->refreshUser($user);
 	}
 
 	public function testSupportsClassOfUserVO() {
-		$actual_result = $this->_subject->supportsClass(UserVO::class);
+		$actual_result = $this->subject->supportsClass(UserVO::class);
 		$this->assertTrue($actual_result);
 	}
 
@@ -138,13 +138,13 @@ class DatabaseUserProviderTest extends PHPUnit_Framework_TestCase {
 		$password = 'password';
 		$hash     = 'hash';
 
-		$this->_mockPasswordHasher
+		$this->mockPasswordHasher
 			->expects($this->once())
 			->method('generateHash')
 			->with($password)
 			->will($this->returnValue($hash));
 
-		$actual_result = $this->_subject->generateHash($password);
+		$actual_result = $this->subject->generateHash($password);
 
 		$this->assertEquals($hash, $actual_result);
 	}
@@ -153,13 +153,13 @@ class DatabaseUserProviderTest extends PHPUnit_Framework_TestCase {
 		$password = 'password';
 		$hash     = 'hash';
 
-		$this->_mockPasswordHasher
+		$this->mockPasswordHasher
 			->expects($this->once())
 			->method('verifyHash')
 			->with($password, $hash)
 			->will($this->returnValue(true));
 
-		$actual_result = $this->_subject->verifyHash($password, $hash);
+		$actual_result = $this->subject->verifyHash($password, $hash);
 
 		$this->assertTrue($actual_result);
 	}
@@ -171,18 +171,18 @@ class DatabaseUserProviderTest extends PHPUnit_Framework_TestCase {
 		$new_password = 'new_password';
 		$hash         = 'hash';
 
-		$this->_mockPasswordHasher
+		$this->mockPasswordHasher
 			->expects($this->once())
 			->method('generateHash')
 			->with($new_password)
 			->will($this->returnValue($hash));
 
-		$this->_mockRedis
+		$this->mockRedis
 			->expects($this->once())
 			->method('hSet')
 			->with("user:$user_id", 'password', $hash);
 
-		$this->_subject->changePassword($user, $new_password);
+		$this->subject->changePassword($user, $new_password);
 	}
 
 	public function testSetUserProperty() {
@@ -190,12 +190,12 @@ class DatabaseUserProviderTest extends PHPUnit_Framework_TestCase {
 		$user->id       = $user_id = 42;
 		$user->username = $username = 'username';
 
-		$this->_mockRedis
+		$this->mockRedis
 			->expects($this->once())
 			->method('hSet')
 			->with("user:$user_id", 'username', $username);
 
-		$this->_subject->setUserProperty($user, 'username');
+		$this->subject->setUserProperty($user, 'username');
 	}
 
 	public function testRegister() {
@@ -204,33 +204,33 @@ class DatabaseUserProviderTest extends PHPUnit_Framework_TestCase {
 		$user = new UserVO();
 		$user->username = $username = 'username';
 
-		$this->_mockIdGenerator
+		$this->mockIdGenerator
 			->expects($this->once())
 			->method('generateRandomNumericId')
 			->will($this->returnValue($user_id));
 
-		$this->_mockRedis
+		$this->mockRedis
 			->expects($this->once())
 			->method('multi')
-			->will($this->returnValue($this->_mockRedis));
+			->will($this->returnValue($this->mockRedis));
 
-		$this->_mockRedis
+		$this->mockRedis
 			->expects($this->once())
 			->method('HSET')
 			->with(DatabaseUserProvider::REDIS_USER_NAMES, $username, $user_id)
-			->will($this->returnValue($this->_mockRedis));
+			->will($this->returnValue($this->mockRedis));
 
-		$this->_mockRedis
+		$this->mockRedis
 			->expects($this->once())
 			->method('HMSET')
 			->with("user:$user_id", $this->isType('array')) // todo fuzzy
-			->will($this->returnValue($this->_mockRedis));
+			->will($this->returnValue($this->mockRedis));
 
-		$this->_mockRedis
+		$this->mockRedis
 			->expects($this->once())
 			->method('exec');
 
-		$actual_result = $this->_subject->register($user);
+		$actual_result = $this->subject->register($user);
 
 		$this->assertEquals($user_id, $actual_result);
 	}

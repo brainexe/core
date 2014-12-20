@@ -5,7 +5,7 @@ namespace Tests\BrainExe\Core\Console\CreateUserCommand;
 use BrainExe\Core\Authentication\Register;
 use BrainExe\Core\Authentication\UserVO;
 use BrainExe\Core\Console\CreateUserCommand;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;

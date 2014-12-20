@@ -5,7 +5,7 @@ namespace Tests\BrainExe\Core\Middleware\GentimeMiddleware;
 use BrainExe\Core\Authentication\UserVO;
 use BrainExe\Core\Middleware\GentimeMiddleware;
 use Monolog\Logger;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

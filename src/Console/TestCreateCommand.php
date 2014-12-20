@@ -5,7 +5,7 @@ namespace BrainExe\Core\Console;
 use BrainExe\Core\DependencyInjection\Rebuild;
 use BrainExe\Core\Traits\ConfigTrait;
 use Exception;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase;
 use ReflectionClass;
 use ReflectionMethod;

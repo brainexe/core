@@ -3,7 +3,7 @@
 namespace Tests\BrainExe\Core\DependencyInjection\CompilerPass\MiddlewareCompilerPass;
 
 use BrainExe\Core\DependencyInjection\CompilerPass\MiddlewareCompilerPass;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;

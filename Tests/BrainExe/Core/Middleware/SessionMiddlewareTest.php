@@ -3,7 +3,7 @@
 namespace Tests\BrainExe\Core\Middleware\SessionMiddleware;
 
 use BrainExe\Core\Middleware\SessionMiddleware;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;

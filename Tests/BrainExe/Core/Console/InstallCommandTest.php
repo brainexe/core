@@ -3,7 +3,7 @@
 namespace Tests\BrainExe\Core\Console\InstallCommand;
 
 use BrainExe\Core\Console\InstallCommand;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;

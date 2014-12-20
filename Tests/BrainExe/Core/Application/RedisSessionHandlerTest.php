@@ -3,7 +3,7 @@
 namespace BrainExe\Tests\Core\Application;
 
 use BrainExe\Core\Application\RedisSessionHandler;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase;
 use BrainExe\Core\Redis\Redis;
 

@@ -6,7 +6,7 @@ use BrainExe\Core\Application\SelfUpdate\SelfUpdateEvent;
 use BrainExe\Core\EventDispatcher\EventDispatcher;
 use BrainExe\Core\Websockets\WebSocketEvent;
 use BrainExe\Core\Websockets\WebsocketListener;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase;
 use BrainExe\Core\Redis\Redis;
 

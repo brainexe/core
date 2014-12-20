@@ -4,7 +4,7 @@ namespace Tests\BrainExe\Core\Notification\GlobalNotificationCollector;
 
 use BrainExe\Core\Notification\GlobalNotificationCollector;
 use BrainExe\Core\Notification\NotificationCollectorInterface;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase;
 
 /**

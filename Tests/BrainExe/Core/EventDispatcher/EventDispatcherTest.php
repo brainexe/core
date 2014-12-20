@@ -8,7 +8,7 @@ use BrainExe\Core\EventDispatcher\DelayedEvent;
 use BrainExe\Core\EventDispatcher\EventDispatcher;
 use BrainExe\Core\EventDispatcher\PushViaWebsocketInterface;
 use BrainExe\Core\Websockets\WebSocketEvent;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase;
 use Symfony\Component\DependencyInjection\Container;
 

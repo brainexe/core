@@ -3,7 +3,7 @@
 namespace BrainExe\Tests\Core\DependencyInjection;
 
 use BrainExe\Core\DependencyInjection\ObjectFinder;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use Symfony\Component\DependencyInjection\Container;
 
 class ObjectFinderTest extends \PHPUnit_Framework_TestCase {
@@ -38,4 +38,4 @@ class ObjectFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals($service, $actual);
 	}
-} 
+}

@@ -4,7 +4,7 @@ namespace Tests\BrainExe\Core\Middleware\CsrfMiddleware;
 
 use BrainExe\Core\Middleware\CsrfMiddleware;
 use BrainExe\Core\Util\IdGenerator;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;

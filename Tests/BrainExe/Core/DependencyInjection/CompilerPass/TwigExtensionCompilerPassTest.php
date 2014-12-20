@@ -3,7 +3,7 @@
 namespace BrainExe\Tests\Core\DependencyInjection\CompilerPass;
 
 use BrainExe\Core\DependencyInjection\CompilerPass\TwigExtensionCompilerPass;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
@@ -103,4 +103,4 @@ class TwigExtensionCompilerPassTest extends \PHPUnit_Framework_TestCase {
 		$this->_subject->process($this->_mockContainer);
 	}
 
-} 
+}

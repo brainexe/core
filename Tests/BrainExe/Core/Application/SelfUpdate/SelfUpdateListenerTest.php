@@ -4,7 +4,7 @@ namespace Tests\BrainExe\Core\Application\SelfUpdate\SelfUpdateListener;
 
 use BrainExe\Core\Application\SelfUpdate\SelfUpdate;
 use BrainExe\Core\Application\SelfUpdate\SelfUpdateListener;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase;
 
 /**

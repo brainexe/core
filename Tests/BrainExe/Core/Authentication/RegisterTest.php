@@ -7,7 +7,7 @@ use BrainExe\Core\Authentication\DatabaseUserProvider;
 use BrainExe\Core\Authentication\Register;
 use BrainExe\Core\Authentication\RegisterTokens;
 use BrainExe\Core\Authentication\UserVO;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
