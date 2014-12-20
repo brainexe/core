@@ -18,17 +18,17 @@ class LoadRedisScriptsCommand extends AbstractCommand
     /**
      * @var RedisScripts
      */
-    private $_redis_scripts;
+    private $redisScripts;
 
     /**
      * @Inject({"@RedisScripts"})
-     * @param RedisScripts $redis_scripts
+     * @param RedisScripts $redisScripts
      */
-    public function __construct(RedisScripts $redis_scripts)
+    public function __construct(RedisScripts $redisScripts)
     {
         parent::__construct();
 
-        $this->_redis_scripts = $redis_scripts;
+        $this->redisScripts = $redisScripts;
     }
 
     /**
@@ -47,7 +47,7 @@ class LoadRedisScriptsCommand extends AbstractCommand
     {
         $redis = $this->getRedis();
 
-        foreach ($this->_redis_scripts->getAllScripts() as $sha1 => $script) {
+        foreach ($this->redisScripts->getAllScripts() as $sha1 => $script) {
             if ($redis->script('EXISTS', $sha1)[0]) {
                 if (OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity()) {
                     $output->writeln(sprintf("Script %s was already loaded", $sha1));

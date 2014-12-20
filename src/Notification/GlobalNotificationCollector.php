@@ -11,14 +11,14 @@ class GlobalNotificationCollector implements NotificationCollectorInterface
     /**
      * @var NotificationCollectorInterface[]
      */
-    private $_collectors = [];
+    private $collectors = [];
 
     /**
      * @param NotificationCollectorInterface $collector
      */
     public function addCollector(NotificationCollectorInterface $collector)
     {
-        $this->_collectors[] = $collector;
+        $this->collectors[] = $collector;
     }
 
     /**
@@ -27,7 +27,7 @@ class GlobalNotificationCollector implements NotificationCollectorInterface
     public function getNotification()
     {
         $notifications = [];
-        foreach ($this->_collectors as $collector) {
+        foreach ($this->collectors as $collector) {
             $notifications = array_merge($notifications, $collector->getNotification());
         }
 

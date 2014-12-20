@@ -15,22 +15,22 @@ class SessionMiddleware extends AbstractMiddleware
     /**
      * @var Session
      */
-    private $_redis_session;
+    private $redisSession;
 
     /**
      * @Inject({"@RedisSession"})
-     * @param Session $redis_session
+     * @param Session $redisSession
      */
-    public function __construct(Session $redis_session)
+    public function __construct(Session $redisSession)
     {
-        $this->_redis_session = $redis_session;
+        $this->redisSession = $redisSession;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function processRequest(Request $request, Route $route, $route_name)
+    public function processRequest(Request $request, Route $route, $routeName)
     {
-        $request->setSession($this->_redis_session);
+        $request->setSession($this->redisSession);
     }
 }

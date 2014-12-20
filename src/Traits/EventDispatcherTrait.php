@@ -11,15 +11,15 @@ trait EventDispatcherTrait
     /**
      * @var EventDispatcher
      */
-    private $_event_dispatcher;
+    private $dispatcher;
 
     /**
      * @Inject("@EventDispatcher")
-     * @param EventDispatcher $event_dispatcher
+     * @param EventDispatcher $dispatcher
      */
-    public function setEventDispatcher(EventDispatcher $event_dispatcher)
+    public function setEventDispatcher(EventDispatcher $dispatcher)
     {
-        $this->_event_dispatcher = $event_dispatcher;
+        $this->dispatcher = $dispatcher;
     }
 
     /**
@@ -27,7 +27,7 @@ trait EventDispatcherTrait
      */
     public function dispatchEvent(AbstractEvent $event)
     {
-        $this->_event_dispatcher->dispatchEvent($event);
+        $this->dispatcher->dispatchEvent($event);
     }
 
     /**
@@ -36,6 +36,6 @@ trait EventDispatcherTrait
      */
     public function dispatchInBackground(AbstractEvent $event, $timestamp = 0)
     {
-        $this->_event_dispatcher->dispatchInBackground($event, $timestamp);
+        $this->dispatcher->dispatchInBackground($event, $timestamp);
     }
 }

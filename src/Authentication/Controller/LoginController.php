@@ -20,7 +20,7 @@ class LoginController implements ControllerInterface
     /**
      * @var Login
      */
-    private $_login;
+    private $login;
 
     /**
      * @inject("@Login")
@@ -28,7 +28,7 @@ class LoginController implements ControllerInterface
      */
     public function __construct(Login $login)
     {
-        $this->_login = $login;
+        $this->login = $login;
     }
 
     /**
@@ -40,10 +40,10 @@ class LoginController implements ControllerInterface
     public function doLogin(Request $request)
     {
         $username       = $request->request->get('username');
-        $plain_password = $request->request->get('password');
-        $one_time_token = $request->request->get('one_time_token');
+        $plainPassword  = $request->request->get('password');
+        $oneTimeToken   = $request->request->get('one_time_token');
 
-        $user_vo = $this->_login->tryLogin($username, $plain_password, $one_time_token, $request->getSession());
+        $user_vo = $this->login->tryLogin($username, $plainPassword, $oneTimeToken, $request->getSession());
 
         $response = new JsonResponse($user_vo);
         $this->_addFlash($response, self::ALERT_SUCCESS, sprintf('Welcome %s', $user_vo->username));

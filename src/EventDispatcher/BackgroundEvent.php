@@ -12,7 +12,7 @@ class BackgroundEvent extends AbstractMessageQueueEvent
     /**
      * @param AbstractEvent $event
      */
-    function __construct(AbstractEvent $event)
+    public function __construct(AbstractEvent $event)
     {
         $this->event_name = self::BACKGROUND;
         $this->event = $event;

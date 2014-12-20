@@ -19,10 +19,10 @@ class SelfUpdateEvent extends AbstractEvent implements PushViaWebsocketInterface
     public $payload;
 
     /**
-     * @param string $event_name - self::*
+     * @param string $eventName - self::*
      */
-    public function __construct($event_name)
+    public function __construct($eventName)
     {
-        $this->event_name = $event_name;
+        $this->event_name = $eventName;
     }
 }

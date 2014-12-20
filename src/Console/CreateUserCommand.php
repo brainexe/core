@@ -20,7 +20,7 @@ class CreateUserCommand extends Command
     /**
      * @var Register
      */
-    private $_register;
+    private $register;
 
     /**
      * {@inheritdoc}
@@ -40,7 +40,7 @@ class CreateUserCommand extends Command
      */
     public function __construct(Register $register)
     {
-        $this->_register = $register;
+        $this->register = $register;
 
         parent::__construct();
     }
@@ -60,8 +60,8 @@ class CreateUserCommand extends Command
         $user->roles    = $roles;
 
         $session = new Session(new MockArraySessionStorage());
-        $user_id = $this->_register->register($user, $session, null);
+        $userId  = $this->register->register($user, $session, null);
 
-        $output->writeln(sprintf("New user-id: <info>%d</info>", $user_id));
+        $output->writeln(sprintf("New user-id: <info>%d</info>", $userId));
     }
 }

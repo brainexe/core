@@ -18,15 +18,15 @@ class Login
     /**
      * @var DatabaseUserProvider
      */
-    private $_userProvider;
+    private $userProvider;
 
     /**
      * @Inject("@DatabaseUserProvider")
-     * @param DatabaseUserProvider $user_provider
+     * @param DatabaseUserProvider $userProvider
      */
-    public function __construct(DatabaseUserProvider $user_provider)
+    public function __construct(DatabaseUserProvider $userProvider)
     {
-        $this->_userProvider = $user_provider;
+        $this->userProvider = $userProvider;
     }
 
     /**
@@ -39,12 +39,12 @@ class Login
      */
     public function tryLogin($username, $password, $one_time_token, SessionInterface $session)
     {
-        $user_vo = $this->_userProvider->loadUserByUsername($username);
+        $user_vo = $this->userProvider->loadUserByUsername($username);
         if (empty($user_vo)) {
             throw new UserException("Invalid Username");
         }
 
-        if (!$this->_userProvider->verifyHash($password, $user_vo->getPassword())) {
+        if (!$this->userProvider->verifyHash($password, $user_vo->getPassword())) {
             throw new UserException("Invalid Password");
         }
 

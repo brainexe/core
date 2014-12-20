@@ -16,12 +16,12 @@ class SelfUpdateCommand extends AbstractCommand
     /**
      * @var SelfUpdate
      */
-    private $_selfUpdate;
+    private $selfUpdate;
 
     /**
      * @var EventDispatcher
      */
-    private $_eventDispatcher;
+    private $eventDispatcher;
 
     /**
      * {@inheritdoc}
@@ -34,15 +34,15 @@ class SelfUpdateCommand extends AbstractCommand
 
     /**
      * @Inject({"@SelfUpdate", "@EventDispatcher"})
-     * @param SelfUpdate $self_update
-     * @param EventDispatcher $event_dispatcher
+     * @param SelfUpdate $selfUpdate
+     * @param EventDispatcher $dispatcher
      */
-    public function __construct(SelfUpdate $self_update, EventDispatcher $event_dispatcher)
+    public function __construct(SelfUpdate $selfUpdate, EventDispatcher $dispatcher)
     {
         parent::__construct();
 
-        $this->_selfUpdate = $self_update;
-        $this->_eventDispatcher = $event_dispatcher;
+        $this->selfUpdate = $selfUpdate;
+        $this->eventDispatcher = $dispatcher;
     }
 
     /**
@@ -53,14 +53,14 @@ class SelfUpdateCommand extends AbstractCommand
      */
     protected function doExecute(InputInterface $input, OutputInterface $output)
     {
-        $this->_eventDispatcher->addListener(SelfUpdateEvent::PROCESS, function(SelfUpdateEvent $event) use ($output) {
+        $this->eventDispatcher->addListener(SelfUpdateEvent::PROCESS, function(SelfUpdateEvent $event) use ($output) {
             $output->write($event->payload);
         });
 
-        $this->_eventDispatcher->addListener(SelfUpdateEvent::ERROR, function(SelfUpdateEvent $event) use ($output) {
+        $this->eventDispatcher->addListener(SelfUpdateEvent::ERROR, function(SelfUpdateEvent $event) use ($output) {
             $output->writeln(sprintf('<error>Error during update: %s</error>', $event->payload));
         });
 
-        $this->_selfUpdate->startUpdate();
+        $this->selfUpdate->startUpdate();
     }
 }

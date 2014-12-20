@@ -18,21 +18,22 @@ class AuthenticationMiddleware extends AbstractMiddleware
     /**
      * @var
      */
-    private $_application_guests_allowed;
+    private $guestsAllowed;
+
     /**
      * @var DatabaseUserProvider
      */
-    private $_database_user_provider;
+    private $userProvider;
 
     /**
      * @Inject({"%application.guests_allowed%", "@DatabaseUserProvider"})
-     * @param boolean $application_guests_allowed
-     * @param DatabaseUserProvider $database_user_provider
+     * @param boolean $guestsAllowed
+     * @param DatabaseUserProvider $userProvider
      */
-    public function __construct($application_guests_allowed, DatabaseUserProvider $database_user_provider)
+    public function __construct($guestsAllowed, DatabaseUserProvider $userProvider)
     {
-        $this->_application_guests_allowed = $application_guests_allowed;
-        $this->_database_user_provider     = $database_user_provider;
+        $this->guestsAllowed = $guestsAllowed;
+        $this->userProvider     = $userProvider;
     }
 
     /**
@@ -45,14 +46,14 @@ class AuthenticationMiddleware extends AbstractMiddleware
     /**
      * {@inheritdoc}
      */
-    public function processRequest(Request $request, Route $route, $route_name)
+    public function processRequest(Request $request, Route $route, $routeName)
     {
         $session   = $request->getSession();
         $user_id   = $session->get('user_id');
-        $logged_id = $user_id > 0;
+        $loggedId  = $user_id > 0;
 
-        if ($logged_id) {
-            $user = $this->_database_user_provider->loadUserById($user_id);
+        if ($loggedId) {
+            $user = $this->userProvider->loadUserById($user_id);
         } else {
             $user = new AnonymusUserVO();
         }
@@ -60,7 +61,7 @@ class AuthenticationMiddleware extends AbstractMiddleware
         $request->attributes->set('user', $user);
         $request->attributes->set('user_id', $user_id);
 
-        if ($this->_application_guests_allowed) {
+        if ($this->guestsAllowed) {
             return null;
         }
 
@@ -68,7 +69,7 @@ class AuthenticationMiddleware extends AbstractMiddleware
             return null;
         }
 
-        if (!$logged_id) {
+        if (!$loggedId) {
             return new RedirectResponse('#/login');
         }
 

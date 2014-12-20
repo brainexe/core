@@ -18,22 +18,22 @@ class ErrorView
     /**
      * @var boolean
      */
-    private $_value_debug;
+    private $debug;
 
     /**
      * @var string
      */
-    private $_value_error_template;
+    private $valueErrorTemplate;
 
     /**
      * @Inject({"%debug%", "%application.error_template%"})
      * @param boolean $debug
-     * @param string $error_template
+     * @param string $errorTemplate
      */
-    public function __construct($debug, $error_template)
+    public function __construct($debug, $errorTemplate)
     {
-        $this->_value_debug          = $debug;
-        $this->_value_error_template = $error_template;
+        $this->debug              = $debug;
+        $this->valueErrorTemplate = $errorTemplate;
     }
 
     /**
@@ -43,11 +43,11 @@ class ErrorView
      */
     public function renderException(Request $request, Exception $exception)
     {
-        $content = $this->render($this->_value_error_template, [
-        'exception' => $exception,
-        'debug' => $this->_value_debug,
-        'request' => $request,
-        'current_user' => $request->attributes->get('user') ?: new AnonymusUserVO(),
+        $content = $this->render($this->valueErrorTemplate, [
+            'exception' => $exception,
+            'debug' => $this->debug,
+            'request' => $request,
+            'current_user' => $request->attributes->get('user') ?: new AnonymusUserVO(),
         ]);
 
         return $content;

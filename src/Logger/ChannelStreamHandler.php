@@ -23,7 +23,9 @@ class ChannelStreamHandler extends StreamHandler
     {
         parent::__construct($stream, $level, $bubble);
 
-        $this->setFormatter(new LineFormatter("[%datetime%] %level_name%: %message% %context% %extra%\n", null, false, true));
+        $this->setFormatter(
+            new LineFormatter("[%datetime%] %level_name%: %message% %context% %extra%\n", null, false, true)
+        );
 
         $this->channel = $channel;
     }

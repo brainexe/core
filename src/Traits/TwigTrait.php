@@ -11,7 +11,7 @@ trait TwigTrait
     /**
      * @var Twig_Environment
      */
-    protected $_twig;
+    protected $twig;
 
     /**
      * @Inject("@Twig")
@@ -19,7 +19,7 @@ trait TwigTrait
      */
     public function setTwig(Twig_Environment $twig)
     {
-        $this->_twig = $twig;
+        $this->twig = $twig;
     }
 
     /**
@@ -29,7 +29,7 @@ trait TwigTrait
      */
     public function render($name, array $context = [])
     {
-        return $this->_twig->render($name, $context);
+        return $this->twig->render($name, $context);
     }
 
     /**

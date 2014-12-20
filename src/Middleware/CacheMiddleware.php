@@ -24,40 +24,40 @@ class CacheMiddleware extends AbstractMiddleware
     /**
      * @var string
      */
-    private $_cache_key;
+    private $cacheKey;
 
     /**
      * @var boolean
      */
-    private $_cache_enabled;
+    private $cacheEnabled;
 
     /**
      * @Inject("%cache.enabled%")
-     * @param boolean $cache_enabled
+     * @param boolean $cacheEnabled
      */
-    public function __construct($cache_enabled)
+    public function __construct($cacheEnabled)
     {
-        $this->_cache_enabled = $cache_enabled;
+        $this->cacheEnabled = $cacheEnabled;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function processRequest(Request $request, Route $route, $route_name)
+    public function processRequest(Request $request, Route $route, $routeName)
     {
-        if (!$this->_cache_enabled || !$route->getOption('cache') || !$request->isMethod('GET')) {
+        if (!$this->cacheEnabled || !$route->getOption('cache') || !$request->isMethod('GET')) {
             return null;
         }
 
-        $this->_cache_key = $request->getRequestUri();
+        $this->cacheKey = $request->getRequestUri();
 
         $cache = $this->getCache();
 
-        if ($cache->contains($this->_cache_key)) {
-            $this->debug(sprintf('fetch from cache: %s', $this->_cache_key));
+        if ($cache->contains($this->cacheKey)) {
+            $this->debug(sprintf('fetch from cache: %s', $this->cacheKey));
 
-            $response = $cache->fetch($this->_cache_key);
-            $this->_cache_key = null;
+            $response = $cache->fetch($this->cacheKey);
+            $this->cacheKey = null;
 
             return $response;
         }
@@ -70,7 +70,7 @@ class CacheMiddleware extends AbstractMiddleware
      */
     public function processResponse(Request $request, Response $response)
     {
-        if (!$this->_cache_key) {
+        if (!$this->cacheKey) {
             return null;
         }
 
@@ -80,9 +80,9 @@ class CacheMiddleware extends AbstractMiddleware
 
         $cache = $this->getCache();
 
-        $this->debug(sprintf('save into cache: %s', $this->_cache_key));
+        $this->debug(sprintf('save into cache: %s', $this->cacheKey));
 
-        $cache->save($this->_cache_key, $response, self::TTL);
-        $this->_cache_key = null;
+        $cache->save($this->cacheKey, $response, self::TTL);
+        $this->cacheKey = null;
     }
 }

@@ -18,7 +18,7 @@ class DelayedEvent extends AbstractMessageQueueEvent
      * @param AbstractEvent $event
      * @param integer $timestamp
      */
-    function __construct(AbstractEvent $event, $timestamp)
+    public function __construct(AbstractEvent $event, $timestamp)
     {
         $this->event_name = self::DELAYED;
         $this->event = $event;

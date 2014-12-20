@@ -13,7 +13,7 @@ class SelfUpdateListener implements EventSubscriberInterface
     /**
      * @var SelfUpdate
      */
-    private $_selfUpdate;
+    private $selfUpdate;
 
     /**
      * @inject("@SelfUpdate")
@@ -21,7 +21,7 @@ class SelfUpdateListener implements EventSubscriberInterface
      */
     public function __construct(SelfUpdate $selfUpdate)
     {
-        $this->_selfUpdate = $selfUpdate;
+        $this->selfUpdate = $selfUpdate;
     }
 
     /**
@@ -36,6 +36,6 @@ class SelfUpdateListener implements EventSubscriberInterface
 
     public function startSelfUpdate()
     {
-        $this->_selfUpdate->startUpdate();
+        $this->selfUpdate->startUpdate();
     }
 }

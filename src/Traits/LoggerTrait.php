@@ -12,7 +12,7 @@ trait LoggerTrait
     /**
      * @var Logger
      */
-    private $_logger;
+    private $logger;
 
     /**
      * @Inject("@monolog.logger")
@@ -20,7 +20,7 @@ trait LoggerTrait
      */
     public function setLogger(Logger $logger)
     {
-        $this->_logger = $logger;
+        $this->logger = $logger;
     }
 
     /**
@@ -33,6 +33,6 @@ trait LoggerTrait
      */
     public function log($level, $message, array $context = [])
     {
-        $this->_logger->log($level, $message, $context);
+        $this->logger->log($level, $message, $context);
     }
 }

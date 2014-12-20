@@ -13,7 +13,7 @@ class ObjectFinder
     /**
      * @var Container
      */
-    private $_container;
+    private $container;
 
     /**
      * @Inject("@service_container")
@@ -21,15 +21,15 @@ class ObjectFinder
      */
     public function __construct(Container $container)
     {
-        $this->_container = $container;
+        $this->container = $container;
     }
 
     /**
-     * @param string $service_id
+     * @param string $id
      * @return mixed
      */
-    public function getService($service_id)
+    public function getService($id)
     {
-        return $this->_container->get($service_id);
+        return $this->container->get($id);
     }
 }

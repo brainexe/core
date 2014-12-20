@@ -19,15 +19,15 @@ class PasswordController implements ControllerInterface
     /**
      * @var DatabaseUserProvider
      */
-    private $_databaseUserProvider;
+    private $userProvider;
 
     /**
      * @inject("@DatabaseUserProvider")
-     * @param DatabaseUserProvider $user_provider
+     * @param DatabaseUserProvider $userProvider
      */
-    public function __construct(DatabaseUserProvider $user_provider)
+    public function __construct(DatabaseUserProvider $userProvider)
     {
-        $this->_databaseUserProvider = $user_provider;
+        $this->userProvider = $userProvider;
     }
 
     /**
@@ -37,11 +37,11 @@ class PasswordController implements ControllerInterface
      */
     public function changePassword(Request $request)
     {
-        $new_password = $request->request->get('password');
+        $password = $request->request->get('password');
         /** @var UserVO $user */
         $user = $request->attributes->get('user');
 
-        $this->_databaseUserProvider->changePassword($user, $new_password);
+        $this->userProvider->changePassword($user, $password);
 
         return true;
     }

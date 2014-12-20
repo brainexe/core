@@ -9,7 +9,7 @@ trait ConfigTrait
     /**
      * @var Container
      */
-    private $_container;
+    private $container;
 
     /**
      * @Inject("@service_container")
@@ -17,7 +17,7 @@ trait ConfigTrait
      */
     public function setContainer(Container $container)
     {
-        $this->_container = $container;
+        $this->container = $container;
     }
 
     /**
@@ -26,6 +26,6 @@ trait ConfigTrait
      */
     protected function getParameter($parameter_id)
     {
-        return $this->_container->getParameter($parameter_id);
+        return $this->container->getParameter($parameter_id);
     }
 }

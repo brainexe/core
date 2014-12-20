@@ -21,7 +21,7 @@ class RegisterController implements ControllerInterface
     /**
      * @var Register
      */
-    private $_register;
+    private $register;
 
     /**
      * @inject("@Register")
@@ -29,7 +29,7 @@ class RegisterController implements ControllerInterface
      */
     public function __construct(Register $register)
     {
-        $this->_register = $register;
+        $this->register = $register;
     }
 
     /**
@@ -41,14 +41,14 @@ class RegisterController implements ControllerInterface
     public function doRegister(Request $request)
     {
         $username       = $request->request->get('username');
-        $plain_password = $request->request->get('password');
+        $plainPassword  = $request->request->get('password');
         $token          = $request->cookies->get('token');
 
         $user_vo           = new UserVO();
         $user_vo->username = $username;
-        $user_vo->password = $plain_password;
+        $user_vo->password = $plainPassword;
 
-        $this->_register->register($user_vo, $request->getSession(), $token);
+        $this->register->register($user_vo, $request->getSession(), $token);
 
         $response = new JsonResponse($user_vo);
         $this->_addFlash($response, self::ALERT_SUCCESS, sprintf('Welcome %s', $user_vo->username));

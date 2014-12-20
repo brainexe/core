@@ -25,25 +25,25 @@ class CreateRegisterLinkCommand extends Command
     /**
      * @var RegisterTokens
      */
-    private $_register_tokens;
+    private $registerTokens;
 
     /**
      * @Inject("@RegisterTokens")
-     * @param RegisterTokens $register_tokens
+     * @param RegisterTokens $registerTokens
      */
-    public function __construct(RegisterTokens $register_tokens)
+    public function __construct(RegisterTokens $registerTokens)
     {
-        $this->_register_tokens = $register_tokens;
+        $this->registerTokens = $registerTokens;
 
         parent::__construct();
     }
-    
+
     /**
      * {@inheritdoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $token = $this->_register_tokens->addToken();
+        $token = $this->registerTokens->addToken();
 
         $link = sprintf('/register/?token=%s', $token);
 

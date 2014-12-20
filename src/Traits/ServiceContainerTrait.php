@@ -13,15 +13,15 @@ trait ServiceContainerTrait
     /**
      * @var ObjectFinder
      */
-    private $_objectFinder;
+    private $objectFinder;
 
     /**
      * @Inject("@ObjectFinder")
-     * @param ObjectFinder $object_finder
+     * @param ObjectFinder $objectFinder
      */
-    public function setObjectFinder(ObjectFinder $object_finder)
+    public function setObjectFinder(ObjectFinder $objectFinder)
     {
-        $this->_objectFinder = $object_finder;
+        $this->objectFinder = $objectFinder;
     }
 
     /**
@@ -30,6 +30,6 @@ trait ServiceContainerTrait
      */
     public function getService($service_id)
     {
-        return $this->_objectFinder->getService($service_id);
+        return $this->objectFinder->getService($service_id);
     }
 }

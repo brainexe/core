@@ -10,7 +10,7 @@ trait TimeTrait
     /**
      * @var Time
      */
-    private $_time;
+    private $time;
 
     /**
      * @Inject("@Time")
@@ -18,7 +18,7 @@ trait TimeTrait
      */
     public function setTime(Time $time)
     {
-        $this->_time = $time;
+        $this->time = $time;
     }
 
     /**
@@ -26,7 +26,7 @@ trait TimeTrait
      */
     public function getTime()
     {
-        return $this->_time;
+        return $this->time;
     }
 
     /**
@@ -34,6 +34,6 @@ trait TimeTrait
      */
     public function now()
     {
-        return $this->_time->now();
+        return $this->time->now();
     }
 }

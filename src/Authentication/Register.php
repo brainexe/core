@@ -16,29 +16,31 @@ class Register
     /**
      * @var DatabaseUserProvider
      */
-    private $_user_provider;
+    private $userProvider;
 
     /**
      * @var RegisterTokens
      */
-    private $_register_tokens;
+    private $registerTokens;
 
     /**
      * @var boolean
      */
-    private $_registration_enabled;
+    private $registrationEnabled;
 
     /**
      * @Inject({"@DatabaseUserProvider", "@RegisterTokens", "%application.registration_enabled%"})
-     * @param DatabaseUserProvider $user_provider
-     * @param RegisterTokens $register_tokens
-     * @param $registration_enabled
+     * @param DatabaseUserProvider $userProvider
+     * @param RegisterTokens $tokens
+     * @param $registrationEnabled
      */
-    public function __construct(DatabaseUserProvider $user_provider, RegisterTokens $register_tokens, $registration_enabled)
-    {
-        $this->_user_provider = $user_provider;
-        $this->_register_tokens = $register_tokens;
-        $this->_registration_enabled = $registration_enabled;
+    public function __construct(
+        DatabaseUserProvider $userProvider,
+        RegisterTokens $tokens,
+        $registrationEnabled) {
+        $this->userProvider = $userProvider;
+        $this->registerTokens = $tokens;
+        $this->registrationEnabled = $registrationEnabled;
     }
 
     /**
@@ -51,24 +53,24 @@ class Register
     public function register(UserVO $user, Session $session, $token = null)
     {
         try {
-            $this->_user_provider->loadUserByUsername($user->getUsername());
+            $this->userProvider->loadUserByUsername($user->getUsername());
 
             throw new UserException(sprintf("User %s already exists", $user->getUsername()));
         } catch (UsernameNotFoundException $e) {
          // all fine
         }
 
-        if (!$this->_registration_enabled
-        && $token !== null
-        && !$this->_register_tokens->fetchToken($token)
+        if (!$this->registrationEnabled
+            && $token !== null
+            && !$this->registerTokens->fetchToken($token)
         ) {
             throw new UserException("You have to provide a valid register token!");
         }
 
-        $user_id = $this->_user_provider->register($user);
+        $userId = $this->userProvider->register($user);
 
         $session->set('user', $user);
 
-        return $user_id;
+        return $userId;
     }
 }

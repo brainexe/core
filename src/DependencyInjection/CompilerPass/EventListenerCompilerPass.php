@@ -28,7 +28,7 @@ class EventListenerCompilerPass implements CompilerPassInterface
             $class = $container->getDefinition($service_id)->getClass();
 
             foreach ($class::getSubscribedEvents() as $eventName => $params) {
-                $this->_addEvent($dispatcher, $params, $eventName, $service_id);
+                $this->addEvent($dispatcher, $params, $eventName, $service_id);
             }
         }
     }
@@ -37,17 +37,17 @@ class EventListenerCompilerPass implements CompilerPassInterface
      * @param Definition$dispatcher
      * @param string|array $params
      * @param string $name
-     * @param string $service_id
+     * @param string $serviceId
      */
-    private function _addEvent(Definition $dispatcher, $params, $name, $service_id)
+    private function addEvent(Definition $dispatcher, $params, $name, $serviceId)
     {
         if (is_string($params)) {
-            $this->_addListener($dispatcher, $name, $service_id, $params, 0);
+            $this->_addListener($dispatcher, $name, $serviceId, $params, 0);
         } elseif (is_string($params[0])) {
             $this->_addListener(
                 $dispatcher,
                 $name,
-                $service_id,
+                $serviceId,
                 $params[0],
                 isset($params[1]) ? $params[1] : 0
             );
@@ -56,7 +56,7 @@ class EventListenerCompilerPass implements CompilerPassInterface
                 $this->_addListener(
                     $dispatcher,
                     $name,
-                    $service_id,
+                    $serviceId,
                     $listener[0],
                     isset($listener[1]) ? $listener[1] : 0
                 );

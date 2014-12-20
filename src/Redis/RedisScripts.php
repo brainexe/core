@@ -11,12 +11,12 @@ class RedisScripts
     /**
      * @var string[]
      */
-    private $_scripts = [];
+    private $scripts = [];
 
     /**
      * @var string[]
      */
-    private $_sha1 = [];
+    private $sha1s = [];
 
     /**
      * @param string $name
@@ -25,8 +25,8 @@ class RedisScripts
      */
     public function registerScript($name, $sha1, $script)
     {
-        $this->_scripts[$sha1] = $script;
-        $this->_sha1[$name] = $sha1;
+        $this->scripts[$sha1] = $script;
+        $this->sha1s[$name] = $sha1;
     }
 
     /**
@@ -35,7 +35,7 @@ class RedisScripts
      */
     public function getSha1($name)
     {
-        return $this->_sha1[$name];
+        return $this->sha1s[$name];
     }
 
     /**
@@ -43,6 +43,6 @@ class RedisScripts
      */
     public function getAllScripts()
     {
-        return $this->_scripts;
+        return $this->scripts;
     }
 }

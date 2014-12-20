@@ -31,7 +31,10 @@ class RedisScriptCompilerPass implements CompilerPassInterface
 
             $reflection_class = new ReflectionClass($class);
             if (!$reflection_class->implementsInterface(RedisScriptInterface::class)) {
-                throw new Exception(sprintf("Class %s dies not implements the interface 'RedisScriptInterface'", $class));
+                throw new Exception(sprintf(
+                    "Class %s dies not implements the interface 'RedisScriptInterface'",
+                    $class
+                ));
             }
             $scripts = $class::getRedisScripts();
 

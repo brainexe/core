@@ -11,7 +11,7 @@ trait RedisTrait
     /**
      * @var Redis|RedisInterface
      */
-    private $_redis;
+    private $redis;
 
     /**
      * @Inject("@Redis")
@@ -19,7 +19,7 @@ trait RedisTrait
      */
     public function setRedis(RedisInterface $client)
     {
-        $this->_redis = $client;
+        $this->redis = $client;
     }
 
     /**
@@ -27,6 +27,6 @@ trait RedisTrait
      */
     protected function getRedis()
     {
-        return $this->_redis;
+        return $this->redis;
     }
 }

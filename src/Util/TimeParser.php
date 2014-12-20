@@ -14,13 +14,13 @@ class TimeParser
     /**
      * @var integer[]
      */
-    private $_time_modifier = [
-    's' => 1,
-    'm' => 60,
-    'h' => 3600,
-    'd' => 86400,
-    'w' => 604800,
-    'y' => 31536000,
+    private $timeModifier = [
+        's' => 1,
+        'm' => 60,
+        'h' => 3600,
+        'd' => 86400,
+        'w' => 604800,
+        'y' => 31536000,
     ];
 
     /**
@@ -40,11 +40,11 @@ class TimeParser
             $timestamp = $now + (int)$string;
         } elseif (preg_match('/^(\d+)\s*(\w)$/', trim($string), $matches)) {
             $modifier = strtolower($matches[2]);
-            if (empty($this->_time_modifier[$modifier])) {
+            if (empty($this->timeModifier[$modifier])) {
                 throw new UserException(sprintf('Invalid time modifier %s', $modifier));
             }
 
-            $timestamp = $now + $matches[1] * $this->_time_modifier[$modifier];
+            $timestamp = $now + $matches[1] * $this->timeModifier[$modifier];
         } else {
             $timestamp = strtotime($string);
         }

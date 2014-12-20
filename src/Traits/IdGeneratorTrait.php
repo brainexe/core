@@ -9,15 +9,15 @@ trait IdGeneratorTrait
     /**
      * @var IdGenerator
      */
-    private $_id_generator;
+    private $idGenerator;
 
     /**
      * @Inject("@IdGenerator")
-     * @param IdGenerator $id_generator
+     * @param IdGenerator $idGenerator
      */
-    public function setIdGenerator(IdGenerator $id_generator)
+    public function setIdGenerator(IdGenerator $idGenerator)
     {
-        $this->_id_generator = $id_generator;
+        $this->idGenerator = $idGenerator;
     }
 
     /**
@@ -25,7 +25,7 @@ trait IdGeneratorTrait
      */
     protected function generateRandomNumericId()
     {
-        return $this->_id_generator->generateRandomNumericId();
+        return $this->idGenerator->generateRandomNumericId();
     }
 
     /**
@@ -34,6 +34,6 @@ trait IdGeneratorTrait
      */
     protected function generateRandomId($length = IdGenerator::ID_LENGTH)
     {
-        return $this->_id_generator->generateRandomId($length);
+        return $this->idGenerator->generateRandomId($length);
     }
 }

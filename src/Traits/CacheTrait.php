@@ -10,7 +10,7 @@ trait CacheTrait
     /**
      * @var CacheProvider
      */
-    private $_cache;
+    private $cache;
 
     /**
      * @Inject("@Cache")
@@ -18,7 +18,7 @@ trait CacheTrait
      */
     public function setCache(CacheProvider $cache)
     {
-        $this->_cache = $cache;
+        $this->cache = $cache;
     }
 
     /**
@@ -26,6 +26,6 @@ trait CacheTrait
      */
     protected function getCache()
     {
-        return $this->_cache;
+        return $this->cache;
     }
 }
