@@ -25,11 +25,11 @@ trait ServiceContainerTrait
     }
 
     /**
-     * @param string $service_id
+     * @param string $serviceId
      * @return mixed
      */
-    public function getService($service_id)
+    public function getService($serviceId)
     {
-        return $this->objectFinder->getService($service_id);
+        return $this->objectFinder->getService($serviceId);
     }
 }

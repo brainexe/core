@@ -65,19 +65,19 @@ class ListServicesCommand extends AbstractCommand
             }
             $definition = $dic->getDefinition($id);
 
-            $is_public = $definition->isPublic();
+            $isPublic = $definition->isPublic();
 
             if ($visibility) {
-                if ($visibility === 'public' && !$is_public) {
+                if ($visibility === 'public' && !$isPublic) {
                     continue;
-                } elseif ($visibility === 'private' && $is_public) {
+                } elseif ($visibility === 'private' && $isPublic) {
                     continue;
                 }
             }
 
             $table->addRow([
-            $id,
-            $is_public ? 'public' : 'private'
+                $id,
+                $isPublic ? 'public' : 'private'
             ]);
         }
 

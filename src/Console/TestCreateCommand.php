@@ -38,7 +38,7 @@ class TestData
     /**
      * @var string[]
      */
-    private $use_statements = [];
+    private $useStatements = [];
 
     /**
      * @param string $class
@@ -47,9 +47,9 @@ class TestData
     public function addUse($class, $alias = null)
     {
         if ($alias) {
-            $this->use_statements[$alias] = $class;
+            $this->useStatements[$alias] = $class;
         } else {
-            $this->use_statements[] = $class;
+            $this->useStatements[] = $class;
         }
     }
 
@@ -60,9 +60,9 @@ class TestData
     {
         $parts = [];
 
-        asort($this->use_statements);
+        asort($this->useStatements);
 
-        foreach ($this->use_statements as $alias => $class) {
+        foreach ($this->useStatements as $alias => $class) {
             if (is_numeric($alias)) {
                 $parts[] = sprintf('use %s;', $class);
             } else {
@@ -207,7 +207,7 @@ class TestCreateCommand extends Command
         $template = str_replace('%local_mocks%', implode("\n", $testData->localMocks), $template);
         $template = str_replace('%constructor_arguments%', implode(", ", $testData->constructorArguments), $template);
 
-        $testFileName = $this->getTestFileName($input, $serviceFullClassName);
+        $testFileName = $this->getTestFileName($serviceFullClassName);
 
         if ($input->getOption('dry')) {
             $output->writeln($template);
@@ -238,11 +238,13 @@ class TestCreateCommand extends Command
             $answer = $helper->ask($input, $output, $question);
 
             $originalTest = file_get_contents($testFileName);
-            switch (array_flip($choices)[$answer]) {
+
+            $answerId = array_flip($choices)[$answer];
+            switch ($answerId) {
                 case 'replace':
                     break;
                 case 'header';
-                    $template = $this->replaceHeaderOnly($originalTest, $template, $output);
+                    $template = $this->replaceHeaderOnly($originalTest, $template);
                     break;
                 case 'diff':
                     $this->displayPatch($originalTest, $template, $output);
@@ -267,11 +269,10 @@ class TestCreateCommand extends Command
     }
 
     /**
-     * @param InputInterface $input
      * @param string $serviceNamespace
      * @return string
      */
-    private function getTestFileName(InputInterface $input, $serviceNamespace)
+    private function getTestFileName($serviceNamespace)
     {
         $path = str_replace('\\', DIRECTORY_SEPARATOR, $serviceNamespace);
 
@@ -455,11 +456,12 @@ class TestCreateCommand extends Command
     }
 
     /**
-     * @param string $originaTest
+     * @param string $originalTest
      * @param string $newTest
      * @param OutputInterface $output
+     * @todo finish
      */
-    private function displayPatch($originaTest, $newTest, OutputInterface $output)
+    private function displayPatch($originalTest, $newTest, OutputInterface $output)
     {
         $output->writeln('<info>Diff: Not implemented yet</info>');
     }
@@ -467,17 +469,15 @@ class TestCreateCommand extends Command
     /**
      * @param string $originalTest
      * @param string $newTest
-     * @param OutputInterface $output
      * @throws Exception
      * @return string
      */
-    private function replaceHeaderOnly($originalTest, $newTest, OutputInterface $output)
+    private function replaceHeaderOnly($originalTest, $newTest)
     {
         if (!preg_match('/^.*?}/s', $newTest, $matches)) {
             throw new Exception('No header found in new test');
         }
 
-        print_r($matches);
         $header = $matches[0];
 
         return preg_replace('/^.*?}/s', $header, $originalTest);

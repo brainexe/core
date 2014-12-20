@@ -34,8 +34,8 @@ class DebugCommand extends AbstractCommand
     {
         $finder = new Finder();
         $finder
-        ->directories()
-        ->in(ROOT . 'assets');
+            ->directories()
+            ->in(ROOT . 'assets');
 
         $handler = new Handler;
         $events = Event::CREATE | Event::MODIFY | Event::MOVE | Event::MOVE_SELF | Event::DELETE | Event::DELETE_SELF;
@@ -44,7 +44,7 @@ class DebugCommand extends AbstractCommand
             $handler->register(
                 ROOT . 'assets/' . $file->getRelativePathname(),
                 $events,
-                function (Event $event, Handler $handler) {
+                function () {
                 }
             );
         }

@@ -44,14 +44,14 @@ class RegisterController implements ControllerInterface
         $plainPassword  = $request->request->get('password');
         $token          = $request->cookies->get('token');
 
-        $user_vo           = new UserVO();
-        $user_vo->username = $username;
-        $user_vo->password = $plainPassword;
+        $user           = new UserVO();
+        $user->username = $username;
+        $user->password = $plainPassword;
 
-        $this->register->register($user_vo, $request->getSession(), $token);
+        $this->register->registerUser($user, $request->getSession(), $token);
 
-        $response = new JsonResponse($user_vo);
-        $this->_addFlash($response, self::ALERT_SUCCESS, sprintf('Welcome %s', $user_vo->username));
+        $response = new JsonResponse($user);
+        $this->addFlash($response, self::ALERT_SUCCESS, sprintf('Welcome %s', $user->username));
 
         return $response;
     }

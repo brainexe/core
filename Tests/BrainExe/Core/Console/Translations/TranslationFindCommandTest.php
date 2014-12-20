@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\BrainExe\Core\Console\Translations\TranslationFindCommand;
+namespace Tests\BrainExe\Core\Console\Translations;
 
 use BrainExe\Core\Console\Translations\TranslationFindCommand;
 use BrainExe\Core\Util\Filesystem;

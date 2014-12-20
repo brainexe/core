@@ -49,8 +49,8 @@ class TranslationCompileCommand extends AbstractCommand
     public function __construct(Finder $finder, ProcessBuilder $processBuilder, FileSystem $fileSystem)
     {
         $this->processBuilder = $processBuilder;
-        $this->finder = $finder;
-        $this->fileSystem = $fileSystem;
+        $this->finder         = $finder;
+        $this->fileSystem     = $fileSystem;
 
         parent::__construct();
     }
@@ -60,32 +60,30 @@ class TranslationCompileCommand extends AbstractCommand
      */
     protected function doExecute(InputInterface $input, OutputInterface $output)
     {
-        $lang_path = ROOT . 'lang/';
+        $langPath = ROOT . 'lang/';
 
-        if (!$this->fileSystem->exists($lang_path)) {
-            $output->writeln(sprintf('<error>Lang directory does not exist: %s</error>', $lang_path));
+        if (!$this->fileSystem->exists($langPath)) {
+            $output->writeln(sprintf('<error>Lang directory does not exist: %s</error>', $langPath));
             return;
         }
 
         $files = $this->finder
-        ->directories()
-        ->in($lang_path)
-        ->depth(0);
+            ->directories()
+            ->in($langPath)
+            ->depth(0);
 
         $command = 'msgfmt %smessages.po -o %smessages.mo';
 
         foreach ($files as $dir) {
             /** @var SplFileInfo $dir */
             $locale = $dir->getRelativePathname();
-            $locale_path = sprintf('%s%s/LC_MESSAGES/', $lang_path, $locale);
+            $localePath = sprintf('%s%s/LC_MESSAGES/', $langPath, $locale);
 
             $process = $this->processBuilder
-            ->setArguments([sprintf($command, $locale_path, $locale_path)])
-            ->getProcess();
+                ->setArguments([sprintf($command, $localePath, $localePath)])
+                ->getProcess();
 
-            $process->run();
-
-            $this->_checkProcess($output, $process);
+            $process->mustRun();
 
             if (OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity()) {
                 $output->writeln(sprintf("Compiled %s", $locale));

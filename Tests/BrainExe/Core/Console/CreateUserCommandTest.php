@@ -45,7 +45,7 @@ class CreateUserCommandTest extends PHPUnit_Framework_TestCase
         $username = 'username';
         $password = 'password';
         $roles    = 'role1,role2';
-        $user_id  = 42;
+        $userId   = 42;
 
         $session = new Session(new MockArraySessionStorage());
 
@@ -55,19 +55,19 @@ class CreateUserCommandTest extends PHPUnit_Framework_TestCase
         $user->roles    = ['role1', 'role2'];
 
         $this->mockRegister
-        ->expects($this->once())
-        ->method('register')
-        ->with($user, $session, null)
-        ->will($this->returnValue($user_id));
+            ->expects($this->once())
+            ->method('registerUser')
+            ->with($user, $session, null)
+            ->willReturn($userId);
 
         $commandTester->execute([
-        'username' => $username,
-        'password' => $password,
-        'roles'    => $roles
+            'username' => $username,
+            'password' => $password,
+            'roles'    => $roles
         ]);
 
         $output = $commandTester->getDisplay();
 
-        $this->assertEquals("New user-id: $user_id\n", $output);
+        $this->assertEquals("New user-id: $userId\n", $output);
     }
 }

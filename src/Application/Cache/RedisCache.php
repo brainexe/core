@@ -44,12 +44,12 @@ class RedisCache extends CacheProvider
     /**
      * {@inheritdoc}
      */
-    protected function doSave($id, $data, $lifeTime = false)
+    protected function doSave($cacheId, $data, $lifeTime = false)
     {
         if (0 < $lifeTime) {
-            $result = $this->redis->setex($id, (int)$lifeTime, serialize($data));
+            $result = $this->redis->setex($cacheId, (int)$lifeTime, serialize($data));
         } else {
-            $result = $this->redis->set($id, serialize($data));
+            $result = $this->redis->set($cacheId, serialize($data));
         }
 
         return (bool)$result;
@@ -58,9 +58,9 @@ class RedisCache extends CacheProvider
     /**
      * {@inheritdoc}
      */
-    protected function doDelete($id)
+    protected function doDelete($cacheId)
     {
-        return (bool)$this->redis->del($id);
+        return (bool)$this->redis->del($cacheId);
     }
 
     /**

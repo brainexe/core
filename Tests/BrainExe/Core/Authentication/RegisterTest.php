@@ -59,7 +59,7 @@ class RegisterTest extends PHPUnit_Framework_TestCase
         ->with($username)
         ->will($this->returnValue($user));
 
-        $this->subject->register($user, $session, $token);
+        $this->subject->registerUser($user, $session, $token);
     }
 
     /**
@@ -86,7 +86,7 @@ class RegisterTest extends PHPUnit_Framework_TestCase
         ->with($token)
         ->will($this->returnValue(false));
 
-        $this->subject->register($user, $session, $token);
+        $this->subject->registerUser($user, $session, $token);
     }
 
     public function testRegisterWithValidToken()
@@ -116,7 +116,7 @@ class RegisterTest extends PHPUnit_Framework_TestCase
         ->with($user)
         ->will($this->returnValue($user_id));
 
-        $actualResult = $this->subject->register($user, $session, $token);
+        $actualResult = $this->subject->registerUser($user, $session, $token);
 
         $this->assertEquals($user_id, $actualResult);
         $this->assertEquals($user, $session->get('user'));

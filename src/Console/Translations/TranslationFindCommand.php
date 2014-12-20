@@ -49,33 +49,33 @@ class TranslationFindCommand extends AbstractCommand
         $command = 'find %s -type f -iname "*.php" | xgettext --keyword=__ --keyword=t -j -f - -o %slang/messages.pot';
 
         $process = $this->processBuilder
-        ->setArguments([sprintf($command, ROOT, ROOT)])
-        ->getProcess();
+            ->setArguments([sprintf($command, ROOT, ROOT)])
+            ->getProcess();
 
         $process->run();
-        $this->_checkProcess($output, $process);
+        $this->checkProcess($output, $process);
 
-        $lang_path = ROOT . 'lang/';
+        $langPath = ROOT . 'lang/';
 
         $dirs = $this->finder
-        ->directories()
-        ->in($lang_path)
-        ->depth(0);
+            ->directories()
+            ->in($langPath)
+            ->depth(0);
 
         $command = 'msgmerge -vU %smessages.po %smessages.pot';
 
         foreach ($dirs as $dir) {
             /** @var SplFileInfo $dir */
             $locale = $dir->getRelativePathname();
-            $locale_path = sprintf('%s%s/LC_MESSAGES/', $lang_path, $locale);
+            $localePath = sprintf('%s%s/LC_MESSAGES/', $langPath, $locale);
 
             $process = $this->processBuilder
-            ->setArguments([sprintf($command, $locale_path, $lang_path)])
-            ->getProcess();
+                ->setArguments([sprintf($command, $localePath, $langPath)])
+                ->getProcess();
 
             $process->run();
 
-            $this->_checkProcess($output, $process);
+            $this->checkProcess($output, $process);
 
             if (OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity()) {
                 $output->writeln(sprintf("Process %s", $locale));

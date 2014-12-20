@@ -32,32 +32,32 @@ class Login
     /**
      * @param string $username
      * @param string $password
-     * @param string $one_time_token
+     * @param string $oneTimeToken
      * @param SessionInterface $session
      * @throws UserException
      * @return UserVO
      */
-    public function tryLogin($username, $password, $one_time_token, SessionInterface $session)
+    public function tryLogin($username, $password, $oneTimeToken, SessionInterface $session)
     {
-        $user_vo = $this->userProvider->loadUserByUsername($username);
-        if (empty($user_vo)) {
+        $userVo = $this->userProvider->loadUserByUsername($username);
+        if (empty($userVo)) {
             throw new UserException("Invalid Username");
         }
 
-        if (!$this->userProvider->verifyHash($password, $user_vo->getPassword())) {
+        if (!$this->userProvider->verifyHash($password, $userVo->getPassword())) {
             throw new UserException("Invalid Password");
         }
 
-        $authentication_vo = new AuthenticationDataVO($user_vo, $password, $one_time_token);
+        $authenticationVo = new AuthenticationDataVO($userVo, $password, $oneTimeToken);
 
-        $event = new AuthenticateUserEvent($authentication_vo, AuthenticateUserEvent::CHECK);
+        $event = new AuthenticateUserEvent($authenticationVo, AuthenticateUserEvent::CHECK);
         $this->dispatchEvent($event);
 
-        $session->set('user_id', $user_vo->id);
+        $session->set('user_id', $userVo->id);
 
-        $event = new AuthenticateUserEvent($authentication_vo, AuthenticateUserEvent::AUTHENTICATED);
+        $event = new AuthenticateUserEvent($authenticationVo, AuthenticateUserEvent::AUTHENTICATED);
         $this->dispatchEvent($event);
 
-        return $user_vo;
+        return $userVo;
     }
 }

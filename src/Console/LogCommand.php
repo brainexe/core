@@ -48,9 +48,9 @@ class LogCommand extends Command
         'white'
         ];
 
-        $i = 0;
+        $index = 0;
         foreach ($finder as $file) {
-            $color = $colors[$i++ % (count($colors) - 1)];
+            $color = $colors[$index++ % (count($colors) - 1)];
 
             /** @var SplFileInfo $file */
             $filename = $file->getFilename();
@@ -62,6 +62,7 @@ class LogCommand extends Command
             $process->setIdleTimeout(0);
 
             $process->start(function($type, $buffer) use ($output, $filename, $color) {
+                unset($type);
                 $output->write(sprintf("<fg=yellow>%s: %s</>", $filename, $buffer));
             });
         }

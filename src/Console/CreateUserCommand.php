@@ -28,10 +28,10 @@ class CreateUserCommand extends Command
     protected function configure()
     {
         $this->setName('user:create')
-        ->setDescription('Create user')
-        ->addArgument('username', InputArgument::REQUIRED, 'username')
-        ->addArgument('password', InputArgument::REQUIRED, 'PLAIN password')
-        ->addArgument('roles', InputArgument::OPTIONAL, 'roles (comma-separated)');
+            ->setDescription('Create user')
+            ->addArgument('username', InputArgument::REQUIRED, 'username')
+            ->addArgument('password', InputArgument::REQUIRED, 'PLAIN password')
+            ->addArgument('roles', InputArgument::OPTIONAL, 'roles (comma-separated)');
     }
 
     /**
@@ -60,7 +60,7 @@ class CreateUserCommand extends Command
         $user->roles    = $roles;
 
         $session = new Session(new MockArraySessionStorage());
-        $userId  = $this->register->register($user, $session, null);
+        $userId  = $this->register->registerUser($user, $session, null);
 
         $output->writeln(sprintf("New user-id: <info>%d</info>", $userId));
     }

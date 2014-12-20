@@ -43,10 +43,10 @@ class LoginController implements ControllerInterface
         $plainPassword  = $request->request->get('password');
         $oneTimeToken   = $request->request->get('one_time_token');
 
-        $user_vo = $this->login->tryLogin($username, $plainPassword, $oneTimeToken, $request->getSession());
+        $user = $this->login->tryLogin($username, $plainPassword, $oneTimeToken, $request->getSession());
 
-        $response = new JsonResponse($user_vo);
-        $this->_addFlash($response, self::ALERT_SUCCESS, sprintf('Welcome %s', $user_vo->username));
+        $response = new JsonResponse($user);
+        $this->addFlash($response, self::ALERT_SUCCESS, sprintf('Welcome %s', $user->username));
 
         return $response;
     }

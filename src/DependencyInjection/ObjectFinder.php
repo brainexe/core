@@ -25,11 +25,11 @@ class ObjectFinder
     }
 
     /**
-     * @param string $id
+     * @param string $serviceId
      * @return mixed
      */
-    public function getService($id)
+    public function getService($serviceId)
     {
-        return $this->container->get($id);
+        return $this->container->get($serviceId);
     }
 }

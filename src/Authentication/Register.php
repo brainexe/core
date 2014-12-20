@@ -51,7 +51,7 @@ class Register
      * @throws UserException
      * @return integer
      */
-    public function register(UserVO $user, Session $session, $token = null)
+    public function registerUser(UserVO $user, Session $session, $token = null)
     {
         try {
             $this->userProvider->loadUserByUsername($user->getUsername());

@@ -15,7 +15,7 @@ abstract class AbstractCommand extends Command
      * @param Process $process
      * @todo use mustRun
      */
-    protected function _checkProcess(OutputInterface $output, Process $process)
+    protected function checkProcess(OutputInterface $output, Process $process)
     {
         if (!$process->isSuccessful()) {
             $error   = $process->getErrorOutput();

@@ -31,12 +31,12 @@ class TranslationCompilerPass implements CompilerPassInterface
             ->in($langPath)
             ->depth(0);
 
-        foreach ($finder as $dir) {
-            /** @var SplFileInfo $dir */
-      //			$locale = $dir->getRelativePathname();
-      //			$lang_dir = sprintf('%slang/%s/LC_MESSAGES/', ROOT, $locale);
-      //			$translator->addMethodCall('addResource', ['mo', sprintf('%smessages.mo', $lang_dir), $locale]);
-        }
+//        foreach ($finder as $directory) {
+//            /** @var SplFileInfo $directory */
+//      			$locale = $dir->getRelativePathname();
+//      			$lang_dir = sprintf('%slang/%s/LC_MESSAGES/', ROOT, $locale);
+//      			$translator->addMethodCall('addResource', ['mo', sprintf('%smessages.mo', $lang_dir), $locale]);
+//        }
 
     }
 }

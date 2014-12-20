@@ -8,14 +8,14 @@ use BrainExe\Core\EventDispatcher\AbstractEvent;
 class AuthenticateUserEvent extends AbstractEvent
 {
 
-    const CHECK = 'authenticate.check';
+    const CHECK         = 'authenticate.check';
     const AUTHENTICATED = 'authenticate.authenticated';
-    const FAILED = 'authenticate.failed';
+    const FAILED        = 'authenticate.failed';
 
     /**
      * @var AuthenticationDataVO
      */
-    private $authentication_data;
+    private $authenticationData;
 
     /**
      * @param AuthenticationDataVO $userVo
@@ -25,7 +25,7 @@ class AuthenticateUserEvent extends AbstractEvent
     {
         parent::__construct($eventName);
 
-        $this->authentication_data = $userVo;
+        $this->authenticationData = $userVo;
     }
 
     /**
@@ -33,6 +33,6 @@ class AuthenticateUserEvent extends AbstractEvent
      */
     public function getAuthenticationData()
     {
-        return $this->authentication_data;
+        return $this->authenticationData;
     }
 }

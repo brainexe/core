@@ -38,25 +38,25 @@ class RegisterControllerTest extends PHPUnit_Framework_TestCase
     public function testDoRegister()
     {
         $username       = 'username';
-        $plain_password = 'plain password';
+        $plainPassword = 'plain password';
         $token          = 'token';
 
         $session = new Session(new MockArraySessionStorage());
 
         $request = new Request();
         $request->request->set('username', $username);
-        $request->request->set('password', $plain_password);
+        $request->request->set('password', $plainPassword);
         $request->cookies->set('token', $token);
         $request->setSession($session);
 
-        $user_vo           = new UserVO();
-        $user_vo->username = $username;
-        $user_vo->password = $plain_password;
+        $userVo           = new UserVO();
+        $userVo->username = $username;
+        $userVo->password = $plainPassword;
 
         $this->mockRegister
-        ->expects($this->once())
-        ->method('register')
-        ->with($user_vo, $session, $token);
+            ->expects($this->once())
+            ->method('registerUser')
+            ->with($userVo, $session, $token);
 
         $actualResult = $this->subject->doRegister($request);
 

@@ -21,7 +21,7 @@ class GentimeMiddleware extends AbstractMiddleware
      */
     public function processResponse(Request $request, Response $response)
     {
-        $startTime = $_SERVER['REQUEST_TIME_FLOAT']; //todo use $request object
+        $startTime = $request->server->get('REQUEST_TIME_FLOAT');
         $diff      = microtime(true) - $startTime;
         $user      = $request->attributes->get('user');
 

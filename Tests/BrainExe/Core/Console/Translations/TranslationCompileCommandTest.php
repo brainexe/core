@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\BrainExe\Core\Console\Translations\TranslationCompileCommand;
+namespace Tests\BrainExe\Core\Console\Translations;
 
 use BrainExe\Core\Console\Translations\TranslationCompileCommand;
-use BrainExe\Core\Util\Filesystem;
+use BrainExe\Core\Util\FileSystem;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase;
 use Symfony\Component\Console\Application;
@@ -42,11 +42,15 @@ class TranslationCompileCommandTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->mockFinder = $this->getMock(Finder::class, [], [], '', false);
+        $this->mockFinder         = $this->getMock(Finder::class, [], [], '', false);
         $this->mockProcessBuilder = $this->getMock(ProcessBuilder::class, [], [], '', false);
-        $this->mockFilesystem = $this->getMock(Filesystem::class, [], [], '', false);
+        $this->mockFilesystem     = $this->getMock(Filesystem::class, [], [], '', false);
 
-        $this->subject = new TranslationCompileCommand($this->mockFinder, $this->mockProcessBuilder, $this->mockFilesystem);
+        $this->subject = new TranslationCompileCommand(
+            $this->mockFinder,
+            $this->mockProcessBuilder,
+            $this->mockFilesystem
+        );
     }
 
     public function testExecuteWithoutExistingDir()
@@ -57,10 +61,10 @@ class TranslationCompileCommandTest extends PHPUnit_Framework_TestCase
         $commandTester = new CommandTester($this->subject);
 
         $this->mockFilesystem
-        ->expects($this->once())
-        ->method('exists')
-        ->with(ROOT . 'lang/')
-        ->willReturn(false);
+            ->expects($this->once())
+            ->method('exists')
+            ->with(ROOT . 'lang/')
+            ->willReturn(false);
 
         $commandTester->execute([]);
         $output = $commandTester->getDisplay();
@@ -78,54 +82,53 @@ class TranslationCompileCommandTest extends PHPUnit_Framework_TestCase
         $commandTester = new CommandTester($this->subject);
 
         $this->mockFilesystem
-        ->expects($this->once())
-        ->method('exists')
-        ->with(ROOT . 'lang/')
-        ->willReturn(true);
+            ->expects($this->once())
+            ->method('exists')
+            ->with(ROOT . 'lang/')
+            ->willReturn(true);
 
         $file = new MockSplFileInfo([
-        'relativePathname' => 'de_DE'
+            'relativePathname' => 'de_DE'
         ]);
         $files = [
-        $file
+            $file
         ];
 
         $process = $this->getMock(Process::class, [], [], '', false);
 
         $this->mockFinder
-        ->expects($this->at(0))
-        ->method('directories')
-        ->willReturn($this->mockFinder);
+            ->expects($this->at(0))
+            ->method('directories')
+            ->willReturn($this->mockFinder);
         $this->mockFinder
-        ->expects($this->at(1))
-        ->method('in')
-        ->with(ROOT . 'lang/')
-        ->willReturn($this->mockFinder);
+            ->expects($this->at(1))
+            ->method('in')
+            ->with(ROOT . 'lang/')
+            ->willReturn($this->mockFinder);
         $this->mockFinder
-        ->expects($this->at(2))
-        ->method('depth')
-        ->with(0)
-        ->willReturn($files);
+            ->expects($this->at(2))
+            ->method('depth')
+            ->with(0)
+            ->willReturn($files);
 
-        $command = sprintf('msgfmt %slang/de_DE/LC_MESSAGES/messages.po -o %slang/de_DE/LC_MESSAGES/messages.mo', ROOT, ROOT);
+        $command = sprintf(
+            'msgfmt %slang/de_DE/LC_MESSAGES/messages.po -o %slang/de_DE/LC_MESSAGES/messages.mo',
+            ROOT,
+            ROOT
+        );
         $this->mockProcessBuilder
-        ->expects($this->once())
-        ->method('setArguments')
-        ->with([$command])
-        ->willReturn($this->mockProcessBuilder);
+            ->expects($this->once())
+            ->method('setArguments')
+            ->with([$command])
+            ->willReturn($this->mockProcessBuilder);
         $this->mockProcessBuilder
-        ->expects($this->once())
-        ->method('getProcess')
-        ->willReturn($process);
+            ->expects($this->once())
+            ->method('getProcess')
+            ->willReturn($process);
 
         $process
-        ->expects($this->once())
-        ->method('run');
-
-        $process
-        ->expects($this->once())
-        ->method('isSuccessful')
-        ->willReturn(true);
+            ->expects($this->once())
+            ->method('mustRun');
 
         $commandTester->execute([], ['verbosity' => OutputInterface::VERBOSITY_VERBOSE]);
         $output = $commandTester->getDisplay();
