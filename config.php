@@ -2,5 +2,5 @@
 
 use BrainExe\Annotations\Loader\AnnotationLoader;
 
-/** @var AnnotationLoader $annotation_loader */
+/** @var AnnotationLoader $annotationLoader */
 $annotationLoader->addAnnotationNamespace('BrainExe\Core\Annotations');
