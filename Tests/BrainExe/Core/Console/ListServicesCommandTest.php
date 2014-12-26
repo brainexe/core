@@ -44,7 +44,7 @@ class ListServicesCommandTest extends PHPUnit_Framework_TestCase
 
     public function testExecuteShowAll()
     {
-        $commandTester = $this->_setupMocks();
+        $commandTester = $this->setupMocks();
 
         $commandTester->execute([]);
         $output = $commandTester->getDisplay();
@@ -60,7 +60,7 @@ done\n", $output);
 
     public function testExecuteFilterPublic()
     {
-        $commandTester = $this->_setupMocks();
+        $commandTester = $this->setupMocks();
 
         $commandTester->execute(['visibility' => 'public']);
         $output = $commandTester->getDisplay();
@@ -74,7 +74,7 @@ done\n", $output);
     }
     public function testExecuteFilterPrivate()
     {
-        $commandTester = $this->_setupMocks();
+        $commandTester = $this->setupMocks();
 
         $commandTester->execute(['visibility' => 'private']);
         $output = $commandTester->getDisplay();
@@ -90,37 +90,67 @@ done\n", $output);
     /**
      * @return CommandTester
      */
-    private function _setupMocks()
+    private function setupMocks()
     {
         $application = new Application();
         $application->add($this->subject);
 
         $commandTester = new CommandTester($this->subject);
 
-        $container_builder = $this->getMock(ContainerBuilder::class);
-        $definition_1      = $this->getMock(Definition::class);
-        $definition_2      = $this->getMock(Definition::class);
+        $containerBuilder = $this->getMock(ContainerBuilder::class);
+        $definition1      = $this->getMock(Definition::class);
+        $definition2      = $this->getMock(Definition::class);
 
-        $this->mockRebuild->expects($this->once())->method('rebuildDIC')->with(false)->will($this->returnValue($container_builder));
+        $this->mockRebuild
+            ->expects($this->once())
+            ->method('rebuildDIC')
+            ->with(false)
+            ->willReturn($containerBuilder);
 
-        $service_ids = [
-        'service_2',
-        'service_1',
-        'service_3',
+        $serviceIds = [
+            'service_2',
+            'service_1',
+            'service_3',
         ];
 
-        $container_builder->expects($this->at(0))->method('getServiceIds')->will($this->returnValue($service_ids));
+        $containerBuilder
+            ->expects($this->at(0))
+            ->method('getServiceIds')
+            ->willReturn($serviceIds);
+        $containerBuilder
+            ->expects($this->at(1))
+            ->method('hasDefinition')
+            ->with('service_1')
+            ->willReturn(true);
+        $containerBuilder
+            ->expects($this->at(2))
+            ->method('getDefinition')
+            ->with('service_1')
+            ->willReturn($definition1);
+        $containerBuilder
+            ->expects($this->at(3))
+            ->method('hasDefinition')
+            ->with('service_2')
+            ->willReturn(true);
+        $containerBuilder
+            ->expects($this->at(4))
+            ->method('getDefinition')
+            ->with('service_2')
+            ->willReturn($definition2);
+        $containerBuilder
+            ->expects($this->at(5))
+            ->method('hasDefinition')
+            ->with('service_3')
+            ->willReturn(false);
 
-        $container_builder->expects($this->at(1))->method('hasDefinition')->with('service_1')->will($this->returnValue(true));
-        $container_builder->expects($this->at(2))->method('getDefinition')->with('service_1')->will($this->returnValue($definition_1));
-
-        $container_builder->expects($this->at(3))->method('hasDefinition')->with('service_2')->will($this->returnValue(true));
-        $container_builder->expects($this->at(4))->method('getDefinition')->with('service_2')->will($this->returnValue($definition_2));
-
-        $container_builder->expects($this->at(5))->method('hasDefinition')->with('service_3')->will($this->returnValue(false));
-
-        $definition_1->expects($this->once())->method('isPublic')->will($this->returnValue(true));
-        $definition_2->expects($this->once())->method('isPublic')->will($this->returnValue(false));
+        $definition1
+            ->expects($this->once())
+            ->method('isPublic')
+            ->willReturn(true);
+        $definition2
+            ->expects($this->once())
+            ->method('isPublic')
+            ->willReturn(false);
 
         return $commandTester;
     }

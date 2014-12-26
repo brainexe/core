@@ -33,22 +33,22 @@ class RedisLockTest extends PHPUnit_Framework_TestCase
 
     public function testLockWhenNotLockedYet()
     {
-        $name = 'lock';
-        $lock_time = 10;
+        $name     = 'lock';
+        $lockTime = 10;
 
         $this->mockRedis
         ->expects($this->once())
-        ->method('EXISTS')
-        ->with("lock:$name")
-        ->will($this->returnValue(false));
+            ->method('EXISTS')
+            ->with("lock:$name")
+            ->willReturn(false);
 
         $this->mockRedis
-        ->expects($this->once())
-        ->method('SETEX')
-        ->with($name, $lock_time)
-        ->will($this->returnValue(true));
+            ->expects($this->once())
+            ->method('SETEX')
+            ->with($name, $lockTime)
+            ->willReturn(true);
 
-        $actualResult = $this->subject->lock($name, $lock_time);
+        $actualResult = $this->subject->lock($name, $lockTime);
 
         $this->assertTrue($actualResult);
     }
@@ -56,15 +56,15 @@ class RedisLockTest extends PHPUnit_Framework_TestCase
     public function testLockWhenLocked()
     {
         $name = 'lock';
-        $lock_time = 10;
+        $lockTime = 10;
 
         $this->mockRedis
-        ->expects($this->once())
-        ->method('EXISTS')
-        ->with("lock:$name")
-        ->will($this->returnValue(true));
+            ->expects($this->once())
+            ->method('EXISTS')
+            ->with("lock:$name")
+            ->willReturn(true);
 
-        $actualResult = $this->subject->lock($name, $lock_time);
+        $actualResult = $this->subject->lock($name, $lockTime);
 
         $this->assertFalse($actualResult);
     }
@@ -74,9 +74,9 @@ class RedisLockTest extends PHPUnit_Framework_TestCase
         $name = 'name';
 
         $this->mockRedis
-        ->expects($this->once())
-        ->method('del')
-        ->with("lock:$name");
+            ->expects($this->once())
+            ->method('del')
+            ->with("lock:$name");
 
         $this->subject->unlock($name);
     }

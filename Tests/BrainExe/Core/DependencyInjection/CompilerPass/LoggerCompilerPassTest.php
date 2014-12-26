@@ -22,7 +22,7 @@ class LoggerCompilerPassTest extends PHPUnit_Framework_TestCase
     /**
      * @var ContainerBuilder|MockObject $container
      */
-    private $mock_container;
+    private $mockContainer;
 
     /**
      * @var Definition|MockObject $container
@@ -33,46 +33,46 @@ class LoggerCompilerPassTest extends PHPUnit_Framework_TestCase
     {
         $this->subject = new LoggerCompilerPass();
 
-        $this->mock_container = $this->getMock(ContainerBuilder::class);
+        $this->mockContainer = $this->getMock(ContainerBuilder::class);
         $this->mockLoggerDefinition = $this->getMock(Definition::class);
     }
 
     public function testProcessCompilerWithCoreStandalone()
     {
-        $this->mock_container
+        $this->mockContainer
         ->expects($this->once())
         ->method('getParameter')
         ->with('core_standalone')
-        ->will($this->returnValue(true));
+        ->willReturn(true);
 
-        $this->mock_container
+        $this->mockContainer
         ->expects($this->once())
         ->method('getDefinition')
         ->with('monolog.Logger')
-        ->will($this->returnValue($this->mockLoggerDefinition));
+        ->willReturn($this->mockLoggerDefinition);
 
-        $this->subject->process($this->mock_container);
+        $this->subject->process($this->mockContainer);
     }
 
     public function testProcessCompilerWitDebug()
     {
-        $this->mock_container
+        $this->mockContainer
         ->expects($this->at(0))
         ->method('getDefinition')
         ->with('monolog.Logger')
-        ->will($this->returnValue($this->mockLoggerDefinition));
+        ->willReturn($this->mockLoggerDefinition);
 
-        $this->mock_container
+        $this->mockContainer
         ->expects($this->at(1))
         ->method('getParameter')
         ->with('core_standalone')
-        ->will($this->returnValue(false));
+        ->willReturn(false);
 
-        $this->mock_container
+        $this->mockContainer
         ->expects($this->at(2))
         ->method('getParameter')
         ->with('debug')
-        ->will($this->returnValue(true));
+        ->willReturn(true);
 
         $this->mockLoggerDefinition
         ->expects($this->at(0))
@@ -84,6 +84,6 @@ class LoggerCompilerPassTest extends PHPUnit_Framework_TestCase
         ->method('addMethodCall')
         ->with('pushHandler', [new Definition(StreamHandler::class, ['php://stdout', Logger::INFO])]);
 
-        $this->subject->process($this->mock_container);
+        $this->subject->process($this->mockContainer);
     }
 }

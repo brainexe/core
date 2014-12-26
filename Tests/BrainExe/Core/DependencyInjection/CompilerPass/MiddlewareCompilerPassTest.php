@@ -35,29 +35,29 @@ class MiddlewareCompilerPassTest extends PHPUnit_Framework_TestCase
 
     public function testProcess()
     {
-        $app_kernel = $this->getMock(Definition::class);
+        $appKernel = $this->getMock(Definition::class);
 
-        $service_ids = [
-        $service_id_1 = 'service_id1' => [0 => ['priority' => 5]],
-        $service_id_2 = 'service_id2' => [0 => ['priority' => null]],
+        $serviceIds = [
+            $serviceId1 = 'service_id1' => [0 => ['priority' => 5]],
+            'service_id2' => [0 => ['priority' => null]],
         ];
 
         $this->mockContainer
-        ->expects($this->once())
-        ->method('findTaggedServiceIds')
-        ->with(MiddlewareCompilerPass::TAG)
-        ->will($this->returnValue($service_ids));
+            ->expects($this->once())
+            ->method('findTaggedServiceIds')
+            ->with(MiddlewareCompilerPass::TAG)
+            ->willReturn($serviceIds);
 
         $this->mockContainer
-        ->expects($this->once())
-        ->method('getDefinition')
-        ->with('AppKernel')
-        ->will($this->returnValue($app_kernel));
+            ->expects($this->once())
+            ->method('getDefinition')
+            ->with('AppKernel')
+            ->willReturn($appKernel);
 
-        $app_kernel
-        ->expects($this->once())
-        ->method('addMethodCall')
-        ->with('setMiddlewares', [[new Reference($service_id_1)]]);
+        $appKernel
+            ->expects($this->once())
+            ->method('addMethodCall')
+            ->with('setMiddlewares', [[new Reference($serviceId1)]]);
 
         $this->subject->process($this->mockContainer);
     }

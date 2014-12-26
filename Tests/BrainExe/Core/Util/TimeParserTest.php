@@ -21,25 +21,25 @@ class TimeParserTest extends PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider providerTimes
-     * @param string $input_string
-     * @param integer $expected_eta
+     * @param string $inputString
+     * @param integer $expectedEta
      */
-    public function testParse($input_string, $expected_eta)
+    public function testParse($inputString, $expectedEta)
     {
-        if (false === $expected_eta) {
+        if (false === $expectedEta) {
             $this->setExpectedException(UserException::class);
         }
 
         $now = time();
-        $actual_seconds = $this->subject->parseString($input_string);
+        $actualSeconds = $this->subject->parseString($inputString);
 
-        $this->assertEquals($now + $expected_eta, $actual_seconds, "time parser", 2);
+        $this->assertEquals($now + $expectedEta, $actualSeconds, "time parser", 2);
     }
 
     public function testParseWithEmptyTime()
     {
-        $actual_seconds = $this->subject->parseString(0);
-        $this->assertEquals(0, $actual_seconds);
+        $actualSeconds = $this->subject->parseString(0);
+        $this->assertEquals(0, $actualSeconds);
     }
 
     /**
@@ -48,14 +48,14 @@ class TimeParserTest extends PHPUnit_Framework_TestCase
     public static function providerTimes()
     {
         return [
-        [2, 2],
-        [-1, false],
-        ["2", 2],
-        ['5s', 5],
-        ['10S', 10],
-        ['5t', false],
-        ['7m', 7*60],
-        ['now', 0]
+            [2, 2],
+            [-1, false],
+            ["2", 2],
+            ['5s', 5],
+            ['10S', 10],
+            ['5t', false],
+            ['7m', 7*60],
+            ['now', 0]
         ];
     }
 }

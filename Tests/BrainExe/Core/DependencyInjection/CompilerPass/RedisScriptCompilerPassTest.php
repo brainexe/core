@@ -40,100 +40,99 @@ class RedisScriptCompilerPassTest extends PHPUnit_Framework_TestCase
     /**
      * @var ContainerBuilder|MockObject
      */
-    private $mock_container;
+    private $mockContainer;
 
     public function setUp()
     {
-        $this->mock_container = $this->getMock(ContainerBuilder::class);
+        $this->mockContainer = $this->getMock(ContainerBuilder::class);
 
         $this->subject = new RedisScriptCompilerPass();
     }
 
     public function testProcess()
     {
-        $redis_scripts  = $this->getMock(Definition::class);
-        $script_service = $this->getMock(Definition::class);
+        $redisScripts  = $this->getMock(Definition::class);
+        $scriptService = $this->getMock(Definition::class);
 
-        $tagged_services = [
-        $service_id = 'service_id' => []
+        $taggedServices = [
+            $serviceId = 'service_id' => []
         ];
 
-        $this->mock_container
-        ->expects($this->at(0))
-        ->method('getDefinition')
-        ->with('RedisScripts')
-        ->will($this->returnValue($redis_scripts));
+        $this->mockContainer
+            ->expects($this->at(0))
+            ->method('getDefinition')
+            ->with('RedisScripts')
+            ->willReturn($redisScripts);
 
-        $this->mock_container
-        ->expects($this->at(1))
-        ->method('findTaggedServiceIds')
-        ->with(RedisScriptCompilerPass::TAG)
-        ->will($this->returnValue($tagged_services));
+        $this->mockContainer
+            ->expects($this->at(1))
+            ->method('findTaggedServiceIds')
+            ->with(RedisScriptCompilerPass::TAG)
+            ->willReturn($taggedServices);
 
-        $this->mock_container
-        ->expects($this->at(2))
-        ->method('getDefinition')
-        ->with($service_id)
-        ->will($this->returnValue($script_service));
+        $this->mockContainer
+            ->expects($this->at(2))
+            ->method('getDefinition')
+            ->with($serviceId)
+            ->willReturn($scriptService);
 
-        $script_service
-        ->expects($this->once())
-        ->method('getClass')
-        ->will($this->returnValue(TestScript::class));
+        $scriptService
+            ->expects($this->once())
+            ->method('getClass')
+            ->willReturn(TestScript::class);
 
-        $redis_scripts
-        ->expects($this->at(0))
-        ->method('addMethodCall')
-        ->with('registerScript', ['name1', sha1('script1'), 'script1']);
+        $redisScripts
+            ->expects($this->at(0))
+            ->method('addMethodCall')
+            ->with('registerScript', ['name1', sha1('script1'), 'script1']);
 
-        $redis_scripts
-        ->expects($this->at(1))
-        ->method('addMethodCall')
-        ->with('registerScript', ['name2', sha1('script2'), 'script2']);
+        $redisScripts
+            ->expects($this->at(1))
+            ->method('addMethodCall')
+            ->with('registerScript', ['name2', sha1('script2'), 'script2']);
 
-        $this->subject->process($this->mock_container);
+        $this->subject->process($this->mockContainer);
     }
 
     /**
      * @expectedException Exception
-     * @expectedExceptionMessage Class Tests\BrainExe\Core\DependencyInjection\CompilerPass\RedisCompilerPass\RedisCompilerPassTest dies not implements the interface 'RedisScriptInterface'
      */
     public function testProcessWithInvalidClass()
     {
-        $redis_scripts  = $this->getMock(Definition::class);
-        $script_service = $this->getMock(Definition::class);
+        $redisScripts  = $this->getMock(Definition::class);
+        $scriptService = $this->getMock(Definition::class);
 
-        $tagged_services = [
-        $service_id = 'service_id' => []
+        $taggedServices = [
+            $serviceId = 'service_id' => []
         ];
 
-        $this->mock_container
-        ->expects($this->at(0))
-        ->method('getDefinition')
-        ->with('RedisScripts')
-        ->will($this->returnValue($redis_scripts));
+        $this->mockContainer
+            ->expects($this->at(0))
+            ->method('getDefinition')
+            ->with('RedisScripts')
+            ->willReturn($redisScripts);
 
-        $this->mock_container
-        ->expects($this->at(1))
-        ->method('findTaggedServiceIds')
-        ->with(RedisScriptCompilerPass::TAG)
-        ->will($this->returnValue($tagged_services));
+        $this->mockContainer
+            ->expects($this->at(1))
+            ->method('findTaggedServiceIds')
+            ->with(RedisScriptCompilerPass::TAG)
+            ->willReturn($taggedServices);
 
-        $this->mock_container
-        ->expects($this->at(2))
-        ->method('getDefinition')
-        ->with($service_id)
-        ->will($this->returnValue($script_service));
+        $this->mockContainer
+            ->expects($this->at(2))
+            ->method('getDefinition')
+            ->with($serviceId)
+            ->willReturn($scriptService);
 
-        $script_service
-        ->expects($this->once())
-        ->method('getClass')
-        ->will($this->returnValue(RedisCompilerPassTest::class));
+        $scriptService
+            ->expects($this->once())
+            ->method('getClass')
+            ->willReturn(RedisCompilerPassTest::class);
 
-        $redis_scripts
-        ->expects($this->never())
-        ->method('addMethodCall');
+        $redisScripts
+            ->expects($this->never())
+            ->method('addMethodCall');
 
-        $this->subject->process($this->mock_container);
+        $this->subject->process($this->mockContainer);
     }
 }

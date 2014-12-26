@@ -25,13 +25,13 @@ class UserControllerTest extends PHPUnit_Framework_TestCase
 
     public function testGetCurrentUser()
     {
-        $user_vo = new UserVO();
+        $userVo  = new UserVO();
         $request = new Request();
 
-        $request->attributes->set('user', $user_vo);
+        $request->attributes->set('user', $userVo);
 
         $actualResult = $this->subject->getCurrentUser($request);
 
-        $this->assertEquals($user_vo, $actualResult);
+        $this->assertEquals($userVo, $actualResult);
     }
 }

@@ -7,7 +7,7 @@ class AuthenticationDataVO
     /**
      * @var UserVO
      */
-    public $user_vo;
+    public $userVo;
 
     /**
      * @var string
@@ -17,7 +17,7 @@ class AuthenticationDataVO
     /**
      * @var string
      */
-    public $one_time_token;
+    public $oneTimeToken;
 
     /**
      * @param UserVO $userVo
@@ -26,8 +26,8 @@ class AuthenticationDataVO
      */
     public function __construct(UserVO $userVo, $password, $oneTimeToken)
     {
-        $this->user_vo        = $userVo;
+        $this->userVo        = $userVo;
         $this->password       = $password;
-        $this->one_time_token = $oneTimeToken;
+        $this->oneTimeToken = $oneTimeToken;
     }
 }

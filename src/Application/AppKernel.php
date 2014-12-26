@@ -96,7 +96,7 @@ class AppKernel implements HttpKernelInterface
         $request->attributes->add($attributes);
 
         $routeName = $attributes['_route'];
-        $route      = $this->routes->get($routeName);
+        $route     = $this->routes->get($routeName);
 
         foreach ($this->middlewares as $middleware) {
             $response = $middleware->processRequest($request, $route, $routeName);
@@ -120,6 +120,7 @@ class AppKernel implements HttpKernelInterface
      */
     private function prepareResponse(Request $request, $response)
     {
+        unset ($request);
         if (!$response instanceof Response) {
          // todo support more content types
             return new JsonResponse($response);

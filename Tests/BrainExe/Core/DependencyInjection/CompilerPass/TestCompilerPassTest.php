@@ -43,28 +43,28 @@ class TestCompilerPassTest extends PHPUnit_Framework_TestCase
 
     public function testProcess()
     {
-        $definition_1 = $this->getMock(Definition::class);
-        $definition_2 = $this->getMock(Definition::class);
+        $definition1 = $this->getMock(Definition::class);
+        $definition2 = $this->getMock(Definition::class);
 
         $this->mockContainer
-        ->expects($this->once())
-        ->method('getParameter')
-        ->willReturn(true);
+            ->expects($this->once())
+            ->method('getParameter')
+            ->willReturn(true);
 
         $this->mockContainer
-        ->expects($this->once())
-        ->method('getDefinitions')
-        ->will($this->returnValue([$definition_1, $definition_2]));
+            ->expects($this->once())
+            ->method('getDefinitions')
+            ->willReturn([$definition1, $definition2]);
 
-        $definition_1
-        ->expects($this->once())
-        ->method('setPublic')
-        ->with(true);
+        $definition1
+            ->expects($this->once())
+            ->method('setPublic')
+            ->with(true);
 
-        $definition_2
-        ->expects($this->once())
-        ->method('setPublic')
-        ->with(true);
+        $definition2
+            ->expects($this->once())
+            ->method('setPublic')
+            ->with(true);
 
         $this->subject->process($this->mockContainer);
     }

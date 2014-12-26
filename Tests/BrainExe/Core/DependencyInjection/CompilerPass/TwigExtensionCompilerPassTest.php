@@ -44,64 +44,64 @@ class TwigExtensionCompilerPassTest extends \PHPUnit_Framework_TestCase
 
     public function testProcessCompiler()
     {
-        $service_id = 'FooExtension';
+        $serviceId = 'FooExtension';
 
-        $mock_extension_definition = $this->getMock(Definition::class);
-
-        $this->mockContainer
-        ->expects($this->at(0))
-        ->method('getDefinition')
-        ->with('Twig')
-        ->will($this->returnValue($this->mockTwig));
+        $mockExtension = $this->getMock(Definition::class);
 
         $this->mockContainer
-        ->expects($this->at(1))
-        ->method('getDefinition')
-        ->with('TwigCompiler')
-        ->will($this->returnValue($this->mockTwigCompiler));
+            ->expects($this->at(0))
+            ->method('getDefinition')
+            ->with('Twig')
+            ->willReturn($this->mockTwig);
 
         $this->mockContainer
-        ->expects($this->at(2))
-        ->method('findTaggedServiceIds')
-        ->with(TwigExtensionCompilerPass::TAG)
-        ->will($this->returnValue([$service_id => [['compiler' => 0]]]));
+            ->expects($this->at(1))
+            ->method('getDefinition')
+            ->with('TwigCompiler')
+            ->willReturn($this->mockTwigCompiler);
 
         $this->mockContainer
-        ->expects($this->at(3))
-        ->method('getParameter')
-        ->with('debug')
-        ->will($this->returnValue(true));
+            ->expects($this->at(2))
+            ->method('findTaggedServiceIds')
+            ->with(TwigExtensionCompilerPass::TAG)
+            ->willReturn([$serviceId => [['compiler' => 0]]]);
 
         $this->mockContainer
-        ->expects($this->at(4))
-        ->method('getDefinition')
-        ->with($service_id)
-        ->will($this->returnValue($mock_extension_definition));
+            ->expects($this->at(3))
+            ->method('getParameter')
+            ->with('debug')
+            ->willReturn(true);
 
-        $mock_extension_definition
-        ->expects($this->once())
-        ->method('setPublic')
-        ->with(false);
+        $this->mockContainer
+            ->expects($this->at(4))
+            ->method('getDefinition')
+            ->with($serviceId)
+            ->willReturn($mockExtension);
+
+        $mockExtension
+            ->expects($this->once())
+            ->method('setPublic')
+            ->with(false);
 
         $this->mockTwig
-        ->expects($this->at(0))
-        ->method('setArguments')
-        ->with([new Definition(Twig_Loader_Array::class, [[]])]);
+            ->expects($this->at(0))
+            ->method('setArguments')
+            ->with([new Definition(Twig_Loader_Array::class, [[]])]);
 
         $this->mockTwig
-        ->expects($this->at(1))
-        ->method('addMethodCall')
-        ->with('addExtension', [new Reference($service_id)]);
+            ->expects($this->at(1))
+            ->method('addMethodCall')
+            ->with('addExtension', [new Reference($serviceId)]);
 
         $this->mockTwig
-        ->expects($this->at(2))
-        ->method('addMethodCall')
-        ->with('addExtension', [new Definition(Twig_Extension_Debug::class)]);
+            ->expects($this->at(2))
+            ->method('addMethodCall')
+            ->with('addExtension', [new Definition(Twig_Extension_Debug::class)]);
 
         $this->mockTwig
-        ->expects($this->at(3))
-        ->method('addMethodCall')
-        ->with('enableStrictVariables');
+            ->expects($this->at(3))
+            ->method('addMethodCall')
+            ->with('enableStrictVariables');
 
         $this->subject->process($this->mockContainer);
     }

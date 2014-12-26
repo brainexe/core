@@ -22,11 +22,11 @@ class RedisCompilerPassTest extends PHPUnit_Framework_TestCase
     /**
      * @var ContainerBuilder|MockObject
      */
-    private $mock_container;
+    private $mockContainer;
 
     public function setUp()
     {
-        $this->mock_container = $this->getMock(ContainerBuilder::class);
+        $this->mockContainer = $this->getMock(ContainerBuilder::class);
 
         $this->subject = new RedisCompilerPass();
     }
@@ -38,23 +38,23 @@ class RedisCompilerPassTest extends PHPUnit_Framework_TestCase
 
         $redis = $this->getMock(Definition::class);
 
-        $this->mock_container
+        $this->mockContainer
         ->expects($this->at(0))
         ->method('getDefinition')
         ->with('redis')
-        ->will($this->returnValue($redis));
+        ->willReturn($redis);
 
-        $this->mock_container
+        $this->mockContainer
         ->expects($this->at(1))
         ->method('getParameter')
         ->with('redis.password')
-        ->will($this->returnValue($password));
+        ->willReturn($password);
 
-        $this->mock_container
+        $this->mockContainer
         ->expects($this->at(2))
         ->method('getParameter')
         ->with('redis.database')
-        ->will($this->returnValue($database));
+        ->willReturn($database);
 
         $redis
         ->expects($this->at(0))
@@ -66,6 +66,6 @@ class RedisCompilerPassTest extends PHPUnit_Framework_TestCase
         ->method('addMethodCall')
         ->with('select', [$database]);
 
-        $this->subject->process($this->mock_container);
+        $this->subject->process($this->mockContainer);
     }
 }

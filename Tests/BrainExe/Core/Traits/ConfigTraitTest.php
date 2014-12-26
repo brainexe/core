@@ -11,7 +11,7 @@ class ConfigTest
 {
     use ConfigTrait;
 
-    public function get($key)
+    public function testGetParameter($key)
     {
         return $this->getParameter($key);
     }
@@ -44,12 +44,12 @@ class ConfigTraitTest extends PHPUnit_Framework_TestCase
         $value = 'value';
 
         $this->mockContainer
-        ->expects($this->once())
-        ->method('getParameter')
-        ->with($key)
-        ->willReturn($value);
+            ->expects($this->once())
+            ->method('getParameter')
+            ->with($key)
+            ->willReturn($value);
 
-        $actualResult = $this->subject->get($key);
+        $actualResult = $this->subject->testGetParameter($key);
 
         $this->assertEquals($value, $actualResult);
     }

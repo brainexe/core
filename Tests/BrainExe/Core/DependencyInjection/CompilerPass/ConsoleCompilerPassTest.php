@@ -20,46 +20,46 @@ class ConsoleCompilerPassTest extends PHPUnit_Framework_TestCase
     /**
      * @var ContainerBuilder|MockObject $container
      */
-    private $mock_container;
+    private $mockContainer;
 
     /**
      * @var Definition|MockObject $container
      */
-    private $mock_console_definition;
+    private $mockConsoleDefinition;
 
     public function setUp()
     {
         $this->subject = new ConsoleCompilerPass();
-        $this->mock_container = $this->getMock(ContainerBuilder::class);
-        $this->mock_console_definition = $this->getMock(Definition::class);
+        $this->mockContainer = $this->getMock(ContainerBuilder::class);
+        $this->mockConsoleDefinition = $this->getMock(Definition::class);
     }
 
     public function testAddSubscriber()
     {
-        $service_id = 'FooListener';
+        $serviceId = 'FooListener';
 
-        $this->mock_container
-        ->expects($this->once())
-        ->method('findTaggedServiceIds')
-        ->with(ConsoleCompilerPass::TAG)
-        ->will($this->returnValue([$service_id => []]));
+        $this->mockContainer
+            ->expects($this->once())
+            ->method('findTaggedServiceIds')
+            ->with(ConsoleCompilerPass::TAG)
+            ->willReturn([$serviceId => []]);
 
-        $this->mock_container
-        ->expects($this->once())
-        ->method('getDefinition')
-        ->with('Console')
-        ->will($this->returnValue($this->mock_console_definition));
+        $this->mockContainer
+            ->expects($this->once())
+            ->method('getDefinition')
+            ->with('Console')
+            ->willReturn($this->mockConsoleDefinition);
 
-        $this->mock_console_definition
-        ->expects($this->at(0))
-        ->method('addMethodCall')
-        ->with('setAutoExit', [false]);
+        $this->mockConsoleDefinition
+            ->expects($this->at(0))
+            ->method('addMethodCall')
+            ->with('setAutoExit', [false]);
 
-        $this->mock_console_definition
-        ->expects($this->at(1))
-        ->method('addMethodCall')
-        ->with('add', [new Reference($service_id)]);
+        $this->mockConsoleDefinition
+            ->expects($this->at(1))
+            ->method('addMethodCall')
+            ->with('add', [new Reference($serviceId)]);
 
-        $this->subject->process($this->mock_container);
+        $this->subject->process($this->mockContainer);
     }
 }

@@ -37,9 +37,9 @@ class SessionMiddlewareTest extends PHPUnit_Framework_TestCase
     {
         $request    = new Request();
         $route      = new Route('/route/');
-        $route_name = null;
+        $routeName = null;
 
-        $this->subject->processRequest($request, $route, $route_name);
+        $this->subject->processRequest($request, $route, $routeName);
 
         $this->assertInstanceOf(SessionInterface::class, $request->getSession());
     }

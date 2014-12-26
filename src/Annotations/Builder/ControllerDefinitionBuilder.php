@@ -26,8 +26,8 @@ class ControllerDefinitionBuilder extends ServiceDefinitionBuilder
         $definition->addTag(ControllerCompilerPass::CONTROLLER_TAG);
 
         return [
-        'id' => $serviceId,
-        'definition' => $definition
+            'id' => $serviceId,
+            'definition' => $definition
         ];
     }
 
@@ -35,17 +35,17 @@ class ControllerDefinitionBuilder extends ServiceDefinitionBuilder
      * @param ReflectionMethod[] $methods
      * @param Definition $definition
      */
-    protected function _processMethods($methods, Definition $definition)
+    protected function processMethods($methods, Definition $definition)
     {
-        parent::_processMethods($methods, $definition);
+        parent::processMethods($methods, $definition);
 
         foreach ($methods as $method) {
             /** @var Route $routeAnnotation */
-            $routeAnnotation = $this->_reader->getMethodAnnotation($method, Route::class);
+            $routeAnnotation = $this->reader->getMethodAnnotation($method, Route::class);
 
             if ($routeAnnotation) {
                 /** @var Guest $guestAnnotation */
-                $guestAnnotation = $this->_reader->getMethodAnnotation($method, Guest::class);
+                $guestAnnotation = $this->reader->getMethodAnnotation($method, Guest::class);
 
                 $classParts = explode('\\', $definition->getClass());
                 $class = str_replace('Controller', '', $classParts[count($classParts)-1]);

@@ -23,102 +23,102 @@ class SetDefinitionFileCompilerPassTest extends \PHPUnit_Framework_TestCase
     /**
      * @var ContainerBuilder|MockObject $container
      */
-    private $mock_container;
+    private $mockContainer;
 
     /**
      * @var Definition|MockObject $container
      */
-    private $mock_definition;
+    private $mockDefinition;
 
     public function setUp()
     {
         $this->subject = new SetDefinitionFileCompilerPass();
-        $this->mock_container = $this->getMock(ContainerBuilder::class);
-        $this->mock_definition = $this->getMock(Definition::class);
+        $this->mockContainer = $this->getMock(ContainerBuilder::class);
+        $this->mockDefinition = $this->getMock(Definition::class);
     }
 
     public function testProcessCompilerWithInvalidDefinition()
     {
-        $service_id = 'FooService';
+        $serviceId = 'FooService';
 
-        $this->mock_container
-        ->expects($this->once())
-        ->method('getServiceIds')
-        ->will($this->returnValue([$service_id]));
+        $this->mockContainer
+            ->expects($this->once())
+            ->method('getServiceIds')
+            ->willReturn([$serviceId]);
 
-        $this->mock_container
-        ->expects($this->once())
-        ->method('hasDefinition')
-        ->with($service_id)
-        ->will($this->returnValue(false));
+        $this->mockContainer
+            ->expects($this->once())
+            ->method('hasDefinition')
+            ->with($serviceId)
+            ->willReturn(false);
 
-        $this->subject->process($this->mock_container);
+        $this->subject->process($this->mockContainer);
     }
 
     public function testProcessCompiler()
     {
-        $service_id = 'FooService';
+        $serviceId = 'FooService';
 
-        $this->mock_container
+        $this->mockContainer
         ->expects($this->once())
         ->method('getServiceIds')
-        ->will($this->returnValue([$service_id]));
+        ->willReturn([$serviceId]);
 
-        $this->mock_container
+        $this->mockContainer
         ->expects($this->once())
         ->method('hasDefinition')
-        ->with($service_id)
-        ->will($this->returnValue(true));
+        ->with($serviceId)
+        ->willReturn(true);
 
-        $this->mock_definition
+        $this->mockDefinition
         ->expects($this->once())
         ->method('getClass')
-        ->will($this->returnValue(FooTestClass::class));
+        ->willReturn(FooTestClass::class);
 
-        $this->mock_definition
+        $this->mockDefinition
         ->expects($this->once())
         ->method('setFile')
         ->with(__FILE__);
 
-        $this->mock_container
+        $this->mockContainer
         ->expects($this->once())
         ->method('getDefinition')
-        ->with($service_id)
-        ->will($this->returnValue($this->mock_definition));
+        ->with($serviceId)
+        ->willReturn($this->mockDefinition);
 
-        $this->subject->process($this->mock_container);
+        $this->subject->process($this->mockContainer);
     }
 
     public function testProcessCompilerWithInvalidFile()
     {
-        $service_id = 'FooService';
+        $serviceId = 'FooService';
 
-        $this->mock_container
+        $this->mockContainer
         ->expects($this->once())
         ->method('getServiceIds')
-        ->will($this->returnValue([$service_id]));
+        ->willReturn([$serviceId]);
 
-        $this->mock_container
+        $this->mockContainer
         ->expects($this->once())
         ->method('hasDefinition')
-        ->with($service_id)
-        ->will($this->returnValue(true));
+        ->with($serviceId)
+        ->willReturn(true);
 
-        $this->mock_definition
+        $this->mockDefinition
         ->expects($this->once())
         ->method('getClass')
-        ->will($this->returnValue('InvalidClass'));
+        ->willReturn('InvalidClass');
 
-        $this->mock_definition
+        $this->mockDefinition
         ->expects($this->never())
         ->method('setFile');
 
-        $this->mock_container
+        $this->mockContainer
         ->expects($this->once())
         ->method('getDefinition')
-        ->with($service_id)
-        ->will($this->returnValue($this->mock_definition));
+        ->with($serviceId)
+        ->willReturn($this->mockDefinition);
 
-        $this->subject->process($this->mock_container);
+        $this->subject->process($this->mockContainer);
     }
 }

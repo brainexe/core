@@ -45,50 +45,50 @@ class LoadRedisScriptsCommandTest extends PHPUnit_Framework_TestCase
 
         $commandTester = new CommandTester($this->subject);
         $scripts = [
-        $sha1_1 = 'hash_1' => $script_1 = 'script 1',
-        $sha1_2 = 'hash_2' => $script_2 = 'script 2',
-        $sha1_3 = 'hash_3' => $script_3 = 'script 3',
+            $sha11 = 'hash_1' => $script1 = 'script 1',
+            $sha12 = 'hash_2' => $script2 = 'script 2',
+            $sha13 = 'hash_3' => $script3 = 'script 3',
         ];
 
         $this->mockRedisScripts
-        ->expects($this->once())
-        ->method('getAllScripts')
-        ->will($this->returnValue($scripts));
+            ->expects($this->once())
+            ->method('getAllScripts')
+            ->willReturn($scripts);
 
         $this->mockRedis
-        ->expects($this->at(0))
-        ->method('script')
-        ->with('EXISTS', $sha1_1)
-        ->will($this->returnValue([0 =>'Already Loaded']));
+            ->expects($this->at(0))
+            ->method('script')
+            ->with('EXISTS', $sha11)
+            ->willReturn([0 =>'Already Loaded']);
 
         $this->mockRedis
-        ->expects($this->at(1))
-        ->method('script')
-        ->with('EXISTS', $sha1_2)
-        ->will($this->returnValue([0 => null]));
+            ->expects($this->at(1))
+            ->method('script')
+            ->with('EXISTS', $sha12)
+            ->willReturn([0 => null]);
 
         $this->mockRedis
-        ->expects($this->at(2))
-        ->method('script')
-        ->with('LOAD', $script_2)
-        ->will($this->returnValue(true));
+            ->expects($this->at(2))
+            ->method('script')
+            ->with('LOAD', $script2)
+            ->willReturn(true);
 
         $this->mockRedis
-        ->expects($this->at(3))
-        ->method('script')
-        ->with('EXISTS', $sha1_3)
-        ->will($this->returnValue([0 => null]));
+            ->expects($this->at(3))
+            ->method('script')
+            ->with('EXISTS', $sha13)
+            ->willReturn([0 => null]);
 
         $this->mockRedis
         ->expects($this->at(4))
         ->method('script')
-        ->with('LOAD', $script_3)
-        ->will($this->returnValue(false));
+        ->with('LOAD', $script3)
+        ->willReturn(false);
 
         $this->mockRedis
-        ->expects($this->at(5))
-        ->method('getLastError')
-        ->will($this->returnValue('error'));
+            ->expects($this->at(5))
+            ->method('getLastError')
+            ->willReturn('error');
 
         $commandTester->execute([], ['verbosity' => OutputInterface::VERBOSITY_VERBOSE]);
         $output = $commandTester->getDisplay();

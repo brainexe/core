@@ -18,17 +18,17 @@ class TranslationCompilerPassTest extends PHPUnit_Framework_TestCase
     /**
      * @var ContainerBuilder|MockObject $container
      */
-    private $mock_container;
+    private $mockContainer;
 
     public function setUp()
     {
         $this->subject = new TranslationCompilerPass();
 
-        $this->mock_container = $this->getMock(ContainerBuilder::class);
+        $this->mockContainer = $this->getMock(ContainerBuilder::class);
     }
 
     public function testProcessWithInvalidRoot()
     {
-        $this->subject->process($this->mock_container);
+        $this->subject->process($this->mockContainer);
     }
 }

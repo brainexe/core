@@ -37,19 +37,19 @@ class TwigExtensionDefinitionBuilderTest extends PHPUnit_Framework_TestCase
         $annotation->compiler = $compiler = false;
         $annotation->name     = $name = 'name';
 
-        /** @var MockObject|ReflectionClass $reflection_class */
-        $reflection_class = $this->getMock(ReflectionClass::class, [], [], '', false);
+        /** @var MockObject|ReflectionClass $reflection */
+        $reflection = $this->getMock(ReflectionClass::class, [], [], '', false);
 
-        $reflection_class
+        $reflection
             ->expects($this->any())
             ->method('getProperties')
             ->willReturn([]);
-        $reflection_class
+        $reflection
             ->expects($this->any())
             ->method('getMethods')
             ->willReturn([]);
 
-        $actualResult = $this->subject->build($reflection_class, $annotation);
+        $actualResult = $this->subject->build($reflection, $annotation);
 
         $definition = new Definition();
         $definition->setPublic(false);

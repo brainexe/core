@@ -40,7 +40,7 @@ class LocaleMiddlewareTest extends PHPUnit_Framework_TestCase
         $request    = new Request();
         $route      = new Route('/route/');
         $session    = new Session(new MockArraySessionStorage());
-        $route_name = null;
+        $routeName = null;
 
         $request->setSession($session);
         $request->query->set('locale', 'en_EN');
@@ -55,14 +55,14 @@ class LocaleMiddlewareTest extends PHPUnit_Framework_TestCase
         ->method('getLocales')
         ->willReturn(['en_EN', 'de_DE']);
 
-        $this->subject->processRequest($request, $route, $route_name);
+        $this->subject->processRequest($request, $route, $routeName);
     }
     public function testProcessRequestWithInvalueLocaleInQuery()
     {
         $request    = new Request();
         $route      = new Route('/route/');
         $session    = new Session(new MockArraySessionStorage());
-        $route_name = null;
+        $routeName = null;
 
         $request->setSession($session);
         $request->query->set('locale', 'fo_ba');
@@ -77,7 +77,7 @@ class LocaleMiddlewareTest extends PHPUnit_Framework_TestCase
         ->method('getLocales')
         ->willReturn(['en_EN', 'de_DE']);
 
-        $this->subject->processRequest($request, $route, $route_name);
+        $this->subject->processRequest($request, $route, $routeName);
     }
 
     public function testProcessRequestWithoutLocaleInQuery()
@@ -85,11 +85,11 @@ class LocaleMiddlewareTest extends PHPUnit_Framework_TestCase
         $request    = new Request();
         $route      = new Route('/route/');
         $session    = new Session(new MockArraySessionStorage());
-        $route_name = null;
+        $routeName = null;
 
         $request->setSession($session);
 
-        $this->subject->processRequest($request, $route, $route_name);
+        $this->subject->processRequest($request, $route, $routeName);
     }
 
     public function testProcessResponse()

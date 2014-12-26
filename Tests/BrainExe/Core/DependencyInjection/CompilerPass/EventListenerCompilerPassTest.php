@@ -52,52 +52,50 @@ class EventListenerCompilerPassTest extends PHPUnit_Framework_TestCase
 
     public function testAddSubscriber()
     {
-        $service_id = 'FooService';
-
-        $foo_service_mock = new TestEventDispatcher();
+        $serviceId = 'FooService';
 
         $this->mockContainer
-        ->expects($this->at(0))
-        ->method('getDefinition')
-        ->with('EventDispatcher')
-        ->will($this->returnValue($this->mockEventDispatcher));
+            ->expects($this->at(0))
+            ->method('getDefinition')
+            ->with('EventDispatcher')
+            ->willReturn($this->mockEventDispatcher);
 
         $this->mockContainer
-        ->expects($this->at(1))
-        ->method('findTaggedServiceIds')
-        ->with(EventListenerCompilerPass::TAG)
-        ->will($this->returnValue([$service_id => []]));
+            ->expects($this->at(1))
+            ->method('findTaggedServiceIds')
+            ->with(EventListenerCompilerPass::TAG)
+            ->willReturn([$serviceId => []]);
 
         $definition = $this->getMock(Definition::class);
         $definition
-        ->expects($this->once())
-        ->method('getClass')
-        ->willReturn(TestEventDispatcher::class);
+            ->expects($this->once())
+            ->method('getClass')
+            ->willReturn(TestEventDispatcher::class);
         $this->mockContainer
-        ->expects($this->at(2))
-        ->method('getDefinition')
-        ->with($service_id)
-        ->will($this->returnValue($definition));
+            ->expects($this->at(2))
+            ->method('getDefinition')
+            ->with($serviceId)
+            ->willReturn($definition);
 
         $this->mockEventDispatcher
-        ->expects($this->at(0))
-        ->method('addMethodCall')
-        ->with('addListenerService', ['foo_event', [$service_id, 'fooMethod'], 0]);
+            ->expects($this->at(0))
+            ->method('addMethodCall')
+            ->with('addListenerService', ['foo_event', [$serviceId, 'fooMethod'], 0]);
 
         $this->mockEventDispatcher
-        ->expects($this->at(1))
-        ->method('addMethodCall')
-        ->with('addListenerService', ['foo_event2', [$service_id, 'fooMethod2'], 10]);
+            ->expects($this->at(1))
+            ->method('addMethodCall')
+            ->with('addListenerService', ['foo_event2', [$serviceId, 'fooMethod2'], 10]);
 
         $this->mockEventDispatcher
-        ->expects($this->at(2))
-        ->method('addMethodCall')
-        ->with('addListenerService', ['foo_event3', [$service_id, 'fooMethod3'], 0]);
+            ->expects($this->at(2))
+            ->method('addMethodCall')
+            ->with('addListenerService', ['foo_event3', [$serviceId, 'fooMethod3'], 0]);
 
         $this->mockEventDispatcher
-        ->expects($this->at(3))
-        ->method('addMethodCall')
-        ->with('addListenerService', ['foo_event3', [$service_id, 'fooMethod4'], 20]);
+            ->expects($this->at(3))
+            ->method('addMethodCall')
+            ->with('addListenerService', ['foo_event3', [$serviceId, 'fooMethod4'], 20]);
 
         $this->subject->process($this->mockContainer);
     }

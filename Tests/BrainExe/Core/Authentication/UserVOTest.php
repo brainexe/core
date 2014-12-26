@@ -25,35 +25,35 @@ class UserVOTest extends PHPUnit_Framework_TestCase
     public function testRoles()
     {
         $this->subject->roles = [
-        'role_1',
-        'role_2'
+            'role_1',
+            'role_2'
         ];
 
         $this->assertTrue($this->subject->hasRole('role_1'));
         $this->assertTrue($this->subject->hasRole('role_2'));
         $this->assertFalse($this->subject->hasRole('role_444'));
 
-        $actual_roles   = $this->subject->getRoles();
-        $expected_roles = [
-        new Role('role_1'),
-        new Role('role_2'),
+        $actualRoles = $this->subject->getRoles();
+            $expectedRoles = [
+            new Role('role_1'),
+            new Role('role_2'),
         ];
 
-        $this->assertEquals($expected_roles, $actual_roles);
+        $this->assertEquals($expectedRoles, $actualRoles);
     }
 
     public function testToJson()
     {
         $this->subject->username      = $username = 'username';
-        $this->subject->id            = $id = 42;
+        $this->subject->id            = $userId = 42;
         $this->subject->password      = 'password';
         $this->subject->password_hash = 'password_hash';
 
         $actualResult = $this->subject->jsonSerialize();
 
         $expectedResult = [
-        'username' => $username,
-        'id' => $id,
+            'username' => $username,
+            'id' => $userId,
         ];
         $this->assertEquals($expectedResult, $actualResult);
     }

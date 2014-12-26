@@ -47,24 +47,24 @@ class ServerRunCommandTest extends PHPUnit_Framework_TestCase
         ->expects($this->once())
         ->method('setArguments')
         ->with([PHP_BINARY, '-S', 'localhost:8080'])
-        ->will($this->returnValue($this->mockProcessBuilder));
+        ->willReturn($this->mockProcessBuilder);
 
         $this->mockProcessBuilder
         ->expects($this->once())
         ->method('setWorkingDirectory')
         ->with(ROOT . 'web/')
-        ->will($this->returnValue($this->mockProcessBuilder));
+        ->willReturn($this->mockProcessBuilder);
 
         $this->mockProcessBuilder
         ->expects($this->once())
         ->method('setTimeout')
         ->with(null)
-        ->will($this->returnValue($this->mockProcessBuilder));
+        ->willReturn($this->mockProcessBuilder);
 
         $this->mockProcessBuilder
         ->expects($this->once())
         ->method('getProcess')
-        ->will($this->returnValue($process));
+        ->willReturn($process);
 
         $process
         ->expects($this->once())

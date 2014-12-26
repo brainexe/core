@@ -58,17 +58,17 @@ class EventDispatcherTest extends PHPUnit_Framework_TestCase
     {
         $event = new TestWebsocketEvent(TestWebsocketEvent::TYPE);
 
-        $wrapped_event = new WebSocketEvent($event);
+        $wrappedEvent = new WebSocketEvent($event);
 
         $this->subject
-        ->expects($this->at(0))
-        ->method('dispatch')
-        ->with(TestWebsocketEvent::TYPE, $event);
+            ->expects($this->at(0))
+            ->method('dispatch')
+            ->with(TestWebsocketEvent::TYPE, $event);
 
         $this->subject
-        ->expects($this->at(1))
-        ->method('dispatch')
-        ->with(WebSocketEvent::PUSH, $wrapped_event);
+            ->expects($this->at(1))
+            ->method('dispatch')
+            ->with(WebSocketEvent::PUSH, $wrappedEvent);
 
         $this->subject->dispatchEvent($event);
     }

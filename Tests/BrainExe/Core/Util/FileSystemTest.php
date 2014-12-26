@@ -23,20 +23,20 @@ class FileSystemTest extends PHPUnit_Framework_TestCase
 
     public function testFileGetContents()
     {
-        $file_name = ROOT . '/cache/test.php';
+        $fileName = ROOT . '/cache/test.php';
         $content = 'content';
 
-     // dump
-        $this->subject->dumpFile($file_name, $content);
-        $this->assertTrue($this->subject->exists($file_name));
+        // dump
+        $this->subject->dumpFile($fileName, $content);
+        $this->assertTrue($this->subject->exists($fileName));
 
-     // check
-        $actualResult = $this->subject->fileGetContents($file_name);
+        // check
+        $actualResult = $this->subject->fileGetContents($fileName);
         $this->assertEquals($content, $actualResult);
 
-     // remove
-        $this->subject->remove($file_name);
-        $this->assertFalse($this->subject->exists($file_name));
+        // remove
+        $this->subject->remove($fileName);
+        $this->assertFalse($this->subject->exists($fileName));
 
     }
 }

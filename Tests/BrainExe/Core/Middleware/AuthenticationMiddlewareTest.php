@@ -50,28 +50,28 @@ class AuthenticationMiddlewareTest extends PHPUnit_Framework_TestCase
     {
         $this->subject = new AuthenticationMiddleware(true, $this->mockDatabaseUserProvider);
 
-        $user_id = 42;
+        $userId = 42;
         $user = new UserVO();
 
         $session = new Session(new MockArraySessionStorage());
-        $session->set('user_id', $user_id);
+        $session->set('user_id', $userId);
 
         $request = new Request();
         $request->setSession($session);
 
         $route = new Route('/path/');
-        $route_name = null;
+        $routeName = null;
 
         $this->mockDatabaseUserProvider
-        ->expects($this->once())
-        ->method('loadUserById')
-        ->with($user_id)
-        ->will($this->returnValue($user));
+            ->expects($this->once())
+            ->method('loadUserById')
+            ->with($userId)
+            ->willReturn($user);
 
-        $actualResult = $this->subject->processRequest($request, $route, $route_name);
+        $actualResult = $this->subject->processRequest($request, $route, $routeName);
 
         $this->assertNull($actualResult);
-        $this->assertEquals($user_id, $request->attributes->get('user_id'));
+        $this->assertEquals($userId, $request->attributes->get('user_id'));
         $this->assertEquals($user, $request->attributes->get('user'));
     }
 
@@ -79,29 +79,29 @@ class AuthenticationMiddlewareTest extends PHPUnit_Framework_TestCase
     {
         $this->subject = new AuthenticationMiddleware(false, $this->mockDatabaseUserProvider);
 
-        $user_id = 42;
+        $userId = 42;
         $user = new UserVO();
 
         $session = new Session(new MockArraySessionStorage());
-        $session->set('user_id', $user_id);
+        $session->set('user_id', $userId);
 
         $request = new Request();
         $request->setSession($session);
 
         $route = new Route('/path/');
         $route->setDefault('guest', true);
-        $route_name = 'public stuff';
+        $routeName = 'public stuff';
 
         $this->mockDatabaseUserProvider
-        ->expects($this->once())
-        ->method('loadUserById')
-        ->with($user_id)
-        ->will($this->returnValue($user));
+            ->expects($this->once())
+            ->method('loadUserById')
+            ->with($userId)
+            ->willReturn($user);
 
-        $actualResult = $this->subject->processRequest($request, $route, $route_name);
+        $actualResult = $this->subject->processRequest($request, $route, $routeName);
 
         $this->assertNull($actualResult);
-        $this->assertEquals($user_id, $request->attributes->get('user_id'));
+        $this->assertEquals($userId, $request->attributes->get('user_id'));
         $this->assertEquals($user, $request->attributes->get('user'));
     }
 
@@ -109,26 +109,26 @@ class AuthenticationMiddlewareTest extends PHPUnit_Framework_TestCase
     {
         $this->subject = new AuthenticationMiddleware(false, $this->mockDatabaseUserProvider);
 
-        $user_id = 0;
+        $userId = 0;
         $user = new AnonymusUserVO();
 
         $session = new Session(new MockArraySessionStorage());
-        $session->set('user_id', $user_id);
+        $session->set('user_id', $userId);
 
         $request = new Request();
         $request->setSession($session);
 
         $route = new Route('/path/');
-        $route_name = 'random.route';
+        $routeName = 'random.route';
 
         $this->mockDatabaseUserProvider
-        ->expects($this->never())
-        ->method('loadUserById');
+            ->expects($this->never())
+            ->method('loadUserById');
 
-        $actualResult = $this->subject->processRequest($request, $route, $route_name);
+        $actualResult = $this->subject->processRequest($request, $route, $routeName);
 
         $this->assertInstanceOf(RedirectResponse::class, $actualResult);
-        $this->assertEquals($user_id, $request->attributes->get('user_id'));
+        $this->assertEquals($userId, $request->attributes->get('user_id'));
         $this->assertEquals($user, $request->attributes->get('user'));
     }
 
@@ -137,37 +137,35 @@ class AuthenticationMiddlewareTest extends PHPUnit_Framework_TestCase
         $request   = new Request();
         $exception = new Exception("exception");
 
-        $result = $this->subject->processException($request, $exception);
-
-        $this->assertNull($result);
+        $this->subject->processException($request, $exception);
     }
 
     public function testProcessRequest()
     {
         $this->subject = new AuthenticationMiddleware(false, $this->mockDatabaseUserProvider);
 
-        $user_id = 42;
+        $userId = 42;
         $user = new UserVO();
 
         $session = new Session(new MockArraySessionStorage());
-        $session->set('user_id', $user_id);
+        $session->set('user_id', $userId);
 
         $request = new Request();
         $request->setSession($session);
 
         $route = new Route('/path/');
-        $route_name = 'random.route';
+        $routeName = 'random.route';
 
         $this->mockDatabaseUserProvider
-        ->expects($this->once())
-        ->method('loadUserById')
-        ->with($user_id)
-        ->will($this->returnValue($user));
+            ->expects($this->once())
+            ->method('loadUserById')
+            ->with($userId)
+            ->willReturn($user);
 
-        $actualResult = $this->subject->processRequest($request, $route, $route_name);
+        $actualResult = $this->subject->processRequest($request, $route, $routeName);
 
         $this->assertNull($actualResult);
-        $this->assertEquals($user_id, $request->attributes->get('user_id'));
+        $this->assertEquals($userId, $request->attributes->get('user_id'));
         $this->assertEquals($user, $request->attributes->get('user'));
     }
 }

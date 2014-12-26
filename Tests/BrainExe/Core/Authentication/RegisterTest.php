@@ -57,7 +57,7 @@ class RegisterTest extends PHPUnit_Framework_TestCase
         ->expects($this->once())
         ->method('loadUserByUsername')
         ->with($username)
-        ->will($this->returnValue($user));
+        ->willReturn($user);
 
         $this->subject->registerUser($user, $session, $token);
     }
@@ -84,7 +84,7 @@ class RegisterTest extends PHPUnit_Framework_TestCase
         ->expects($this->once())
         ->method('fetchToken')
         ->with($token)
-        ->will($this->returnValue(false));
+        ->willReturn(false);
 
         $this->subject->registerUser($user, $session, $token);
     }
@@ -94,7 +94,7 @@ class RegisterTest extends PHPUnit_Framework_TestCase
         $user = new UserVO();
         $user->username = $username = 'user name';
 
-        $user_id = 42;
+        $userId = 42;
         $session = new Session(new MockArraySessionStorage());
         $token   = 100;
 
@@ -108,17 +108,17 @@ class RegisterTest extends PHPUnit_Framework_TestCase
         ->expects($this->once())
         ->method('fetchToken')
         ->with($token)
-        ->will($this->returnValue(true));
+        ->willReturn(true);
 
         $this->mockDatabaseUserProvider
         ->expects($this->once())
         ->method('register')
         ->with($user)
-        ->will($this->returnValue($user_id));
+        ->willReturn($userId);
 
         $actualResult = $this->subject->registerUser($user, $session, $token);
 
-        $this->assertEquals($user_id, $actualResult);
+        $this->assertEquals($userId, $actualResult);
         $this->assertEquals($user, $session->get('user'));
     }
 }

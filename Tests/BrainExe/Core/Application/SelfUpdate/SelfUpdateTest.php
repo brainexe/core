@@ -78,7 +78,7 @@ class SelfUpdateTest extends PHPUnit_Framework_TestCase
         $process
         ->expects($this->once())
         ->method('isSuccessful')
-        ->will($this->returnValue(true));
+        ->willReturn(true);
 
         $event = new SelfUpdateEvent(SelfUpdateEvent::DONE);
 
@@ -128,7 +128,7 @@ class SelfUpdateTest extends PHPUnit_Framework_TestCase
         $process
         ->expects($this->once())
         ->method('isSuccessful')
-        ->will($this->returnValue(false));
+        ->willReturn(false);
 
         $event = new SelfUpdateEvent(SelfUpdateEvent::ERROR);
 

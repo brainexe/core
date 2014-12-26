@@ -48,103 +48,103 @@ class CacheMiddlewareTest extends PHPUnit_Framework_TestCase
         $request->setMethod('POST');
 
         $route      = new Route('/path/');
-        $route_name = null;
+        $routeName = null;
 
-        $actual_response = $this->subject->processRequest($request, $route, $route_name);
-        $this->assertNull($actual_response);
+        $actualResponse = $this->subject->processRequest($request, $route, $routeName);
+        $this->assertNull($actualResponse);
 
-     // response should not be saved
+        // response should not be saved
         $response = new Response();
 
         $this->mockRedisCache
-        ->expects($this->never())
-        ->method('save');
+            ->expects($this->never())
+            ->method('save');
 
         $this->subject->processResponse($request, $response);
     }
 
     public function testProcessNotCachedRequest()
     {
-        /** @var PHPUnit_Framework_MockObject_MockObject|Request $request */
+        /** @var MockObject|Request $request */
         $request     = $this->getMock(Request::class);
         $route       = new Route('/path/');
-        $route_name  = null;
-        $request_uri = 'request';
+        $routeName   = null;
+        $requestUri  = 'request';
 
         $route->setOption('cache', true);
 
         $request
-        ->expects($this->once())
-        ->method('isMethod')
-        ->with('GET')
-        ->will($this->returnValue(true));
+            ->expects($this->once())
+            ->method('isMethod')
+            ->with('GET')
+            ->willReturn(true);
 
         $request
-        ->expects($this->once())
-        ->method('getRequestUri')
-        ->will($this->returnValue($request_uri));
+            ->expects($this->once())
+            ->method('getRequestUri')
+            ->willReturn($requestUri);
 
         $this->mockRedisCache
-        ->expects($this->once())
-        ->method('contains')
-        ->with($request_uri)
-        ->will($this->returnValue(false));
+            ->expects($this->once())
+            ->method('contains')
+            ->with($requestUri)
+            ->willReturn(false);
 
-        $actual_response = $this->subject->processRequest($request, $route, $route_name);
-        $this->assertNull($actual_response);
+        $actualResponse = $this->subject->processRequest($request, $route, $routeName);
+        $this->assertNull($actualResponse);
 
-     // invalid response
+        // invalid response
         $response = new Response();
         $response->setStatusCode(500);
         $this->subject->processResponse($request, $response);
 
-     // save valid response
+        // save valid response
         $response = new Response();
         $this->mockRedisCache
-        ->expects($this->once())
-        ->method('save')
-        ->with($request_uri, $response, CacheMiddleware::TTL)
-        ->will($this->returnValue(false));
+            ->expects($this->once())
+            ->method('save')
+            ->with($requestUri, $response, CacheMiddleware::TTL)
+            ->willReturn(false);
 
         $this->subject->processResponse($request, $response);
     }
 
     public function testProcessCachedRequest()
     {
-        /** @var PHPUnit_Framework_MockObject_MockObject|Request $request */
+        /** @var MockObject|Request $request */
         $request     = $this->getMock(Request::class);
         $response    = new Response();
         $route       = new Route('/path/');
-        $route_name  = null;
-        $request_uri = 'request';
+        $routeName   = null;
+        $requestUri  = 'request';
 
         $route->setOption('cache', true);
 
         $request
-        ->expects($this->once())
-        ->method('isMethod')
-        ->with('GET')
-        ->will($this->returnValue(true));
+            ->expects($this->once())
+            ->method('isMethod')
+            ->with('GET')
+            ->willReturn(true);
 
         $request
-        ->expects($this->once())
-        ->method('getRequestUri')
-        ->will($this->returnValue($request_uri));
+            ->expects($this->once())
+            ->method('getRequestUri')
+            ->willReturn($requestUri);
 
         $this->mockRedisCache
-        ->expects($this->once())
-        ->method('contains')
-        ->with($request_uri)
-        ->will($this->returnValue(true));
+            ->expects($this->once())
+            ->method('contains')
+            ->with($requestUri)
+            ->willReturn(true);
 
         $this->mockRedisCache
-        ->expects($this->once())
-        ->method('fetch')
-        ->with($request_uri)
-        ->will($this->returnValue($response));
+            ->expects($this->once())
+            ->method('fetch')
+            ->with($requestUri)
+            ->willReturn($response);
 
-        $actual_response = $this->subject->processRequest($request, $route, $route_name);
+        $actualResponse = $this->subject->processRequest($request, $route, $routeName);
 
-        $this->assertEquals($response, $actual_response);
+        $this->assertEquals($response, $actualResponse);
     }
 }

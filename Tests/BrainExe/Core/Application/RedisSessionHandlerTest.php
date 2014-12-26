@@ -31,15 +31,15 @@ class RedisSessionHandlerTest extends PHPUnit_Framework_TestCase
     public function testReadSession()
     {
         $payload    = 'foobar';
-        $session_id = '121212';
+        $sessionId  = '121212';
 
         $this->mockRedis
-        ->expects($this->once())
-        ->method('get')
-        ->with("session:$session_id")
-        ->will($this->returnValue($payload));
+            ->expects($this->once())
+            ->method('get')
+            ->with("session:$sessionId")
+            ->willReturn($payload);
 
-        $actualResult = $this->subject->read($session_id);
+        $actualResult = $this->subject->read($sessionId);
 
         $this->assertEquals($payload, $actualResult);
     }
@@ -47,28 +47,28 @@ class RedisSessionHandlerTest extends PHPUnit_Framework_TestCase
     public function testWriteSession()
     {
         $payload    = 'foobar';
-        $session_id = '121212';
+        $sessionId  = '121212';
 
-        $this->subject->open(null, $session_id);
+        $this->subject->open(null, $sessionId);
 
         $this->mockRedis
-        ->expects($this->once())
-        ->method('setex')
-        ->with("session:$session_id", $this->isType('integer'), $payload);
+            ->expects($this->once())
+            ->method('setex')
+            ->with("session:$sessionId", $this->isType('integer'), $payload);
 
-        $this->subject->write($session_id, $payload);
+        $this->subject->write($sessionId, $payload);
     }
 
     public function testDestroySession()
     {
-        $session_id = '121212';
+        $sessionId = '121212';
 
         $this->mockRedis
-        ->expects($this->once())
-        ->method('del')
-        ->with("session:$session_id");
+            ->expects($this->once())
+            ->method('del')
+            ->with("session:$sessionId");
 
-        $this->subject->destroy($session_id);
+        $this->subject->destroy($sessionId);
         $this->subject->close();
         $this->subject->gc(0);
 

@@ -35,7 +35,7 @@ class TimeTraitTest extends PHPUnit_Framework_TestCase
         $this->mockTime
         ->expects($this->once())
         ->method('now')
-        ->will($this->returnValue($now));
+        ->willReturn($now);
 
         $actualResult = $this->subject->now();
 

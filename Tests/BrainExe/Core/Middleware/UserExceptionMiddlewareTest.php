@@ -41,21 +41,21 @@ class UserExceptionMiddlewareTest extends PHPUnit_Framework_TestCase
     /**
      * @dataProvider provideExceptionsForAjax
      * @param Exception $exception
-     * @param int $expected_status_code
+     * @param int $expectedStatusCode
      */
-    public function testProcessExceptionWithAjax($exception, $expected_status_code)
+    public function testProcessExceptionWithAjax($exception, $expectedStatusCode)
     {
         /** @var Request|MockObject $request */
         $request = $this->getMock(Request::class, ['isXmlHttpRequest']);
 
         $request
-        ->expects($this->once())
-        ->method('isXmlHttpRequest')
-        ->will($this->returnValue(true));
+            ->expects($this->once())
+            ->method('isXmlHttpRequest')
+            ->willReturn(true);
 
         $actualResult = $this->subject->processException($request, $exception);
 
-        $this->assertEquals($expected_status_code, $actualResult->getStatusCode());
+        $this->assertEquals($expectedStatusCode, $actualResult->getStatusCode());
         $this->assertTrue($actualResult->headers->has('X-Flash'));
     }
 
@@ -63,33 +63,33 @@ class UserExceptionMiddlewareTest extends PHPUnit_Framework_TestCase
     {
         /** @var Request|MockObject $request */
         $request = $this->getMock(Request::class, ['isXmlHttpRequest']);
-        /** @var ErrorView|MockObject $error_view */
-        $error_view = $this->getMock(ErrorView::class, [], [], '', false);
+        /** @var ErrorView|MockObject $errorView */
+        $errorView = $this->getMock(ErrorView::class, [], [], '', false);
 
         $exception = new ResourceNotFoundException();
-        $response_string = 'response_string';
+        $responseString = 'response_string';
 
         $request
-        ->expects($this->once())
-        ->method('isXmlHttpRequest')
-        ->willReturn(false);
+            ->expects($this->once())
+            ->method('isXmlHttpRequest')
+            ->willReturn(false);
 
         $this->mockObjectFinder
-        ->expects($this->once())
-        ->method('getService')
-        ->with('ErrorView')
-        ->willReturn($error_view);
+            ->expects($this->once())
+            ->method('getService')
+            ->with('ErrorView')
+            ->willReturn($errorView);
 
-        $error_view
-        ->expects($this->once())
-        ->method('renderException')
-        ->with($request, $this->isInstanceOf(UserException::class))
-        ->willReturn($response_string);
+        $errorView
+            ->expects($this->once())
+            ->method('renderException')
+            ->with($request, $this->isInstanceOf(UserException::class))
+            ->willReturn($responseString);
 
         $actualResult = $this->subject->processException($request, $exception);
 
         $this->assertEquals(404, $actualResult->getStatusCode());
-        $this->assertEquals($response_string, $actualResult->getContent());
+        $this->assertEquals($responseString, $actualResult->getContent());
     }
 
     public function testProcessRequest()
@@ -97,9 +97,9 @@ class UserExceptionMiddlewareTest extends PHPUnit_Framework_TestCase
         /** @var Route|MockObject $route */
         $route      = $this->getMock(Route::class, [], [], '', false);
         $request    = new Request();
-        $route_name = 'route';
+        $routeName = 'route';
 
-        $actualResult = $this->subject->processRequest($request, $route, $route_name);
+        $actualResult = $this->subject->processRequest($request, $route, $routeName);
 
         $this->assertNull($actualResult);
     }

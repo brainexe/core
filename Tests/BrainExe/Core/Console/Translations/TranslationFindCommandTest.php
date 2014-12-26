@@ -46,7 +46,11 @@ class TranslationFindCommandTest extends PHPUnit_Framework_TestCase
         $this->mockProcessBuilder = $this->getMock(ProcessBuilder::class, [], [], '', false);
         $this->mockFilesystem = $this->getMock(Filesystem::class, [], [], '', false);
 
-        $this->subject = new TranslationFindCommand($this->mockFinder, $this->mockProcessBuilder, $this->mockFilesystem);
+        $this->subject = new TranslationFindCommand(
+            $this->mockFinder,
+            $this->mockProcessBuilder,
+            $this->mockFilesystem
+        );
     }
 
     public function testExecute()

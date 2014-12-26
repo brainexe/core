@@ -31,23 +31,23 @@ class GlobalNotificationCollectorTest extends PHPUnit_Framework_TestCase
         /** @var NotificationCollectorInterface|MockObject $collector2 */
         $collector2 = $this->getMock(NotificationCollectorInterface::class);
 
-        $notifications_1 = ['notifications'];
+        $notifications1 = ['notifications'];
 
         $collector1
-        ->expects($this->once())
-        ->method('getNotification')
-        ->will($this->returnValue($notifications_1));
+            ->expects($this->once())
+            ->method('getNotification')
+            ->willReturn($notifications1);
 
         $collector2
-        ->expects($this->once())
-        ->method('getNotification')
-        ->will($this->returnValue([]));
+            ->expects($this->once())
+            ->method('getNotification')
+            ->willReturn([]);
 
         $this->subject->addCollector($collector1);
         $this->subject->addCollector($collector2);
 
         $actualResult = $this->subject->getNotification();
 
-        $this->assertEquals($notifications_1, $actualResult);
+        $this->assertEquals($notifications1, $actualResult);
     }
 }

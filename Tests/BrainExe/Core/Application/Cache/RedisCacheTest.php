@@ -33,7 +33,7 @@ class RedisCacheTest extends PHPUnit_Framework_TestCase
 
     public function testSaveWithOutTTL()
     {
-        $id = 'id';
+        $cacheId = 'id';
         $data = 'data';
         $ttl = 0;
 
@@ -52,13 +52,13 @@ class RedisCacheTest extends PHPUnit_Framework_TestCase
         ->method('set')
         ->with('[id][1]', serialize($data));
 
-        $actualResult = $this->subject->save($id, $data, $ttl);
+        $actualResult = $this->subject->save($cacheId, $data, $ttl);
 
         $this->assertFalse($actualResult);
     }
     public function testSaveWithTTL()
     {
-        $id = 'id';
+        $cacheId = 'id';
         $data = 'data';
         $ttl = 10;
 
@@ -77,14 +77,14 @@ class RedisCacheTest extends PHPUnit_Framework_TestCase
         ->method('setex')
         ->with('[id][1]', $ttl, serialize($data));
 
-        $actualResult = $this->subject->save($id, $data, $ttl);
+        $actualResult = $this->subject->save($cacheId, $data, $ttl);
 
         $this->assertFalse($actualResult);
     }
 
     public function testGetNotExistingShouldReturnFalse()
     {
-        $id = 'id';
+        $cacheId = 'id';
 
         $this->mockRedis
         ->expects($this->at(0))
@@ -102,40 +102,40 @@ class RedisCacheTest extends PHPUnit_Framework_TestCase
         ->with('[id][1]')
         ->willReturn(null);
 
-        $actualResult = $this->subject->fetch($id);
+        $actualResult = $this->subject->fetch($cacheId);
 
         $this->assertFalse($actualResult);
     }
 
     public function testGet()
     {
-        $id = 'id';
+        $cacheId = 'id';
         $data = 120;
 
         $this->mockRedis
-        ->expects($this->at(0))
-        ->method('get')
-        ->with('DoctrineNamespaceCacheKey[]')
-        ->willReturn(null);
+            ->expects($this->at(0))
+            ->method('get')
+            ->with('DoctrineNamespaceCacheKey[]')
+            ->willReturn(null);
 
         $this->mockRedis
-        ->expects($this->at(1))
-        ->method('save');
+            ->expects($this->at(1))
+            ->method('save');
 
         $this->mockRedis
-        ->expects($this->at(2))
-        ->method('get')
-        ->with('[id][1]')
-        ->willReturn(serialize($data));
+            ->expects($this->at(2))
+            ->method('get')
+            ->with('[id][1]')
+            ->willReturn(serialize($data));
 
-        $actualResult = $this->subject->fetch($id);
+        $actualResult = $this->subject->fetch($cacheId);
 
         $this->assertEquals($data, $actualResult);
     }
 
     public function testContains()
     {
-        $id = 'id';
+        $cacheId = 'id';
 
         $this->mockRedis
         ->expects($this->once())
@@ -143,21 +143,21 @@ class RedisCacheTest extends PHPUnit_Framework_TestCase
         ->with('[id][1]')
         ->willReturn(true);
 
-        $actualResult = $this->subject->contains($id);
+        $actualResult = $this->subject->contains($cacheId);
 
         $this->assertTrue($actualResult);
     }
 
     public function testDelete()
     {
-        $id = 'id';
+        $cacheId = 'id';
 
         $this->mockRedis
         ->expects($this->once())
         ->method('del')
         ->with('[id][1]');
 
-        $this->subject->delete($id);
+        $this->subject->delete($cacheId);
     }
 
     public function testFlushAll()
@@ -171,31 +171,31 @@ class RedisCacheTest extends PHPUnit_Framework_TestCase
 
     public function testGetStats()
     {
-        $hits             = 20;
-        $misses           = 10;
-        $uptime_in_second = 3600;
-        $used_memory      = 10000;
+        $hits       = 20;
+        $misses     = 10;
+        $uptime     = 3600;
+        $usedMemory = 10000;
 
-        $raw_info = [
-        'keyspace_hits' => $hits,
-        'keyspace_misses' => $misses,
-        'uptime_in_seconds' => $uptime_in_second,
-        'used_memory' => $used_memory,
+        $info = [
+            'keyspace_hits' => $hits,
+            'keyspace_misses' => $misses,
+            'uptime_in_seconds' => $uptime,
+            'used_memory' => $usedMemory,
         ];
 
         $this->mockRedis
-        ->expects($this->once())
-        ->method('info')
-        ->will($this->returnValue($raw_info));
+            ->expects($this->once())
+            ->method('info')
+            ->willReturn($info);
 
         $actualResult = $this->subject->getStats();
 
         $expectedResult = [
-        Cache::STATS_HITS => $hits,
-        Cache::STATS_MISSES => $misses,
-        Cache::STATS_UPTIME => $uptime_in_second,
-        Cache::STATS_MEMORY_USAGE => $used_memory,
-        Cache::STATS_MEMORY_AVAILIABLE => null,
+            Cache::STATS_HITS => $hits,
+            Cache::STATS_MISSES => $misses,
+            Cache::STATS_UPTIME => $uptime,
+            Cache::STATS_MEMORY_USAGE => $usedMemory,
+            Cache::STATS_MEMORY_AVAILIABLE => null,
         ];
         ;
 

@@ -36,31 +36,31 @@ class CsrfMiddlewareTest extends PHPUnit_Framework_TestCase
 
     public function testProcessGetRequestWithoutToken()
     {
-        $current_csrf = '';
-        $new_csrf     = 'random';
+        $currentCsrf  = '';
+        $newCsrf     = 'random';
         $session      = new Session(new MockArraySessionStorage());
 
         $request = new Request();
         $request->setSession($session);
         $request->setMethod('GET');
-        $request->cookies->set(CsrfMiddleware::CSRF, $current_csrf);
+        $request->cookies->set(CsrfMiddleware::CSRF, $currentCsrf);
 
         $response  = new Response();
-        $route      = new Route('/route/');
-        $route_name = null;
+        $route     = new Route('/route/');
+        $routeName = null;
 
         $this->mockIdGenerator
-        ->expects($this->once())
-        ->method('generateRandomId')
-        ->will($this->returnValue($new_csrf));
+            ->expects($this->once())
+            ->method('generateRandomId')
+            ->willReturn($newCsrf);
 
-        $this->subject->processRequest($request, $route, $route_name);
+        $this->subject->processRequest($request, $route, $routeName);
         $this->subject->processResponse($request, $response);
 
-        $expected_cookie = new Cookie(CsrfMiddleware::CSRF, $new_csrf);
+        $expectedCookie = new Cookie(CsrfMiddleware::CSRF, $newCsrf);
 
-        $this->assertEquals([$expected_cookie], $response->headers->getCookies());
-        $this->assertEquals($new_csrf, $session->get(CsrfMiddleware::CSRF));
+        $this->assertEquals([$expectedCookie], $response->headers->getCookies());
+        $this->assertEquals($newCsrf, $session->get(CsrfMiddleware::CSRF));
     }
 
     /**
@@ -69,64 +69,64 @@ class CsrfMiddlewareTest extends PHPUnit_Framework_TestCase
      */
     public function testProcessPostRequestInvalidToken()
     {
-        $current_csrf = 'incorrect';
-        $expected_token = 'expected';
-        $new_csrf     = 'new token';
-        $session      = new Session(new MockArraySessionStorage());
-        $session->set(CsrfMiddleware::CSRF, $expected_token);
+        $currentCsrf   = 'incorrect';
+        $expectedToken = 'expected';
+        $newCsrf       = 'new token';
+        $session       = new Session(new MockArraySessionStorage());
+        $session->set(CsrfMiddleware::CSRF, $expectedToken);
 
         $request = new Request();
         $request->setSession($session);
         $request->setMethod('POST');
-        $request->cookies->set(CsrfMiddleware::CSRF, $current_csrf);
+        $request->cookies->set(CsrfMiddleware::CSRF, $currentCsrf);
 
         $response = new Response();
         $route      = new Route('/route/');
-        $route_name = null;
+        $routeName = null;
 
         $this->mockIdGenerator
-        ->expects($this->once())
-        ->method('generateRandomId')
-        ->will($this->returnValue($new_csrf));
+            ->expects($this->once())
+            ->method('generateRandomId')
+            ->willReturn($newCsrf);
 
-        $this->subject->processRequest($request, $route, $route_name);
+        $this->subject->processRequest($request, $route, $routeName);
         $this->subject->processResponse($request, $response);
 
-        $expected_cookie = new Cookie(CsrfMiddleware::CSRF, $new_csrf);
+        $expectedCookie = new Cookie(CsrfMiddleware::CSRF, $newCsrf);
 
-        $this->assertEquals([$expected_cookie], $response->headers->getCookies());
-        $this->assertEquals($new_csrf, $session->get(CsrfMiddleware::CSRF));
+        $this->assertEquals([$expectedCookie], $response->headers->getCookies());
+        $this->assertEquals($newCsrf, $session->get(CsrfMiddleware::CSRF));
     }
 
     public function testProcessPostRequestValidToken()
     {
-        $current_csrf = 'token';
-        $new_csrf     = 'new token';
-        $expected_token = $current_csrf;
+        $currentCsrf = 'token';
+        $newCsrf     = 'new token';
+        $expectedToken = $currentCsrf;
 
         $session = new Session(new MockArraySessionStorage());
-        $session->set(CsrfMiddleware::CSRF, $expected_token);
+        $session->set(CsrfMiddleware::CSRF, $expectedToken);
 
         $request = new Request();
         $request->setSession($session);
         $request->setMethod('POST');
-        $request->cookies->set(CsrfMiddleware::CSRF, $current_csrf);
+        $request->cookies->set(CsrfMiddleware::CSRF, $currentCsrf);
 
         $response   = new Response();
         $route      = new Route('/route/');
-        $route_name = null;
+        $routeName = null;
 
         $this->mockIdGenerator
-        ->expects($this->once())
-        ->method('generateRandomId')
-        ->will($this->returnValue($new_csrf));
+            ->expects($this->once())
+            ->method('generateRandomId')
+            ->willReturn($newCsrf);
 
-        $this->subject->processRequest($request, $route, $route_name);
+        $this->subject->processRequest($request, $route, $routeName);
         $this->subject->processResponse($request, $response);
 
-        $expected_cookie = new Cookie(CsrfMiddleware::CSRF, $new_csrf);
+        $expectedCookie = new Cookie(CsrfMiddleware::CSRF, $newCsrf);
 
-        $this->assertEquals([$expected_cookie], $response->headers->getCookies());
-        $this->assertEquals($new_csrf, $session->get(CsrfMiddleware::CSRF));
+        $this->assertEquals([$expectedCookie], $response->headers->getCookies());
+        $this->assertEquals($newCsrf, $session->get(CsrfMiddleware::CSRF));
     }
 }

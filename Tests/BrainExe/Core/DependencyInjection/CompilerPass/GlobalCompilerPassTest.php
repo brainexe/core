@@ -19,52 +19,52 @@ class GlobalCompilerPassTest extends \PHPUnit_Framework_TestCase
     /**
      * @var ContainerBuilder|MockObject $container
      */
-    private $mock_container;
+    private $mockContainer;
 
     public function setUp()
     {
         $this->subject = new GlobalCompilerPass();
-        $this->mock_container = $this->getMock(ContainerBuilder::class);
+        $this->mockContainer = $this->getMock(ContainerBuilder::class);
     }
 
     public function testProcessCompiler()
     {
-        $service_id = 'FooCompilerPass';
+        $serviceId = 'FooCompilerPass';
 
-        $compiler_mock = $this->getMock(CompilerPassInterface::class);
-        $logger_mock = $this->getMock(Logger::class, [], [], '', false);
+        $compilerMock = $this->getMock(CompilerPassInterface::class);
+        $loggerMock  = $this->getMock(Logger::class, [], [], '', false);
 
-        $this->mock_container
-        ->expects($this->at(0))
-        ->method('setParameter');
+        $this->mockContainer
+            ->expects($this->at(0))
+            ->method('setParameter');
 
-        $this->mock_container
-        ->expects($this->at(1))
-        ->method('setParameter');
+        $this->mockContainer
+            ->expects($this->at(1))
+            ->method('setParameter');
 
-        $this->mock_container
-        ->expects($this->at(2))
-        ->method('findTaggedServiceIds')
-        ->with(GlobalCompilerPass::TAG)
-        ->will($this->returnValue([$service_id => [['priority' => $priority = 10]]]));
+        $this->mockContainer
+            ->expects($this->at(2))
+            ->method('findTaggedServiceIds')
+            ->with(GlobalCompilerPass::TAG)
+            ->willReturn([$serviceId => [['priority' => 10]]]);
 
-        $this->mock_container
-        ->expects($this->at(3))
-        ->method('get')
-        ->with($service_id)
-        ->will($this->returnValue($compiler_mock));
+        $this->mockContainer
+            ->expects($this->at(3))
+            ->method('get')
+            ->with($serviceId)
+            ->willReturn($compilerMock);
 
-        $this->mock_container
-        ->expects($this->at(4))
-        ->method('get')
-        ->with('monolog.logger')
-        ->will($this->returnValue($logger_mock));
+        $this->mockContainer
+            ->expects($this->at(4))
+            ->method('get')
+            ->with('monolog.logger')
+            ->willReturn($loggerMock);
 
-        $compiler_mock
-        ->expects($this->once())
-        ->method('process')
-        ->with($this->mock_container);
+        $compilerMock
+            ->expects($this->once())
+            ->method('process')
+            ->with($this->mockContainer);
 
-        $this->subject->process($this->mock_container);
+        $this->subject->process($this->mockContainer);
     }
 }

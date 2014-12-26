@@ -66,31 +66,31 @@ class AppKernelTest extends PHPUnit_Framework_TestCase
     {
         $request  = new Request();
 
-        $expected_response = new JsonResponse(['arguments']);
+        $expectedResponse = new JsonResponse(['arguments']);
 
         $attributes = [
-        '_route' => $route_name = 'route_name'
+            '_route' => $routeName = 'route_name'
         ];
 
         $route = $this->getMock(Route::class, [], [], '', false);
 
         $this->mockMiddleWare
-        ->expects($this->once())
-        ->method('processResponse')
-        ->with($request, $expected_response)
-        ->will($this->returnValue($expected_response));
+            ->expects($this->once())
+            ->method('processResponse')
+            ->with($request, $expectedResponse)
+            ->willReturn($expectedResponse);
 
         $this->mockRouteCollection
-        ->expects($this->once())
-        ->method('get')
-        ->with($route_name)
-        ->willReturn($route);
+            ->expects($this->once())
+            ->method('get')
+            ->with($routeName)
+            ->willReturn($route);
 
         $this->mockMiddleWare
-        ->expects($this->once())
-        ->method('processRequest')
-        ->with($request, $route, $route_name)
-        ->willReturn(null);
+            ->expects($this->once())
+            ->method('processRequest')
+            ->with($request, $route, $routeName)
+            ->willReturn(null);
 
         $callable = function($arguments) {
             return $arguments;
@@ -112,14 +112,14 @@ class AppKernelTest extends PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('match')
             ->with($request)
-            ->will($this->returnValue($attributes));
+            ->willReturn($attributes);
 
         $type  = 1;
         $catch = 1;
         $actualResult = $this->subject->handle($request, $type, $catch);
 
-        $this->assertEquals($expected_response->getContent(), $actualResult->getContent());
-        $this->assertEquals($expected_response->getStatusCode(), $actualResult->getStatusCode());
+        $this->assertEquals($expectedResponse->getContent(), $actualResult->getContent());
+        $this->assertEquals($expectedResponse->getStatusCode(), $actualResult->getStatusCode());
     }
 
     public function testHandleRequestMiddleware()
@@ -129,33 +129,33 @@ class AppKernelTest extends PHPUnit_Framework_TestCase
         $response->setContent('content');
 
         $attributes = [
-        '_route' => $route_name = 'route_name'
+            '_route' => $routeName = 'route_name'
         ];
 
         $route = $this->getMock(Route::class, [], [], '', false);
 
         $this->mockMiddleWare
-        ->expects($this->once())
-        ->method('processResponse')
-        ->with($request, $response);
+            ->expects($this->once())
+            ->method('processResponse')
+            ->with($request, $response);
 
         $this->mockRouteCollection
-        ->expects($this->once())
-        ->method('get')
-        ->with($route_name)
-        ->willReturn($route);
+            ->expects($this->once())
+            ->method('get')
+            ->with($routeName)
+            ->willReturn($route);
 
         $this->mockMiddleWare
             ->expects($this->once())
             ->method('processRequest')
-            ->with($request, $route, $route_name)
+            ->with($request, $route, $routeName)
             ->willReturn($response);
 
         $this->mockUrlMatcher
             ->expects($this->once())
             ->method('match')
             ->with($request)
-            ->will($this->returnValue($attributes));
+            ->willReturn($attributes);
 
         $type  = 1;
         $catch = 1;
@@ -173,24 +173,24 @@ class AppKernelTest extends PHPUnit_Framework_TestCase
         $exception = new Exception('exception');
 
         $this->mockUrlMatcher
-        ->expects($this->once())
-        ->method('match')
-        ->willThrowException($exception);
+            ->expects($this->once())
+            ->method('match')
+            ->willThrowException($exception);
 
         $this->mockMiddleWare
-        ->expects($this->once())
-        ->method('processException')
-        ->with($request, $exception)
-        ->willReturn($response);
+            ->expects($this->once())
+            ->method('processException')
+            ->with($request, $exception)
+            ->willReturn($response);
 
         $this->mockMiddleWare
-        ->expects($this->once())
-        ->method('processResponse')
-        ->with($request, $response);
+            ->expects($this->once())
+            ->method('processResponse')
+            ->with($request, $response);
 
         $type  = 1;
         $catch = 1;
-        $actualResult = $this->subject->handle($request, $type = 1, $catch = 1);
+        $actualResult = $this->subject->handle($request, $type, $catch);
 
         $this->assertEquals($response, $actualResult);
     }

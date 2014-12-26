@@ -68,25 +68,25 @@ class ClearCacheCommandTest extends PHPUnit_Framework_TestCase
         $this->mockFinder
         ->expects($this->once())
         ->method('files')
-        ->will($this->returnValue($this->mockFinder));
+        ->willReturn($this->mockFinder);
 
         $this->mockFinder
         ->expects($this->once())
         ->method('in')
         ->with(ROOT . 'cache')
-        ->will($this->returnValue($this->mockFinder));
+        ->willReturn($this->mockFinder);
 
         $this->mockFinder
         ->expects($this->once())
         ->method('name')
         ->with('*.php')
-        ->will($this->returnValue($this->mockFinder));
+        ->willReturn($this->mockFinder);
 
         $this->mockFinder
         ->expects($this->once())
         ->method('notname')
         ->with('assets.php')
-        ->will($this->returnValue($files));
+        ->willReturn($files);
 
         $this->mockFilesystem
         ->expects($this->once())

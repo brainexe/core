@@ -38,24 +38,24 @@ class LoginControllerTest extends PHPUnit_Framework_TestCase
     public function testDoLogin()
     {
         $username       = 'username';
-        $plain_password = 'plain password';
-        $one_time_token = 'one time token';
+        $plainPassword = 'plain password';
+        $oneTimeToken = 'one time token';
 
         $session = new Session(new MockArraySessionStorage());
 
         $request = new Request();
         $request->request->set('username', $username);
-        $request->request->set('password', $plain_password);
-        $request->request->set('one_time_token', $one_time_token);
+        $request->request->set('password', $plainPassword);
+        $request->request->set('one_time_token', $oneTimeToken);
         $request->setSession($session);
 
-        $user_vo = new UserVO();
+        $userVo = new UserVO();
 
         $this->mockLogin
-        ->expects($this->once())
-        ->method('tryLogin')
-        ->with($username, $plain_password, $one_time_token, $session)
-        ->will($this->returnValue($user_vo));
+            ->expects($this->once())
+            ->method('tryLogin')
+            ->with($username, $plainPassword, $oneTimeToken, $session)
+            ->willReturn($userVo);
 
         $actualResult = $this->subject->doLogin($request);
 
