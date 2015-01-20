@@ -44,31 +44,31 @@ class ServerRunCommandTest extends PHPUnit_Framework_TestCase
         $process = $this->getMock(Process::class, [], [], '', false);
 
         $this->mockProcessBuilder
-        ->expects($this->once())
-        ->method('setArguments')
-        ->with([PHP_BINARY, '-S', 'localhost:8080'])
-        ->willReturn($this->mockProcessBuilder);
+            ->expects($this->once())
+            ->method('setArguments')
+            ->with([PHP_BINARY, '-S', 'localhost:8080'])
+            ->willReturn($this->mockProcessBuilder);
 
         $this->mockProcessBuilder
-        ->expects($this->once())
-        ->method('setWorkingDirectory')
-        ->with(ROOT . 'web/')
-        ->willReturn($this->mockProcessBuilder);
+            ->expects($this->once())
+            ->method('setWorkingDirectory')
+            ->with(ROOT . 'web/')
+            ->willReturn($this->mockProcessBuilder);
 
         $this->mockProcessBuilder
-        ->expects($this->once())
-        ->method('setTimeout')
-        ->with(null)
-        ->willReturn($this->mockProcessBuilder);
+            ->expects($this->once())
+            ->method('setTimeout')
+            ->with(null)
+            ->willReturn($this->mockProcessBuilder);
 
         $this->mockProcessBuilder
-        ->expects($this->once())
-        ->method('getProcess')
-        ->willReturn($process);
+            ->expects($this->once())
+            ->method('getProcess')
+            ->willReturn($process);
 
         $process
-        ->expects($this->once())
-        ->method('run');
+            ->expects($this->once())
+            ->method('run');
 
         $commandTester->execute([]);
         $output = $commandTester->getDisplay();

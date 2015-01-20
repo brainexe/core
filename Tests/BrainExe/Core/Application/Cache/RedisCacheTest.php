@@ -38,19 +38,19 @@ class RedisCacheTest extends PHPUnit_Framework_TestCase
         $ttl = 0;
 
         $this->mockRedis
-        ->expects($this->at(0))
-        ->method('get')
-        ->with('DoctrineNamespaceCacheKey[]')
-        ->willReturn(null);
+            ->expects($this->at(0))
+            ->method('get')
+            ->with('DoctrineNamespaceCacheKey[]')
+            ->willReturn(null);
 
         $this->mockRedis
-        ->expects($this->at(1))
-        ->method('set');
+            ->expects($this->at(1))
+            ->method('set');
 
         $this->mockRedis
-        ->expects($this->at(2))
-        ->method('set')
-        ->with('[id][1]', serialize($data));
+            ->expects($this->at(2))
+            ->method('set')
+            ->with('[id][1]', serialize($data));
 
         $actualResult = $this->subject->save($cacheId, $data, $ttl);
 
@@ -63,19 +63,19 @@ class RedisCacheTest extends PHPUnit_Framework_TestCase
         $ttl = 10;
 
         $this->mockRedis
-        ->expects($this->at(0))
-        ->method('get')
-        ->with('DoctrineNamespaceCacheKey[]')
-        ->willReturn(null);
+            ->expects($this->at(0))
+            ->method('get')
+            ->with('DoctrineNamespaceCacheKey[]')
+            ->willReturn(null);
 
         $this->mockRedis
-        ->expects($this->at(1))
-        ->method('set');
+            ->expects($this->at(1))
+            ->method('set');
 
         $this->mockRedis
-        ->expects($this->at(2))
-        ->method('setex')
-        ->with('[id][1]', $ttl, serialize($data));
+            ->expects($this->at(2))
+            ->method('setex')
+            ->with('[id][1]', $ttl, serialize($data));
 
         $actualResult = $this->subject->save($cacheId, $data, $ttl);
 
@@ -87,20 +87,20 @@ class RedisCacheTest extends PHPUnit_Framework_TestCase
         $cacheId = 'id';
 
         $this->mockRedis
-        ->expects($this->at(0))
-        ->method('get')
-        ->with('DoctrineNamespaceCacheKey[]')
-        ->willReturn(null);
+            ->expects($this->at(0))
+            ->method('get')
+            ->with('DoctrineNamespaceCacheKey[]')
+            ->willReturn(null);
 
         $this->mockRedis
-        ->expects($this->at(1))
-        ->method('save');
+            ->expects($this->at(1))
+            ->method('save');
 
         $this->mockRedis
-        ->expects($this->at(2))
-        ->method('get')
-        ->with('[id][1]')
-        ->willReturn(null);
+            ->expects($this->at(2))
+            ->method('get')
+            ->with('[id][1]')
+            ->willReturn(null);
 
         $actualResult = $this->subject->fetch($cacheId);
 
@@ -138,10 +138,10 @@ class RedisCacheTest extends PHPUnit_Framework_TestCase
         $cacheId = 'id';
 
         $this->mockRedis
-        ->expects($this->once())
-        ->method('exists')
-        ->with('[id][1]')
-        ->willReturn(true);
+            ->expects($this->once())
+            ->method('exists')
+            ->with('[id][1]')
+            ->willReturn(true);
 
         $actualResult = $this->subject->contains($cacheId);
 
@@ -153,9 +153,9 @@ class RedisCacheTest extends PHPUnit_Framework_TestCase
         $cacheId = 'id';
 
         $this->mockRedis
-        ->expects($this->once())
-        ->method('del')
-        ->with('[id][1]');
+            ->expects($this->once())
+            ->method('del')
+            ->with('[id][1]');
 
         $this->subject->delete($cacheId);
     }
@@ -163,8 +163,8 @@ class RedisCacheTest extends PHPUnit_Framework_TestCase
     public function testFlushAll()
     {
         $this->mockRedis
-        ->expects($this->once())
-        ->method('flushdb');
+            ->expects($this->once())
+            ->method('flushdb');
 
         $this->subject->flushAll();
     }

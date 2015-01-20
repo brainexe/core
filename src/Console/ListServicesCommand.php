@@ -28,8 +28,8 @@ class ListServicesCommand extends AbstractCommand
     protected function configure()
     {
         $this->setName('debug:list:services')
-        ->setDescription('List all services')
-        ->addArgument('visibility', InputArgument::OPTIONAL, 'public or private');
+            ->setDescription('List all services')
+            ->addArgument('visibility', InputArgument::OPTIONAL, 'public or private');
     }
 
     /**

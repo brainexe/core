@@ -19,8 +19,8 @@ class InstallCommand extends Command
     protected function configure()
     {
         $this
-        ->setName('app:install')
-        ->setDescription('Install application');
+            ->setName('app:install')
+            ->setDescription('Install application');
     }
 
     /**

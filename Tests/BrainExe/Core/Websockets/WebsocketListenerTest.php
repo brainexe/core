@@ -54,9 +54,9 @@ class WebsocketListenerTest extends PHPUnit_Framework_TestCase
         $event = new WebSocketEvent($payload);
 
         $this->mockRedis
-        ->expects($this->once())
-        ->method('publish')
-        ->with(WebsocketListener::CHANNEL, json_encode($payload));
+            ->expects($this->once())
+            ->method('publish')
+            ->with(WebsocketListener::CHANNEL, json_encode($payload));
 
         $this->subject->handlePushEvent($event);
     }

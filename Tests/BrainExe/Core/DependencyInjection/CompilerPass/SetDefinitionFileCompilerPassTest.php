@@ -60,31 +60,31 @@ class SetDefinitionFileCompilerPassTest extends \PHPUnit_Framework_TestCase
         $serviceId = 'FooService';
 
         $this->mockContainer
-        ->expects($this->once())
-        ->method('getServiceIds')
-        ->willReturn([$serviceId]);
+            ->expects($this->once())
+            ->method('getServiceIds')
+            ->willReturn([$serviceId]);
 
         $this->mockContainer
-        ->expects($this->once())
-        ->method('hasDefinition')
-        ->with($serviceId)
-        ->willReturn(true);
+            ->expects($this->once())
+            ->method('hasDefinition')
+            ->with($serviceId)
+            ->willReturn(true);
 
         $this->mockDefinition
-        ->expects($this->once())
-        ->method('getClass')
-        ->willReturn(FooTestClass::class);
+            ->expects($this->once())
+            ->method('getClass')
+            ->willReturn(FooTestClass::class);
 
         $this->mockDefinition
-        ->expects($this->once())
-        ->method('setFile')
-        ->with(__FILE__);
+            ->expects($this->once())
+            ->method('setFile')
+            ->with(__FILE__);
 
         $this->mockContainer
-        ->expects($this->once())
-        ->method('getDefinition')
-        ->with($serviceId)
-        ->willReturn($this->mockDefinition);
+            ->expects($this->once())
+            ->method('getDefinition')
+            ->with($serviceId)
+            ->willReturn($this->mockDefinition);
 
         $this->subject->process($this->mockContainer);
     }
@@ -94,30 +94,30 @@ class SetDefinitionFileCompilerPassTest extends \PHPUnit_Framework_TestCase
         $serviceId = 'FooService';
 
         $this->mockContainer
-        ->expects($this->once())
-        ->method('getServiceIds')
-        ->willReturn([$serviceId]);
+            ->expects($this->once())
+            ->method('getServiceIds')
+            ->willReturn([$serviceId]);
 
         $this->mockContainer
-        ->expects($this->once())
-        ->method('hasDefinition')
-        ->with($serviceId)
-        ->willReturn(true);
+            ->expects($this->once())
+            ->method('hasDefinition')
+            ->with($serviceId)
+            ->willReturn(true);
 
         $this->mockDefinition
-        ->expects($this->once())
-        ->method('getClass')
-        ->willReturn('InvalidClass');
+            ->expects($this->once())
+            ->method('getClass')
+            ->willReturn('InvalidClass');
 
         $this->mockDefinition
-        ->expects($this->never())
-        ->method('setFile');
+            ->expects($this->never())
+            ->method('setFile');
 
         $this->mockContainer
-        ->expects($this->once())
-        ->method('getDefinition')
-        ->with($serviceId)
-        ->willReturn($this->mockDefinition);
+            ->expects($this->once())
+            ->method('getDefinition')
+            ->with($serviceId)
+            ->willReturn($this->mockDefinition);
 
         $this->subject->process($this->mockContainer);
     }

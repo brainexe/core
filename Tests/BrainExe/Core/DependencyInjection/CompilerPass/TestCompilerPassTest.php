@@ -34,9 +34,9 @@ class TestCompilerPassTest extends PHPUnit_Framework_TestCase
     public function testProcessWithoutStandalone()
     {
         $this->mockContainer
-        ->expects($this->once())
-        ->method('getParameter')
-        ->willReturn(false);
+            ->expects($this->once())
+            ->method('getParameter')
+            ->willReturn(false);
 
         $this->subject->process($this->mockContainer);
     }

@@ -46,14 +46,14 @@ class LocaleMiddlewareTest extends PHPUnit_Framework_TestCase
         $request->query->set('locale', 'en_EN');
 
         $this->mockLocale
-        ->expects($this->once())
-        ->method('setLocale')
-        ->with('en_EN');
+            ->expects($this->once())
+            ->method('setLocale')
+            ->with('en_EN');
 
         $this->mockLocale
-        ->expects($this->once())
-        ->method('getLocales')
-        ->willReturn(['en_EN', 'de_DE']);
+            ->expects($this->once())
+            ->method('getLocales')
+            ->willReturn(['en_EN', 'de_DE']);
 
         $this->subject->processRequest($request, $route, $routeName);
     }
@@ -68,14 +68,14 @@ class LocaleMiddlewareTest extends PHPUnit_Framework_TestCase
         $request->query->set('locale', 'fo_ba');
 
         $this->mockLocale
-        ->expects($this->once())
-        ->method('setLocale')
-        ->with('en_EN');
+            ->expects($this->once())
+            ->method('setLocale')
+            ->with('en_EN');
 
         $this->mockLocale
-        ->expects($this->once())
-        ->method('getLocales')
-        ->willReturn(['en_EN', 'de_DE']);
+            ->expects($this->once())
+            ->method('getLocales')
+            ->willReturn(['en_EN', 'de_DE']);
 
         $this->subject->processRequest($request, $route, $routeName);
     }

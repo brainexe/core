@@ -47,8 +47,8 @@ class SelfUpdateCommandTest extends PHPUnit_Framework_TestCase
         $commandTester = new CommandTester($this->subject);
 
         $this->mockSelfUpdate
-        ->expects($this->once())
-        ->method('startUpdate');
+            ->expects($this->once())
+            ->method('startUpdate');
 
         $commandTester->execute([]);
     }

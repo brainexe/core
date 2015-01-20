@@ -40,16 +40,16 @@ class LoggerCompilerPassTest extends PHPUnit_Framework_TestCase
     public function testProcessCompilerWithCoreStandalone()
     {
         $this->mockContainer
-        ->expects($this->once())
-        ->method('getParameter')
-        ->with('core_standalone')
-        ->willReturn(true);
+            ->expects($this->once())
+            ->method('getParameter')
+            ->with('core_standalone')
+            ->willReturn(true);
 
         $this->mockContainer
-        ->expects($this->once())
-        ->method('getDefinition')
-        ->with('monolog.Logger')
-        ->willReturn($this->mockLoggerDefinition);
+            ->expects($this->once())
+            ->method('getDefinition')
+            ->with('monolog.Logger')
+            ->willReturn($this->mockLoggerDefinition);
 
         $this->subject->process($this->mockContainer);
     }
@@ -57,32 +57,32 @@ class LoggerCompilerPassTest extends PHPUnit_Framework_TestCase
     public function testProcessCompilerWitDebug()
     {
         $this->mockContainer
-        ->expects($this->at(0))
-        ->method('getDefinition')
-        ->with('monolog.Logger')
-        ->willReturn($this->mockLoggerDefinition);
+            ->expects($this->at(0))
+            ->method('getDefinition')
+            ->with('monolog.Logger')
+            ->willReturn($this->mockLoggerDefinition);
 
         $this->mockContainer
-        ->expects($this->at(1))
-        ->method('getParameter')
-        ->with('core_standalone')
-        ->willReturn(false);
+            ->expects($this->at(1))
+            ->method('getParameter')
+            ->with('core_standalone')
+            ->willReturn(false);
 
         $this->mockContainer
-        ->expects($this->at(2))
-        ->method('getParameter')
-        ->with('debug')
-        ->willReturn(true);
+            ->expects($this->at(2))
+            ->method('getParameter')
+            ->with('debug')
+            ->willReturn(true);
 
         $this->mockLoggerDefinition
-        ->expects($this->at(0))
-        ->method('addMethodCall')
-        ->with('pushHandler', [new Definition(ChromePHPHandler::class)]);
+            ->expects($this->at(0))
+            ->method('addMethodCall')
+            ->with('pushHandler', [new Definition(ChromePHPHandler::class)]);
 
         $this->mockLoggerDefinition
-        ->expects($this->at(1))
-        ->method('addMethodCall')
-        ->with('pushHandler', [new Definition(StreamHandler::class, ['php://stdout', Logger::INFO])]);
+            ->expects($this->at(1))
+            ->method('addMethodCall')
+            ->with('pushHandler', [new Definition(StreamHandler::class, ['php://stdout', Logger::INFO])]);
 
         $this->subject->process($this->mockContainer);
     }

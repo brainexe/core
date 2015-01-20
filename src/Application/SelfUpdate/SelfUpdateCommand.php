@@ -29,7 +29,7 @@ class SelfUpdateCommand extends AbstractCommand
     protected function configure()
     {
         $this->setName('self_update')
-        ->setDescription('Start Self Update');
+            ->setDescription('Start Self Update');
     }
 
     /**

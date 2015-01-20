@@ -80,10 +80,10 @@ class LoadRedisScriptsCommandTest extends PHPUnit_Framework_TestCase
             ->willReturn([0 => null]);
 
         $this->mockRedis
-        ->expects($this->at(4))
-        ->method('script')
-        ->with('LOAD', $script3)
-        ->willReturn(false);
+            ->expects($this->at(4))
+            ->method('script')
+            ->with('LOAD', $script3)
+            ->willReturn(false);
 
         $this->mockRedis
             ->expects($this->at(5))

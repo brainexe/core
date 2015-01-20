@@ -19,7 +19,7 @@ class CreateRegisterLinkCommand extends Command
     protected function configure()
     {
         $this->setName('user:register_link')
-        ->setDescription('Create a register link');
+            ->setDescription('Create a register link');
     }
 
     /**

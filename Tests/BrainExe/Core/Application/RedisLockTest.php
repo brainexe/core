@@ -37,7 +37,7 @@ class RedisLockTest extends PHPUnit_Framework_TestCase
         $lockTime = 10;
 
         $this->mockRedis
-        ->expects($this->once())
+            ->expects($this->once())
             ->method('EXISTS')
             ->with("lock:$name")
             ->willReturn(false);

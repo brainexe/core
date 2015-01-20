@@ -35,9 +35,9 @@ class InstallCommandTest extends PHPUnit_Framework_TestCase
 
         $input = new ArrayInput(['command' => 'cache:clear']);
         $application
-        ->expects($this->once())
-        ->method('run')
-        ->with($input);
+            ->expects($this->once())
+            ->method('run')
+            ->with($input);
 
         $commandTester->execute([]);
         $output = $commandTester->getDisplay();

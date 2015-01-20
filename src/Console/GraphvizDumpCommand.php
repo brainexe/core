@@ -26,7 +26,7 @@ class GraphvizDumpCommand extends Command
     protected function configure()
     {
         $this->setName('graphviz:dump')
-        ->setDescription('Dump container to graphviz');
+            ->setDescription('Dump container to graphviz');
     }
 
     /**

@@ -37,7 +37,7 @@ class LoadRedisScriptsCommand extends AbstractCommand
     protected function configure()
     {
         $this->setName('redis:scripts:load')
-        ->setDescription('Load Redis Scrips');
+            ->setDescription('Load Redis Scrips');
     }
 
     /**

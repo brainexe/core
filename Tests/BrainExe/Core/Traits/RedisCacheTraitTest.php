@@ -33,9 +33,9 @@ class RedisCacheTraitTest extends PHPUnit_Framework_TestCase
         $key = 'key';
 
         $this->mockRedis
-        ->expects($this->once())
-        ->method('DEL')
-        ->with($key);
+            ->expects($this->once())
+            ->method('DEL')
+            ->with($key);
 
         $this->subject->invalidate($key);
     }
@@ -51,10 +51,10 @@ class RedisCacheTraitTest extends PHPUnit_Framework_TestCase
         };
 
         $this->mockRedis
-        ->expects($this->once())
-        ->method('GET')
-        ->with($key)
-        ->willReturn(serialize($value));
+            ->expects($this->once())
+            ->method('GET')
+            ->with($key)
+            ->willReturn(serialize($value));
 
         $actualResult = $this->subject->wrapCache($key, $callback, $ttl);
 
@@ -72,15 +72,15 @@ class RedisCacheTraitTest extends PHPUnit_Framework_TestCase
         };
 
         $this->mockRedis
-        ->expects($this->once())
-        ->method('GET')
-        ->with($key)
-        ->willReturn(null);
+            ->expects($this->once())
+            ->method('GET')
+            ->with($key)
+            ->willReturn(null);
 
         $this->mockRedis
-        ->expects($this->once())
-        ->method('SETEX')
-        ->with($key, $ttl, serialize($value));
+            ->expects($this->once())
+            ->method('SETEX')
+            ->with($key, $ttl, serialize($value));
 
         $actualResult = $this->subject->wrapCache($key, $callback, $ttl);
 

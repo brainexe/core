@@ -37,8 +37,8 @@ class TranslationFindCommand extends AbstractCommand
     protected function configure()
     {
         $this
-        ->setName('translation:find')
-        ->setDescription('Finds all marked translation');
+            ->setName('translation:find')
+            ->setDescription('Finds all marked translation');
     }
 
     /**

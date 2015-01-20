@@ -42,9 +42,9 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase
         $request->attributes->set('user', $user);
 
         $this->mockDatabaseUserProvider
-        ->expects($this->once())
-        ->method('changePassword')
-        ->with($user, $password);
+            ->expects($this->once())
+            ->method('changePassword')
+            ->with($user, $password);
 
         $actualResult = $this->subject->changePassword($request);
         $this->assertTrue($actualResult);

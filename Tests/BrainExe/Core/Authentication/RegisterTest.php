@@ -54,10 +54,10 @@ class RegisterTest extends PHPUnit_Framework_TestCase
         $token = 100;
 
         $this->mockDatabaseUserProvider
-        ->expects($this->once())
-        ->method('loadUserByUsername')
-        ->with($username)
-        ->willReturn($user);
+            ->expects($this->once())
+            ->method('loadUserByUsername')
+            ->with($username)
+            ->willReturn($user);
 
         $this->subject->registerUser($user, $session, $token);
     }
@@ -75,16 +75,16 @@ class RegisterTest extends PHPUnit_Framework_TestCase
         $token = 100;
 
         $this->mockDatabaseUserProvider
-        ->expects($this->once())
-        ->method('loadUserByUsername')
-        ->with($username)
-        ->will($this->throwException(new UsernameNotFoundException()));
+            ->expects($this->once())
+            ->method('loadUserByUsername')
+            ->with($username)
+            ->will($this->throwException(new UsernameNotFoundException()));
 
         $this->mockRegisterTokens
-        ->expects($this->once())
-        ->method('fetchToken')
-        ->with($token)
-        ->willReturn(false);
+            ->expects($this->once())
+            ->method('fetchToken')
+            ->with($token)
+            ->willReturn(false);
 
         $this->subject->registerUser($user, $session, $token);
     }
@@ -99,22 +99,22 @@ class RegisterTest extends PHPUnit_Framework_TestCase
         $token   = 100;
 
         $this->mockDatabaseUserProvider
-        ->expects($this->once())
-        ->method('loadUserByUsername')
-        ->with($username)
-        ->will($this->throwException(new UsernameNotFoundException()));
+            ->expects($this->once())
+            ->method('loadUserByUsername')
+            ->with($username)
+            ->will($this->throwException(new UsernameNotFoundException()));
 
         $this->mockRegisterTokens
-        ->expects($this->once())
-        ->method('fetchToken')
-        ->with($token)
-        ->willReturn(true);
+            ->expects($this->once())
+            ->method('fetchToken')
+            ->with($token)
+            ->willReturn(true);
 
         $this->mockDatabaseUserProvider
-        ->expects($this->once())
-        ->method('register')
-        ->with($user)
-        ->willReturn($userId);
+            ->expects($this->once())
+            ->method('register')
+            ->with($user)
+            ->willReturn($userId);
 
         $actualResult = $this->subject->registerUser($user, $session, $token);
 

@@ -47,9 +47,9 @@ class EventDispatcherTest extends PHPUnit_Framework_TestCase
         $event = new TestEvent(TestEvent::TYPE);
 
         $this->subject
-        ->expects($this->once())
-        ->method('dispatch')
-        ->with(TestEvent::TYPE, $event);
+            ->expects($this->once())
+            ->method('dispatch')
+            ->with(TestEvent::TYPE, $event);
 
         $this->subject->dispatchEvent($event);
     }
@@ -81,9 +81,9 @@ class EventDispatcherTest extends PHPUnit_Framework_TestCase
         $wrapped_event = new BackgroundEvent($event);
 
         $this->subject
-        ->expects($this->once())
-        ->method('dispatch')
-        ->with(BackgroundEvent::BACKGROUND, $wrapped_event);
+            ->expects($this->once())
+            ->method('dispatch')
+            ->with(BackgroundEvent::BACKGROUND, $wrapped_event);
 
         $this->subject->dispatchInBackground($event, $timestamp);
     }
@@ -96,9 +96,9 @@ class EventDispatcherTest extends PHPUnit_Framework_TestCase
         $wrapped_event = new DelayedEvent($event, $timestamp);
 
         $this->subject
-        ->expects($this->once())
-        ->method('dispatch')
-        ->with(DelayedEvent::DELAYED, $wrapped_event);
+            ->expects($this->once())
+            ->method('dispatch')
+            ->with(DelayedEvent::DELAYED, $wrapped_event);
 
         $this->subject->dispatchInBackground($event, $timestamp);
     }

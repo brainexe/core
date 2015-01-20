@@ -36,8 +36,8 @@ class TranslationCompileCommand extends AbstractCommand
     protected function configure()
     {
         $this
-        ->setName('translation:compile')
-        ->setDescription('Compile PO files');
+            ->setName('translation:compile')
+            ->setDescription('Compile PO files');
     }
 
     /**

@@ -22,8 +22,8 @@ class LogCommand extends Command
     protected function configure()
     {
         $this
-        ->setName('debug:log')
-        ->setDescription('tail -f on log files');
+            ->setName('debug:log')
+            ->setDescription('tail -f on log files');
     }
 
     /**
@@ -33,9 +33,9 @@ class LogCommand extends Command
     {
         $finder = new Finder();
         $finder
-        ->files()
-        ->in(ROOT . 'logs')
-        ->name("*.log");
+            ->files()
+            ->in(ROOT . 'logs')
+            ->name("*.log");
 
         $colors = [
         'cyan',

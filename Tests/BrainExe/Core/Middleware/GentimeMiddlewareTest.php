@@ -41,9 +41,9 @@ class GentimeMiddlewareTest extends PHPUnit_Framework_TestCase
         $response = new Response();
 
         $this->mockLogger
-        ->expects($this->once())
-        ->method('log')
-        ->with('info', $this->isType('string'), ['channel' => 'gentime']);
+            ->expects($this->once())
+            ->method('log')
+            ->with('info', $this->isType('string'), ['channel' => 'gentime']);
 
         $this->subject->processResponse($request, $response);
     }
@@ -57,9 +57,9 @@ class GentimeMiddlewareTest extends PHPUnit_Framework_TestCase
         $request->attributes->set('user', $user);
 
         $this->mockLogger
-        ->expects($this->once())
-        ->method('log')
-        ->with('info', $this->isType('string'), ['channel' => 'gentime']);
+            ->expects($this->once())
+            ->method('log')
+            ->with('info', $this->isType('string'), ['channel' => 'gentime']);
 
         $this->subject->processResponse($request, $response);
     }

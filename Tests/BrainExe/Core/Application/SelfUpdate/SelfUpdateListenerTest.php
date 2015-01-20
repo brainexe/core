@@ -39,8 +39,8 @@ class SelfUpdateListenerTest extends PHPUnit_Framework_TestCase
     public function testStartSelfUpdate()
     {
         $this->mockSelfUpdate
-        ->expects($this->once())
-        ->method('startUpdate');
+            ->expects($this->once())
+            ->method('startUpdate');
 
         $this->subject->startSelfUpdate();
     }

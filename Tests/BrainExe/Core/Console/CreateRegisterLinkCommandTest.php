@@ -42,9 +42,9 @@ class CreateRegisterLinkCommandTest extends PHPUnit_Framework_TestCase
         $token = 11880;
 
         $this->mockRegisterTokens
-        ->expects($this->once())
-        ->method('addToken')
-        ->willReturn($token);
+            ->expects($this->once())
+            ->method('addToken')
+            ->willReturn($token);
 
         $commandTester->execute([]);
         $output = $commandTester->getDisplay();

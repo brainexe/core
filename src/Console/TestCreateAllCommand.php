@@ -37,8 +37,8 @@ class TestCreateAllCommand extends Command
     protected function configure()
     {
         $this
-        ->setName('test:create:all')
-        ->addArgument('root', InputArgument::OPTIONAL, 'source root directory (default: src)', 'src');
+            ->setName('test:create:all')
+            ->addArgument('root', InputArgument::OPTIONAL, 'source root directory (default: src)', 'src');
     }
 
     /**

@@ -32,10 +32,10 @@ class ObjectFinderTest extends \PHPUnit_Framework_TestCase
         $service = new \stdClass();
 
         $this->mockContainer
-        ->expects($this->once())
-        ->method('get')
-        ->with($serviceId)
-        ->willReturn($service);
+            ->expects($this->once())
+            ->method('get')
+            ->with($serviceId)
+            ->willReturn($service);
 
         $actual = $this->subject->getService($serviceId);
 

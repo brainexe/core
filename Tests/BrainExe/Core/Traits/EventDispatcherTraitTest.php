@@ -40,9 +40,9 @@ class EventDispatcherTraitTest extends PHPUnit_Framework_TestCase
         $event = new TestEvent('test');
 
         $this->mockDispatcher
-        ->expects($this->once())
-        ->method('dispatchEvent')
-        ->with($event);
+            ->expects($this->once())
+            ->method('dispatchEvent')
+            ->with($event);
 
         $this->subject->dispatchEvent($event);
     }
@@ -51,9 +51,9 @@ class EventDispatcherTraitTest extends PHPUnit_Framework_TestCase
         $event = new TestEvent('test');
 
         $this->mockDispatcher
-        ->expects($this->once())
-        ->method('dispatchInBackground')
-        ->with($event);
+            ->expects($this->once())
+            ->method('dispatchInBackground')
+            ->with($event);
 
         $this->subject->dispatchInBackground($event);
     }

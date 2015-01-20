@@ -43,10 +43,10 @@ class ServerRunCommand extends Command
     protected function configure()
     {
         $this
-        ->addArgument('address', InputArgument::OPTIONAL, 'Address:port')
-        ->addOption('quiet', 'q', InputOption::VALUE_NONE)
-        ->setName('server:run')
-        ->setDescription('Runs PHP built-in web server');
+            ->addArgument('address', InputArgument::OPTIONAL, 'Address:port')
+            ->addOption('quiet', 'q', InputOption::VALUE_NONE)
+            ->setName('server:run')
+            ->setDescription('Runs PHP built-in web server');
         ;
     }
 
@@ -57,10 +57,10 @@ class ServerRunCommand extends Command
         $output->writeln(sprintf("Server running on <info>%s</info>\n", $address));
 
         $process = $this->processBuilder
-        ->setArguments([PHP_BINARY, '-S', $address])
-        ->setWorkingDirectory(ROOT . 'web/')
-        ->setTimeout(null)
-        ->getProcess();
+            ->setArguments([PHP_BINARY, '-S', $address])
+            ->setWorkingDirectory(ROOT . 'web/')
+            ->setTimeout(null)
+            ->getProcess();
 
         $process->run(function ($type, $buffer) use ($output, $input) {
             unset($type);

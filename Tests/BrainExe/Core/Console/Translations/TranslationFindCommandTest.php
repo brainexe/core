@@ -68,52 +68,52 @@ class TranslationFindCommandTest extends PHPUnit_Framework_TestCase
 
         $process = $this->getMock(Process::class, [], [], '', false);
         $this->mockProcessBuilder
-        ->expects($this->at(0))
-        ->method('setArguments')
-        ->willReturn($this->mockProcessBuilder);
+            ->expects($this->at(0))
+            ->method('setArguments')
+            ->willReturn($this->mockProcessBuilder);
         $this->mockProcessBuilder
-        ->expects($this->at(1))
-        ->method('getProcess')
-        ->willReturn($process);
+            ->expects($this->at(1))
+            ->method('getProcess')
+            ->willReturn($process);
         $process
-        ->expects($this->once())
-        ->method('run');
+            ->expects($this->once())
+            ->method('run');
         $process
-        ->expects($this->once())
-        ->method('isSuccessful')
-        ->willReturn(true);
+            ->expects($this->once())
+            ->method('isSuccessful')
+            ->willReturn(true);
 
         $process2 = $this->getMock(Process::class, [], [], '', false);
         $this->mockProcessBuilder
-        ->expects($this->at(2))
-        ->method('setArguments')
-        ->willReturn($this->mockProcessBuilder);
+            ->expects($this->at(2))
+            ->method('setArguments')
+            ->willReturn($this->mockProcessBuilder);
         $this->mockProcessBuilder
-        ->expects($this->at(3))
-        ->method('getProcess')
-        ->willReturn($process2);
+            ->expects($this->at(3))
+            ->method('getProcess')
+            ->willReturn($process2);
         $process2
-        ->expects($this->once())
-        ->method('run');
+            ->expects($this->once())
+            ->method('run');
         $process2
-        ->expects($this->once())
-        ->method('isSuccessful')
-        ->willReturn(true);
+            ->expects($this->once())
+            ->method('isSuccessful')
+            ->willReturn(true);
 
         $this->mockFinder
-        ->expects($this->at(0))
-        ->method('directories')
-        ->willReturn($this->mockFinder);
+            ->expects($this->at(0))
+            ->method('directories')
+            ->willReturn($this->mockFinder);
         $this->mockFinder
-        ->expects($this->at(1))
-        ->method('in')
-        ->with(ROOT . 'lang/')
-        ->willReturn($this->mockFinder);
+            ->expects($this->at(1))
+            ->method('in')
+            ->with(ROOT . 'lang/')
+            ->willReturn($this->mockFinder);
         $this->mockFinder
-        ->expects($this->at(2))
-        ->method('depth')
-        ->with(0)
-        ->willReturn($files);
+            ->expects($this->at(2))
+            ->method('depth')
+            ->with(0)
+            ->willReturn($files);
 
         $commandTester->execute([], ['verbosity' => OutputInterface::VERBOSITY_VERBOSE]);
         $output = $commandTester->getDisplay();
@@ -137,60 +137,60 @@ class TranslationFindCommandTest extends PHPUnit_Framework_TestCase
 
         $process = $this->getMock(Process::class, [], [], '', false);
         $this->mockProcessBuilder
-        ->expects($this->at(0))
-        ->method('setArguments')
-        ->willReturn($this->mockProcessBuilder);
+            ->expects($this->at(0))
+            ->method('setArguments')
+            ->willReturn($this->mockProcessBuilder);
         $this->mockProcessBuilder
-        ->expects($this->at(1))
-        ->method('getProcess')
-        ->willReturn($process);
+            ->expects($this->at(1))
+            ->method('getProcess')
+            ->willReturn($process);
         $process
-        ->expects($this->once())
-        ->method('run');
+            ->expects($this->once())
+            ->method('run');
         $process
-        ->expects($this->once())
-        ->method('isSuccessful')
-        ->willReturn(false);
+            ->expects($this->once())
+            ->method('isSuccessful')
+            ->willReturn(false);
         $process
-        ->expects($this->once())
-        ->method('getErrorOutput')
-        ->willReturn('error');
+            ->expects($this->once())
+            ->method('getErrorOutput')
+            ->willReturn('error');
         $process
-        ->expects($this->once())
-        ->method('getCommandLine')
-        ->willReturn('command');
+            ->expects($this->once())
+            ->method('getCommandLine')
+            ->willReturn('command');
 
         $process2 = $this->getMock(Process::class, [], [], '', false);
         $this->mockProcessBuilder
-        ->expects($this->at(2))
-        ->method('setArguments')
-        ->willReturn($this->mockProcessBuilder);
+            ->expects($this->at(2))
+            ->method('setArguments')
+            ->willReturn($this->mockProcessBuilder);
         $this->mockProcessBuilder
-        ->expects($this->at(3))
-        ->method('getProcess')
-        ->willReturn($process2);
+            ->expects($this->at(3))
+            ->method('getProcess')
+            ->willReturn($process2);
         $process2
-        ->expects($this->once())
-        ->method('run');
+            ->expects($this->once())
+            ->method('run');
         $process2
-        ->expects($this->once())
-        ->method('isSuccessful')
-        ->willReturn(true);
+            ->expects($this->once())
+            ->method('isSuccessful')
+            ->willReturn(true);
 
         $this->mockFinder
-        ->expects($this->at(0))
-        ->method('directories')
-        ->willReturn($this->mockFinder);
+            ->expects($this->at(0))
+            ->method('directories')
+            ->willReturn($this->mockFinder);
         $this->mockFinder
-        ->expects($this->at(1))
-        ->method('in')
-        ->with(ROOT . 'lang/')
-        ->willReturn($this->mockFinder);
+            ->expects($this->at(1))
+            ->method('in')
+            ->with(ROOT . 'lang/')
+            ->willReturn($this->mockFinder);
         $this->mockFinder
-        ->expects($this->at(2))
-        ->method('depth')
-        ->with(0)
-        ->willReturn($files);
+            ->expects($this->at(2))
+            ->method('depth')
+            ->with(0)
+            ->willReturn($files);
 
         $commandTester->execute([], ['verbosity' => OutputInterface::VERBOSITY_VERBOSE]);
         $output = $commandTester->getDisplay();

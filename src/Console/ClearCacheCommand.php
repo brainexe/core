@@ -41,8 +41,8 @@ class ClearCacheCommand extends Command
     protected function configure()
     {
         $this->setName('cache:clear')
-        ->setDescription('Clears the local cache')
-        ->setAliases(['cc']);
+            ->setDescription('Clears the local cache')
+            ->setAliases(['cc']);
     }
 
     /**
@@ -68,10 +68,10 @@ class ClearCacheCommand extends Command
         $output->write('Clear Cache...');
 
         $files = $this->finder
-        ->files()
-        ->in(ROOT . 'cache')
-        ->name('*.php')
-        ->notName('assets.php');
+            ->files()
+            ->in(ROOT . 'cache')
+            ->name('*.php')
+            ->notName('assets.php');
 
         $this->filesystem->remove($files);
 

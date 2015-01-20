@@ -52,32 +52,32 @@ class ConfigCompilerPassTest extends PHPUnit_Framework_TestCase
     {
         $this->markTestIncomplete();
         $this->mockContainer
-        ->expects($this->once())
-        ->method('setParameter')
-        ->with('core_standalone');
+            ->expects($this->once())
+            ->method('setParameter')
+            ->with('core_standalone');
 
         $this->mockFinder
-        ->expects($this->once())
-        ->method('files')
-        ->willReturnSelf();
+            ->expects($this->once())
+            ->method('files')
+            ->willReturnSelf();
         $this->mockFinder
-        ->expects($this->once())
-        ->method('depth')
-        ->willReturnSelf();
+            ->expects($this->once())
+            ->method('depth')
+            ->willReturnSelf();
         $this->mockFinder
-        ->expects($this->once())
-        ->method('in')
-        ->willReturnSelf();
+            ->expects($this->once())
+            ->method('in')
+            ->willReturnSelf();
         $this->mockFinder
-        ->expects($this->once())
-        ->method('name')
-        ->willReturnSelf();
+            ->expects($this->once())
+            ->method('name')
+            ->willReturnSelf();
 
         $this->mockFileSystem
-        ->expects($this->once())
-        ->method('exists')
-        ->with(ROOT . 'app')
-        ->willReturn(false);
+            ->expects($this->once())
+            ->method('exists')
+            ->with(ROOT . 'app')
+            ->willReturn(false);
 
         $this->subject->process($this->mockContainer);
     }

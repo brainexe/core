@@ -66,48 +66,48 @@ class ClearCacheCommandTest extends PHPUnit_Framework_TestCase
         $files = [];
 
         $this->mockFinder
-        ->expects($this->once())
-        ->method('files')
-        ->willReturn($this->mockFinder);
+            ->expects($this->once())
+            ->method('files')
+            ->willReturn($this->mockFinder);
 
         $this->mockFinder
-        ->expects($this->once())
-        ->method('in')
-        ->with(ROOT . 'cache')
-        ->willReturn($this->mockFinder);
+            ->expects($this->once())
+            ->method('in')
+            ->with(ROOT . 'cache')
+            ->willReturn($this->mockFinder);
 
         $this->mockFinder
-        ->expects($this->once())
-        ->method('name')
-        ->with('*.php')
-        ->willReturn($this->mockFinder);
+            ->expects($this->once())
+            ->method('name')
+            ->with('*.php')
+            ->willReturn($this->mockFinder);
 
         $this->mockFinder
-        ->expects($this->once())
-        ->method('notname')
-        ->with('assets.php')
-        ->willReturn($files);
+            ->expects($this->once())
+            ->method('notname')
+            ->with('assets.php')
+            ->willReturn($files);
 
         $this->mockFilesystem
-        ->expects($this->once())
-        ->method('remove')
-        ->with($files);
+            ->expects($this->once())
+            ->method('remove')
+            ->with($files);
 
         $this->mockRebuild
-        ->expects($this->once())
-        ->method('rebuildDIC')
-        ->with(true);
+            ->expects($this->once())
+            ->method('rebuildDIC')
+            ->with(true);
 
         $this->mockFilesystem
-        ->expects($this->once())
-        ->method('chmod')
-        ->with($this->isType('array'), 0777, 0000, true);
+            ->expects($this->once())
+            ->method('chmod')
+            ->with($this->isType('array'), 0777, 0000, true);
 
         $input = new ArrayInput(['command' => 'redis:scripts:load']);
         $application
-        ->expects($this->once())
-        ->method('run')
-        ->with($input);
+            ->expects($this->once())
+            ->method('run')
+            ->with($input);
 
         $commandTester->execute([]);
         $output = $commandTester->getDisplay();

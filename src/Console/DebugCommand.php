@@ -23,8 +23,8 @@ class DebugCommand extends AbstractCommand
     protected function configure()
     {
         $this
-        ->setName('debug')
-        ->setDescription('debugcommand');
+            ->setName('debug')
+            ->setDescription('debugcommand');
     }
 
     /**
