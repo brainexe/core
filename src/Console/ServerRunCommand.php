@@ -19,6 +19,7 @@ class ServerRunCommand extends Command
      * @var string
      */
     private $serverAddress;
+
     /**
      * @var ProcessBuilder
      */
