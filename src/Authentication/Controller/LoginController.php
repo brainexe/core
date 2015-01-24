@@ -50,4 +50,17 @@ class LoginController implements ControllerInterface
 
         return $response;
     }
+
+    /**
+     * @param Request $request
+     * @Route("/login/needsOneTimeToken", name="authenticate.needsOneTimeToken", methods="GET")
+     * @return bool
+     * @Guest
+     */
+    public function needsOneTimeToken(Request $request)
+    {
+        $username = $request->request->get('username');
+
+        return $this->login->needsOneTimeToken($username);
+    }
 }

@@ -60,4 +60,14 @@ class Login
 
         return $userVo;
     }
+
+    /**
+     * @param string $username
+     * @return bool
+     */
+    public function needsOneTimeToken($username)
+    {
+        // TODO
+        return true;
+    }
 }
