@@ -13,7 +13,7 @@ class QRCode
      * @param int $size
      * @return string
      */
-    public function generatreQRLink($data, $size = 250)
+    public function generateQRLink($data, $size = 250)
     {
         $baseUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=%dx%d&data=%s';
 

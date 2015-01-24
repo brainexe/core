@@ -26,7 +26,7 @@ class QRCodeTest extends PHPUnit_Framework_TestCase
         $data = 'data';
         $size = 250;
 
-        $actualResult = $this->subject->generatreQRLink($data, $size);
+        $actualResult = $this->subject->generateQRLink($data, $size);
 
         $expectedResult = 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=data';
 
