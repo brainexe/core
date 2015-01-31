@@ -9,12 +9,25 @@ class EventDispatcher extends SymfonyEventDispatcher
 {
 
     /**
+     * @var bool
+     */
+    private $enabled;
+
+    /**
+     * @inject("%message_queue.enabled%")
+     * @param bool $enabled
+     */
+    public function setEnabled($enabled)
+    {
+        $this->enabled = $enabled;
+    }
+
+    /**
      * @param AbstractEvent $event
      */
     public function dispatchEvent(AbstractEvent $event)
     {
         $this->dispatch($event->event_name, $event);
-
         if ($event instanceof PushViaWebsocketInterface) {
             $this->dispatchAsWebsocketEvent($event);
         }
@@ -36,6 +49,11 @@ class EventDispatcher extends SymfonyEventDispatcher
      */
     public function dispatchInBackground(AbstractEvent $event, $timestamp = 0)
     {
+        if (!$this->enabled) {
+            $this->dispatchEvent($event);
+            return;
+        }
+
         if ($timestamp) {
             $wrapper = new DelayedEvent($event, $timestamp);
         } else {

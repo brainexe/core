@@ -28,7 +28,7 @@ class RedisLogger implements RedisInterface
      */
     public function __construct(Redis $redis, Logger $logger)
     {
-        $this->redis = $redis;
+        $this->redis  = $redis;
         $this->logger = $logger;
     }
 

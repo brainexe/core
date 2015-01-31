@@ -38,7 +38,6 @@ class EventDispatcherTest extends PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->mockContainer = $this->getMock(Container::class, [], [], '', false);
-
         $this->subject = $this->getMock(EventDispatcher::class, ['dispatch'], [], '', false);
     }
 
@@ -75,15 +74,32 @@ class EventDispatcherTest extends PHPUnit_Framework_TestCase
 
     public function testDispatchInBackground()
     {
+        $this->subject->setEnabled(true);
+
         $event = new TestEvent(TestEvent::TYPE);
         $timestamp = 0;
 
-        $wrapped_event = new BackgroundEvent($event);
+        $wrappedEvent = new BackgroundEvent($event);
 
         $this->subject
             ->expects($this->once())
             ->method('dispatch')
-            ->with(BackgroundEvent::BACKGROUND, $wrapped_event);
+            ->with(BackgroundEvent::BACKGROUND, $wrappedEvent);
+
+        $this->subject->dispatchInBackground($event, $timestamp);
+    }
+
+    public function testDispatchWhenNotEnabled()
+    {
+        $this->subject->setEnabled(false);
+
+        $event = new TestEvent(TestEvent::TYPE);
+        $timestamp = 0;
+
+        $this->subject
+            ->expects($this->once())
+            ->method('dispatch')
+            ->with(BackgroundEvent::BACKGROUND, $event);
 
         $this->subject->dispatchInBackground($event, $timestamp);
     }
@@ -93,12 +109,12 @@ class EventDispatcherTest extends PHPUnit_Framework_TestCase
         $event = new TestEvent(TestEvent::TYPE);
         $timestamp = 10;
 
-        $wrapped_event = new DelayedEvent($event, $timestamp);
+        $wrappedEvent = new DelayedEvent($event, $timestamp);
 
         $this->subject
             ->expects($this->once())
             ->method('dispatch')
-            ->with(DelayedEvent::DELAYED, $wrapped_event);
+            ->with(DelayedEvent::DELAYED, $wrappedEvent);
 
         $this->subject->dispatchInBackground($event, $timestamp);
     }
