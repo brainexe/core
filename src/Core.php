@@ -27,7 +27,7 @@ class Core
     /**
      * @return Container
      */
-    public static function boot()
+    public function boot()
     {
         chdir(ROOT);
         umask(0);
@@ -47,7 +47,7 @@ class Core
 
         date_default_timezone_set($dic->getParameter('timezone'));
 
-     // TODO improve
+        // TODO improve error logging
         $dic->get('monolog.ErrorHandler');
 
         return $dic;

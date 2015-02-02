@@ -103,7 +103,7 @@ class CacheMiddlewareTest extends PHPUnit_Framework_TestCase
         $this->mockRedisCache
             ->expects($this->once())
             ->method('save')
-            ->with($requestUri, $response, CacheMiddleware::TTL)
+            ->with($requestUri, $response, CacheMiddleware::DEFAULT_TTL)
             ->willReturn(false);
 
         $this->subject->processResponse($request, $response);

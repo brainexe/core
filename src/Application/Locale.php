@@ -9,13 +9,14 @@ class Locale
 {
 
     /**
+     * @todo add to app config
      * @return string[]
      */
     public function getLocales()
     {
         return [
-        'en_EN',
-        'de_DE'
+            'en_EN',
+            'de_DE'
         ];
     }
 

@@ -2,6 +2,7 @@
 
 namespace BrainExe\Core\DependencyInjection\CompilerPass;
 
+use BrainExe\Core\Annotations\CompilerPass;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -18,11 +19,13 @@ class RedisCompilerPass implements CompilerPassInterface
     {
         $redis = $container->getDefinition('redis');
 
-        if ($password = $container->getParameter('redis.password')) {
+        $password = $container->getParameter('redis.password');
+        if (!empty($password)) {
             $redis->addMethodCall('auth', [$password]);
         }
 
-        if ($database = $container->getParameter('redis.database')) {
+        $database = $container->getParameter('redis.database');
+        if (!empty($database)) {
             $redis->addMethodCall('select', [$database]);
         }
     }

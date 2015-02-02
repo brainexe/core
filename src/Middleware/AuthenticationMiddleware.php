@@ -2,6 +2,8 @@
 
 namespace BrainExe\Core\Middleware;
 
+use BrainExe\Annotations\Annotations\Inject;
+use BrainExe\Core\Annotations\Middleware;
 use BrainExe\Core\Authentication\AnonymusUserVO;
 use BrainExe\Core\Authentication\DatabaseUserProvider;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -50,9 +52,9 @@ class AuthenticationMiddleware extends AbstractMiddleware
     {
         $session   = $request->getSession();
         $userId    = $session->get('user_id');
-        $loggedId  = $userId > 0;
+        $loggedIn  = $userId > 0;
 
-        if ($loggedId) {
+        if ($loggedIn) {
             $user = $this->userProvider->loadUserById($userId);
         } else {
             $user = new AnonymusUserVO();
@@ -69,7 +71,7 @@ class AuthenticationMiddleware extends AbstractMiddleware
             return null;
         }
 
-        if (!$loggedId) {
+        if (!$loggedIn) {
             return new RedirectResponse('#/login');
         }
 

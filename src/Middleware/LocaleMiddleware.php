@@ -2,6 +2,7 @@
 
 namespace BrainExe\Core\Middleware;
 
+use BrainExe\Core\Annotations\Middleware;
 use BrainExe\Core\Application\Locale;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Route;
@@ -38,6 +39,7 @@ class LocaleMiddleware extends AbstractMiddleware
 
             $locale = $request->query->get('locale');
             if (!in_array($locale, $availableLocales)) {
+                // invalid locale -> use first defined locale as fallback
                 $locale = $availableLocales[0];
             }
 

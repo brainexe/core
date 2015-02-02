@@ -2,6 +2,7 @@
 
 namespace BrainExe\Core\Traits;
 
+use BrainExe\Annotations\Annotations\Inject;
 use Symfony\Component\HttpFoundation\Response;
 use Twig_Environment;
 

@@ -45,11 +45,26 @@ class RedisLogger implements RedisInterface
 
         $diff = microtime(true) - $start;
 
-        $argumentList = var_export($arguments, true);
+        $argumentList = $this->formatArguments($arguments);
         $log = sprintf("%0.2fms: %s %s", $diff * 1000, strtoupper($method), $argumentList);
 
         $this->logger->addDebug($log, ['channel' => 'redis']);
 
         return $result;
+    }
+
+    /**
+     * @param array $arguments
+     * @return string
+     */
+    private function formatArguments(array $arguments)
+    {
+        foreach ($arguments as &$argument) {
+            if (is_array($argument)) {
+                $argument = var_export($argument, true);
+            }
+        }
+
+        return implode(', ', $arguments);
     }
 }

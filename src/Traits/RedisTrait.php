@@ -2,6 +2,7 @@
 
 namespace BrainExe\Core\Traits;
 
+use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Core\Redis\Redis;
 use BrainExe\Core\Redis\RedisInterface;
 

@@ -2,6 +2,7 @@
 
 namespace BrainExe\Core\DependencyInjection\CompilerPass;
 
+use BrainExe\Core\Annotations\CompilerPass;
 use ReflectionClass;
 use ReflectionException;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;

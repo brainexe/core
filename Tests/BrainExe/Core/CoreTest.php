@@ -11,7 +11,8 @@ class CoreTest extends PHPUnit_Framework_TestCase
 
     public function testBoot()
     {
-        $dic = Core::boot();
+        $core = new Core();
+        $dic = $core->boot();
 
         $this->assertInstanceOf(Container::class, $dic);
     }

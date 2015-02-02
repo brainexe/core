@@ -2,8 +2,9 @@
 
 namespace BrainExe\Core\Application;
 
+use BrainExe\Annotations\Annotations\Inject;
+use BrainExe\Annotations\Annotations\Service;
 use BrainExe\Core\DependencyInjection\ObjectFinder;
-use BrainExe\Core\Traits\ServiceContainerTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
 

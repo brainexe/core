@@ -2,6 +2,7 @@
 
 namespace BrainExe\Core\DependencyInjection\CompilerPass;
 
+use BrainExe\Core\Annotations\CompilerPass;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
@@ -19,13 +20,12 @@ class ConsoleCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $definition = $container->getDefinition('Console');
-
-        $definition->addMethodCall('setAutoExit', [false]);
+        $console = $container->getDefinition('Console');
+        $console->addMethodCall('setAutoExit', [false]);
 
         $taggedServices = $container->findTaggedServiceIds(self::TAG);
         foreach (array_keys($taggedServices) as $serviceId) {
-            $definition->addMethodCall('add', [new Reference($serviceId)]);
+            $console->addMethodCall('add', [new Reference($serviceId)]);
         }
     }
 }

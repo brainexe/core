@@ -2,6 +2,8 @@
 
 namespace BrainExe\Core\Middleware;
 
+use BrainExe\Annotations\Annotations\Inject;
+use BrainExe\Core\Annotations\Middleware;
 use BrainExe\Core\Traits\CacheTrait;
 use BrainExe\Core\Traits\LoggerTrait;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,7 +21,7 @@ class CacheMiddleware extends AbstractMiddleware
     use CacheTrait;
     use LoggerTrait;
 
-    const TTL = 60;
+    const DEFAULT_TTL = 60;
 
     /**
      * @var string
@@ -49,7 +51,7 @@ class CacheMiddleware extends AbstractMiddleware
             return null;
         }
 
-        $this->cacheKey = $request->getRequestUri();
+        $this->cacheKey = $this->generateCacheKey($request);
 
         $cache = $this->getCache();
 
@@ -82,7 +84,16 @@ class CacheMiddleware extends AbstractMiddleware
 
         $this->debug(sprintf('save into cache: %s', $this->cacheKey));
 
-        $cache->save($this->cacheKey, $response, self::TTL);
+        $cache->save($this->cacheKey, $response, self::DEFAULT_TTL);
         $this->cacheKey = null;
+    }
+
+    /**
+     * @param Request $request
+     * @return string
+     */
+    private function generateCacheKey(Request $request)
+    {
+        return $request->getRequestUri();
     }
 }

@@ -2,11 +2,11 @@
 
 namespace BrainExe\Core\Middleware;
 
+use BrainExe\Core\Annotations\Middleware;
 use BrainExe\Core\Authentication\UserVO;
 use BrainExe\Core\Traits\LoggerTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Route;
 
 /**
  * @Middleware(priority=1)

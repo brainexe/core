@@ -2,6 +2,7 @@
 
 namespace BrainExe\Core\Middleware;
 
+use BrainExe\Core\Annotations\Middleware;
 use BrainExe\Core\Traits\IdGeneratorTrait;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;

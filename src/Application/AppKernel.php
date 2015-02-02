@@ -2,6 +2,8 @@
 
 namespace BrainExe\Core\Application;
 
+use BrainExe\Annotations\Annotations\Inject;
+use BrainExe\Annotations\Annotations\Service;
 use BrainExe\Core\Middleware\MiddlewareInterface;
 use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -41,10 +43,13 @@ class AppKernel implements HttpKernelInterface
      * @param SerializedRouteCollection $routes
      * @param UrlMatcher $urlMatcher
      */
-    public function __construct(ControllerResolver $resolver, SerializedRouteCollection $routes, UrlMatcher $urlMatcher)
-    {
-        $this->resolver  = $resolver;
-        $this->routes    = $routes;
+    public function __construct(
+        ControllerResolver $resolver,
+        SerializedRouteCollection $routes,
+        UrlMatcher $urlMatcher
+    ) {
+        $this->resolver   = $resolver;
+        $this->routes     = $routes;
         $this->urlMatcher = $urlMatcher;
     }
 
@@ -101,7 +106,7 @@ class AppKernel implements HttpKernelInterface
         foreach ($this->middlewares as $middleware) {
             $response = $middleware->processRequest($request, $route, $routeName);
             if ($response) {
-             // e.g. RedirectResponse or rendered error page
+                // e.g. RedirectResponse or rendered error page
                 return $response;
             }
         }
@@ -122,7 +127,7 @@ class AppKernel implements HttpKernelInterface
     {
         unset ($request);
         if (!$response instanceof Response) {
-         // todo support more content types
+            // todo support more content types
             return new JsonResponse($response);
         }
 

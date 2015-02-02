@@ -37,6 +37,7 @@ class DatabaseUserProvider implements UserProviderInterface
 
     /**
      * {@inheritdoc}
+     * @throws UsernameNotFoundException
      */
     public function loadUserByUsername($username)
     {

@@ -2,6 +2,7 @@
 
 namespace BrainExe\Core\Middleware;
 
+use BrainExe\Core\Annotations\Middleware;
 use BrainExe\Core\Application\ErrorView;
 use BrainExe\Core\Application\UserException;
 use BrainExe\Core\Controller\ControllerInterface;

@@ -2,6 +2,7 @@
 
 namespace BrainExe\Core\Application;
 
+use BrainExe\Annotations\Annotations\Service;
 use BrainExe\Core\Traits\RedisTrait;
 use SessionHandlerInterface;
 
@@ -46,7 +47,7 @@ class RedisSessionHandler implements SessionHandlerInterface
     {
         $key = $this->getKey($sessionId);
 
-        $this->getRedis()->setex($key, 86400 * 7, $data);
+        $this->getRedis()->setex($key, 86400 * 2, $data);
     }
 
     /**

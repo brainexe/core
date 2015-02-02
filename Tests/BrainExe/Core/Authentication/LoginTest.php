@@ -71,9 +71,9 @@ class LoginTest extends PHPUnit_Framework_TestCase
     {
         $username       = 'user name';
         $password       = 'password';
-        $oneTimeToken = 'token';
+        $oneTimeToken   = 'token';
         $session        = new Session(new MockArraySessionStorage());
-        $userPassword = 'real password';
+        $userPassword   = 'real password';
 
         $userVo = new UserVO();
         $userVo->password_hash = $userPassword;
@@ -90,19 +90,24 @@ class LoginTest extends PHPUnit_Framework_TestCase
             ->with($password, $userPassword)
             ->willReturn(false);
 
-        $this->subject->tryLogin($username, $password, $oneTimeToken, $session);
+        $this->subject->tryLogin(
+            $username,
+            $password,
+            $oneTimeToken,
+            $session
+        );
     }
 
     public function testTryLogin()
     {
         $username       = 'user name';
         $password       = 'password';
-        $oneTimeToken = 'token';
+        $oneTimeToken   = 'token';
         $session        = new Session(new MockArraySessionStorage());
-        $userPassword  = 'real password';
+        $userPassword   = 'real password';
 
         $userVo = new UserVO();
-        $userVo->id              = $id = 42;
+        $userVo->id              = $userId = 42;
         $userVo->password_hash   = $userPassword;
         $userVo->one_time_secret = false;
 
@@ -118,24 +123,40 @@ class LoginTest extends PHPUnit_Framework_TestCase
             ->with($password, $userPassword)
             ->willReturn(true);
 
-        $authenticationVo = new AuthenticationDataVO($userVo, $password, $oneTimeToken);
+        $authenticationVo = new AuthenticationDataVO(
+            $userVo,
+            $password,
+            $oneTimeToken
+        );
 
-        $event = new AuthenticateUserEvent($authenticationVo, AuthenticateUserEvent::CHECK);
+        $event = new AuthenticateUserEvent(
+            $authenticationVo,
+            AuthenticateUserEvent::CHECK
+        );
         $this->mockDispatcher
             ->expects($this->at(0))
             ->method('dispatchEvent')
             ->with($event);
 
-        $event = new AuthenticateUserEvent($authenticationVo, AuthenticateUserEvent::AUTHENTICATED);
+        $event = new AuthenticateUserEvent(
+            $authenticationVo,
+            AuthenticateUserEvent::AUTHENTICATED
+        );
         $this->mockDispatcher
             ->expects($this->at(01))
             ->method('dispatchEvent')
             ->with($event);
 
-        $actualResult = $this->subject->tryLogin($username, $password, $oneTimeToken, $session);
+        $actualResult = $this->subject->tryLogin(
+            $username,
+            $password,
+            $oneTimeToken,
+            $session
+        );
 
         $this->assertEquals($userVo, $actualResult);
-        $this->assertEquals($id, $session->get('user_id'));
+        $this->assertEquals($userId, $session->get('user_id'));
         $this->assertEquals($event->getAuthenticationData(), $authenticationVo);
     }
+
 }

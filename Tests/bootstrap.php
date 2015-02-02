@@ -8,4 +8,5 @@ define('ROOT', realpath(__DIR__."/..").'/');
 define('CORE_ROOT', realpath(__DIR__."/..").'/src/');
 define('CORE_STANDALONE', true);
 
-Core::boot();
+$core = new Core();
+$core->boot();

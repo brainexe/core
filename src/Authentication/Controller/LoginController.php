@@ -2,6 +2,9 @@
 
 namespace BrainExe\Core\Authentication\Controller;
 
+use BrainExe\Core\Annotations\Controller;
+use BrainExe\Core\Annotations\Guest;
+use BrainExe\Core\Annotations\Route;
 use BrainExe\Core\Authentication\Login;
 use BrainExe\Core\Controller\ControllerInterface;
 use BrainExe\Core\Traits\AddFlashTrait;
@@ -43,10 +46,19 @@ class LoginController implements ControllerInterface
         $plainPassword  = $request->request->get('password');
         $oneTimeToken   = $request->request->get('one_time_token');
 
-        $user = $this->login->tryLogin($username, $plainPassword, $oneTimeToken, $request->getSession());
+        $user = $this->login->tryLogin(
+            $username,
+            $plainPassword,
+            $oneTimeToken,
+            $request->getSession()
+        );
 
         $response = new JsonResponse($user);
-        $this->addFlash($response, self::ALERT_SUCCESS, sprintf('Welcome %s', $user->username));
+        $this->addFlash(
+            $response,
+            self::ALERT_SUCCESS,
+            sprintf(_('Welcome %s'), $user->username)
+        );
 
         return $response;
     }
@@ -59,7 +71,7 @@ class LoginController implements ControllerInterface
      */
     public function needsOneTimeToken(Request $request)
     {
-        $username = $request->request->get('username');
+        $username = $request->query->get('username');
 
         return $this->login->needsOneTimeToken($username);
     }

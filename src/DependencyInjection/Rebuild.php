@@ -5,12 +5,15 @@ namespace BrainExe\Core\DependencyInjection;
 use BrainExe\Annotations\Loader\AnnotationLoader;
 use BrainExe\Core\Core;
 use BrainExe\Core\DependencyInjection\CompilerPass\GlobalCompilerPass;
+use Doctrine\Common\Cache\ArrayCache;
+use Redis;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 use Symfony\Component\DependencyInjection\Dumper\XmlDumper;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
+use Doctrine\Common\Cache\RedisCache as DoctrineCache;
 
 /**
  * @service("Core.Rebuild", public=false)
@@ -24,8 +27,17 @@ class Rebuild
      */
     public function rebuildDIC($boot = true)
     {
+
+        // TODO
+        $redis = new Redis();
+        $redis->connect('localhost');
+        $redis->select(10);
+
+        $cache = new DoctrineCache();
+        $cache->setRedis($redis);
+
         $containerBuilder = new ContainerBuilder();
-        $annotationLoader = new AnnotationLoader($containerBuilder);
+        $annotationLoader = new AnnotationLoader($containerBuilder, $cache);
         $appFinder        = new Finder();
 
         $appFinder
@@ -71,7 +83,8 @@ class Rebuild
         file_put_contents('cache/dic.xml', $containerContent);
 
         if ($boot) {
-            return Core::boot();
+            $core = new Core();
+            return $core->boot();
         }
 
         return $containerBuilder;

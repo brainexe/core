@@ -6,12 +6,15 @@ use Doctrine\Common\Cache\Cache;
 use Doctrine\Common\Cache\CacheProvider;
 use BrainExe\Core\Redis\Redis;
 
+/**
+ * @todo use native cache provider from doctrine :)
+ */
 class RedisCache extends CacheProvider
 {
     /**
      * @var Redis
      */
-    protected $redis;
+    private $redis;
 
     /**
      * Sets the redis instance to use.

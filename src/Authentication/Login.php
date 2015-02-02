@@ -2,10 +2,13 @@
 
 namespace BrainExe\Core\Authentication;
 
+use BrainExe\Annotations\Annotations\Inject;
+use BrainExe\Annotations\Annotations\Service;
 use BrainExe\Core\Application\UserException;
 use BrainExe\Core\Authentication\Event\AuthenticateUserEvent;
 use BrainExe\Core\Traits\EventDispatcherTrait;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
 /**
  * @Service(public=false)
@@ -67,7 +70,12 @@ class Login
      */
     public function needsOneTimeToken($username)
     {
-        // TODO
-        return true;
+        try {
+            $user = $this->userProvider->loadUserByUsername($username);
+        } catch (UsernameNotFoundException $e) {
+            return false;
+        }
+
+        return !empty($user->one_time_secret);
     }
 }

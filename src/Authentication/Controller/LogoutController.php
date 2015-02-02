@@ -2,6 +2,8 @@
 
 namespace BrainExe\Core\Authentication\Controller;
 
+use BrainExe\Core\Annotations\Controller;
+use BrainExe\Core\Annotations\Route;
 use BrainExe\Core\Authentication\AnonymusUserVO;
 use BrainExe\Core\Controller\ControllerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,7 +21,7 @@ class LogoutController implements ControllerInterface
      */
     public function logout(Request $request)
     {
-        $request->getSession()->set('user', null);
+        $request->getSession()->set('user_id', null);
 
         return new AnonymusUserVO();
     }
