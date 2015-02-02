@@ -1,6 +1,7 @@
 {
   "name": "brainexe/core",
   "description": "Framework core",
+  "homepage": "https://mdoetsch.de",
   "minimum-stability": "dev",
   "authors": [
     {
@@ -13,12 +14,7 @@
       "BrainExe\\Core\\": "src/"
     }
   },
-  "repositories": [
-    {
-      "type": "composer",
-      "url": "http://satis.mdoetsch.de"
-    }
-  ],
+  "type": "library",
   "require": {
     "symfony/config": "2.6.*",
     "symfony/console": "2.6.*",

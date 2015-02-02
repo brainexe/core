@@ -27,6 +27,8 @@
 		<parameter key="application.guests_allowed">false</parameter>
 		<parameter key="application.registration_enabled">true</parameter>
 
+		<parameter key="message_queue.enabled">true</parameter>
+
 		<parameter key="piwik.site"></parameter>
 		<parameter key="piwik.id"></parameter>
 	</parameters>
@@ -94,6 +96,9 @@
         </service>
 		<service id="EventDispatcher" class="BrainExe\Core\EventDispatcher\EventDispatcher" public="false">
 			<argument type="service" id="service_container"/>
+			<call method="setEnabled">
+				<argument>%message_queue.enabled%</argument>
+			</call>
 		</service>
 
 		<service id="Console" class="Symfony\Component\Console\Application"/>

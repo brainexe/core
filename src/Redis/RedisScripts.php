@@ -26,7 +26,7 @@ class RedisScripts
     public function registerScript($name, $sha1, $script)
     {
         $this->scripts[$sha1] = $script;
-        $this->sha1s[$name] = $sha1;
+        $this->sha1s[$name]   = $sha1;
     }
 
     /**
