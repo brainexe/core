@@ -16,7 +16,7 @@ class SelfUpdateListener implements EventSubscriberInterface
     private $selfUpdate;
 
     /**
-     * @inject("@SelfUpdate")
+     * @Inject("@SelfUpdate")
      * @param SelfUpdate $selfUpdate
      */
     public function __construct(SelfUpdate $selfUpdate)

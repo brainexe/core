@@ -3,7 +3,7 @@
 namespace BrainExe\Core\Redis;
 
 use BrainExe\Core\Traits\LoggerTrait;
-use BrainExe\Core\Redis\Redis;
+use BrainExe\Core\Redis\PhpRedis;
 use Monolog\Logger;
 
 /**
@@ -13,7 +13,7 @@ class RedisLogger implements RedisInterface
 {
 
     /**
-     * @var Redis
+     * @var PhpRedis
      */
     private $redis;
 
@@ -23,10 +23,10 @@ class RedisLogger implements RedisInterface
     private $logger;
 
     /**
-     * @param Redis $redis
+     * @param PhpRedis $redis
      * @param Logger $logger
      */
-    public function __construct(Redis $redis, Logger $logger)
+    public function __construct(RedisInterface $redis, Logger $logger)
     {
         $this->redis  = $redis;
         $this->logger = $logger;

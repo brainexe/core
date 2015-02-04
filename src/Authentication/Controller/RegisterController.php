@@ -24,7 +24,7 @@ class RegisterController implements ControllerInterface
     private $register;
 
     /**
-     * @inject("@Register")
+     * @Inject("@Register")
      * @param Register $register
      */
     public function __construct(Register $register)

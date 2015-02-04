@@ -2,9 +2,11 @@
 
 namespace BrainExe\Core\Authentication;
 
+use BrainExe\Annotations\Annotations\Inject;
+use BrainExe\Annotations\Annotations\Service;
 use BrainExe\Core\Traits\IdGeneratorTrait;
 use BrainExe\Core\Traits\RedisTrait;
-use BrainExe\Core\Redis\Redis;
+use BrainExe\Core\Redis\PhpRedis;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -27,7 +29,7 @@ class DatabaseUserProvider implements UserProviderInterface
     private $passwordHasher;
 
     /**
-     * @inject({"@PasswordHasher"})
+     * @Inject({"@PasswordHasher"})
      * @param PasswordHasher $passwordHasher
      */
     public function __construct(PasswordHasher $passwordHasher)
@@ -131,8 +133,8 @@ class DatabaseUserProvider implements UserProviderInterface
     public function setUserProperty(UserVO $userVo, $property)
     {
         $redis = $this->getRedis();
-
         $value = $userVo->$property;
+
         $redis->HSET($this->getKey($userVo->id), $property, $value);
     }
 
@@ -142,7 +144,7 @@ class DatabaseUserProvider implements UserProviderInterface
      */
     public function register(UserVO $user)
     {
-        $redis        = $this->getRedis()->multi(Redis::PIPELINE);
+        $redis        = $this->getRedis()->multi(PhpRedis::PIPELINE);
         $passwordHash = $this->generateHash($user->password);
 
         $userArray = [
@@ -157,7 +159,7 @@ class DatabaseUserProvider implements UserProviderInterface
         $redis->HSET(self::REDIS_USER_NAMES, strtolower($user->getUsername()), $newUserId);
         $redis->HMSET($this->getKey($newUserId), $userArray);
 
-        $redis->exec();
+        $redis->execute();
 
         $user->id = $newUserId;
 

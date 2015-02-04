@@ -4,7 +4,7 @@ namespace BrainExe\Core\Application\Cache;
 
 use Doctrine\Common\Cache\Cache;
 use Doctrine\Common\Cache\CacheProvider;
-use BrainExe\Core\Redis\Redis;
+use BrainExe\Core\Redis\PhpRedis;
 
 /**
  * @todo use native cache provider from doctrine :)
@@ -12,14 +12,14 @@ use BrainExe\Core\Redis\Redis;
 class RedisCache extends CacheProvider
 {
     /**
-     * @var Redis
+     * @var PhpRedis
      */
     private $redis;
 
     /**
      * Sets the redis instance to use.
      *
-     * @param Redis $redis
+     * @param PhpRedis $redis
      */
     public function __construct($redis)
     {

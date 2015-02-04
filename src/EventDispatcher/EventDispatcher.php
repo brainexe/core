@@ -14,7 +14,7 @@ class EventDispatcher extends SymfonyEventDispatcher
     private $enabled;
 
     /**
-     * @inject("%message_queue.enabled%")
+     * @Inject("%message_queue.enabled%")
      * @param bool $enabled
      */
     public function setEnabled($enabled)

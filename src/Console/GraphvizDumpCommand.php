@@ -30,7 +30,7 @@ class GraphvizDumpCommand extends Command
     }
 
     /**
-     * @inject("@Core.Rebuild")
+     * @Inject("@Core.Rebuild")
      * @param Rebuild $rebuild
      */
     public function __construct(Rebuild $rebuild)

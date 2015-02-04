@@ -10,6 +10,7 @@
 		<parameter key="redis.host">127.0.0.1</parameter>
 		<parameter key="redis.password"/>
 		<parameter key="redis.database">0</parameter>
+		<parameter key="redis.class">BrainExe\Core\Redis\PhpRedis</parameter>
 
 		<parameter key="cdn.url">/</parameter>
 		<parameter key="cache.dir">%application.root%cache/</parameter>
@@ -34,11 +35,7 @@
 	</parameters>
 
     <services>
-        <service id="redis" class="BrainExe\Core\Redis\Redis" public="false">
-			<call method="connect">
-				<argument key="host">%redis.host%</argument>
-			</call>
-        </service>
+        <service id="redis" class="BrainExe\Core\Redis\Predis" public="false"></service>
 
 		<service id="monolog.ErrorHandler" class="Monolog\ErrorHandler">
 			<argument type="service" id="Monolog.Logger"/>

@@ -41,7 +41,7 @@ class TranslationCompileCommand extends AbstractCommand
     }
 
     /**
-     * @inject({"@Finder", "@ProcessBuilder", "@FileSystem"})
+     * @Inject({"@Finder", "@ProcessBuilder", "@FileSystem"})
      * @param Finder $finder
      * @param ProcessBuilder $processBuilder
      * @param FileSystem $fileSystem

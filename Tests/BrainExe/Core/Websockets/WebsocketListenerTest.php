@@ -4,11 +4,12 @@ namespace Tests\BrainExe\Core\Websockets\WebsocketListener;
 
 use BrainExe\Core\Application\SelfUpdate\SelfUpdateEvent;
 use BrainExe\Core\EventDispatcher\EventDispatcher;
+use BrainExe\Core\Redis\RedisInterface;
 use BrainExe\Core\Websockets\WebSocketEvent;
 use BrainExe\Core\Websockets\WebsocketListener;
+use BrainExe\Tests\RedisMockTrait;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase;
-use BrainExe\Core\Redis\Redis;
 
 /**
  * @Covers BrainExe\Core\Websockets\WebsocketListener
@@ -16,13 +17,15 @@ use BrainExe\Core\Redis\Redis;
 class WebsocketListenerTest extends PHPUnit_Framework_TestCase
 {
 
+    use RedisMockTrait;
+
     /**
      * @var WebsocketListener
      */
     private $subject;
 
     /**
-     * @var Redis|MockObject
+     * @var RedisInterface|MockObject
      */
     private $mockRedis;
 
@@ -34,7 +37,7 @@ class WebsocketListenerTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->mockRedis = $this->getMock(Redis::class, [], [], '', false);
+        $this->mockRedis = $this->getRedisMock();
         $this->mockEventDispatcher = $this->getMock(EventDispatcher::class, [], [], '', false);
 
         $this->subject = new WebsocketListener();

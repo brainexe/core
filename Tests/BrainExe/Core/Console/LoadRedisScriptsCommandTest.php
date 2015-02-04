@@ -3,16 +3,20 @@
 namespace Tests\BrainExe\Core\Console\LoadRedisScriptsCommand;
 
 use BrainExe\Core\Console\LoadRedisScriptsCommand;
+use BrainExe\Core\Redis\RedisInterface;
 use BrainExe\Core\Redis\RedisScripts;
+use BrainExe\Tests\RedisMockTrait;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase;
-use BrainExe\Core\Redis\Redis;
+use BrainExe\Core\Redis\PhpRedis;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
 
 class LoadRedisScriptsCommandTest extends PHPUnit_Framework_TestCase
 {
+
+    use RedisMockTrait;
 
     /**
      * @var LoadRedisScriptsCommand
@@ -25,14 +29,14 @@ class LoadRedisScriptsCommandTest extends PHPUnit_Framework_TestCase
     private $mockRedisScripts;
 
     /**
-     * @var Redis|MockObject
+     * @var RedisInterface|MockObject
      */
     private $mockRedis;
 
     public function setUp()
     {
         $this->mockRedisScripts = $this->getMock(RedisScripts::class, [], [], '', false);
-        $this->mockRedis = $this->getMock(Redis::class, [], [], '', false);
+        $this->mockRedis = $this->getRedisMock();
 
         $this->subject = new LoadRedisScriptsCommand($this->mockRedisScripts);
         $this->subject->setRedis($this->mockRedis);

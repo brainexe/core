@@ -3,12 +3,16 @@
 namespace BrainExe\Tests\Core\Application;
 
 use BrainExe\Core\Application\RedisSessionHandler;
+use BrainExe\Core\Redis\RedisInterface;
+use BrainExe\Tests\RedisMockTrait;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase;
-use BrainExe\Core\Redis\Redis;
+use BrainExe\Core\Redis\PhpRedis;
 
 class RedisSessionHandlerTest extends PHPUnit_Framework_TestCase
 {
+
+    use RedisMockTrait;
 
     /**
      * @var RedisSessionHandler
@@ -16,13 +20,13 @@ class RedisSessionHandlerTest extends PHPUnit_Framework_TestCase
     private $subject;
 
     /**
-     * @var Redis|MockObject
+     * @var RedisInterface|MockObject
      */
     private $mockRedis;
 
     public function setUp()
     {
-        $this->mockRedis = $this->getMock(Redis::class, [], [], '', false);
+        $this->mockRedis = $this->getRedisMock();
 
         $this->subject = new RedisSessionHandler();
         $this->subject->setRedis($this->mockRedis);

@@ -26,7 +26,7 @@ class LoginController implements ControllerInterface
     private $login;
 
     /**
-     * @inject("@Login")
+     * @Inject("@Login")
      * @param Login $login
      */
     public function __construct(Login $login)

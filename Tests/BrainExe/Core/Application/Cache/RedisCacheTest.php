@@ -3,7 +3,9 @@
 namespace Tests\BrainExe\Core\Application\Cache\RedisCache;
 
 use BrainExe\Core\Application\Cache\RedisCache;
-use BrainExe\Core\Redis\Redis;
+use BrainExe\Core\Redis\PhpRedis;
+use BrainExe\Core\Redis\RedisInterface;
+use BrainExe\Tests\RedisMockTrait;
 use Doctrine\Common\Cache\Cache;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase;
@@ -20,13 +22,13 @@ class RedisCacheTest extends PHPUnit_Framework_TestCase
     private $subject;
 
     /**
-     * @var MockObject|Redis
+     * @var MockObject|PhpRedis
      */
     private $mockRedis;
 
     public function setUp()
     {
-        $this->mockRedis = $this->getMock(Redis::class, [], [], '', false);
+        $this->mockRedis = $this->getMock(PhpRedis::class, [], [], '', false);
 
         $this->subject = new RedisCache($this->mockRedis);
     }

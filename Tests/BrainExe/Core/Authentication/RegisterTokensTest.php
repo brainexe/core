@@ -3,10 +3,12 @@
 namespace Tests\BrainExe\Core\Authentication\RegisterTokens;
 
 use BrainExe\Core\Authentication\RegisterTokens;
+use BrainExe\Core\Redis\RedisInterface;
 use BrainExe\Core\Util\IdGenerator;
+use BrainExe\Tests\RedisMockTrait;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase;
-use BrainExe\Core\Redis\Redis;
+use BrainExe\Core\Redis\PhpRedis;
 
 /**
  * @Covers BrainExe\Core\Authentication\RegisterTokens
@@ -14,13 +16,15 @@ use BrainExe\Core\Redis\Redis;
 class RegisterTokensTest extends PHPUnit_Framework_TestCase
 {
 
+    use RedisMockTrait;
+
     /**
      * @var RegisterTokens
      */
     private $subject;
 
     /**
-     * @var Redis|MockObject
+     * @var RedisInterface|MockObject
      */
     private $mockRedis;
 
@@ -29,10 +33,9 @@ class RegisterTokensTest extends PHPUnit_Framework_TestCase
      */
     private $mockIdGenerator;
 
-
     public function setUp()
     {
-        $this->mockRedis = $this->getMock(Redis::class, [], [], '', false);
+        $this->mockRedis       = $this->getRedisMock();
         $this->mockIdGenerator = $this->getMock(IdGenerator::class, [], [], '', false);
 
         $this->subject = new RegisterTokens();

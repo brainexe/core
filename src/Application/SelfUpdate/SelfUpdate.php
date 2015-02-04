@@ -19,7 +19,7 @@ class SelfUpdate
     private $processBuilder;
 
     /**
-     * @inject("@ProcessBuilder")
+     * @Inject("@ProcessBuilder")
      * @param ProcessBuilder $processBuilder
      */
     public function __construct(ProcessBuilder $processBuilder)

@@ -5,10 +5,11 @@ namespace Tests\BrainExe\Core\Authentication\DatabaseUserProvider;
 use BrainExe\Core\Authentication\DatabaseUserProvider;
 use BrainExe\Core\Authentication\PasswordHasher;
 use BrainExe\Core\Authentication\UserVO;
+use BrainExe\Core\Redis\RedisInterface;
 use BrainExe\Core\Util\IdGenerator;
+use BrainExe\Tests\RedisMockTrait;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase;
-use BrainExe\Core\Redis\Redis;
 
 /**
  * @Covers BrainExe\Core\Authentication\DatabaseUserProvider
@@ -16,13 +17,15 @@ use BrainExe\Core\Redis\Redis;
 class DatabaseUserProviderTest extends PHPUnit_Framework_TestCase
 {
 
+    use RedisMockTrait;
+
     /**
      * @var DatabaseUserProvider
      */
     private $subject;
 
     /**
-     * @var Redis|MockObject
+     * @var RedisInterface|MockObject
      */
     private $mockRedis;
 
@@ -38,8 +41,8 @@ class DatabaseUserProviderTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->mockRedis = $this->getMock(Redis::class, [], [], '', false);
-        $this->mockIdGenerator = $this->getMock(IdGenerator::class, [], [], '', false);
+        $this->mockRedis          = $this->getRedisMock();
+        $this->mockIdGenerator    = $this->getMock(IdGenerator::class, [], [], '', false);
         $this->mockPasswordHasher = $this->getMock(PasswordHasher::class, [], [], '', false);
 
         $this->subject = new DatabaseUserProvider($this->mockPasswordHasher);

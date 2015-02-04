@@ -6,14 +6,12 @@ use BrainExe\Annotations\Loader\AnnotationLoader;
 use BrainExe\Core\Core;
 use BrainExe\Core\DependencyInjection\CompilerPass\GlobalCompilerPass;
 use Doctrine\Common\Cache\ArrayCache;
-use Redis;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 use Symfony\Component\DependencyInjection\Dumper\XmlDumper;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
-use Doctrine\Common\Cache\RedisCache as DoctrineCache;
 
 /**
  * @service("Core.Rebuild", public=false)
@@ -28,13 +26,7 @@ class Rebuild
     public function rebuildDIC($boot = true)
     {
 
-        // TODO
-        $redis = new Redis();
-        $redis->connect('localhost');
-        $redis->select(10);
-
-        $cache = new DoctrineCache();
-        $cache->setRedis($redis);
+        $cache = new ArrayCache();
 
         $containerBuilder = new ContainerBuilder();
         $annotationLoader = new AnnotationLoader($containerBuilder, $cache);

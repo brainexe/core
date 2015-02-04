@@ -22,7 +22,7 @@ class PasswordController implements ControllerInterface
     private $userProvider;
 
     /**
-     * @inject("@DatabaseUserProvider")
+     * @Inject("@DatabaseUserProvider")
      * @param DatabaseUserProvider $userProvider
      */
     public function __construct(DatabaseUserProvider $userProvider)

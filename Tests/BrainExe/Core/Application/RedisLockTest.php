@@ -3,15 +3,18 @@
 namespace Tests\BrainExe\Core\Application\RedisLock;
 
 use BrainExe\Core\Application\RedisLock;
+use BrainExe\Core\Redis\RedisInterface;
+use BrainExe\Tests\RedisMockTrait;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase;
-use BrainExe\Core\Redis\Redis;
+use BrainExe\Core\Redis\PhpRedis;
 
 /**
  * @Covers BrainExe\Core\Application\RedisLock
  */
 class RedisLockTest extends PHPUnit_Framework_TestCase
 {
+    use RedisMockTrait;
 
     /**
      * @var RedisLock
@@ -19,13 +22,13 @@ class RedisLockTest extends PHPUnit_Framework_TestCase
     private $subject;
 
     /**
-     * @var Redis|MockObject
+     * @var RedisInterface|MockObject
      */
     private $mockRedis;
 
     public function setUp()
     {
-        $this->mockRedis = $this->getMock(Redis::class, [], [], '', false);
+        $this->mockRedis = $this->getRedisMock();
 
         $this->subject = new RedisLock();
         $this->subject->setRedis($this->mockRedis);

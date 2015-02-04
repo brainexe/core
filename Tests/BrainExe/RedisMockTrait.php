@@ -12,10 +12,12 @@ trait RedisMockTrait {
      */
     protected function getRedisMock() {
         return $this->getMock(RedisInterface::class, [
-            'HMSET', 'sadd', 'smembers', 'multi',
-            'hgetall', 'execute',
-            'del', 'add',
-            'zrangebyscore'
+            'sadd', 'smembers',  'srem',
+            'multi', 'exec', 'execute',
+            'hgetall', 'hmset', 'hset', 'hdel', 'hget',
+            'evalsha', 'load',
+            'del', 'add', 'keys', 'brPop', 'lpush',
+            'zrangebyscore', 'zcard', 'zRevRangeByScore', 'zadd', 'zDeleteRangeByScore', 'zrem'
         ], [], '', false);
     }
 }
