@@ -11,7 +11,8 @@
   ],
   "autoload": {
     "psr-4": {
-      "BrainExe\\Core\\": "src/"
+      "BrainExe\\Core\\": "src/",
+      "BrainExe\\Tests\\": "Tests/BrainExe/"
     }
   },
   "type": "library",
