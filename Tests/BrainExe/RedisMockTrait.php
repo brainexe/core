@@ -15,7 +15,7 @@ trait RedisMockTrait {
             'sadd', 'smembers',  'srem',
             'multi', 'exec', 'execute',
             'hgetall', 'hmset', 'hset', 'hdel', 'hget',
-            'evalsha', 'load',
+            'evalsha', 'load', 'publish', 'subscribe',
             'del', 'add', 'keys', 'brPop', 'lpush',
             'zrangebyscore', 'zcard', 'zRevRangeByScore', 'zadd', 'zDeleteRangeByScore', 'zrem'
         ], [], '', false);

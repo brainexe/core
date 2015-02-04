@@ -21,7 +21,7 @@ class DatabaseUserProvider implements UserProviderInterface
     use IdGeneratorTrait;
 
     const REDIS_USER       = 'user:%d';
-    const REDIS_USER_NAMES = 'userNames';
+    const REDIS_USER_NAMES = 'user_names';
 
     /**
      * @var PasswordHasher
