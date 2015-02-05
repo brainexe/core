@@ -58,9 +58,11 @@ class CacheMiddleware extends AbstractMiddleware
         if ($cache->contains($this->cacheKey)) {
             $this->debug(sprintf('fetch from cache: %s', $this->cacheKey));
 
+            /** @var Response $response */
             $response = $cache->fetch($this->cacheKey);
             $this->cacheKey = null;
 
+            $response->headers->set('X-Cache', 'hit');
             return $response;
         }
 

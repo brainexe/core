@@ -2,6 +2,7 @@
 
 namespace BrainExe\Core\Console;
 
+use BrainExe\Core\Annotations\Command;
 use Crunch\Inotify\Event;
 use Crunch\Inotify\Handler;
 use Symfony\Component\Console\Input\ArrayInput;

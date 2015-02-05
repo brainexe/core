@@ -26,7 +26,7 @@ class RegisterTest extends PHPUnit_Framework_TestCase
     /**
      * @var DatabaseUserProvider|MockObject
      */
-    private $mockDatabaseUserProvider;
+    private $mockUserProvider;
 
     /**
      * @var RegisterTokens|MockObject
@@ -35,10 +35,42 @@ class RegisterTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->mockDatabaseUserProvider = $this->getMock(DatabaseUserProvider::class, [], [], '', false);
+        $this->mockUserProvider = $this->getMock(DatabaseUserProvider::class, [], [], '', false);
         $this->mockRegisterTokens = $this->getMock(RegisterTokens::class, [], [], '', false);
 
-        $this->subject = new Register($this->mockDatabaseUserProvider, $this->mockRegisterTokens, false);
+        $this->subject = new Register($this->mockUserProvider, $this->mockRegisterTokens, false);
+    }
+
+    /**
+     * @expectedException \BrainExe\Core\Application\UserException
+     * @expectedExceptionMessage Username must not be empty
+     */
+    public function testEmptyUserName()
+    {
+        $user = new UserVO();
+        $user->username = '';
+        $user->password = 'password';
+
+        $session = new Session();
+        $token = 100;
+
+        $this->subject->registerUser($user, $session, $token);
+    }
+
+    /**
+     * @expectedException \BrainExe\Core\Application\UserException
+     * @expectedExceptionMessage Password must not be empty
+     */
+    public function testEmptyPassword()
+    {
+        $user = new UserVO();
+        $user->username = 'username';
+        $user->password = '';
+
+        $session = new Session();
+        $token = 100;
+
+        $this->subject->registerUser($user, $session, $token);
     }
 
     /**
@@ -49,11 +81,12 @@ class RegisterTest extends PHPUnit_Framework_TestCase
     {
         $user = new UserVO();
         $user->username = $username = 'user name';
+        $user->password = 'password';
 
         $session = new Session();
         $token = 100;
 
-        $this->mockDatabaseUserProvider
+        $this->mockUserProvider
             ->expects($this->once())
             ->method('loadUserByUsername')
             ->with($username)
@@ -70,11 +103,12 @@ class RegisterTest extends PHPUnit_Framework_TestCase
     {
         $user = new UserVO();
         $user->username = $username = 'user name';
+        $user->password = 'password';
 
         $session = new Session(new MockArraySessionStorage());
         $token = 100;
 
-        $this->mockDatabaseUserProvider
+        $this->mockUserProvider
             ->expects($this->once())
             ->method('loadUserByUsername')
             ->with($username)
@@ -93,12 +127,13 @@ class RegisterTest extends PHPUnit_Framework_TestCase
     {
         $user = new UserVO();
         $user->username = $username = 'user name';
+        $user->username = 'password';
 
         $userId = 42;
         $session = new Session(new MockArraySessionStorage());
         $token   = 100;
 
-        $this->mockDatabaseUserProvider
+        $this->mockUserProvider
             ->expects($this->once())
             ->method('loadUserByUsername')
             ->with($username)
@@ -110,7 +145,7 @@ class RegisterTest extends PHPUnit_Framework_TestCase
             ->with($token)
             ->willReturn(true);
 
-        $this->mockDatabaseUserProvider
+        $this->mockUserProvider
             ->expects($this->once())
             ->method('register')
             ->with($user)

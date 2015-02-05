@@ -2,6 +2,8 @@
 
 namespace BrainExe\Core\Authentication\Controller;
 
+use BrainExe\Core\Annotations\Guest;
+use BrainExe\Core\Annotations\Route;
 use BrainExe\Core\Authentication\UserVO;
 use BrainExe\Core\Controller\ControllerInterface;
 use Symfony\Component\HttpFoundation\Request;

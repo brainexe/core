@@ -2,6 +2,7 @@
 
 namespace BrainExe\Core\Console;
 
+use BrainExe\Annotations\Annotations\Inject;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -32,7 +33,7 @@ class ServerRunCommand extends Command
      */
     public function __construct(ProcessBuilder $processBuilder, $address)
     {
-        $this->serverAddress = $address;
+        $this->serverAddress  = $address;
         $this->processBuilder = $processBuilder;
 
         parent::__construct(null);
@@ -51,6 +52,9 @@ class ServerRunCommand extends Command
         ;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $address = $input->getArgument('address') ?: $this->serverAddress;

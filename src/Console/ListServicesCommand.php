@@ -2,6 +2,8 @@
 
 namespace BrainExe\Core\Console;
 
+use BrainExe\Annotations\Annotations\Inject;
+use BrainExe\Core\Annotations\Command;
 use BrainExe\Core\DependencyInjection\Rebuild;
 use BrainExe\Core\Traits\EventDispatcherTrait;
 use Symfony\Component\Console\Helper\Table;

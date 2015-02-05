@@ -2,6 +2,7 @@
 
 namespace BrainExe\Core\Console;
 
+use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Core\Authentication\Register;
 use BrainExe\Core\Authentication\UserVO;
 use Symfony\Component\Console\Command\Command;

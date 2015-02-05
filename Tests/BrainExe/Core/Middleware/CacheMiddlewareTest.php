@@ -114,6 +114,7 @@ class CacheMiddlewareTest extends PHPUnit_Framework_TestCase
         /** @var MockObject|Request $request */
         $request     = $this->getMock(Request::class);
         $response    = new Response();
+        $response->headers->set('X-Cache', 'hit');
         $route       = new Route('/path/');
         $routeName   = null;
         $requestUri  = 'request';

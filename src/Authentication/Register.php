@@ -53,12 +53,20 @@ class Register
      */
     public function registerUser(UserVO $user, Session $session, $token = null)
     {
+        if (mb_strlen($user->username) <= 1) {
+            throw new UserException("Username must not be empty");
+        }
+
+        if (mb_strlen($user->password) <= 1) {
+            throw new UserException("Password must not be empty");
+        }
+
         try {
             $this->userProvider->loadUserByUsername($user->getUsername());
 
             throw new UserException(sprintf("User %s already exists", $user->getUsername()));
         } catch (UsernameNotFoundException $e) {
-         // all fine
+            // all fine
         }
 
         if (!$this->registrationEnabled

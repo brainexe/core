@@ -2,6 +2,8 @@
 
 namespace BrainExe\Core\Console;
 
+use BrainExe\Annotations\Annotations\Inject;
+use BrainExe\Core\Annotations\Command;
 use BrainExe\Core\Redis\RedisScripts;
 use BrainExe\Core\Traits\RedisTrait;
 use Symfony\Component\Console\Input\InputInterface;

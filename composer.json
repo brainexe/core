@@ -3,6 +3,7 @@
   "description": "Framework core",
   "homepage": "https://mdoetsch.de",
   "minimum-stability": "dev",
+  "license": "MIT",
   "authors": [
     {
       "name": "Matze",

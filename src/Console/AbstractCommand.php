@@ -13,7 +13,7 @@ abstract class AbstractCommand extends Command
     /**
      * @param OutputInterface $output
      * @param Process $process
-     * @todo use mustRun
+     * @todo use mustRun()
      */
     protected function checkProcess(OutputInterface $output, Process $process)
     {

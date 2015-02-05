@@ -38,22 +38,30 @@ class LogCommand extends Command
             ->name("*.log");
 
         $colors = [
-        'cyan',
-        'magenta',
-        'red',
-        'yellow',
-        'black',
-        'blue',
-        'green',
-        'white'
+            'cyan',
+            'magenta',
+            'red',
+            'yellow',
+            'black',
+            'blue',
+            'green',
+            'white'
+        ];
+
+        $logColors = [
+            'error.log' => 'red'
         ];
 
         $index = 0;
         foreach ($finder as $file) {
-            $color = $colors[$index++ % (count($colors) - 1)];
-
             /** @var SplFileInfo $file */
             $filename = $file->getFilename();
+
+            if (isset($logColors[basename($filename)])) {
+                $color = $logColors[basename($filename)];
+            } else {
+                $color = $colors[$index++ % (count($colors) - 1)];
+            }
 
             $output->writeln(sprintf("<fg=%s>%s</>", $color, $filename));
 
@@ -61,9 +69,10 @@ class LogCommand extends Command
             $process->setTimeout(0);
             $process->setIdleTimeout(0);
 
-            $process->start(function($type, $buffer) use ($output, $filename, $color) {
+            $process->run(function($type, $buffer) use ($output, $filename, $color) {
                 unset($type);
-                $output->write(sprintf("<fg=yellow>%s: %s</>", $filename, $buffer));
+
+                $output->write(sprintf("<fg=%s>%s: %s</>", $color, $filename, $buffer));
             });
         }
         sleep(100);

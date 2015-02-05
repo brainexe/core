@@ -120,7 +120,7 @@ class DatabaseUserProvider implements UserProviderInterface
      */
     public function changePassword(UserVO $user, $newPassword)
     {
-        $hash  = $this->generateHash($newPassword);
+        $hash           = $this->generateHash($newPassword);
         $user->password = $hash;
 
         $this->setUserProperty($user, 'password');
@@ -164,6 +164,20 @@ class DatabaseUserProvider implements UserProviderInterface
         $user->id = $newUserId;
 
         return $newUserId;
+    }
+
+    /**
+     * @param integer $userId
+     */
+    public function deleteUser($userId)
+    {
+        $redis = $this->getRedis();
+
+        $user = $this->loadUserById($userId);
+
+        $redis->hdel(self::REDIS_USER_NAMES, strtolower($user->getUsername()));
+        $redis->del($this->getKey($userId));
+
     }
 
     /**
