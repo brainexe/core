@@ -2,6 +2,7 @@
 
 namespace BrainExe\Core\DependencyInjection\CompilerPass;
 
+use BrainExe\Core\Annotations\CompilerPass;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -17,7 +18,7 @@ class TestCompilerPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         if (!$container->getParameter('core_standalone')) {
-            return;
+//            return;
         }
 
         foreach ($container->getDefinitions() as $definition) {

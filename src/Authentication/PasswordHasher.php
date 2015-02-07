@@ -3,7 +3,7 @@
 namespace BrainExe\Core\Authentication;
 
 /**
- * @service(public=false)
+ * @Service(public=false)
  */
 class PasswordHasher
 {

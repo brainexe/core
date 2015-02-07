@@ -4,11 +4,9 @@ namespace BrainExe\Tests\Core\Traits;
 
 use BrainExe\Core\EventDispatcher\AbstractEvent;
 use BrainExe\Core\EventDispatcher\EventDispatcher;
-use BrainExe\Core\Traits\ConfigTrait;
 use BrainExe\Core\Traits\EventDispatcherTrait;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase;
-use Symfony\Component\DependencyInjection\Container;
 
 class TestEvent extends AbstractEvent
 {

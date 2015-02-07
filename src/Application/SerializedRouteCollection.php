@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
 /**
- * @service("Core.RouteCollection", public=false)
+ * @Service("Core.RouteCollection", public=false)
  */
 class SerializedRouteCollection extends RouteCollection
 {

@@ -5,6 +5,8 @@
 		<parameter key="cache.enabled">true</parameter>
 		<parameter key="server.address">localhost:8080</parameter>
 
+		<parameter key="xhgui.header.php"></parameter>
+
 		<parameter key="timezone">Europe/Berlin</parameter>
 
 		<parameter key="redis.host">127.0.0.1</parameter>

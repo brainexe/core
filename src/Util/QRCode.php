@@ -3,7 +3,7 @@
 namespace BrainExe\Core\Util;
 
 /**
- * @service(public=false)
+ * @Service(public=false)
  */
 class QRCode
 {

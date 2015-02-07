@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RequestContext;
 
 /**
- * @service(public=false)
+ * @Service(public=false)
  */
 class UrlMatcher
 {

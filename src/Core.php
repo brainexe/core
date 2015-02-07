@@ -45,6 +45,11 @@ class Core
             $dic = $rebuild->rebuildDIC(true);
         }
 
+        $xhgui = $dic->getParameter('xhgui.header.php');
+        if ($xhgui) {
+            require $xhgui;
+        }
+
         date_default_timezone_set($dic->getParameter('timezone'));
 
         // TODO improve error logging

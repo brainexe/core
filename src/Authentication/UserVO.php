@@ -48,6 +48,11 @@ class UserVO implements UserInterface, JsonSerializable
     public $roles = [];
 
     /**
+     * @var string
+     */
+    public $avatar;
+
+    /**
      * @param string $role
      * @return boolean
      */
@@ -107,6 +112,7 @@ class UserVO implements UserInterface, JsonSerializable
         return [
             'id' => $this->id,
             'username' => $this->username,
+            'avatar' => $this->avatar,
         ];
     }
 }

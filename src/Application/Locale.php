@@ -3,7 +3,7 @@
 namespace BrainExe\Core\Application;
 
 /**
- * @service("Core.Locale", public=false)
+ * @Service("Core.Locale", public=false)
  */
 class Locale
 {

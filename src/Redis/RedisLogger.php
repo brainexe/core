@@ -2,12 +2,13 @@
 
 namespace BrainExe\Core\Redis;
 
+use BrainExe\Annotations\Annotations\Service;
 use BrainExe\Core\Traits\LoggerTrait;
 use BrainExe\Core\Redis\PhpRedis;
 use Monolog\Logger;
 
 /**
- * @service("Redis.Logger", public=false)
+ * @Service("Redis.Logger", public=false)
  */
 class RedisLogger implements RedisInterface
 {
@@ -23,7 +24,7 @@ class RedisLogger implements RedisInterface
     private $logger;
 
     /**
-     * @param PhpRedis $redis
+     * @param RedisInterface $redis
      * @param Logger $logger
      */
     public function __construct(RedisInterface $redis, Logger $logger)

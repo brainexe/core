@@ -2,6 +2,7 @@
 
 namespace BrainExe\Core\DependencyInjection\CompilerPass;
 
+use BrainExe\Core\Annotations\CompilerPass;
 use BrainExe\Core\Redis\RedisLogger;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

@@ -79,7 +79,7 @@ class ListServicesCommand extends AbstractCommand
 
             $table->addRow([
                 $id,
-                $isPublic ? 'public' : 'private'
+                $isPublic ? '<info>public</info>' : '<error>private</error>'
             ]);
         }
 

@@ -2,77 +2,25 @@
 
 namespace BrainExe\Core\Console;
 
+use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Core\DependencyInjection\Rebuild;
-use BrainExe\Core\Traits\ConfigTrait;
 use Exception;
-use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_MockObject_MockObject;
 use PHPUnit_Framework_TestCase;
 use ReflectionClass;
 use ReflectionMethod;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Helper\DialogHelper;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
-use Symfony\Component\Console\Question\ConfirmationQuestion;
-use Symfony\Component\Console\Question\Question;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
-/**
- * @codeCoverageIgnore
- */
-class TestData
-{
-    public $setterCalls          = [];
-    public $defaultTests         = [];
-    public $mockProperties       = [];
-    public $localMocks           = [];
-    public $constructorArguments = [];
-
-    /**
-     * @var string[]
-     */
-    private $useStatements = [];
-
-    /**
-     * @param string $class
-     * @param string|null $alias
-     */
-    public function addUse($class, $alias = null)
-    {
-        if ($alias) {
-            $this->useStatements[$alias] = $class;
-        } else {
-            $this->useStatements[] = $class;
-        }
-    }
-
-    /**
-     * @return string
-     */
-    public function renderUse()
-    {
-        $parts = [];
-
-        asort($this->useStatements);
-
-        foreach ($this->useStatements as $alias => $class) {
-            if (is_numeric($alias)) {
-                $parts[] = sprintf('use %s;', $class);
-            } else {
-                $parts[] = sprintf('use %s as %s;', $class, $alias);
-            }
-        }
-
-        return implode("\n", $parts);
-    }
-}
+require_once "TestData.php";
 
 /**
  * @Command
@@ -80,8 +28,6 @@ class TestData
  */
 class TestCreateCommand extends Command
 {
-
-    use ConfigTrait;
 
     /**
      * Cached container builder
@@ -167,7 +113,7 @@ class TestCreateCommand extends Command
                 if ('%' === substr($referenceServiceId, 0, 1)) {
                     // add config setter with current config value
                     $parameterName  = substr($reference, 1, -1);
-                    $parameterValue = $this->getParameter($parameterName);
+                    $parameterValue = $this->container->getParameter($parameterName);
 
                     $formattedParameter = var_export($parameterValue, true);
 

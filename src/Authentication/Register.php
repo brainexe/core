@@ -2,6 +2,8 @@
 
 namespace BrainExe\Core\Authentication;
 
+use BrainExe\Annotations\Annotations\Inject;
+use BrainExe\Annotations\Annotations\Service;
 use BrainExe\Core\Application\UserException;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;

@@ -67,6 +67,7 @@ class DatabaseUserProvider implements UserProviderInterface
         $user->password_hash   = $redisUser['password'];
         $user->one_time_secret = $redisUser['one_time_secret'];
         $user->roles           = array_filter(explode(',', $redisUser['roles']));
+        $user->avatar          = isset($redisUser['avatar']) ? $redisUser['avatar'] : '';
 
         return $user;
     }
@@ -151,7 +152,8 @@ class DatabaseUserProvider implements UserProviderInterface
             'username' => $user->getUsername(),
             'password' => $passwordHash,
             'roles' => implode(',', $user->roles),
-            'one_time_secret' => $user->one_time_secret
+            'one_time_secret' => $user->one_time_secret,
+            'avatar' => $user->avatar
         ];
 
         $newUserId = $this->generateRandomNumericId();

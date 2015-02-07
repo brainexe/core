@@ -18,7 +18,7 @@ class ObjectFinder
     private $container;
 
     /**
-     * @Inject("@service_container")
+     * @Inject("@Service_container")
      * @param Container $container
      */
     public function __construct(Container $container)

@@ -2,6 +2,7 @@
 
 namespace BrainExe\Core\Traits;
 
+use BrainExe\Annotations\Annotations\Inject;
 use Symfony\Component\DependencyInjection\Container;
 
 trait ConfigTrait
@@ -12,7 +13,7 @@ trait ConfigTrait
     private $container;
 
     /**
-     * @Inject("@service_container")
+     * @Inject("@Service_container")
      * @param Container $container
      */
     public function setContainer(Container $container)

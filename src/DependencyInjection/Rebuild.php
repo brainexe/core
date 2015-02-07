@@ -14,7 +14,7 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
 /**
- * @service("Core.Rebuild", public=false)
+ * @Service("Core.Rebuild", public=false)
  */
 class Rebuild
 {

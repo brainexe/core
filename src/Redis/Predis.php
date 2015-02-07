@@ -10,11 +10,13 @@ class Predis extends Client implements RedisInterface
     /**
      * @return Pipeline
      */
-    public function multi() {
+    public function multi()
+    {
         return $this->pipeline();
     }
 
-    public function exec() {
+    public function exec()
+    {
         return $this->execute();
     }
 }
