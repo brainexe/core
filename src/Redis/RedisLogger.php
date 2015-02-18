@@ -3,8 +3,6 @@
 namespace BrainExe\Core\Redis;
 
 use BrainExe\Annotations\Annotations\Service;
-use BrainExe\Core\Traits\LoggerTrait;
-use BrainExe\Core\Redis\PhpRedis;
 use Monolog\Logger;
 
 /**

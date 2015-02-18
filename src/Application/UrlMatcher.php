@@ -2,6 +2,7 @@
 
 namespace BrainExe\Core\Application;
 
+use BrainExe\Annotations\Annotations\Service;
 use ProjectUrlMatcher;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RequestContext;

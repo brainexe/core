@@ -2,6 +2,8 @@
 
 namespace BrainExe\Core\Notification;
 
+use BrainExe\Annotations\Annotations\Service;
+
 /**
  * @Service(public=false)
  */
@@ -22,7 +24,7 @@ class GlobalNotificationCollector implements NotificationCollectorInterface
     }
 
     /**
-     * @{@inheritdoc}
+     * {@inheritdoc}
      */
     public function getNotification()
     {

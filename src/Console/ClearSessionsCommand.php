@@ -2,18 +2,14 @@
 
 namespace BrainExe\Core\Console;
 
-use BrainExe\Core\Authentication\Register;
-use BrainExe\Core\Authentication\UserVO;
 use BrainExe\Core\Traits\RedisTrait;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
+use BrainExe\Core\Annotations\Command as CommandAnnotation;
 
 /**
- * @Command
+ * @CommandAnnotation
  */
 class ClearSessionsCommand extends Command
 {

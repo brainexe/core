@@ -11,9 +11,10 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
+use BrainExe\Core\Annotations\Command as CommandAnnotation;
 
 /**
- * @Command
+ * @CommandAnnotation
  */
 class CreateUserCommand extends Command
 {

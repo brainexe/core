@@ -2,6 +2,7 @@
 
 namespace BrainExe\Core\Middleware;
 
+use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Core\Annotations\Middleware;
 use BrainExe\Core\Application\Locale;
 use Symfony\Component\HttpFoundation\Request;

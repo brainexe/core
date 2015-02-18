@@ -2,6 +2,7 @@
 
 namespace BrainExe\Core\Websockets;
 
+use BrainExe\Core\Annotations\EventListener;
 use BrainExe\Core\Traits\EventDispatcherTrait;
 use BrainExe\Core\Traits\RedisTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

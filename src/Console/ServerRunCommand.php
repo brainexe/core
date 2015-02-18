@@ -9,9 +9,10 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\ProcessBuilder;
+use BrainExe\Core\Annotations\Command as CommandAnnotation;
 
 /**
- * @Command
+ * @CommandAnnotation
  */
 class ServerRunCommand extends Command
 {

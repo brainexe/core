@@ -2,6 +2,7 @@
 
 namespace BrainExe\Core\Traits;
 
+use BrainExe\Annotations\Annotations\Inject;
 use Monolog\Logger;
 
 trait LoggerTrait

@@ -2,6 +2,8 @@
 
 namespace BrainExe\Core\Authentication;
 
+use BrainExe\Annotations\Annotations\Service;
+
 /**
  * @Service(public=false)
  */
@@ -15,7 +17,7 @@ class PasswordHasher
     public function generateHash($password)
     {
         return password_hash($password, PASSWORD_BCRYPT, [
-        'cost' => 7
+            'cost' => 7
         ]);
     }
 

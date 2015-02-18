@@ -2,6 +2,8 @@
 
 namespace BrainExe\Core\Redis;
 
+use BrainExe\Annotations\Annotations\Service;
+
 /**
  * @Service(public=false)
  */

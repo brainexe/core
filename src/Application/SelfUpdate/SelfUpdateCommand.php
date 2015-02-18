@@ -2,6 +2,8 @@
 
 namespace BrainExe\Core\Application\SelfUpdate;
 
+use BrainExe\Annotations\Annotations\Inject;
+use BrainExe\Core\Annotations\Command;
 use BrainExe\Core\Console\AbstractCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

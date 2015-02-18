@@ -20,6 +20,7 @@ class RedisCompilerPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         $redis = $container->getDefinition('redis');
+
         $class = $redis->getClass();
 
         $password = $container->getParameter('redis.password');

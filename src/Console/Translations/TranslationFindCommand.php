@@ -2,6 +2,8 @@
 
 namespace BrainExe\Core\Console\Translations;
 
+use BrainExe\Annotations\Annotations\Inject;
+use BrainExe\Core\Annotations\Command;
 use BrainExe\Core\Console\AbstractCommand;
 use BrainExe\Core\Util\FileSystem;
 use Symfony\Component\Console\Input\InputInterface;

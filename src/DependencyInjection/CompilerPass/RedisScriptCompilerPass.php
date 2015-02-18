@@ -2,6 +2,7 @@
 
 namespace BrainExe\Core\DependencyInjection\CompilerPass;
 
+use BrainExe\Core\Annotations\CompilerPass;
 use BrainExe\Core\Redis\RedisScriptInterface;
 use Exception;
 use ReflectionClass;

@@ -19,11 +19,12 @@ use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
+use BrainExe\Core\Annotations\Command as CommandAnnotation;
 
 require_once "TestData.php";
 
 /**
- * @Command
+ * @CommandAnnotation
  * @codeCoverageIgnore
  */
 class TestCreateCommand extends Command

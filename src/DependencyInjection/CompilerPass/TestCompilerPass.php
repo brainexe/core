@@ -18,11 +18,11 @@ class TestCompilerPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         if (!$container->getParameter('core_standalone')) {
-//            return;
+            return;
         }
 
         foreach ($container->getDefinitions() as $definition) {
-            $definition->setPublic(true);
+//            $definition->setPublic(true);
         }
     }
 }

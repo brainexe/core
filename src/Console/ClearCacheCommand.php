@@ -2,6 +2,7 @@
 
 namespace BrainExe\Core\Console;
 
+use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Core\DependencyInjection\Rebuild;
 use BrainExe\Core\EventDispatcher\Events\ClearCacheEvent;
 use BrainExe\Core\Traits\EventDispatcherTrait;
@@ -11,9 +12,10 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
+use BrainExe\Core\Annotations\Command as CommandAnnotation;
 
 /**
- * @Command
+ * @CommandAnnotation
  */
 class ClearCacheCommand extends Command
 {

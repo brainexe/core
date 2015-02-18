@@ -3,6 +3,7 @@
 namespace BrainExe\Core\Application;
 
 use ArrayIterator;
+use BrainExe\Annotations\Annotations\Service;
 use Psr\Log\InvalidArgumentException;
 use RuntimeException;
 use Symfony\Component\Routing\Route;

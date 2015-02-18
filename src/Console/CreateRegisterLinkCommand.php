@@ -3,13 +3,14 @@
 namespace BrainExe\Core\Console;
 
 use BrainExe\Annotations\Annotations\Inject;
+use BrainExe\Core\Annotations\Command as CommandAnnotation;
 use BrainExe\Core\Authentication\RegisterTokens;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * @Command
+ * @CommandAnnotation
  */
 class CreateRegisterLinkCommand extends Command
 {

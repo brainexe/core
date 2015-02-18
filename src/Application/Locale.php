@@ -2,6 +2,8 @@
 
 namespace BrainExe\Core\Application;
 
+use BrainExe\Annotations\Annotations\Service;
+
 /**
  * @Service("Core.Locale", public=false)
  */

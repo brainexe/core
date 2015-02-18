@@ -30,7 +30,6 @@
     "symfony/expression-language": "~2.6",
     "brainexe/annotations": "dev-master",
     "brainexe/message-queue": "dev-master",
-    "brainexe/template": "dev-master",
     "monolog/monolog": "1.12.*",
     "doctrine/cache": "1.4.*",
     "predis/predis": "1.1.*"
@@ -38,9 +37,7 @@
   "require-dev": {
     "phpunit/phpunit": "4.5.*",
     "johnkary/phpunit-speedtrap": "~1.0@dev",
-    "lstrojny/phpunit-clever-and-smart": "0.*"
-  },
-  "suggest": {
+    "lstrojny/phpunit-clever-and-smart": "0.*",
     "crunch/inotify": "needed for 'console debug'"
   },
   "bin": [

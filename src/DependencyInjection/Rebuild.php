@@ -2,6 +2,7 @@
 
 namespace BrainExe\Core\DependencyInjection;
 
+use BrainExe\Annotations\Annotations\Service;
 use BrainExe\Annotations\Loader\AnnotationLoader;
 use BrainExe\Core\Core;
 use BrainExe\Core\DependencyInjection\CompilerPass\GlobalCompilerPass;
@@ -37,14 +38,6 @@ class Rebuild
             ->in([ROOT, CORE_ROOT, BRAINEXE_VENDOR_ROOT])
             ->depth("<=1")
             ->name('src');
-
-        foreach ($appFinder as $dir) {
-            /** @var SplFileInfo $dir */
-            $configFile = $dir->getPathname() . '/../config.php';
-            if (is_file($configFile)) {
-                require $configFile;
-            }
-        }
 
         $annotationLoader->load('src/');
         $annotationLoader->load(CORE_ROOT);

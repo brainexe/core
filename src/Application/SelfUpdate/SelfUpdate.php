@@ -2,6 +2,8 @@
 
 namespace BrainExe\Core\Application\SelfUpdate;
 
+use BrainExe\Annotations\Annotations\Inject;
+use BrainExe\Annotations\Annotations\Service;
 use BrainExe\Core\Traits\EventDispatcherTrait;
 use Symfony\Component\Process\ProcessBuilder;
 
