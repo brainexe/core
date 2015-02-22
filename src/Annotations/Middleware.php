@@ -14,7 +14,7 @@ class Middleware extends Service
 {
 
     /**
-     * @var integer
+     * @var int
      */
     public $priority = 5;
 

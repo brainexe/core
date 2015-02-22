@@ -53,12 +53,19 @@ class Login
 
         $authenticationVo = new AuthenticationDataVO($userVo, $password, $oneTimeToken);
 
-        $event = new AuthenticateUserEvent($authenticationVo, AuthenticateUserEvent::CHECK);
+        $event = new AuthenticateUserEvent(
+            $authenticationVo,
+            AuthenticateUserEvent::CHECK
+        );
         $this->dispatchEvent($event);
 
         $session->set('user_id', $userVo->id);
 
-        $event = new AuthenticateUserEvent($authenticationVo, AuthenticateUserEvent::AUTHENTICATED);
+        $event = new AuthenticateUserEvent(
+            $authenticationVo,
+            AuthenticateUserEvent::AUTHENTICATED
+        );
+
         $this->dispatchEvent($event);
 
         return $userVo;

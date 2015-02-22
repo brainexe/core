@@ -30,6 +30,7 @@ class DebugCompilerPass implements CompilerPassInterface
             $redis,
             new Reference('monolog.logger')
         ]);
+        $redisLogger->setPublic(false);
 
         $container->setDefinition('redis', $redisLogger);
     }

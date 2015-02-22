@@ -9,6 +9,7 @@ use BrainExe\Annotations\Annotations\Service;
  */
 class PasswordHasher
 {
+    const COST = 7;
 
     /**
      * @param string $password
@@ -17,7 +18,7 @@ class PasswordHasher
     public function generateHash($password)
     {
         return password_hash($password, PASSWORD_BCRYPT, [
-            'cost' => 7
+            'cost' => self::COST
         ]);
     }
 

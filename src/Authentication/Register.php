@@ -41,8 +41,8 @@ class Register
         RegisterTokens $tokens,
         $registrationEnabled
     ) {
-        $this->userProvider = $userProvider;
-        $this->registerTokens = $tokens;
+        $this->userProvider        = $userProvider;
+        $this->registerTokens      = $tokens;
         $this->registrationEnabled = $registrationEnabled;
     }
 

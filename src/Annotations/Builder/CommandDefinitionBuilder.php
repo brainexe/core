@@ -2,7 +2,7 @@
 
 namespace BrainExe\Core\Annotations\Builder;
 
-use BrainExe\Annotations\Loader\Annotation\DefinitionBuilder\ServiceDefinitionBuilder;
+use BrainExe\Annotations\Loader\Annotation\ServiceDefinitionBuilder;
 use BrainExe\Core\DependencyInjection\CompilerPass\ConsoleCompilerPass;
 use ReflectionClass;
 use Symfony\Component\DependencyInjection\Definition;
@@ -14,17 +14,12 @@ class CommandDefinitionBuilder extends ServiceDefinitionBuilder
      */
     public function build(ReflectionClass $reflectionClass, $annotation)
     {
-        $definitionHolder = parent::build($reflectionClass, $annotation);
-
         /** @var Definition $definition */
-        $definition = $definitionHolder['definition'];
+        list($serviceId, $definition) = parent::build($reflectionClass, $annotation);
 
         $definition->setPublic(false);
         $definition->addTag(ConsoleCompilerPass::TAG);
 
-        return [
-        'id' => $definitionHolder['id'],
-        'definition' => $definition
-        ];
+        return [$serviceId, $definition];
     }
 }

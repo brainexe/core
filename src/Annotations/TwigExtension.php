@@ -14,7 +14,7 @@ class TwigExtension extends Service
 {
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $compiler = false;
 

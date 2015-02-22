@@ -4,6 +4,8 @@ namespace BrainExe\Core\Authentication;
 
 use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Annotations\Annotations\Service;
+use BrainExe\Core\Authentication\Event\DeleteUserEvent;
+use BrainExe\Core\Traits\EventDispatcherTrait;
 use BrainExe\Core\Traits\IdGeneratorTrait;
 use BrainExe\Core\Traits\RedisTrait;
 use BrainExe\Core\Redis\PhpRedis;
@@ -19,6 +21,7 @@ class DatabaseUserProvider implements UserProviderInterface
 
     use RedisTrait;
     use IdGeneratorTrait;
+    use EventDispatcherTrait;
 
     const REDIS_USER       = 'user:%d';
     const REDIS_USER_NAMES = 'user_names';
@@ -176,6 +179,9 @@ class DatabaseUserProvider implements UserProviderInterface
         $redis = $this->getRedis();
 
         $user = $this->loadUserById($userId);
+
+        $event = new DeleteUserEvent($user, DeleteUserEvent::DELETE);
+        $this->dispatchEvent($event);
 
         $redis->hdel(self::REDIS_USER_NAMES, strtolower($user->getUsername()));
         $redis->del($this->getKey($userId));

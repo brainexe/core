@@ -55,7 +55,11 @@ class RegisterController implements ControllerInterface
         $this->register->registerUser($user, $request->getSession(), $token);
 
         $response = new JsonResponse($user);
-        $this->addFlash($response, self::ALERT_SUCCESS, sprintf('Welcome %s', $user->username));
+        $this->addFlash(
+            $response,
+            self::ALERT_SUCCESS,
+            sprintf('Welcome %s', $user->username)
+        );
 
         return $response;
     }

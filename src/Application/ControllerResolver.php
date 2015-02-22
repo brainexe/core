@@ -4,7 +4,7 @@ namespace BrainExe\Core\Application;
 
 use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Annotations\Annotations\Service;
-use BrainExe\Core\DependencyInjection\ObjectFinder;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
 
@@ -13,19 +13,18 @@ use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
  */
 class ControllerResolver implements ControllerResolverInterface
 {
+    /**
+     * @var Container
+     */
+    private $container;
 
     /**
-     * @var ObjectFinder
+     * @Inject("@Service_container")
+     * @param Container $container
      */
-    private $objectFinder;
-
-    /**
-     * @Inject("@ObjectFinder")
-     * @param ObjectFinder $objectFinder
-     */
-    public function setObjectFinder(ObjectFinder $objectFinder)
+    public function __construct(Container $container)
     {
-        $this->objectFinder = $objectFinder;
+        $this->container = $container;
     }
 
     /**
@@ -37,7 +36,7 @@ class ControllerResolver implements ControllerResolverInterface
 
         list($serviceId, $method) = $controller;
 
-        $service = $this->objectFinder->getService($serviceId);
+        $service = $this->container->get($serviceId);
 
         return [$service, $method];
     }

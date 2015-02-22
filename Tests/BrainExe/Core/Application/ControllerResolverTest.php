@@ -3,9 +3,9 @@
 namespace Tests\BrainExe\Core\Application\ControllerResolver;
 
 use BrainExe\Core\Application\ControllerResolver;
-use BrainExe\Core\DependencyInjection\ObjectFinder;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -20,16 +20,15 @@ class ControllerResolverTest extends PHPUnit_Framework_TestCase
     private $subject;
 
     /**
-     * @var ObjectFinder|MockObject
+     * @var Container|MockObject
      */
-    private $mockObjectFinder;
+    private $container;
 
     public function setUp()
     {
-        $this->mockObjectFinder = $this->getMock(ObjectFinder::class, [], [], '', false);
+        $this->container = $this->getMock(Container::class, [], [], '', false);
 
-        $this->subject = new ControllerResolver();
-        $this->subject->setObjectFinder($this->mockObjectFinder);
+        $this->subject = new ControllerResolver($this->container);
     }
 
     public function testGetController()
@@ -49,7 +48,7 @@ class ControllerResolverTest extends PHPUnit_Framework_TestCase
         $actualResult = $this->subject->getArguments($request, $controller);
 
         $expectedResult = [
-        $request, 'value1', 'value2'
+            $request, 'value1', 'value2'
         ];
 
         $this->assertEquals($expectedResult, $actualResult);

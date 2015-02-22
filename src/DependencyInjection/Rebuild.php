@@ -63,7 +63,7 @@ class Rebuild
         file_put_contents($containerFile, $containerContent);
         chmod($containerFile, 0777);
 
-        $dumper            = new XmlDumper($containerBuilder);
+        $dumper           = new XmlDumper($containerBuilder);
         $containerContent = $dumper->dump();
         file_put_contents('cache/dic.xml', $containerContent);
 

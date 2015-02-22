@@ -39,7 +39,7 @@ class TwigExtensionCompilerPass implements CompilerPassInterface
             $service = $container->getDefinition($serviceId);
             $service->setPublic(false);
 
-            if (!$debug && $tag[0]['compiler']) {
+            if ($tag[0]['compiler']) {
                 $twigCompiler->addMethodCall('addExtension', [new Reference($serviceId)]);
             } else {
                 $twig->addMethodCall('addExtension', [new Reference($serviceId)]);

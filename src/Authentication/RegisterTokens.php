@@ -11,7 +11,6 @@ use BrainExe\Core\Traits\RedisTrait;
  */
 class RegisterTokens
 {
-
     const TOKEN_KEY = 'register_tokens';
 
     use RedisTrait;

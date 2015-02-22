@@ -2,7 +2,7 @@
 
 namespace BrainExe\Core\Annotations\Builder;
 
-use BrainExe\Annotations\Loader\Annotation\DefinitionBuilder\ServiceDefinitionBuilder;
+use BrainExe\Annotations\Loader\Annotation\ServiceDefinitionBuilder;
 use BrainExe\Core\Annotations\TwigExtension;
 use BrainExe\Core\DependencyInjection\CompilerPass\TwigExtensionCompilerPass;
 use ReflectionClass;
@@ -18,17 +18,12 @@ class TwigExtensionDefinitionBuilder extends ServiceDefinitionBuilder
      */
     public function build(ReflectionClass $reflectionClass, $annotation)
     {
-        $definitionHolder = parent::build($reflectionClass, $annotation);
-
         /** @var Definition $definition */
-        $definition = $definitionHolder['definition'];
+        list($serviceId, $definition) = parent::build($reflectionClass, $annotation);
 
         $definition->addTag(TwigExtensionCompilerPass::TAG, ['compiler' => $annotation->compiler]);
         $definition->setPublic(false);
 
-        return [
-        'id' => $definitionHolder['id'],
-        'definition' => $definition
-        ];
+        return [$serviceId, $definition];
     }
 }

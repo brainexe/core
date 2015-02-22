@@ -26,8 +26,8 @@ class AuthenticationDataVO
      */
     public function __construct(UserVO $userVo, $password, $oneTimeToken)
     {
-        $this->userVo        = $userVo;
-        $this->password       = $password;
+        $this->userVo       = $userVo;
+        $this->password     = $password;
         $this->oneTimeToken = $oneTimeToken;
     }
 }

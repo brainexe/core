@@ -20,8 +20,8 @@ class TestScript implements RedisScriptInterface
     public static function getRedisScripts()
     {
         return [
-        'name1' => 'script1',
-        'name2' => 'script2',
+            'name1' => 'script1',
+            'name2' => 'script2',
         ];
     }
 }

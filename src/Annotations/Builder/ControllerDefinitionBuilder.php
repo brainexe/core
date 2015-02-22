@@ -2,7 +2,7 @@
 
 namespace BrainExe\Core\Annotations\Builder;
 
-use BrainExe\Annotations\Loader\Annotation\DefinitionBuilder\ServiceDefinitionBuilder;
+use BrainExe\Annotations\Loader\Annotation\ServiceDefinitionBuilder;
 use BrainExe\Core\Annotations\Guest;
 use BrainExe\Core\Annotations\Route;
 use BrainExe\Core\DependencyInjection\CompilerPass\ControllerCompilerPass;
@@ -17,18 +17,19 @@ class ControllerDefinitionBuilder extends ServiceDefinitionBuilder
      */
     public function build(ReflectionClass $reflectionClass, $annotation)
     {
-        $definitionHolder = parent::build($reflectionClass, $annotation);
-
         /** @var Definition $definition */
-        $definition = $definitionHolder['definition'];
+        list($serviceId, $definition) = parent::build(
+            $reflectionClass,
+            $annotation
+        );
 
-        $serviceId = sprintf('__Controller.%s', str_replace('Controller', '', $definitionHolder['id']));
+        $serviceId = sprintf(
+            '__Controller.%s',
+            str_replace('Controller', '', $serviceId)
+        );
         $definition->addTag(ControllerCompilerPass::CONTROLLER_TAG);
 
-        return [
-            'id' => $serviceId,
-            'definition' => $definition
-        ];
+        return [$serviceId, $definition];
     }
 
     /**

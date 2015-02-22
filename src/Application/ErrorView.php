@@ -46,9 +46,9 @@ class ErrorView
     public function renderException(Request $request, Exception $exception)
     {
         $content = $this->render($this->valueErrorTemplate, [
-            'exception' => $exception,
-            'debug' => $this->debug,
-            'request' => $request,
+            'exception'    => $exception,
+            'debug'        => $this->debug,
+            'request'      => $request,
             'current_user' => $request->attributes->get('user') ?: new AnonymusUserVO(),
         ]);
 

@@ -12,12 +12,12 @@ class Route extends SymfonyRoute
 {
 
     /**
-     * @var boolean
+     * @var bool
      */
     private $csrf = false;
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isCsrf()
     {
@@ -25,7 +25,7 @@ class Route extends SymfonyRoute
     }
 
     /**
-     * @param boolean $csrf
+     * @param bool $csrf
      */
     public function setCsrf($csrf)
     {

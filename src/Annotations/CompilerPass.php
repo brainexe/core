@@ -12,6 +12,10 @@ use Doctrine\Common\Annotations\Reader;
  */
 class CompilerPass extends Service
 {
+
+    /**
+     * @var integer
+     */
     public $priority = 1;
 
     /**

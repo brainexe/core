@@ -1,4 +1,5 @@
 <?php
+
 namespace BrainExe\Core\Logger;
 
 use Monolog\Formatter\LineFormatter;
@@ -19,12 +20,21 @@ class ChannelStreamHandler extends StreamHandler
      * @param string|null $channel
      * @param boolean $bubble
      */
-    public function __construct($stream, $level = Logger::DEBUG, $channel = null, $bubble = true)
-    {
+    public function __construct(
+        $stream,
+        $level = Logger::DEBUG,
+        $channel = null,
+        $bubble = true
+    ) {
         parent::__construct($stream, $level, $bubble);
 
         $this->setFormatter(
-            new LineFormatter("[%datetime%] %level_name%: %message% %context% %extra%\n", null, false, true)
+            new LineFormatter(
+                "[%datetime%] %level_name%: %message% %context% %extra%\n",
+                null,
+                false,
+                true
+            )
         );
 
         $this->channel = $channel;

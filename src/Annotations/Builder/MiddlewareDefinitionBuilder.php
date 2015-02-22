@@ -2,7 +2,7 @@
 
 namespace BrainExe\Core\Annotations\Builder;
 
-use BrainExe\Annotations\Loader\Annotation\DefinitionBuilder\ServiceDefinitionBuilder;
+use BrainExe\Annotations\Loader\Annotation\ServiceDefinitionBuilder;
 use BrainExe\Core\Annotations\CompilerPass;
 use BrainExe\Core\DependencyInjection\CompilerPass\MiddlewareCompilerPass;
 use ReflectionClass;
@@ -17,17 +17,12 @@ class MiddlewareDefinitionBuilder extends ServiceDefinitionBuilder
      */
     public function build(ReflectionClass $reflectionClass, $annotation)
     {
-        $definitionHolder = parent::build($reflectionClass, $annotation);
-
         /** @var Definition $definition */
-        $definition = $definitionHolder['definition'];
+        list($serviceId, $definition) = parent::build($reflectionClass, $annotation);
 
         $definition->setPublic(false);
         $definition->addTag(MiddlewareCompilerPass::TAG, ['priority' => $annotation->priority]);
 
-        return [
-        'id' => $definitionHolder['id'],
-        'definition' => $definition
-        ];
+        return [$serviceId, $definition];
     }
 }

@@ -2,8 +2,8 @@
 
 namespace Tests\BrainExe\Core\Middleware\CacheMiddleware;
 
-use BrainExe\Core\Application\Cache\RedisCache;
 use BrainExe\Core\Middleware\CacheMiddleware;
+use Doctrine\Common\Cache\RedisCache;
 use Monolog\Logger;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase;
