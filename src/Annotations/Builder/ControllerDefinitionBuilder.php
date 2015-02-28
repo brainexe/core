@@ -12,24 +12,24 @@ use Symfony\Component\DependencyInjection\Definition;
 
 class ControllerDefinitionBuilder extends ServiceDefinitionBuilder
 {
+
     /**
      * {@inheritdoc}
      */
     public function build(ReflectionClass $reflectionClass, $annotation)
     {
         /** @var Definition $definition */
-        list($serviceId, $definition) = parent::build(
+        list(, $definition) = parent::build(
             $reflectionClass,
             $annotation
         );
 
-        $serviceId = sprintf(
-            '__Controller.%s',
-            str_replace('Controller', '', $serviceId)
-        );
         $definition->addTag(ControllerCompilerPass::CONTROLLER_TAG);
 
-        return [$serviceId, $definition];
+        return [
+            $this->getServiceId(),
+            $definition
+        ];
     }
 
     /**
@@ -48,12 +48,11 @@ class ControllerDefinitionBuilder extends ServiceDefinitionBuilder
                 /** @var Guest $guestAnnotation */
                 $guestAnnotation = $this->reader->getMethodAnnotation($method, Guest::class);
 
-                $classParts = explode('\\', $definition->getClass());
-                $class = str_replace('Controller', '', $classParts[count($classParts)-1]);
-                $class = 'Controller.' . $class;
-
                 $defaults = $routeAnnotation->getDefaults();
-                $defaults['_controller'] = [$class, $method->getName()];
+                $defaults['_controller'] = [
+                    $this->getServiceId(),
+                    $method->getName()
+                ];
                 if ($guestAnnotation) {
                     $defaults['_guest'] = true;
                 }
@@ -63,5 +62,16 @@ class ControllerDefinitionBuilder extends ServiceDefinitionBuilder
                 $definition->addTag(ControllerCompilerPass::ROUTE_TAG, [$routeAnnotation]);
             }
         }
+    }
+
+    /**
+     * @return string
+     */
+    private function getServiceId()
+    {
+        return sprintf(
+            '__Controller.%s',
+            str_replace('Controller', '', $this->serviceId)
+        );
     }
 }

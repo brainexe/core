@@ -33,5 +33,9 @@ class DebugCompilerPass implements CompilerPassInterface
         $redisLogger->setPublic(false);
 
         $container->setDefinition('redis', $redisLogger);
+
+        foreach ($container->getDefinitions() as $definition) {
+            $definition->setPublic(true);
+        }
     }
 }

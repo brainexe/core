@@ -15,7 +15,7 @@ use Symfony\Component\Finder\Finder;
 use BrainExe\Core\Annotations\Command as CommandAnnotation;
 
 /**
- * @CommandAnnotation
+ * @CommandAnnotation("ClearCacheCommand")
  */
 class ClearCacheCommand extends Command
 {

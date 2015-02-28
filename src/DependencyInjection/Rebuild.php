@@ -44,7 +44,12 @@ class Rebuild
 
         foreach ($appFinder as $dir) {
             /** @var SplFileInfo $dir */
-            $annotationLoader->load($dir->getPathname());
+
+            $dirName = $dir->getPathname();
+            if ($dirName === CORE_ROOT) {
+                continue;
+            }
+            $annotationLoader->load($dirName);
         }
 
         $containerBuilder->addCompilerPass(new GlobalCompilerPass());

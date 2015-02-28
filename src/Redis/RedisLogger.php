@@ -64,6 +64,6 @@ class RedisLogger implements RedisInterface
             }
         }
 
-        return implode(', ', $arguments);
+        return implode(' ', $arguments);
     }
 }

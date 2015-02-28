@@ -24,7 +24,8 @@ class ConfigCompilerPass implements CompilerPassInterface
     {
         $container->setParameter('core_standalone', CORE_STANDALONE);
 
-        $loader = new XmlFileLoader($container, new FileLocator('config'));
+        $loader
+            = new XmlFileLoader($container, new FileLocator('config'));
         $finder     = new Finder();
         $filesystem = new FileSystem();
 

@@ -4,6 +4,8 @@ namespace BrainExe\Core\Annotations\Builder;
 
 use BrainExe\Annotations\Loader\Annotation\ServiceDefinitionBuilder;
 use BrainExe\Core\DependencyInjection\CompilerPass\ConsoleCompilerPass;
+use BrainExe\Search\DependencyInjection\SearchCompilerPass;
+use Raspberry\Sensors\CompilerPass;
 use ReflectionClass;
 use Symfony\Component\DependencyInjection\Definition;
 
