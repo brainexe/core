@@ -9,6 +9,7 @@ use BrainExe\Core\Authentication\DatabaseUserProvider;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Route;
 
 /**
@@ -69,6 +70,13 @@ class AuthenticationMiddleware extends AbstractMiddleware
 
         if ($route->hasDefault('_guest')) {
             return null;
+        }
+
+        if ($route->hasDefault('_role')) {
+            $role = $route->getDefault('_role');
+            if (!in_array($role, $user->roles)) {
+                throw new MethodNotAllowedException([]);
+            }
         }
 
         if (!$loggedIn) {

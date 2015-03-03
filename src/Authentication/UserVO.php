@@ -110,9 +110,10 @@ class UserVO implements UserInterface, JsonSerializable
     public function jsonSerialize()
     {
         return [
-            'id' => $this->id,
+            'id'       => $this->id,
             'username' => $this->username,
-            'avatar' => $this->avatar,
+            'avatar'   => $this->avatar,
+            'roles'    => $this->roles,
         ];
     }
 }

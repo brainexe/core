@@ -4,6 +4,7 @@ namespace BrainExe\Core\Annotations\Builder;
 
 use BrainExe\Annotations\Loader\Annotation\ServiceDefinitionBuilder;
 use BrainExe\Core\Annotations\Guest;
+use BrainExe\Core\Annotations\Role;
 use BrainExe\Core\Annotations\Route;
 use BrainExe\Core\DependencyInjection\CompilerPass\ControllerCompilerPass;
 use ReflectionClass;
@@ -48,6 +49,9 @@ class ControllerDefinitionBuilder extends ServiceDefinitionBuilder
                 /** @var Guest $guestAnnotation */
                 $guestAnnotation = $this->reader->getMethodAnnotation($method, Guest::class);
 
+                /** @var Role $roleAnnotation */
+                $roleAnnotation = $this->reader->getMethodAnnotation($method, Role::class);
+
                 $defaults = $routeAnnotation->getDefaults();
                 $defaults['_controller'] = [
                     $this->getServiceId(),
@@ -55,6 +59,10 @@ class ControllerDefinitionBuilder extends ServiceDefinitionBuilder
                 ];
                 if ($guestAnnotation) {
                     $defaults['_guest'] = true;
+                }
+
+                if ($roleAnnotation) {
+                    $defaults['_role'] = $roleAnnotation->role;
                 }
 
                 $routeAnnotation->setDefaults($defaults);
