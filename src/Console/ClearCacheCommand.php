@@ -83,14 +83,6 @@ class ClearCacheCommand extends Command
         $this->rebuild->rebuildDIC(true);
         $output->writeln('<info>done</info>');
 
-        $output->write('Set permissions...');
-//        $this->filesystem->chmod([
-//            'cache/',
-//            'cache/',
-//            'logs/',
-//        ], 0777, 0000, true);
-//        $output->writeln('<info>done</info>');
-
         $input = new ArrayInput(['command' => 'redis:scripts:load']);
         $this->getApplication()->run($input, $output);
 

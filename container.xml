@@ -98,6 +98,9 @@
 			<call method="setEnabled">
 				<argument>%message_queue.enabled%</argument>
 			</call>
+			<call method="addCatchall">
+				<argument type="service" id="Expression.Listener"></argument>
+			</call>
 		</service>
 
 		<service id="Console" class="Symfony\Component\Console\Application"/>

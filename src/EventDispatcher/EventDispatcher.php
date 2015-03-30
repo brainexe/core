@@ -4,6 +4,7 @@ namespace BrainExe\Core\EventDispatcher;
 
 use BrainExe\Core\Websockets\WebSocketEvent;
 use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher as SymfonyEventDispatcher;
+use Symfony\Component\EventDispatcher\Event;
 
 class EventDispatcher extends SymfonyEventDispatcher
 {
@@ -14,12 +15,41 @@ class EventDispatcher extends SymfonyEventDispatcher
     private $enabled;
 
     /**
-     * @Inject("%message_queue.enabled%")
+     * @var Catchall[]
+     */
+    private $catchall = [];
+
+    /**
+     * @param Catchall $dispatcher
+     */
+    public function addCatchall(Catchall $dispatcher)
+    {
+        $dispatcher->setDispatcher($this);
+        $this->catchall[] = $dispatcher;
+    }
+
+    /**
      * @param bool $enabled
      */
     public function setEnabled($enabled)
     {
         $this->enabled = $enabled;
+    }
+
+    /**
+     * @param string $eventName
+     * @param Event $event
+     * @return Event|void
+     */
+    public function dispatch($eventName, Event $event = null)
+    {
+        $event->setDispatcher($this); // @todo needed?
+
+        foreach ($this->catchall as $dispatcher) {
+            $dispatcher->dispatch($eventName, $event);
+        }
+
+        parent::dispatch($eventName, $event);
     }
 
     /**
@@ -29,6 +59,7 @@ class EventDispatcher extends SymfonyEventDispatcher
     {
         $this->dispatch($event->event_name, $event);
         if ($event instanceof PushViaWebsocketInterface) {
+            /** @var AbstractEvent $event */
             $this->dispatchAsWebsocketEvent($event);
         }
     }

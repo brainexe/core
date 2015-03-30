@@ -113,7 +113,6 @@ class ClearCacheCommandTest extends PHPUnit_Framework_TestCase
         $output = $commandTester->getDisplay();
 
         $this->assertEquals("Clear Cache...done
-Rebuild DIC...done
-Set permissions...done\n", $output);
+Rebuild DIC...done\n", $output);
     }
 }

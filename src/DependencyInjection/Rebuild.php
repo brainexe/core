@@ -11,6 +11,7 @@ use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 use Symfony\Component\DependencyInjection\Dumper\XmlDumper;
+use Symfony\Component\DependencyInjection\ExpressionLanguageProvider;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -54,6 +55,8 @@ class Rebuild
 
         $containerBuilder->addCompilerPass(new GlobalCompilerPass());
         $containerBuilder->compile();
+
+        $containerBuilder->addExpressionLanguageProvider(new ExpressionLanguageProvider());
 
         $randomId      = mt_rand();
         $containerName = sprintf('dic_%d', $randomId);
