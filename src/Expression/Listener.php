@@ -2,6 +2,7 @@
 
 namespace BrainExe\Core\Expression;
 
+use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Annotations\Annotations\Service;
 use BrainExe\Core\EventDispatcher\BackgroundEvent;
 use BrainExe\Core\EventDispatcher\Catchall;
@@ -12,34 +13,53 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
 /**
- * @Service("Expression.Listener")
+ * @Service("Expression.Listener", public=false)
  */
 class Listener extends EventDispatcher implements Catchall
 {
-
     /**
-     * @var string[]
+     * @var Entity[]
      */
-    private $trigger = [];
+    private $expressions = [];
 
     /**
      * @var EventDispatcher
      */
     private $parent;
 
-    public function __construct()
-    {
-        $this->register(
-            'eventName == "sensor.value"',
-            'sprintf("say Sensor %s %s", event.sensorVo.name, event.valueFormatted)'
-        );
+    /**
+     * @var Gateway
+     */
+    private $gateway;
 
-        $this->expression = new ExpressionLanguage();
-        $this->expression->register('sprintf', function () {
-            throw new Exception('sprintf() not implemented');
+    /**
+     * @Inject({"@Expression.Gateway", "@Expression.Language"})
+     * @param Gateway $gateway
+     * @param Language $language
+     */
+    public function __construct(Gateway $gateway, Language $language)
+    {
+        $this->gateway  = $gateway;
+        $this->expressions  = $gateway->getAll();
+        $this->language = $language;
+
+        $this->language->register('setProperty', function () {
+            throw new Exception('setProperty() not implemented');
+        }, function ($parameters, $property, $value) {
+            /** @var Entity $entity */
+            $entity = $parameters['entity'];
+            $entity->payload ?: [];
+            $entity->payload[$property] = $value;
+        });
+
+        $this->language->register('input', function () {
+            throw new Exception('input() not implemented');
         }, function ($parameters, $string) {
             unset($parameters);
-            return vsprintf($string, array_slice(func_get_args(), 2));
+            $inputEvent = new InputControlEvent($string);
+            $backgroundEvent = new BackgroundEvent($inputEvent);
+
+            $this->parent->dispatch(BackgroundEvent::BACKGROUND, $backgroundEvent);
         });
     }
 
@@ -52,33 +72,26 @@ class Listener extends EventDispatcher implements Catchall
     }
 
     /**
-     * @param $condition
-     * @param $action
-     */
-    public function register($condition, $action)
-    {
-        $this->trigger[$condition] = $action;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function dispatch($eventName, Event $event = null)
     {
-        foreach ($this->trigger as $condition => $trigger) {
+        foreach ($this->expressions as $expression) {
             $parameters = [
                 'event'     => $event,
-                'eventName' => $eventName
+                'eventName' => $eventName,
+                'entity'    => $expression
             ];
 
-            if ($this->expression->evaluate($condition, $parameters)) {
-                $triggerString = $this->expression->evaluate($trigger, $parameters);
+            if ($this->language->evaluate($expression->condition, $parameters)) {
+                foreach ($expression->actions as $action) {
+                    $this->language->evaluate($action, $parameters);
+                }
 
-                $inputEvent = new InputControlEvent($triggerString);
-                $backgroundEvent = new BackgroundEvent($inputEvent);
-                $this->parent->dispatch(BackgroundEvent::BACKGROUND, $backgroundEvent);
+                $expression->counter++;
+
+                $this->gateway->save($expression);
             }
         }
-
     }
 }

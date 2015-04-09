@@ -28,7 +28,7 @@ class Export extends Command
     {
         $this->setName('redis:export')
             ->setDescription('Export Redis database')
-            ->addArgument('file', InputArgument::OPTIONAL, 'File to export', 'database.txt');
+            ->addArgument('file', InputArgument::OPTIONAL, 'File to export');
     }
 
     /**
@@ -36,24 +36,22 @@ class Export extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-
         $redis = $this->getRedis();
         $keys  = $redis->keys("*");
 
-        $file   = [];
-
+        $parts = [];
         foreach ($keys as $key) {
-            $file += $this->dump($redis, $key);
+            $parts = array_merge($parts, $this->dump($redis, $key));
         }
 
-
-        $content = implode("\n", $file);
-
-        $content = str_replace('"', '\\"', $content);
+        $content = implode("\n", $parts);
 
         $output->writeln($content);
 
-        file_put_contents($input->getArgument('file'), $content);
+        $file = $input->getArgument('file');
+        if ($file) {
+            file_put_contents($file, $content);
+        }
     }
 
     /**
@@ -68,26 +66,46 @@ class Export extends Command
 
         $type = $redis->type($key);
 
+        echo "$key $type\n";
+
         switch ($type) {
             case 'string':
-                $parts[] = "SET $key " . $redis->get($key);
+                $parts[] = sprintf(
+                    "SET %s %s",
+                    $key,
+                    $this->escape($redis->get($key))
+                );
                 break;
             case 'hash':
                 $hash = $redis->hgetall($key);
                 foreach ($hash as $k => $val) {
-                    $parts[] = "HSET $key $k $val";
+                    $parts[] = sprintf(
+                        "HSET %s %s %s",
+                        $this->escape($key),
+                        $this->escape($k),
+                        $this->escape($val)
+                    );
                 }
                 break;
             case 'set':
                 $set  = $redis->smembers($key);
                 foreach ($set as $k => $val) {
-                    $parts[] = "SADD $key $val";
+                    $parts[] = sprintf(
+                        "SADD %s %s",
+                        $this->escape($key),
+                        $this->escape($val)
+                    );
                 }
                 break;
             case 'zset':
                 $zset = $redis->zrange($key, 0, -1, 'WITHSCORES');
                 foreach ($zset as $value => $score) {
-                    $parts[] = "ZADD $key $value $score";
+                    $parts[] = sprintf(
+                        "ZADD %s %s %s",
+                        $this->escape($key),
+                        $this->escape($value),
+                        $this->escape($score)
+                    );
                 }
                 break;
             default:
@@ -99,4 +117,14 @@ class Export extends Command
         return $parts;
     }
 
+    /**
+     * @param string $value
+     * @return string
+     */
+    private function escape($value)
+    {
+        $value = str_replace('"', '\\"', $value);
+
+        return sprintf('"%s"', $value);
+    }
 }
