@@ -6,3 +6,5 @@ Features
  - Background Events via Message Queue
  - SMS Gateway
  - Request middlewares
+ - Expression language
+ - Arduino API
