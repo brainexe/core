@@ -7,8 +7,11 @@ use BrainExe\Core\Annotations\Controller as ControllerAnnotation;
 use BrainExe\Core\Annotations\Route;
 use BrainExe\Core\Application\UserException;
 use BrainExe\Core\EventDispatcher\EventDispatcher;
+use BrainExe\Core\EventDispatcher\Events\TimingEvent;
+use BrainExe\Core\EventDispatcher\IntervalEvent;
+use BrainExe\Core\Util\TimeParser;
 use BrainExe\InputControl\Dispatcher;
-use Symfony\Component\EventDispatcher\Event;
+use BrainExe\MessageQueue\MessageQueueGateway;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -38,27 +41,44 @@ class Controller
     private $language;
 
     /**
+     * @var TimeParser
+     */
+    private $timeParser;
+    /**
+     * @var MessageQueueGateway
+     */
+    private $messageQueueGateway;
+
+    /**
      * @Inject({
      *  "@Expression.Gateway",
      *  "@EventDispatcher",
      *  "@InputControl.Dispatcher",
-     *  "@Expression.Language"
+     *  "@Expression.Language",
+     *  "@TimeParser",
+     *  "@MessageQueueGateway"
      * })
      * @param Gateway $gateway
      * @param EventDispatcher $dispatcher
      * @param Dispatcher $inputControl
      * @param Language $language
+     * @param TimeParser $timeParser
+     * @param MessageQueueGateway $messageQueueGateway
      */
     public function __construct(
         Gateway $gateway,
         EventDispatcher $dispatcher,
         Dispatcher $inputControl,
-        Language $language
+        Language $language,
+        TimeParser $timeParser,
+        MessageQueueGateway $messageQueueGateway
     ) {
-        $this->gateway      = $gateway;
-        $this->dispatcher   = $dispatcher;
-        $this->inputControl = $inputControl;
-        $this->language     = $language;
+        $this->gateway             = $gateway;
+        $this->dispatcher          = $dispatcher;
+        $this->inputControl        = $inputControl;
+        $this->language            = $language;
+        $this->timeParser          = $timeParser;
+        $this->messageQueueGateway = $messageQueueGateway;
     }
 
     /**
@@ -68,9 +88,10 @@ class Controller
     public function load()
     {
         return [
-            'events'      => array_keys($this->dispatcher->getListeners()),
-            'actions'     => array_keys($this->inputControl->getDefinedListeners()),
-            'expressions' => $this->gateway->getAll()
+            'events'        => array_keys($this->dispatcher->getListeners()),
+            'input_control' => array_keys($this->inputControl->getDefinedListeners()),
+            'expressions'   => $this->gateway->getAll(),
+            'timers'        => $this->messageQueueGateway->getEventsByType(IntervalEvent::INTERVAL)
         ];
     }
 
@@ -113,6 +134,29 @@ class Controller
         $this->gateway->delete($expressionId);
 
         return true;
+    }
+    /**
+     * @param Request $request
+     * @Route("/expressions/timer/", name="expressions.timer")
+     * @return bool
+     */
+    public function addTimer(Request $request)
+    {
+        $startTime = $request->request->get('startTime');
+        $interval  = $request->request->getInt('interval');
+        $timingId  = $request->request->get('timingId');
+
+        $event = new IntervalEvent(
+            new TimingEvent($timingId),
+            $this->timeParser->parseString($startTime) ?: time(),
+            $interval
+        );
+
+        $this->dispatcher->dispatchEvent($event);
+
+        return [
+            'timers' => $this->messageQueueGateway->getEventsByType(IntervalEvent::INTERVAL)
+        ];
     }
 
     /**

@@ -32,15 +32,22 @@ class Import extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-
         $redis   = $this->getRedis();
         $file    = $input->getArgument('file');
         $content = file_get_contents($file);
 
         foreach (explode("\n", $content) as $line) {
-//            $redis->executeRaw(explode(""))
+            preg_match_all('/"(?:\\\\.|[^\\\\"])*"|\S+/', $line, $matches);
+            if (empty($matches[0])) {
+                continue;
+            }
+
+            foreach ($matches[0] as &$value) {
+                $value = trim($value, '"');
+                $value = str_replace('\"', '"', $value);
+            }
+
+            $redis->executeRaw($matches[0]);
         }
-
     }
-
 }

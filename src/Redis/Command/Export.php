@@ -66,8 +66,6 @@ class Export extends Command
 
         $type = $redis->type($key);
 
-        echo "$key $type\n";
-
         switch ($type) {
             case 'string':
                 $parts[] = sprintf(

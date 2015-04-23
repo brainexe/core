@@ -6,6 +6,7 @@ use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Core\Annotations\Middleware;
 use BrainExe\Core\Authentication\AnonymusUserVO;
 use BrainExe\Core\Authentication\DatabaseUserProvider;
+use BrainExe\Core\Authentication\IP;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,14 +30,32 @@ class AuthenticationMiddleware extends AbstractMiddleware
     private $userProvider;
 
     /**
-     * @Inject({"%application.guests_allowed%", "@DatabaseUserProvider"})
-     * @param boolean $guestsAllowed
-     * @param DatabaseUserProvider $userProvider
+     * @var bool
      */
-    public function __construct($guestsAllowed, DatabaseUserProvider $userProvider)
+    private $allowedPrivateIps;
+    /**
+     * @var IP
+     */
+    private $ip;
+
+    /**
+     * @Inject({
+     *  "%application.guests_allowed%",
+     *  "%application.allowed_private_ips%",
+     *  "@DatabaseUserProvider",
+     *  "@Authentication.IP"
+     * })
+     * @param boolean $guestsAllowed
+     * @param $allowedPrivateIps
+     * @param DatabaseUserProvider $userProvider
+     * @param IP $ipCheck
+     */
+    public function __construct($guestsAllowed, $allowedPrivateIps, DatabaseUserProvider $userProvider, IP $ipCheck)
     {
-        $this->guestsAllowed = $guestsAllowed;
-        $this->userProvider  = $userProvider;
+        $this->guestsAllowed     = $guestsAllowed;
+        $this->userProvider      = $userProvider;
+        $this->allowedPrivateIps = $allowedPrivateIps;
+        $this->ip                = $ipCheck;
     }
 
     /**
@@ -53,8 +72,12 @@ class AuthenticationMiddleware extends AbstractMiddleware
     {
         $session   = $request->getSession();
         $userId    = $session->get('user_id');
-        $loggedIn  = $userId > 0;
 
+        if (!$userId && $this->allowedPrivateIps && $this->ip->isLocalRequest($request)) {
+            $userId = reset($this->userProvider->getAllUserNames());
+        }
+
+        $loggedIn  = $userId > 0;
         if ($loggedIn) {
             $user = $this->userProvider->loadUserById($userId);
         } else {

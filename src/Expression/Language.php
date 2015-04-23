@@ -21,12 +21,24 @@ class Language extends ExpressionLanguage
     {
         parent::__construct($cache, $providers);
 
-        $this->register('sprintf', function () {
-            throw new Exception('sprintf() not implemented');
-        }, function ($parameters, $string) {
-            unset($parameters);
-            return vsprintf($string, array_slice(func_get_args(), 2));
-        });
+        $functions = [
+            'sprintf',
+            'date',
+            'time',
+            'microtime',
+            'rand'
+        ];
+
+        foreach ($functions as $function) {
+            $this->register($function, function () use ($function) {
+                $parameters = func_get_args();
+
+                return sprintf('%s(%s)', $function, implode(', ', $parameters));
+            }, function () use ($function) {
+                $parameters = array_slice(func_get_args(), 1);
+                return call_user_func_array($function, $parameters);
+            });
+        }
     }
 
 }

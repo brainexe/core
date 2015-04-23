@@ -139,6 +139,9 @@ class DatabaseUserProvider implements UserProviderInterface
         $redis = $this->getRedis();
         $value = $userVo->$property;
 
+        if (is_array($value)) {
+            $value = implode(',', $value);
+        }
         $redis->HSET($this->getKey($userVo->id), $property, $value);
     }
 

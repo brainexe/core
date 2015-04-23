@@ -6,6 +6,7 @@ use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Annotations\Annotations\Service;
 use BrainExe\Core\EventDispatcher\BackgroundEvent;
 use BrainExe\Core\EventDispatcher\Catchall;
+use BrainExe\Core\EventDispatcher\Events\TimingEvent;
 use BrainExe\InputControl\InputControlEvent;
 use Exception;
 use Symfony\Component\EventDispatcher\Event;
@@ -39,9 +40,9 @@ class Listener extends EventDispatcher implements Catchall
      */
     public function __construct(Gateway $gateway, Language $language)
     {
-        $this->gateway  = $gateway;
+        $this->gateway      = $gateway;
         $this->expressions  = $gateway->getAll();
-        $this->language = $language;
+        $this->language     = $language;
 
         $this->language->register('setProperty', function () {
             throw new Exception('setProperty() not implemented');
@@ -52,8 +53,27 @@ class Listener extends EventDispatcher implements Catchall
             $entity->payload[$property] = $value;
         });
 
-        $this->language->register('input', function () {
-            throw new Exception('input() not implemented');
+        $this->language->register('getProperty', function () {
+            throw new Exception('getProperty() not implemented');
+        }, function ($parameters, $property) {
+            /** @var Entity $entity */
+            $entity = $parameters['entity'];
+
+            return $entity->payload[$property];
+        });
+
+        $this->language->register('isTiming', function () {
+            throw new Exception('isTiming() not implemented');
+        }, function ($parameters, $eventId) {
+            if ($parameters['eventName'] !== TimingEvent::TIMING_EVENT) {
+                return false;
+            }
+
+            return $parameters['event']->timingId === $eventId;
+        });
+
+        $this->language->register('exec', function () {
+            throw new Exception('exec() not implemented');
         }, function ($parameters, $string) {
             unset($parameters);
             $inputEvent = new InputControlEvent($string);
@@ -76,6 +96,9 @@ class Listener extends EventDispatcher implements Catchall
      */
     public function dispatch($eventName, Event $event = null)
     {
+        // todo do not load all ones every time...
+        $this->expressions = $this->gateway->getAll();
+
         foreach ($this->expressions as $expression) {
             $parameters = [
                 'event'     => $event,

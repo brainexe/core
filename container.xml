@@ -28,9 +28,10 @@
 		<parameter key="application.layout_template">layout.html.twig</parameter>
 		<parameter key="application.error_template">error.html.twig</parameter>
 		<parameter key="application.guests_allowed">false</parameter>
+		<parameter key="application.allowed_private_ips">false</parameter>
 		<parameter key="application.registration_enabled">true</parameter>
 
-		<parameter key="message_queue.enabled">true</parameter>
+        <parameter key="message_queue.enabled">true</parameter>
 
 		<parameter key="piwik.site"></parameter>
 		<parameter key="piwik.id"></parameter>
