@@ -12,7 +12,7 @@ class EventDispatcher extends SymfonyEventDispatcher
     /**
      * @var bool
      */
-    private $enabled;
+    private $enabled = true;
 
     /**
      * @var Catchall[]

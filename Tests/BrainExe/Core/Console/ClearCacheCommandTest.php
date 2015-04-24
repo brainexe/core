@@ -98,11 +98,6 @@ class ClearCacheCommandTest extends PHPUnit_Framework_TestCase
             ->method('rebuildDIC')
             ->with(true);
 
-        $this->mockFilesystem
-            ->expects($this->once())
-            ->method('chmod')
-            ->with($this->isType('array'), 0777, 0000, true);
-
         $input = new ArrayInput(['command' => 'redis:scripts:load']);
         $application
             ->expects($this->once())

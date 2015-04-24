@@ -41,6 +41,7 @@ class LogoutControllerTest extends PHPUnit_Framework_TestCase
         $actualResult = $this->subject->logout($request);
 
         $this->assertNull($session->get('user'));
+        $this->assertNull($session->get('user_id'));
         $this->assertInstanceOf(AnonymusUserVO::class, $actualResult);
     }
 }

@@ -56,8 +56,8 @@ class TwigExtensionDefinitionBuilderTest extends PHPUnit_Framework_TestCase
         $definition->addTag(TwigExtensionCompilerPass::TAG, ['compiler' => $compiler]);
 
         $expectedResult = [
-            'id'         => $name,
-            'definition' => $definition
+            $name,
+            $definition
         ];
 
         $this->assertEquals($expectedResult, $actualResult);

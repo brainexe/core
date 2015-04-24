@@ -99,14 +99,14 @@ class EventDispatcherTest extends PHPUnit_Framework_TestCase
         $this->subject
             ->expects($this->once())
             ->method('dispatch')
-            ->with(BackgroundEvent::BACKGROUND, $event);
+            ->with(TestEvent::TYPE, $event);
 
         $this->subject->dispatchInBackground($event, $timestamp);
     }
 
     public function testDispatchInBackgroundWithTime()
     {
-        $event = new TestEvent(TestEvent::TYPE);
+        $event     = new TestEvent(TestEvent::TYPE);
         $timestamp = 10;
 
         $wrappedEvent = new DelayedEvent($event, $timestamp);

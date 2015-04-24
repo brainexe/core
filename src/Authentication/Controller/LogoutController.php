@@ -22,6 +22,7 @@ class LogoutController implements ControllerInterface
     public function logout(Request $request)
     {
         $request->getSession()->set('user_id', null);
+        $request->getSession()->set('user', null);
 
         return new AnonymusUserVO();
     }

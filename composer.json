@@ -30,6 +30,8 @@
     "brainexe/annotations": "dev-master",
     "brainexe/expression": "dev-master",
     "brainexe/message-queue": "dev-master",
+    "brainexe/input-control": "dev-master",
+    "brainexe/template": "dev-master",
     "monolog/monolog": "1.12.*",
     "doctrine/cache": "1.4.*",
     "predis/predis": "1.1.*"

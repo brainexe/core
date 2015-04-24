@@ -54,6 +54,8 @@ class UserVOTest extends PHPUnit_Framework_TestCase
         $expectedResult = [
             'username' => $username,
             'id' => $userId,
+            'avatar' => null,
+            'roles' => []
         ];
         $this->assertEquals($expectedResult, $actualResult);
     }

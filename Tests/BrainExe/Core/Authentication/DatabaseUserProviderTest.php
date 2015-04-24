@@ -243,7 +243,7 @@ class DatabaseUserProviderTest extends PHPUnit_Framework_TestCase
 
         $this->mockRedis
             ->expects($this->once())
-            ->method('exec');
+            ->method('execute');
 
         $actualResult = $this->subject->register($user);
 

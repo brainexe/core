@@ -58,7 +58,7 @@ class ConsoleCompilerPassTest extends PHPUnit_Framework_TestCase
         $this->mockConsoleDefinition
             ->expects($this->at(1))
             ->method('addMethodCall')
-            ->with('add', [new Reference($serviceId)]);
+            ->with('addCommands', [[new Reference($serviceId)]]);
 
         $this->subject->process($this->mockContainer);
     }

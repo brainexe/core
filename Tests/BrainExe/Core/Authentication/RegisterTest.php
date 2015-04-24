@@ -127,7 +127,7 @@ class RegisterTest extends PHPUnit_Framework_TestCase
     {
         $user = new UserVO();
         $user->username = $username = 'user name';
-        $user->username = 'password';
+        $user->password = 'password';
 
         $userId = 42;
         $session = new Session(new MockArraySessionStorage());

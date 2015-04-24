@@ -37,6 +37,7 @@ class RedisSessionHandler implements SessionHandlerInterface
     public function read($sessionId)
     {
         $key = $this->getKey($sessionId);
+
         return $this->getRedis()->GET($key) ? : '';
     }
 
