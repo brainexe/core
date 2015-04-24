@@ -54,9 +54,8 @@ class Rebuild
         }
 
         $containerBuilder->addCompilerPass(new GlobalCompilerPass());
-        $containerBuilder->compile();
-
         $containerBuilder->addExpressionLanguageProvider(new ExpressionLanguageProvider());
+        $containerBuilder->compile();
 
         $randomId      = mt_rand();
         $containerName = sprintf('dic_%d', $randomId);
