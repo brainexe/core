@@ -13,9 +13,10 @@ services:
   - redis-server
 
 before_install:
-  - composer self-update
-  - composer update --prefer-dist --no-dev
-  - echo "extension = redis.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - mkdir cache
+  - git checkout master
+  - composer install --no-dev
+  - if [ "`phpenv version-name`" != "hhvm" ]; then echo "extension = redis.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 
 script:
   - phpunit
