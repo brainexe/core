@@ -3,25 +3,24 @@
 namespace BrainExe\Core\Annotations\Builder;
 
 use BrainExe\Annotations\Loader\Annotation\ServiceDefinitionBuilder;
-use BrainExe\Core\Annotations\CompilerPass;
-use BrainExe\Core\DependencyInjection\CompilerPass\MiddlewareCompilerPass;
+use BrainExe\Core\DependencyInjection\CompilerPass\EventListenerCompilerPass;
 use ReflectionClass;
 use Symfony\Component\DependencyInjection\Definition;
 
-class MiddlewareDefinitionBuilder extends ServiceDefinitionBuilder
+class EventListener extends ServiceDefinitionBuilder
 {
+
     /**
-     * @param ReflectionClass $reflectionClass
-     * @param CompilerPass $annotation
-     * @return array
+     * {@inheritdoc}
      */
     public function build(ReflectionClass $reflectionClass, $annotation)
     {
         /** @var Definition $definition */
         list($serviceId, $definition) = parent::build($reflectionClass, $annotation);
 
-        $definition->setPublic(false);
-        $definition->addTag(MiddlewareCompilerPass::TAG, ['priority' => $annotation->priority]);
+        $serviceId = sprintf('__Listener.%s', str_replace('Listener', '', $serviceId));
+
+        $definition->addTag(EventListenerCompilerPass::TAG);
 
         return [$serviceId, $definition];
     }

@@ -2,23 +2,23 @@
 
 namespace Tests\BrainExe\Core\Annotations;
 
-use BrainExe\Core\Annotations\Builder\TwigExtensionDefinitionBuilder;
-use BrainExe\Core\Annotations\TwigExtension;
+use BrainExe\Core\Annotations\Builder\TwigExtension as Builder;
+use BrainExe\Core\Annotations\TwigExtension as Annotation;
 use Doctrine\Common\Annotations\Reader;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase;
+use PHPUnit_Framework_TestCase as TestCase;
 
-class TwigExtensionTest extends PHPUnit_Framework_TestCase
+class TwigExtensionTest extends TestCase
 {
 
     /**
-     * @var TwigExtension
+     * @var Annotation
      */
     private $subject;
 
     public function __construct()
     {
-        $this->subject = new TwigExtension([]);
+        $this->subject = new Annotation([]);
     }
 
     public function testGetBuilder()
@@ -28,6 +28,6 @@ class TwigExtensionTest extends PHPUnit_Framework_TestCase
 
         $actualResult = $this->subject->getBuilder($reader);
 
-        $this->assertInstanceOf(TwigExtensionDefinitionBuilder::class, $actualResult);
+        $this->assertInstanceOf(Builder::class, $actualResult);
     }
 }

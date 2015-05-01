@@ -2,9 +2,9 @@
 
 namespace BrainExe\Core\EventDispatcher;
 
-use BrainExe\MessageQueue\Event\AbstractMessageQueueEvent;
+use BrainExe\MessageQueue\Event\MessageQueueEvent;
 
-class BackgroundEvent extends AbstractMessageQueueEvent
+class BackgroundEvent extends MessageQueueEvent
 {
 
     const BACKGROUND = 'message_queue.background';

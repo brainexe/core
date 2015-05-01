@@ -2,9 +2,9 @@
 
 namespace BrainExe\Core\EventDispatcher;
 
-use BrainExe\MessageQueue\Event\AbstractMessageQueueEvent;
+use BrainExe\MessageQueue\Event\MessageQueueEvent;
 
-class IntervalEvent extends AbstractMessageQueueEvent
+class IntervalEvent extends MessageQueueEvent
 {
 
     const INTERVAL = 'message_queue.interval';

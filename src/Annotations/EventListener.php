@@ -3,7 +3,7 @@
 namespace BrainExe\Core\Annotations;
 
 use BrainExe\Annotations\Annotations\Service;
-use BrainExe\Core\Annotations\Builder\EventListenerDefinitionBuilder;
+use BrainExe\Core\Annotations\Builder\EventListener as Builder;
 use Doctrine\Common\Annotations\Annotation;
 use Doctrine\Common\Annotations\Reader;
 
@@ -18,6 +18,6 @@ class EventListener extends Service
      */
     public static function getBuilder(Reader $reader)
     {
-        return new EventListenerDefinitionBuilder($reader);
+        return new Builder($reader);
     }
 }

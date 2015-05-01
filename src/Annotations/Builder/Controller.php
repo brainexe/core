@@ -11,7 +11,7 @@ use ReflectionClass;
 use ReflectionMethod;
 use Symfony\Component\DependencyInjection\Definition;
 
-class ControllerDefinitionBuilder extends ServiceDefinitionBuilder
+class Controller extends ServiceDefinitionBuilder
 {
 
     /**

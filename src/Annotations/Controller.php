@@ -3,7 +3,7 @@
 namespace BrainExe\Core\Annotations;
 
 use BrainExe\Annotations\Annotations\Service;
-use BrainExe\Core\Annotations\Builder\ControllerDefinitionBuilder;
+use BrainExe\Core\Annotations\Builder\Controller as Builder;
 use Doctrine\Common\Annotations\Annotation;
 use Doctrine\Common\Annotations\Reader;
 
@@ -18,6 +18,6 @@ class Controller extends Service
      */
     public static function getBuilder(Reader $reader)
     {
-        return new ControllerDefinitionBuilder($reader);
+        return new Builder($reader);
     }
 }

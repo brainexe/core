@@ -19,12 +19,12 @@ class WebsocketListener implements EventSubscriberInterface
     use EventDispatcherTrait;
 
     /**
-     * @{@inheritdoc}
+     * @{inheritdoc}
      */
     public static function getSubscribedEvents()
     {
         return [
-        WebSocketEvent::PUSH => 'handlePushEvent',
+            WebSocketEvent::PUSH => 'handlePushEvent',
         ];
     }
 

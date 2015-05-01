@@ -3,17 +3,16 @@
 namespace BrainExe\Core\Annotations\Builder;
 
 use BrainExe\Annotations\Loader\Annotation\ServiceDefinitionBuilder;
-use BrainExe\Core\Annotations\TwigExtension;
-use BrainExe\Core\DependencyInjection\CompilerPass\TwigExtensionCompilerPass;
+use BrainExe\Core\Annotations\CompilerPass as Annotation;
+use BrainExe\Core\DependencyInjection\CompilerPass\MiddlewareCompilerPass;
 use ReflectionClass;
 use Symfony\Component\DependencyInjection\Definition;
 
-class TwigExtensionDefinitionBuilder extends ServiceDefinitionBuilder
+class Middleware extends ServiceDefinitionBuilder
 {
-
     /**
      * @param ReflectionClass $reflectionClass
-     * @param TwigExtension $annotation
+     * @param Annotation $annotation
      * @return array
      */
     public function build(ReflectionClass $reflectionClass, $annotation)
@@ -21,8 +20,8 @@ class TwigExtensionDefinitionBuilder extends ServiceDefinitionBuilder
         /** @var Definition $definition */
         list($serviceId, $definition) = parent::build($reflectionClass, $annotation);
 
-        $definition->addTag(TwigExtensionCompilerPass::TAG, ['compiler' => $annotation->compiler]);
         $definition->setPublic(false);
+        $definition->addTag(MiddlewareCompilerPass::TAG, ['priority' => $annotation->priority]);
 
         return [$serviceId, $definition];
     }

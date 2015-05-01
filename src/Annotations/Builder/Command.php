@@ -9,7 +9,7 @@ use Raspberry\Sensors\CompilerPass;
 use ReflectionClass;
 use Symfony\Component\DependencyInjection\Definition;
 
-class CommandDefinitionBuilder extends ServiceDefinitionBuilder
+class Command extends ServiceDefinitionBuilder
 {
     /**
      * {@inheritdoc}

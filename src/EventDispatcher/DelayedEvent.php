@@ -2,9 +2,9 @@
 
 namespace BrainExe\Core\EventDispatcher;
 
-use BrainExe\MessageQueue\Event\AbstractMessageQueueEvent;
+use BrainExe\MessageQueue\Event\MessageQueueEvent;
 
-class DelayedEvent extends AbstractMessageQueueEvent
+class DelayedEvent extends MessageQueueEvent
 {
 
     const DELAYED = 'message_queue.delayed';
