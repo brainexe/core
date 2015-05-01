@@ -6,7 +6,7 @@ use BrainExe\Core\Util\Time;
 use PHPUnit_Framework_TestCase;
 
 /**
- * @Covers BrainExe\Core\Util\Time
+ * @covers BrainExe\Core\Util\Time
  */
 class TimeTest extends PHPUnit_Framework_TestCase
 {

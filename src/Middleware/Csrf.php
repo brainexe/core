@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Route;
 /**
  * @Middleware(priority=4)
  */
-class CsrfMiddleware extends AbstractMiddleware
+class Csrf extends AbstractMiddleware
 {
 
     const CSRF = 'csrf';

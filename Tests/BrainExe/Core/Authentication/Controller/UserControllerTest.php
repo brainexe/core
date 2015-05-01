@@ -8,7 +8,7 @@ use PHPUnit_Framework_TestCase;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @Covers BrainExe\Core\Authentication\Controller\UserController
+ * @covers BrainExe\Core\Authentication\Controller\UserController
  */
 class UserControllerTest extends PHPUnit_Framework_TestCase
 {

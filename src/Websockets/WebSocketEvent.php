@@ -4,6 +4,9 @@ namespace BrainExe\Core\Websockets;
 
 use BrainExe\Core\EventDispatcher\AbstractEvent;
 
+/**
+ * @api
+ */
 class WebSocketEvent extends AbstractEvent
 {
 

@@ -6,6 +6,7 @@ use BrainExe\Annotations\Annotations\Service;
 
 /**
  * @Service("Glob", public=false)
+ * @api
  */
 class Glob
 {

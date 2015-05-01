@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 /**
- * @Covers BrainExe\Core\Authentication\Controller\LoginController
+ * @covers BrainExe\Core\Authentication\Controller\LoginController
  */
 class LoginControllerTest extends PHPUnit_Framework_TestCase
 {

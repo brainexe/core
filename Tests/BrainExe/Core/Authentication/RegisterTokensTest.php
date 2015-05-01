@@ -11,7 +11,7 @@ use PHPUnit_Framework_TestCase;
 use BrainExe\Core\Redis\PhpRedis;
 
 /**
- * @Covers BrainExe\Core\Authentication\RegisterTokens
+ * @covers BrainExe\Core\Authentication\RegisterTokens
  */
 class RegisterTokensTest extends PHPUnit_Framework_TestCase
 {

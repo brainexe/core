@@ -6,7 +6,7 @@ use BrainExe\Core\Util\QRCode;
 use PHPUnit_Framework_TestCase;
 
 /**
- * @Covers BrainExe\Core\Util\QRCode
+ * @covers BrainExe\Core\Util\QRCode
  */
 class QRCodeTest extends PHPUnit_Framework_TestCase
 {

@@ -2,44 +2,44 @@
 
 namespace Tests\BrainExe\Core\Middleware\CacheMiddleware;
 
-use BrainExe\Core\Middleware\CacheMiddleware;
+use BrainExe\Core\Middleware\Cache;
 use Doctrine\Common\Cache\RedisCache;
 use Monolog\Logger;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase;
+use PHPUnit_Framework_TestCase as TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Route;
 
 /**
- * @Covers BrainExe\Core\Middleware\CacheMiddleware
+ * @covers BrainExe\Core\Middleware\Cache
  */
-class CacheMiddlewareTest extends PHPUnit_Framework_TestCase
+class CacheTest extends TestCase
 {
 
     /**
-     * @var CacheMiddleware
+     * @var Cache
      */
     private $subject;
 
     /**
      * @var RedisCache|MockObject
      */
-    private $mockRedisCache;
+    private $redisCache;
 
     /**
      * @var Logger|MockObject
      */
-    private $mockLogger;
+    private $logger;
 
     public function setUp()
     {
-        $this->mockRedisCache = $this->getMock(RedisCache::class, [], [], '', false);
-        $this->mockLogger     = $this->getMock(Logger::class, [], [], '', false);
+        $this->redisCache = $this->getMock(RedisCache::class, [], [], '', false);
+        $this->logger     = $this->getMock(Logger::class, [], [], '', false);
 
-        $this->subject = new CacheMiddleware(true);
-        $this->subject->setCache($this->mockRedisCache);
-        $this->subject->setLogger($this->mockLogger);
+        $this->subject = new Cache(true);
+        $this->subject->setCache($this->redisCache);
+        $this->subject->setLogger($this->logger);
     }
 
     public function testProcessRequestPostRequestShouldDoNothing()
@@ -56,7 +56,7 @@ class CacheMiddlewareTest extends PHPUnit_Framework_TestCase
         // response should not be saved
         $response = new Response();
 
-        $this->mockRedisCache
+        $this->redisCache
             ->expects($this->never())
             ->method('save');
 
@@ -84,7 +84,7 @@ class CacheMiddlewareTest extends PHPUnit_Framework_TestCase
             ->method('getRequestUri')
             ->willReturn($requestUri);
 
-        $this->mockRedisCache
+        $this->redisCache
             ->expects($this->once())
             ->method('contains')
             ->with($requestUri)
@@ -100,10 +100,10 @@ class CacheMiddlewareTest extends PHPUnit_Framework_TestCase
 
         // save valid response
         $response = new Response();
-        $this->mockRedisCache
+        $this->redisCache
             ->expects($this->once())
             ->method('save')
-            ->with($requestUri, $response, CacheMiddleware::DEFAULT_TTL)
+            ->with($requestUri, $response, Cache::DEFAULT_TTL)
             ->willReturn(false);
 
         $this->subject->processResponse($request, $response);
@@ -132,13 +132,13 @@ class CacheMiddlewareTest extends PHPUnit_Framework_TestCase
             ->method('getRequestUri')
             ->willReturn($requestUri);
 
-        $this->mockRedisCache
+        $this->redisCache
             ->expects($this->once())
             ->method('contains')
             ->with($requestUri)
             ->willReturn(true);
 
-        $this->mockRedisCache
+        $this->redisCache
             ->expects($this->once())
             ->method('fetch')
             ->with($requestUri)

@@ -2,10 +2,10 @@
 
 namespace Tests\BrainExe\Core\Middleware\CsrfMiddleware;
 
-use BrainExe\Core\Middleware\CsrfMiddleware;
+use BrainExe\Core\Middleware\Csrf;
 use BrainExe\Core\Util\IdGenerator;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase;
+use PHPUnit_Framework_TestCase as TestCase;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,25 +13,25 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\Routing\Route;
 
-class CsrfMiddlewareTest extends PHPUnit_Framework_TestCase
+class CsrfTest extends TestCase
 {
 
     /**
-     * @var CsrfMiddleware
+     * @var Csrf
      */
     private $subject;
 
     /**
      * @var IdGenerator|MockObject
      */
-    private $mockIdGenerator;
+    private $idGenerator;
 
     public function setUp()
     {
-        $this->mockIdGenerator = $this->getMock(IdGenerator::class, [], [], '', false);
+        $this->idGenerator = $this->getMock(IdGenerator::class, [], [], '', false);
 
-        $this->subject = new CsrfMiddleware();
-        $this->subject->setIdGenerator($this->mockIdGenerator);
+        $this->subject = new Csrf();
+        $this->subject->setIdGenerator($this->idGenerator);
     }
 
     public function testProcessGetRequestWithoutToken()
@@ -43,13 +43,13 @@ class CsrfMiddlewareTest extends PHPUnit_Framework_TestCase
         $request = new Request();
         $request->setSession($session);
         $request->setMethod('GET');
-        $request->cookies->set(CsrfMiddleware::CSRF, $currentCsrf);
+        $request->cookies->set(Csrf::CSRF, $currentCsrf);
 
         $response  = new Response();
         $route     = new Route('/route/');
         $routeName = null;
 
-        $this->mockIdGenerator
+        $this->idGenerator
             ->expects($this->once())
             ->method('generateRandomId')
             ->willReturn($newCsrf);
@@ -57,10 +57,10 @@ class CsrfMiddlewareTest extends PHPUnit_Framework_TestCase
         $this->subject->processRequest($request, $route, $routeName);
         $this->subject->processResponse($request, $response);
 
-        $expectedCookie = new Cookie(CsrfMiddleware::CSRF, $newCsrf);
+        $expectedCookie = new Cookie(Csrf::CSRF, $newCsrf);
 
         $this->assertEquals([$expectedCookie], $response->headers->getCookies());
-        $this->assertEquals($newCsrf, $session->get(CsrfMiddleware::CSRF));
+        $this->assertEquals($newCsrf, $session->get(Csrf::CSRF));
     }
 
     /**
@@ -73,18 +73,18 @@ class CsrfMiddlewareTest extends PHPUnit_Framework_TestCase
         $expectedToken = 'expected';
         $newCsrf       = 'new token';
         $session       = new Session(new MockArraySessionStorage());
-        $session->set(CsrfMiddleware::CSRF, $expectedToken);
+        $session->set(Csrf::CSRF, $expectedToken);
 
         $request = new Request();
         $request->setSession($session);
         $request->setMethod('POST');
-        $request->cookies->set(CsrfMiddleware::CSRF, $currentCsrf);
+        $request->cookies->set(Csrf::CSRF, $currentCsrf);
 
         $response = new Response();
         $route      = new Route('/route/');
         $routeName = null;
 
-        $this->mockIdGenerator
+        $this->idGenerator
             ->expects($this->once())
             ->method('generateRandomId')
             ->willReturn($newCsrf);
@@ -92,10 +92,10 @@ class CsrfMiddlewareTest extends PHPUnit_Framework_TestCase
         $this->subject->processRequest($request, $route, $routeName);
         $this->subject->processResponse($request, $response);
 
-        $expectedCookie = new Cookie(CsrfMiddleware::CSRF, $newCsrf);
+        $expectedCookie = new Cookie(Csrf::CSRF, $newCsrf);
 
         $this->assertEquals([$expectedCookie], $response->headers->getCookies());
-        $this->assertEquals($newCsrf, $session->get(CsrfMiddleware::CSRF));
+        $this->assertEquals($newCsrf, $session->get(Csrf::CSRF));
     }
 
     public function testProcessPostRequestValidToken()
@@ -105,18 +105,18 @@ class CsrfMiddlewareTest extends PHPUnit_Framework_TestCase
         $expectedToken = $currentCsrf;
 
         $session = new Session(new MockArraySessionStorage());
-        $session->set(CsrfMiddleware::CSRF, $expectedToken);
+        $session->set(Csrf::CSRF, $expectedToken);
 
         $request = new Request();
         $request->setSession($session);
         $request->setMethod('POST');
-        $request->cookies->set(CsrfMiddleware::CSRF, $currentCsrf);
+        $request->cookies->set(Csrf::CSRF, $currentCsrf);
 
         $response   = new Response();
         $route      = new Route('/route/');
         $routeName = null;
 
-        $this->mockIdGenerator
+        $this->idGenerator
             ->expects($this->once())
             ->method('generateRandomId')
             ->willReturn($newCsrf);
@@ -124,9 +124,9 @@ class CsrfMiddlewareTest extends PHPUnit_Framework_TestCase
         $this->subject->processRequest($request, $route, $routeName);
         $this->subject->processResponse($request, $response);
 
-        $expectedCookie = new Cookie(CsrfMiddleware::CSRF, $newCsrf);
+        $expectedCookie = new Cookie(Csrf::CSRF, $newCsrf);
 
         $this->assertEquals([$expectedCookie], $response->headers->getCookies());
-        $this->assertEquals($newCsrf, $session->get(CsrfMiddleware::CSRF));
+        $this->assertEquals($newCsrf, $session->get(Csrf::CSRF));
     }
 }

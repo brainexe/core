@@ -8,6 +8,7 @@ use Symfony\Component\DependencyInjection\Container;
 
 /**
  * @Service(public=false)
+ * @api
  */
 class ObjectFinder
 {

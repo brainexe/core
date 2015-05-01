@@ -12,7 +12,7 @@ use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase;
 
 /**
- * @Covers BrainExe\Core\Authentication\DatabaseUserProvider
+ * @covers BrainExe\Core\Authentication\DatabaseUserProvider
  */
 class DatabaseUserProviderTest extends PHPUnit_Framework_TestCase
 {

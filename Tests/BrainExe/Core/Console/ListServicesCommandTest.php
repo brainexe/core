@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
 /**
- * @Covers BrainExe\Core\Console\ListServicesCommand
+ * @covers BrainExe\Core\Console\ListServicesCommand
  */
 class ListServicesCommandTest extends PHPUnit_Framework_TestCase
 {

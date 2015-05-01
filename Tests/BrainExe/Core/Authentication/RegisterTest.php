@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
 /**
- * @Covers BrainExe\Core\Authentication\Register
+ * @covers BrainExe\Core\Authentication\Register
  */
 class RegisterTest extends PHPUnit_Framework_TestCase
 {

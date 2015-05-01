@@ -10,7 +10,7 @@ use PHPUnit_Framework_TestCase;
 use BrainExe\Core\Redis\PhpRedis;
 
 /**
- * @Covers BrainExe\Core\Application\RedisLock
+ * @covers BrainExe\Core\Application\RedisLock
  */
 class RedisLockTest extends PHPUnit_Framework_TestCase
 {

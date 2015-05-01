@@ -6,7 +6,7 @@ use BrainExe\Core\Authentication\PasswordHasher;
 use PHPUnit_Framework_TestCase;
 
 /**
- * @Covers BrainExe\Core\Authentication\PasswordHasher
+ * @covers BrainExe\Core\Authentication\PasswordHasher
  */
 class PasswordHasherTest extends PHPUnit_Framework_TestCase
 {

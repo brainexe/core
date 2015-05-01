@@ -2,35 +2,35 @@
 
 namespace Tests\BrainExe\Core\Middleware\SessionMiddleware;
 
-use BrainExe\Core\Middleware\SessionMiddleware;
+use BrainExe\Core\Middleware\Session;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase;
+use PHPUnit_Framework_TestCase as TestCase;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Session  as SessionModel;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Route;
 
 /**
- * @Covers BrainExe\Core\Middleware\SessionMiddleware
+ * @covers BrainExe\Core\Middleware\Session
  */
-class SessionMiddlewareTest extends PHPUnit_Framework_TestCase
+class SessionTest extends TestCase
 {
 
     /**
-     * @var SessionMiddleware
+     * @var Session
      */
     private $subject;
 
     /**
-     * @var Session|MockObject
+     * @var SessionModel|MockObject
      */
-    private $mockSession;
+    private $session;
 
     public function setUp()
     {
-        $this->mockSession = $this->getMock(Session::class, [], [], '', false);
+        $this->session = $this->getMock(SessionModel::class, [], [], '', false);
 
-        $this->subject = new SessionMiddleware($this->mockSession);
+        $this->subject = new Session($this->session);
     }
 
     public function testProcessRequest()

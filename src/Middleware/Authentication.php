@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Route;
 /**
  * @Middleware(priority=8)
  */
-class AuthenticationMiddleware extends AbstractMiddleware
+class Authentication extends AbstractMiddleware
 {
 
     /**

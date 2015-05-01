@@ -6,7 +6,7 @@ use BrainExe\Core\EventDispatcher\AbstractEvent;
 use BrainExe\Core\EventDispatcher\BackgroundEvent;
 use BrainExe\Core\EventDispatcher\DelayedEvent;
 use BrainExe\Core\EventDispatcher\EventDispatcher;
-use BrainExe\Core\EventDispatcher\PushViaWebsocketInterface;
+use BrainExe\Core\EventDispatcher\PushViaWebsocket;
 use BrainExe\Core\Websockets\WebSocketEvent;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase;
@@ -17,7 +17,7 @@ class TestEvent extends AbstractEvent
     const TYPE = 'test';
 }
 
-class TestWebsocketEvent extends AbstractEvent implements PushViaWebsocketInterface
+class TestWebsocketEvent extends AbstractEvent implements PushViaWebsocket
 {
     const TYPE = 'websocket.test';
 }

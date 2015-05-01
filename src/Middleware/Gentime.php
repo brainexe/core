@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * @Middleware(priority=1)
  */
-class GentimeMiddleware extends AbstractMiddleware
+class Gentime extends AbstractMiddleware
 {
 
     use LoggerTrait;

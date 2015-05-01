@@ -6,7 +6,7 @@ use BrainExe\Core\Redis\RedisScripts;
 use PHPUnit_Framework_TestCase;
 
 /**
- * @Covers BrainExe\Core\Redis\RedisScripts
+ * @covers BrainExe\Core\Redis\RedisScripts
  */
 class RedisScriptsTest extends PHPUnit_Framework_TestCase
 {

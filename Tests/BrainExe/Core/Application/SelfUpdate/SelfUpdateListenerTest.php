@@ -8,7 +8,7 @@ use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase;
 
 /**
- * @Covers BrainExe\Core\Application\SelfUpdate\SelfUpdateListener
+ * @covers BrainExe\Core\Application\SelfUpdate\SelfUpdateListener
  */
 class SelfUpdateListenerTest extends PHPUnit_Framework_TestCase
 {

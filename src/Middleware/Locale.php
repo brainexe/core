@@ -4,26 +4,26 @@ namespace BrainExe\Core\Middleware;
 
 use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Core\Annotations\Middleware;
-use BrainExe\Core\Application\Locale;
+use BrainExe\Core\Application\Locale as LocaleModel;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Route;
 
 /**
  * @Middleware(priority=null)
  */
-class LocaleMiddleware extends AbstractMiddleware
+class Locale extends AbstractMiddleware
 {
 
     /**
-     * @var Locale
+     * @var LocaleModel
      */
     private $locale;
 
     /**
      * @Inject("@Core.Locale")
-     * @param Locale $locale
+     * @param LocaleModel $locale
      */
-    public function __construct(Locale $locale)
+    public function __construct(LocaleModel $locale)
     {
         $this->locale = $locale;
     }

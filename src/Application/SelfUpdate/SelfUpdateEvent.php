@@ -3,9 +3,9 @@
 namespace BrainExe\Core\Application\SelfUpdate;
 
 use BrainExe\Core\EventDispatcher\AbstractEvent;
-use BrainExe\Core\EventDispatcher\PushViaWebsocketInterface;
+use BrainExe\Core\EventDispatcher\PushViaWebsocket;
 
-class SelfUpdateEvent extends AbstractEvent implements PushViaWebsocketInterface
+class SelfUpdateEvent extends AbstractEvent implements PushViaWebsocket
 {
 
     const TRIGGER = 'update.trigger';

@@ -6,7 +6,7 @@ use BrainExe\Core\Application\Locale;
 use PHPUnit_Framework_TestCase;
 
 /**
- * @Covers BrainExe\Core\Application\Locale
+ * @covers BrainExe\Core\Application\Locale
  */
 class LocaleTest extends PHPUnit_Framework_TestCase
 {

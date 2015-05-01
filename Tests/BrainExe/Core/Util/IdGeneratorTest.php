@@ -6,7 +6,7 @@ use BrainExe\Core\Util\IdGenerator;
 use PHPUnit_Framework_TestCase;
 
 /**
- * @Covers BrainExe\Core\Util\IdGenerator
+ * @covers BrainExe\Core\Util\IdGenerator
  */
 class IdGeneratorTest extends PHPUnit_Framework_TestCase
 {

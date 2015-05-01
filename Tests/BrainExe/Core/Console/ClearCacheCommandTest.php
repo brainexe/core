@@ -14,7 +14,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Finder\Finder;
 
 /**
- * @Covers BrainExe\Core\Console\ClearCacheCommand
+ * @covers BrainExe\Core\Console\ClearCacheCommand
  */
 class ClearCacheCommandTest extends PHPUnit_Framework_TestCase
 {

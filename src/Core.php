@@ -21,6 +21,9 @@ if (!defined('CORE_STANDALONE')) {
     define('CORE_STANDALONE', false);
 }
 
+/**
+ * @api
+ */
 class Core
 {
 

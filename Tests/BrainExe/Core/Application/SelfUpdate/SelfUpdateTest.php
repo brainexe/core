@@ -11,7 +11,7 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Process\ProcessBuilder;
 
 /**
- * @Covers BrainExe\Core\Application\SelfUpdate\SelfUpdate
+ * @covers BrainExe\Core\Application\SelfUpdate\SelfUpdate
  */
 class SelfUpdateTest extends PHPUnit_Framework_TestCase
 {

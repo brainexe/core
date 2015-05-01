@@ -4,6 +4,9 @@ namespace BrainExe\Core\EventDispatcher;
 
 use BrainExe\MessageQueue\Event\MessageQueueEvent;
 
+/**
+ * @api
+ */
 class IntervalEvent extends MessageQueueEvent
 {
 

@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 /**
- * @Covers BrainExe\Core\Authentication\Controller\LogoutController
+ * @covers BrainExe\Core\Authentication\Controller\LogoutController
  */
 class LogoutControllerTest extends PHPUnit_Framework_TestCase
 {

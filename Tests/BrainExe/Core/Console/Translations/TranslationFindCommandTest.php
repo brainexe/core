@@ -15,7 +15,7 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Process\ProcessBuilder;
 
 /**
- * @Covers BrainExe\Core\Console\Translations\TranslationFindCommand
+ * @covers BrainExe\Core\Console\Translations\TranslationFindCommand
  */
 class TranslationFindCommandTest extends PHPUnit_Framework_TestCase
 {

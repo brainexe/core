@@ -4,6 +4,9 @@ namespace BrainExe\Core\EventDispatcher;
 
 use BrainExe\MessageQueue\Event\MessageQueueEvent;
 
+/**
+ * @api
+ */
 class DelayedEvent extends MessageQueueEvent
 {
 
@@ -20,7 +23,7 @@ class DelayedEvent extends MessageQueueEvent
      */
     public function __construct(AbstractEvent $event, $timestamp)
     {
-        $this->event_name = self::DELAYED;
+        parent::__construct(self::DELAYED);
         $this->event      = $event;
         $this->timestamp  = $timestamp;
     }

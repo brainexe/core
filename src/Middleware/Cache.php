@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Route;
  * @todo invalidate
  * @Middleware(priority=null)
  */
-class CacheMiddleware extends AbstractMiddleware
+class Cache extends AbstractMiddleware
 {
 
     use CacheTrait;

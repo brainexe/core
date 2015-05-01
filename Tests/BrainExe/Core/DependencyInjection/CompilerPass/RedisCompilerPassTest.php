@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
 /**
- * @Covers BrainExe\Core\DependencyInjection\CompilerPass\RedisCompilerPass
+ * @covers BrainExe\Core\DependencyInjection\CompilerPass\RedisCompilerPass
  */
 class RedisCompilerPassTest extends PHPUnit_Framework_TestCase
 {
@@ -34,7 +34,7 @@ class RedisCompilerPassTest extends PHPUnit_Framework_TestCase
     public function testProcess()
     {
         $this->markTestSkipped();
-        
+
         $password = 'testetst';
         $database = 12;
         $host     = 'localhost';

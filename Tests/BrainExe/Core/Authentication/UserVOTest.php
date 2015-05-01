@@ -7,7 +7,7 @@ use PHPUnit_Framework_TestCase;
 use Symfony\Component\Security\Core\Role\Role;
 
 /**
- * @Covers BrainExe\Core\Authentication\UserVO
+ * @covers BrainExe\Core\Authentication\UserVO
  */
 class UserVOTest extends PHPUnit_Framework_TestCase
 {

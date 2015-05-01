@@ -5,37 +5,37 @@ namespace Tests\BrainExe\Core\Middleware\UserExceptionMiddleware;
 use BrainExe\Core\Application\ErrorView;
 use BrainExe\Core\Application\UserException;
 use BrainExe\Core\DependencyInjection\ObjectFinder;
-use BrainExe\Core\Middleware\UserExceptionMiddleware;
+use BrainExe\Core\Middleware\CatchUserException;
 use Exception;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase;
+use PHPUnit_Framework_TestCase as TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Route;
 
 /**
- * @Covers BrainExe\Core\Middleware\UserExceptionMiddleware
+ * @covers BrainExe\Core\Middleware\CatchUserException
  */
-class UserExceptionMiddlewareTest extends PHPUnit_Framework_TestCase
+class CatchUserExceptionTest extends TestCase
 {
 
     /**
-     * @var UserExceptionMiddleware
+     * @var CatchUserException
      */
     private $subject;
 
     /**
      * @var ObjectFinder|MockObject
      */
-    private $mockObjectFinder;
+    private $objectFinder;
 
     public function setUp()
     {
-        $this->mockObjectFinder = $this->getMock(ObjectFinder::class, [], [], '', false);
+        $this->objectFinder = $this->getMock(ObjectFinder::class, [], [], '', false);
 
-        $this->subject = new UserExceptionMiddleware();
-        $this->subject->setObjectFinder($this->mockObjectFinder);
+        $this->subject = new CatchUserException();
+        $this->subject->setObjectFinder($this->objectFinder);
     }
 
     /**
@@ -74,7 +74,7 @@ class UserExceptionMiddlewareTest extends PHPUnit_Framework_TestCase
             ->method('isXmlHttpRequest')
             ->willReturn(false);
 
-        $this->mockObjectFinder
+        $this->objectFinder
             ->expects($this->once())
             ->method('getService')
             ->with('ErrorView')
@@ -107,9 +107,10 @@ class UserExceptionMiddlewareTest extends PHPUnit_Framework_TestCase
     public function provideExceptionsForAjax()
     {
         return [
-        [new ResourceNotFoundException(), 404],
-        [new MethodNotAllowedException(['POST']), 405],
-        [new Exception('test'), 500],
+            [new ResourceNotFoundException(), 404],
+            [new MethodNotAllowedException(['POST']), 405],
+            [new UserException('test'), 200],
+            [new Exception('test'), 500],
         ];
     }
 }

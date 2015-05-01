@@ -4,6 +4,9 @@ namespace BrainExe\Core\Util;
 
 use Symfony\Component\Filesystem\Filesystem as SymfonyFilesystem;
 
+/**
+ * @api
+ */
 class FileSystem extends SymfonyFilesystem
 {
 

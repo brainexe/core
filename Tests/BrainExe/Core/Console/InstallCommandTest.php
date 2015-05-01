@@ -10,7 +10,7 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
- * @Covers BrainExe\Core\Console\InstallCommand
+ * @covers BrainExe\Core\Console\InstallCommand
  */
 class InstallCommandTest extends PHPUnit_Framework_TestCase
 {

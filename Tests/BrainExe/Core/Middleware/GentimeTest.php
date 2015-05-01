@@ -3,36 +3,35 @@
 namespace Tests\BrainExe\Core\Middleware\GentimeMiddleware;
 
 use BrainExe\Core\Authentication\UserVO;
-use BrainExe\Core\Middleware\GentimeMiddleware;
+use BrainExe\Core\Middleware\Gentime;
 use Monolog\Logger;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase;
+use PHPUnit_Framework_TestCase as TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Route;
 
 /**
- * @Covers BrainExe\Core\Middleware\GentimeMiddleware
+ * @covers BrainExe\Core\Middleware\Gentime
  */
-class GentimeMiddlewareTest extends PHPUnit_Framework_TestCase
+class GentimeTest extends TestCase
 {
 
     /**
-     * @var GentimeMiddleware
+     * @var Gentime
      */
     private $subject;
 
     /**
      * @var Logger|MockObject
      */
-    private $mockLogger;
+    private $logger;
 
     public function setUp()
     {
-        $this->mockLogger = $this->getMock(Logger::class, [], [], '', false);
+        $this->logger = $this->getMock(Logger::class, [], [], '', false);
 
-        $this->subject = new GentimeMiddleware();
-        $this->subject->setLogger($this->mockLogger);
+        $this->subject = new Gentime();
+        $this->subject->setLogger($this->logger);
     }
 
     public function testProcessResponse()
@@ -40,7 +39,7 @@ class GentimeMiddlewareTest extends PHPUnit_Framework_TestCase
         $request = new Request();
         $response = new Response();
 
-        $this->mockLogger
+        $this->logger
             ->expects($this->once())
             ->method('log')
             ->with('info', $this->isType('string'), ['channel' => 'gentime']);
@@ -56,7 +55,7 @@ class GentimeMiddlewareTest extends PHPUnit_Framework_TestCase
 
         $request->attributes->set('user', $user);
 
-        $this->mockLogger
+        $this->logger
             ->expects($this->once())
             ->method('log')
             ->with('info', $this->isType('string'), ['channel' => 'gentime']);

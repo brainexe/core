@@ -2,7 +2,10 @@
 
 namespace BrainExe\Core\EventDispatcher;
 
-interface PushViaWebsocketInterface
+/**
+ * @api
+ */
+interface PushViaWebsocket
 {
 
 }

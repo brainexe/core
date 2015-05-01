@@ -4,6 +4,9 @@ namespace BrainExe\Core\EventDispatcher;
 
 use Symfony\Component\EventDispatcher\Event;
 
+/**
+ * @api
+ */
 abstract class AbstractEvent extends Event
 {
 

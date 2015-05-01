@@ -6,10 +6,10 @@ use BrainExe\Core\Authentication\AnonymusUserVO;
 use BrainExe\Core\Authentication\DatabaseUserProvider;
 use BrainExe\Core\Authentication\IP;
 use BrainExe\Core\Authentication\UserVO;
-use BrainExe\Core\Middleware\AuthenticationMiddleware;
+use BrainExe\Core\Middleware\Authentication;
 use Exception;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase;
+use PHPUnit_Framework_TestCase as TestCase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,20 +18,20 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\Routing\Route;
 
 /**
- * @Covers BrainExe\Core\Middleware\AuthenticationMiddleware
+ * @covers BrainExe\Core\Middleware\AuthenticationMiddleware
  */
-class AuthenticationMiddlewareTest extends PHPUnit_Framework_TestCase
+class AuthenticationTest extends TestCase
 {
 
     /**
-     * @var AuthenticationMiddleware
+     * @var Authentication
      */
     private $subject;
 
     /**
      * @var DatabaseUserProvider|MockObject
      */
-    private $databaseUserProvider;
+    private $userProvider;
 
     /**
      * @var IP|MockObject
@@ -40,13 +40,13 @@ class AuthenticationMiddlewareTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->databaseUserProvider = $this->getMock(DatabaseUserProvider::class, [], [], '', false);
-        $this->mockIp = $this->getMock(IP::class, [], [], '', false);
+        $this->userProvider = $this->getMock(DatabaseUserProvider::class, [], [], '', false);
+        $this->mockIp       = $this->getMock(IP::class, [], [], '', false);
 
-        $this->subject = new AuthenticationMiddleware(
+        $this->subject = new Authentication(
             false,
             false,
-            $this->databaseUserProvider,
+            $this->userProvider,
             $this->mockIp
         );
     }
@@ -60,10 +60,10 @@ class AuthenticationMiddlewareTest extends PHPUnit_Framework_TestCase
 
     public function testProcessRequestWhenApplicationGuestsAllowed()
     {
-        $this->subject = new AuthenticationMiddleware(
+        $this->subject = new Authentication(
             true,
             false,
-            $this->databaseUserProvider,
+            $this->userProvider,
             $this->mockIp
         );
 
@@ -79,7 +79,7 @@ class AuthenticationMiddlewareTest extends PHPUnit_Framework_TestCase
         $route = new Route('/path/');
         $routeName = null;
 
-        $this->databaseUserProvider
+        $this->userProvider
             ->expects($this->once())
             ->method('loadUserById')
             ->with($userId)
@@ -94,10 +94,10 @@ class AuthenticationMiddlewareTest extends PHPUnit_Framework_TestCase
 
     public function testProcessRequestForGuestRoutes()
     {
-        $this->subject = new AuthenticationMiddleware(
+        $this->subject = new Authentication(
             false,
             false,
-            $this->databaseUserProvider,
+            $this->userProvider,
             $this->mockIp
         );
 
@@ -114,7 +114,7 @@ class AuthenticationMiddlewareTest extends PHPUnit_Framework_TestCase
         $route->setDefault('guest', true);
         $routeName = 'public stuff';
 
-        $this->databaseUserProvider
+        $this->userProvider
             ->expects($this->once())
             ->method('loadUserById')
             ->with($userId)
@@ -129,10 +129,10 @@ class AuthenticationMiddlewareTest extends PHPUnit_Framework_TestCase
 
     public function testProcessRequestWhenNotLoggedIn()
     {
-        $this->subject = new AuthenticationMiddleware(
+        $this->subject = new Authentication(
             false,
             false,
-            $this->databaseUserProvider,
+            $this->userProvider,
             $this->mockIp
         );
 
@@ -148,7 +148,7 @@ class AuthenticationMiddlewareTest extends PHPUnit_Framework_TestCase
         $route = new Route('/path/');
         $routeName = 'random.route';
 
-        $this->databaseUserProvider
+        $this->userProvider
             ->expects($this->never())
             ->method('loadUserById');
 
@@ -169,10 +169,10 @@ class AuthenticationMiddlewareTest extends PHPUnit_Framework_TestCase
 
     public function testProcessRequest()
     {
-        $this->subject = new AuthenticationMiddleware(
+        $this->subject = new Authentication(
             false,
             false,
-            $this->databaseUserProvider,
+            $this->userProvider,
             $this->mockIp
         );
 
@@ -188,7 +188,7 @@ class AuthenticationMiddlewareTest extends PHPUnit_Framework_TestCase
         $route = new Route('/path/');
         $routeName = 'random.route';
 
-        $this->databaseUserProvider
+        $this->userProvider
             ->expects($this->once())
             ->method('loadUserById')
             ->with($userId)

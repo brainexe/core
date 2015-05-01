@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 /**
- * @Covers BrainExe\Core\Console\CreateUserCommand
+ * @covers BrainExe\Core\Console\CreateUserCommand
  */
 class CreateUserCommandTest extends PHPUnit_Framework_TestCase
 {

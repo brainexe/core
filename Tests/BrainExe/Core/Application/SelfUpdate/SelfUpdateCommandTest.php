@@ -11,7 +11,7 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
- * @Covers BrainExe\Core\Application\SelfUpdate\SelfUpdateCommand
+ * @covers BrainExe\Core\Application\SelfUpdate\SelfUpdateCommand
  */
 class SelfUpdateCommandTest extends PHPUnit_Framework_TestCase
 {

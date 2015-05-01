@@ -15,7 +15,7 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Process\ProcessBuilder;
 
 /**
- * @Covers BrainExe\Core\Console\Translations\TranslationCompileCommand
+ * @covers BrainExe\Core\Console\Translations\TranslationCompileCommand
  */
 class TranslationCompileCommandTest extends PHPUnit_Framework_TestCase
 {

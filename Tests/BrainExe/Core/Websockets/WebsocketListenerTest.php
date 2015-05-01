@@ -12,7 +12,7 @@ use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase;
 
 /**
- * @Covers BrainExe\Core\Websockets\WebsocketListener
+ * @covers BrainExe\Core\Websockets\WebsocketListener
  */
 class WebsocketListenerTest extends PHPUnit_Framework_TestCase
 {

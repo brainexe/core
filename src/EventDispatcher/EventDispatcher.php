@@ -58,7 +58,7 @@ class EventDispatcher extends SymfonyEventDispatcher
     public function dispatchEvent(AbstractEvent $event)
     {
         $this->dispatch($event->event_name, $event);
-        if ($event instanceof PushViaWebsocketInterface) {
+        if ($event instanceof PushViaWebsocket) {
             /** @var AbstractEvent $event */
             $this->dispatchAsWebsocketEvent($event);
         }

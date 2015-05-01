@@ -6,6 +6,7 @@ use BrainExe\Annotations\Annotations\Service;
 
 /**
  * @Service(public=false)
+ * @api
  */
 class QRCode
 {

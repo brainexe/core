@@ -10,7 +10,7 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * @Covers BrainExe\Core\DependencyInjection\CompilerPass\MiddlewareCompilerPass
+ * @covers BrainExe\Core\DependencyInjection\CompilerPass\MiddlewareCompilerPass
  */
 class MiddlewareCompilerPassTest extends PHPUnit_Framework_TestCase
 {

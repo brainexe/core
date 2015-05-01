@@ -27,7 +27,7 @@ class TestScript implements RedisScriptInterface
 }
 
 /**
- * @Covers BrainExe\Core\DependencyInjection\CompilerPass\RedisScriptCompilerPass
+ * @covers BrainExe\Core\DependencyInjection\CompilerPass\RedisScriptCompilerPass
  */
 class RedisScriptCompilerPassTest extends PHPUnit_Framework_TestCase
 {

@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Route;
 
 /**
- * @Covers BrainExe\Core\Application\AppKernel
+ * @covers BrainExe\Core\Application\AppKernel
  */
 class AppKernelTest extends PHPUnit_Framework_TestCase
 {

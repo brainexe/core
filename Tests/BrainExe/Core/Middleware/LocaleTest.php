@@ -2,10 +2,10 @@
 
 namespace Tests\BrainExe\Core\Middleware\LocaleMiddleware;
 
-use BrainExe\Core\Application\Locale;
-use BrainExe\Core\Middleware\LocaleMiddleware;
+use BrainExe\Core\Application\Locale as LocaleModel;
+use BrainExe\Core\Middleware\Locale;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase;
+use PHPUnit_Framework_TestCase as TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -13,44 +13,44 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\Routing\Route;
 
 /**
- * @Covers BrainExe\Core\Middleware\LocaleMiddleware
+ * @covers BrainExe\Core\Middleware\Locale
  */
-class LocaleMiddlewareTest extends PHPUnit_Framework_TestCase
+class LocaleTest extends TestCase
 {
 
     /**
-     * @var LocaleMiddleware
+     * @var Locale
      */
     private $subject;
 
     /**
-     * @var Locale|MockObject
+     * @var LocaleModel|MockObject
      */
-    private $mockLocale;
+    private $locale;
 
     public function setUp()
     {
-        $this->mockLocale = $this->getMock(Locale::class);
+        $this->locale = $this->getMock(LocaleModel::class);
 
-        $this->subject = new LocaleMiddleware($this->mockLocale);
+        $this->subject = new Locale($this->locale);
     }
 
     public function testProcessRequestWithLocaleInQuery()
     {
-        $request    = new Request();
-        $route      = new Route('/route/');
-        $session    = new Session(new MockArraySessionStorage());
+        $request   = new Request();
+        $route     = new Route('/route/');
+        $session   = new Session(new MockArraySessionStorage());
         $routeName = null;
 
         $request->setSession($session);
         $request->query->set('locale', 'en_EN');
 
-        $this->mockLocale
+        $this->locale
             ->expects($this->once())
             ->method('setLocale')
             ->with('en_EN');
 
-        $this->mockLocale
+        $this->locale
             ->expects($this->once())
             ->method('getLocales')
             ->willReturn(['en_EN', 'de_DE']);
@@ -67,12 +67,12 @@ class LocaleMiddlewareTest extends PHPUnit_Framework_TestCase
         $request->setSession($session);
         $request->query->set('locale', 'fo_ba');
 
-        $this->mockLocale
+        $this->locale
             ->expects($this->once())
             ->method('setLocale')
             ->with('en_EN');
 
-        $this->mockLocale
+        $this->locale
             ->expects($this->once())
             ->method('getLocales')
             ->willReturn(['en_EN', 'de_DE']);
