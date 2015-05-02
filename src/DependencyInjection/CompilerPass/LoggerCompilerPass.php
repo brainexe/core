@@ -4,6 +4,7 @@ namespace BrainExe\Core\DependencyInjection\CompilerPass;
 
 use BrainExe\Core\Annotations\CompilerPass;
 use Monolog\Handler\ChromePHPHandler;
+use Monolog\Handler\HipChatHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
@@ -25,11 +26,11 @@ class LoggerCompilerPass implements CompilerPassInterface
         $logger = $container->getDefinition('monolog.Logger');
 
         if ($container->getParameter('core_standalone')) {
-         // we have to remove all handlers...
+             // we have to remove all handlers...
             $logger->removeMethodCall('pushHandler');
             $logger->removeMethodCall('pushHandler');
 
-         // ...and add the TestHandler
+             // ...and add the TestHandler
             $logger->addMethodCall('pushHandler', [new Definition(TestHandler::class)]);
 
         } elseif ($container->getParameter('debug')) {
@@ -37,6 +38,17 @@ class LoggerCompilerPass implements CompilerPassInterface
             $logger->addMethodCall('pushHandler', [
                 new Definition(StreamHandler::class, ['php://stdout', Logger::INFO])
             ]);
+        }
+
+        if ($container->getParameter('hipchat.api_token')) {
+            $logger->addMethodCall('pushHandler', [new Definition(HipChatHandler::class, [
+                $container->getParameter('hipchat.api_token'),
+                $container->getParameter('hipchat.room'),
+                $container->getParameter('hipchat.name'),
+                false,
+                Logger::DEBUG
+            ])]);
+
         }
 
     }

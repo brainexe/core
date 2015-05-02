@@ -7,11 +7,11 @@ use Monolog\Handler\ChromePHPHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase;
+use PHPUnit_Framework_TestCase as TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
-class LoggerCompilerPassTest extends PHPUnit_Framework_TestCase
+class LoggerCompilerPassTest extends TestCase
 {
 
     /**
@@ -22,68 +22,74 @@ class LoggerCompilerPassTest extends PHPUnit_Framework_TestCase
     /**
      * @var ContainerBuilder|MockObject $container
      */
-    private $mockContainer;
+    private $container;
 
     /**
      * @var Definition|MockObject $container
      */
-    private $mockLoggerDefinition;
+    private $logger;
 
     public function setUp()
     {
         $this->subject = new LoggerCompilerPass();
 
-        $this->mockContainer = $this->getMock(ContainerBuilder::class);
-        $this->mockLoggerDefinition = $this->getMock(Definition::class);
+        $this->container = $this->getMock(ContainerBuilder::class);
+        $this->logger    = $this->getMock(Definition::class);
     }
 
     public function testProcessCompilerWithCoreStandalone()
     {
-        $this->mockContainer
-            ->expects($this->once())
+        $this->container
+            ->expects($this->at(0))
+            ->method('getDefinition')
+            ->with('monolog.Logger')
+            ->willReturn($this->logger);
+
+        $this->container
+            ->expects($this->at(1))
             ->method('getParameter')
             ->with('core_standalone')
             ->willReturn(true);
 
-        $this->mockContainer
-            ->expects($this->once())
-            ->method('getDefinition')
-            ->with('monolog.Logger')
-            ->willReturn($this->mockLoggerDefinition);
+        $this->container
+            ->expects($this->at(2))
+            ->method('getParameter')
+            ->with('hipchat.api_token')
+            ->willReturn(null);
 
-        $this->subject->process($this->mockContainer);
+        $this->subject->process($this->container);
     }
 
     public function testProcessCompilerWitDebug()
     {
-        $this->mockContainer
+        $this->container
             ->expects($this->at(0))
             ->method('getDefinition')
             ->with('monolog.Logger')
-            ->willReturn($this->mockLoggerDefinition);
+            ->willReturn($this->logger);
 
-        $this->mockContainer
+        $this->container
             ->expects($this->at(1))
             ->method('getParameter')
             ->with('core_standalone')
             ->willReturn(false);
 
-        $this->mockContainer
+        $this->container
             ->expects($this->at(2))
             ->method('getParameter')
             ->with('debug')
             ->willReturn(true);
 
-        $this->mockLoggerDefinition
+        $this->logger
             ->expects($this->at(0))
             ->method('addMethodCall')
             ->with('pushHandler', [new Definition(ChromePHPHandler::class)]);
 
-        $this->mockLoggerDefinition
+        $this->logger
             ->expects($this->at(1))
             ->method('addMethodCall')
             ->with('pushHandler', [new Definition(StreamHandler::class, ['php://stdout', Logger::INFO])]);
 
-        $this->subject->process($this->mockContainer);
+        $this->subject->process($this->container);
     }
 }
