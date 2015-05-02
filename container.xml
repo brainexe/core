@@ -5,6 +5,11 @@
 		<parameter key="cache.enabled">true</parameter>
 		<parameter key="server.address">localhost:8080</parameter>
 
+		<parameter key="hipchat.api_token"/>
+		<parameter key="hipchat.room"/>
+		<parameter key="hipchat.name">%application.name%</parameter>
+		<parameter key="hipchat.logLevel" type="collection">Monolog\Logger::ERROR</parameter>
+
 		<parameter key="xhgui.header.php"></parameter>
 
 		<parameter key="timezone">Europe/Berlin</parameter>

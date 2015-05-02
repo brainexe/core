@@ -10,7 +10,6 @@ use Doctrine\Common\Cache\ArrayCache;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
-use Symfony\Component\DependencyInjection\Dumper\XmlDumper;
 use Symfony\Component\DependencyInjection\ExpressionLanguageProvider;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
@@ -70,9 +69,9 @@ class Rebuild
         file_put_contents($containerFile, $containerContent);
         chmod($containerFile, 0777);
 
-        $dumper           = new XmlDumper($containerBuilder);
-        $containerContent = $dumper->dump();
-        file_put_contents('cache/dic.xml', $containerContent);
+//        $dumper           = new XmlDumper($containerBuilder);
+//        $containerContent = $dumper->dump();
+//        file_put_contents('cache/dic.xml', $containerContent);
 
         if ($boot) {
             $core = new Core();

@@ -14,7 +14,6 @@ services:
 
 before_install:
   - mkdir cache
-  - git checkout master
   - composer install
   - if [ "`phpenv version-name`" != "hhvm" ]; then echo "extension = redis.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi
 
