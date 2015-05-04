@@ -3,10 +3,11 @@
 namespace BrainExe\Core\Authentication;
 
 use JsonSerializable;
-use Symfony\Component\Security\Core\Role\Role;
-use Symfony\Component\Security\Core\User\UserInterface;
 
-class UserVO implements UserInterface, JsonSerializable
+/**
+ * @api
+ */
+class UserVO implements JsonSerializable
 {
 
     const ROLE_ADMIN = 'admin';
@@ -62,13 +63,11 @@ class UserVO implements UserInterface, JsonSerializable
     }
 
     /**
-     * {@inheritdoc}
+     * @return string[]
      */
     public function getRoles()
     {
-        return array_map(function ($roleString) {
-            return new Role($roleString);
-        }, $this->roles);
+        return $this->roles;
     }
 
     /**
@@ -93,15 +92,6 @@ class UserVO implements UserInterface, JsonSerializable
     public function getUsername()
     {
         return $this->username;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function eraseCredentials()
-    {
-        $this->password = null;
-        $this->password_hash = null;
     }
 
     /**

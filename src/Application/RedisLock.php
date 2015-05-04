@@ -7,6 +7,7 @@ use BrainExe\Core\Traits\RedisTrait;
 
 /**
  * @Service(public=false)
+ * @api
  */
 class RedisLock
 {

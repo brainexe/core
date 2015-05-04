@@ -5,6 +5,9 @@ namespace BrainExe\Core\Authentication\Event;
 use BrainExe\Core\Authentication\AuthenticationDataVO;
 use BrainExe\Core\EventDispatcher\AbstractEvent;
 
+/**
+ * @api
+ */
 class AuthenticateUserEvent extends AbstractEvent
 {
 

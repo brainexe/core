@@ -5,18 +5,17 @@ namespace BrainExe\Core\Authentication;
 use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Annotations\Annotations\Service;
 use BrainExe\Core\Authentication\Event\DeleteUserEvent;
+use BrainExe\Core\Authentication\Exception\UsernameNotFoundException;
 use BrainExe\Core\Traits\EventDispatcherTrait;
 use BrainExe\Core\Traits\IdGeneratorTrait;
 use BrainExe\Core\Traits\RedisTrait;
 use BrainExe\Core\Redis\PhpRedis;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 /**
+ * @api
  * @Service(public=false)
  */
-class DatabaseUserProvider implements UserProviderInterface
+class DatabaseUserProvider
 {
 
     use RedisTrait;
@@ -41,7 +40,6 @@ class DatabaseUserProvider implements UserProviderInterface
     }
 
     /**
-     * {@inheritdoc}
      * @throws UsernameNotFoundException
      */
     public function loadUserByUsername($username)
@@ -81,22 +79,6 @@ class DatabaseUserProvider implements UserProviderInterface
     public function getAllUserNames()
     {
         return $this->getRedis()->hGetAll(self::REDIS_USER_NAMES);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function refreshUser(UserInterface $user)
-    {
-        return $this->loadUserByUsername($user->getUsername());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supportsClass($class)
-    {
-        return UserVO::class === $class;
     }
 
     /**

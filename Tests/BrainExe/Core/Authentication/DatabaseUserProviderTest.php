@@ -3,18 +3,19 @@
 namespace Tests\BrainExe\Core\Authentication\DatabaseUserProvider;
 
 use BrainExe\Core\Authentication\DatabaseUserProvider;
+use BrainExe\Core\Authentication\Exception\UsernameNotFoundException;
 use BrainExe\Core\Authentication\PasswordHasher;
 use BrainExe\Core\Authentication\UserVO;
 use BrainExe\Core\Redis\RedisInterface;
 use BrainExe\Core\Util\IdGenerator;
 use BrainExe\Tests\RedisMockTrait;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase;
+use PHPUnit_Framework_TestCase as TestCase;
 
 /**
  * @covers BrainExe\Core\Authentication\DatabaseUserProvider
  */
-class DatabaseUserProviderTest extends PHPUnit_Framework_TestCase
+class DatabaseUserProviderTest extends TestCase
 {
 
     use RedisMockTrait;
@@ -51,7 +52,7 @@ class DatabaseUserProviderTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Symfony\Component\Security\Core\Exception\UsernameNotFoundException
+     * @expectedException \BrainExe\Core\Authentication\Exception\UsernameNotFoundException
      * @expectedExceptionMessage Username "UserName" does not exist.
      */
     public function testLoadUserByUsernameWithInvalidUser()
@@ -118,30 +119,6 @@ class DatabaseUserProviderTest extends PHPUnit_Framework_TestCase
         $actualResult = $this->subject->getAllUserNames();
 
         $this->assertEquals($userNames, $actualResult);
-    }
-
-    /**
-     * @expectedException \Symfony\Component\Security\Core\Exception\UsernameNotFoundException
-     */
-    public function testRefreshUser()
-    {
-        $user = new UserVO();
-        $user->username = $username = 'username';
-
-        $this->mockRedis
-            ->expects($this->once())
-            ->method('HGET')
-            ->with(DatabaseUserProvider::REDIS_USER_NAMES, $username)
-            ->willReturn(false);
-
-
-        $this->subject->refreshUser($user);
-    }
-
-    public function testSupportsClassOfUserVO()
-    {
-        $actualResult = $this->subject->supportsClass(UserVO::class);
-        $this->assertTrue($actualResult);
     }
 
     public function testGenerateHash()

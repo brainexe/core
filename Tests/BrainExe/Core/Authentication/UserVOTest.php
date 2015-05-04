@@ -34,12 +34,8 @@ class UserVOTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($this->subject->hasRole('role_444'));
 
         $actualRoles = $this->subject->getRoles();
-            $expectedRoles = [
-            new Role('role_1'),
-            new Role('role_2'),
-        ];
 
-        $this->assertEquals($expectedRoles, $actualRoles);
+        $this->assertEquals($this->subject->roles, $actualRoles);
     }
 
     public function testToJson()
@@ -58,17 +54,6 @@ class UserVOTest extends PHPUnit_Framework_TestCase
             'roles' => []
         ];
         $this->assertEquals($expectedResult, $actualResult);
-    }
-
-    public function testPassword()
-    {
-        $this->subject->password = 'password';
-        $this->subject->password_hash = 'password_hash';
-
-        $this->subject->eraseCredentials();
-
-        $this->assertNull($this->subject->password);
-        $this->assertNull($this->subject->password_hash);
     }
 
     public function testGetSalt()
