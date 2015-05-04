@@ -5,6 +5,9 @@ namespace BrainExe\Core\Authentication\Event;
 use BrainExe\Core\Authentication\UserVO;
 use BrainExe\Core\EventDispatcher\AbstractEvent;
 
+/**
+ * @api
+ */
 class DeleteUserEvent extends AbstractEvent
 {
 

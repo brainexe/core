@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\Routing\Route;
 
 /**
- * @covers BrainExe\Core\Middleware\AuthenticationMiddleware
+ * @covers BrainExe\Core\Middleware\Authentication
  */
 class AuthenticationTest extends TestCase
 {

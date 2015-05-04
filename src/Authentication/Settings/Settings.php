@@ -6,9 +6,10 @@ use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Annotations\Annotations\Service;
 
 /**
- * @Service("UserSettings", public=false)
+ * @api
+ * @Service("User.Settings", public=false)
  */
-class UserSettings
+class Settings
 {
 
     /**
@@ -17,7 +18,7 @@ class UserSettings
     private $gateway;
 
     /**
-     * @Inject("@UserSettings.Gateway")
+     * @Inject("@User.Settings.Gateway")
      * @param Gateway $gateway
      */
     public function __construct(Gateway $gateway)

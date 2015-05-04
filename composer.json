@@ -26,7 +26,6 @@
     "symfony/http-kernel": "~2.6",
     "symfony/process": "~2.6",
     "symfony/routing": "~2.6",
-    "symfony/security": "~2.6",
     "brainexe/annotations": "*",
     "brainexe/expression": "*",
     "brainexe/message-queue": "*",

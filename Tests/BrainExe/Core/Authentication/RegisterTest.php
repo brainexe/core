@@ -3,6 +3,7 @@
 namespace Tests\BrainExe\Core\Authentication\Register;
 
 use BrainExe\Core\Authentication\DatabaseUserProvider;
+use BrainExe\Core\Authentication\Exception\UsernameNotFoundException;
 use BrainExe\Core\Authentication\Register;
 use BrainExe\Core\Authentication\RegisterTokens;
 use BrainExe\Core\Authentication\UserVO;
@@ -10,7 +11,6 @@ use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
 /**
  * @covers BrainExe\Core\Authentication\Register
@@ -26,19 +26,19 @@ class RegisterTest extends PHPUnit_Framework_TestCase
     /**
      * @var DatabaseUserProvider|MockObject
      */
-    private $mockUserProvider;
+    private $userProvider;
 
     /**
      * @var RegisterTokens|MockObject
      */
-    private $mockRegisterTokens;
+    private $registerTokens;
 
     public function setUp()
     {
-        $this->mockUserProvider = $this->getMock(DatabaseUserProvider::class, [], [], '', false);
-        $this->mockRegisterTokens = $this->getMock(RegisterTokens::class, [], [], '', false);
+        $this->userProvider   = $this->getMock(DatabaseUserProvider::class, [], [], '', false);
+        $this->registerTokens = $this->getMock(RegisterTokens::class, [], [], '', false);
 
-        $this->subject = new Register($this->mockUserProvider, $this->mockRegisterTokens, false);
+        $this->subject = new Register($this->userProvider, $this->registerTokens, false);
     }
 
     /**
@@ -86,7 +86,7 @@ class RegisterTest extends PHPUnit_Framework_TestCase
         $session = new Session();
         $token = 100;
 
-        $this->mockUserProvider
+        $this->userProvider
             ->expects($this->once())
             ->method('loadUserByUsername')
             ->with($username)
@@ -108,13 +108,13 @@ class RegisterTest extends PHPUnit_Framework_TestCase
         $session = new Session(new MockArraySessionStorage());
         $token = 100;
 
-        $this->mockUserProvider
+        $this->userProvider
             ->expects($this->once())
             ->method('loadUserByUsername')
             ->with($username)
             ->will($this->throwException(new UsernameNotFoundException()));
 
-        $this->mockRegisterTokens
+        $this->registerTokens
             ->expects($this->once())
             ->method('fetchToken')
             ->with($token)
@@ -133,19 +133,19 @@ class RegisterTest extends PHPUnit_Framework_TestCase
         $session = new Session(new MockArraySessionStorage());
         $token   = 100;
 
-        $this->mockUserProvider
+        $this->userProvider
             ->expects($this->once())
             ->method('loadUserByUsername')
             ->with($username)
             ->will($this->throwException(new UsernameNotFoundException()));
 
-        $this->mockRegisterTokens
+        $this->registerTokens
             ->expects($this->once())
             ->method('fetchToken')
             ->with($token)
             ->willReturn(true);
 
-        $this->mockUserProvider
+        $this->userProvider
             ->expects($this->once())
             ->method('register')
             ->with($user)

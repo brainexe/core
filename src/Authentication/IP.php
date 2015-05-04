@@ -6,6 +6,7 @@ use BrainExe\Annotations\Annotations\Service;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
+ * @api
  * @Service("Authentication.IP", public=false)
  */
 class IP
