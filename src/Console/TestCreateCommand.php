@@ -130,9 +130,9 @@ class TestCreateCommand extends Command
                     $mockName         = $this->getShortClassName($referenceService->getClass());
 
                     $testData->setterCalls[] = sprintf(
-                        "\t\t\$this->subject->%s(\$this->mock%s);",
+                        "\t\t\$this->subject->%s(\$this->%s);",
                         $setterName,
-                        $mockName
+                        lcfirst($mockName)
                     );
                     $this->addMock($referenceService, $testData, $mockName);
                 }
@@ -291,7 +291,7 @@ class TestCreateCommand extends Command
 
         $hasReturnValue = strpos($method->getDocComment(), '@return') !== false;
         if ($hasReturnValue) {
-            $code .= sprintf("\t\t\$actual_result = \$this->subject->%s(%s);\n", $methodName, $parameterString);
+            $code .= sprintf("\t\t\$actual = \$this->subject->%s(%s);\n", $methodName, $parameterString);
         } else {
             $code .= sprintf("\t\t\$this->subject->%s(%s);\n", $methodName, $parameterString);
         }
@@ -361,19 +361,19 @@ class TestCreateCommand extends Command
 
         if ($constructor && $constructor->getNumberOfParameters()) {
             $mock = sprintf(
-                "\t\t\$this->mock%s = \$this->getMock(%s::class, [], [], '', false);",
-                $mockName,
+                "\t\t\$this->%s = \$this->getMock(%s::class, [], [], '', false);",
+                lcfirst($mockName),
                 $mockName
             );
         } else {
-            $mock = sprintf("\t\t\$this->mock%s = \$this->getMock(%s::class);", $mockName, $mockName);
+            $mock = sprintf("\t\t\$this->%s = \$this->getMock(%s::class);", lcfirst($mockName), $mockName);
         }
 
         $testData->localMocks[]     = $mock;
         $testData->mockProperties[] = sprintf(
-            "\t/**\n\t * @var %s|MockObject\n\t */\n\tprivate \$mock%s;\n",
+            "\t/**\n\t * @var %s|MockObject\n\t */\n\tprivate \$%s;\n",
             $mockName,
-            $mockName
+            lcfirst($mockName)
         );
     }
 
@@ -396,7 +396,7 @@ class TestCreateCommand extends Command
                 continue;
             }
 
-            $data->constructorArguments[] = sprintf('$this->mock%s', $mockName);
+            $data->constructorArguments[] = sprintf('$this->%s', lcfirst($mockName));
 
             $this->addMock($definition, $data, $mockName);
         }

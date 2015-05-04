@@ -5,19 +5,21 @@ namespace %test_namespace%;
 %use_statements%
 
 /**
- * @Covers %service_namespace%
+ * @covers %service_namespace%
  */
-class %class_name%Test extends TestCase {
+class %class_name%Test extends TestCase
+{
 
-	/**
-	 * @var %class_name%
-	 */
-	private $subject;
+    /**
+     * @var %class_name%
+     */
+    private $subject;
 %mock_properties%
-	public function setUp() {
+    public function setUp()
+    {
 %local_mocks%
-		$this->subject = new %class_name%(%constructor_arguments%);
+        $this->subject = new %class_name%(%constructor_arguments%);
 %setters%
-	}
+}
 %default_tests%
 }
