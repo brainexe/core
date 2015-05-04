@@ -23,8 +23,12 @@ class Event extends AbstractEvent
      */
     private $value;
 
-
-    public function __construct($eventName, $key, $value)
+    /**
+     * @param string $eventName self::*
+     * @param string $key
+     * @param int $value
+     */
+    public function __construct($eventName, $key, $value = 1)
     {
         parent::__construct($eventName);
 

@@ -47,7 +47,7 @@ class Controller
         $stats = $this->stats->getAll();
 
         $stats = array_merge($stats, [
-            'Queue Len' => $this->messageQueue->countJobs()
+            'message_queue:queued' => $this->messageQueue->countJobs(),
         ]);
 
         return [
@@ -65,6 +65,18 @@ class Controller
     {
         $jobId = $request->request->get('job_id');
         $this->messageQueue->deleteEvent($jobId);
+
+        return true;
+    }
+    /**
+     * @Route("/stats/reset/", methods="POST")
+     * @param Request $request
+     * @return bool
+     */
+    public function resetStats(Request $request)
+    {
+        $key = $request->request->get('key');
+        $this->stats->set($key, 0);
 
         return true;
     }

@@ -43,7 +43,7 @@ class CatchUserException extends AbstractMiddleware
 
         /** @var Exception $exception */
         if ($request->isXmlHttpRequest()) {
-            $message = $exception->getMessage() ?: _('An internal error occurred');
+            $message = $exception->getMessage() ?: _('An error occurred');
             $response->headers->set(
                 'X-Flash',
                 json_encode([ControllerInterface::ALERT_DANGER, $message])

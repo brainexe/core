@@ -76,7 +76,7 @@ class ControllerTest extends TestCase
             'stats' => [
                 'foo'  => 'bar',
                 'foo1' => 'bar1',
-                'Queue Len' => $messageQueueJobs
+                'message_queue:queued' => $messageQueueJobs
             ],
         ];
 
@@ -96,6 +96,22 @@ class ControllerTest extends TestCase
 
 
         $actualResult = $this->subject->deleteJob($request);
+
+        $this->assertTrue($actualResult);
+    }
+
+    public function testResetStats()
+    {
+        $key     = 'mockKey';
+        $request = new Request();
+        $request->request->set('key', $key);
+
+        $this->stats
+            ->expects($this->once())
+            ->method('set')
+            ->with($key, 0);
+
+        $actualResult = $this->subject->resetStats($request);
 
         $this->assertTrue($actualResult);
     }
