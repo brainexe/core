@@ -2,19 +2,18 @@
 
 namespace Tests\BrainExe\Core\Websockets\WebsocketListener;
 
-use BrainExe\Core\Application\SelfUpdate\SelfUpdateEvent;
 use BrainExe\Core\EventDispatcher\EventDispatcher;
 use BrainExe\Core\Redis\RedisInterface;
 use BrainExe\Core\Websockets\WebSocketEvent;
 use BrainExe\Core\Websockets\WebsocketListener;
 use BrainExe\Tests\RedisMockTrait;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase;
+use PHPUnit_Framework_TestCase as TestCase;
 
 /**
  * @covers BrainExe\Core\Websockets\WebsocketListener
  */
-class WebsocketListenerTest extends PHPUnit_Framework_TestCase
+class WebsocketListenerTest extends TestCase
 {
 
     use RedisMockTrait;
@@ -49,18 +48,5 @@ class WebsocketListenerTest extends PHPUnit_Framework_TestCase
     {
         $events = $this->subject->getSubscribedEvents();
         $this->assertInternalType('array', $events);
-    }
-
-    public function testHandlePushEvent()
-    {
-        $payload = new SelfUpdateEvent(SelfUpdateEvent::TRIGGER);
-        $event = new WebSocketEvent($payload);
-
-        $this->mockRedis
-            ->expects($this->once())
-            ->method('publish')
-            ->with(WebsocketListener::CHANNEL, json_encode($payload));
-
-        $this->subject->handlePushEvent($event);
     }
 }

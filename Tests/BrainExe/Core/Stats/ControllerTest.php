@@ -2,7 +2,6 @@
 
 namespace BrainExe\Tests\Stats;
 
-use BrainExe\Core\Application\SelfUpdate\SelfUpdateEvent;
 use BrainExe\Core\Stats\Controller;
 use BrainExe\Core\Stats\Stats;
 use PHPUnit_Framework_TestCase as TestCase;
@@ -112,20 +111,6 @@ class ControllerTest extends TestCase
             ->with($key, 0);
 
         $actualResult = $this->subject->resetStats($request);
-
-        $this->assertTrue($actualResult);
-    }
-
-    public function testStartSelfUpdate()
-    {
-        $event = new SelfUpdateEvent(SelfUpdateEvent::TRIGGER);
-
-        $this->dispatcher
-            ->expects($this->once())
-            ->method('dispatchInBackground')
-            ->with($event);
-
-        $actualResult = $this->subject->startSelfUpdate();
 
         $this->assertTrue($actualResult);
     }

@@ -5,7 +5,6 @@ namespace BrainExe\Core\Stats;
 use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Core\Annotations\Controller as ControllerAnnotation;
 use BrainExe\Core\Annotations\Route;
-use BrainExe\Core\Application\SelfUpdate\SelfUpdateEvent;
 use BrainExe\MessageQueue\Gateway as MessageQueueGateway;
 use BrainExe\Core\Traits\EventDispatcherTrait;
 use Symfony\Component\HttpFoundation\Request;
@@ -77,18 +76,6 @@ class Controller
     {
         $key = $request->request->get('key');
         $this->stats->set($key, 0);
-
-        return true;
-    }
-
-    /**
-     * @Route("/stats/self_update/", name="status.self_update", methods="POST")
-     */
-    public function startSelfUpdate()
-    {
-        $event = new SelfUpdateEvent(SelfUpdateEvent::TRIGGER);
-
-        $this->dispatchInBackground($event);
 
         return true;
     }
