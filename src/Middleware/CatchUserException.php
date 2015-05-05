@@ -3,7 +3,6 @@
 namespace BrainExe\Core\Middleware;
 
 use BrainExe\Core\Annotations\Middleware;
-use BrainExe\Core\Application\ErrorView;
 use BrainExe\Core\Application\UserException;
 use BrainExe\Core\Controller\ControllerInterface;
 use BrainExe\Core\Traits\ServiceContainerTrait;
@@ -18,8 +17,6 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
  */
 class CatchUserException extends AbstractMiddleware
 {
-
-    use ServiceContainerTrait;
 
     /**
      * {@inheritdoc}
@@ -49,9 +46,7 @@ class CatchUserException extends AbstractMiddleware
                 json_encode([ControllerInterface::ALERT_DANGER, $message])
             );
         } else {
-            /** @var ErrorView $errorView */
-            $errorView       = $this->getService('ErrorView');
-            $responseString  = $errorView->renderException($request, $exception);
+            $responseString  = $exception->getMessage();
             $response->setContent($responseString);
         }
 

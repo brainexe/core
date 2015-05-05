@@ -2,7 +2,6 @@
 
 namespace Tests\BrainExe\Core\Middleware\UserExceptionMiddleware;
 
-use BrainExe\Core\Application\ErrorView;
 use BrainExe\Core\Application\UserException;
 use BrainExe\Core\DependencyInjection\ObjectFinder;
 use BrainExe\Core\Middleware\CatchUserException;
@@ -25,17 +24,9 @@ class CatchUserExceptionTest extends TestCase
      */
     private $subject;
 
-    /**
-     * @var ObjectFinder|MockObject
-     */
-    private $objectFinder;
-
     public function setUp()
     {
-        $this->objectFinder = $this->getMock(ObjectFinder::class, [], [], '', false);
-
         $this->subject = new CatchUserException();
-        $this->subject->setObjectFinder($this->objectFinder);
     }
 
     /**
@@ -59,37 +50,22 @@ class CatchUserExceptionTest extends TestCase
         $this->assertTrue($actualResult->headers->has('X-Flash'));
     }
 
-    public function testProcessExceptionErrorView()
+    public function testProcessException()
     {
         /** @var Request|MockObject $request */
         $request = $this->getMock(Request::class, ['isXmlHttpRequest']);
-        /** @var ErrorView|MockObject $errorView */
-        $errorView = $this->getMock(ErrorView::class, [], [], '', false);
 
         $exception = new ResourceNotFoundException();
-        $responseString = 'response_string';
 
         $request
             ->expects($this->once())
             ->method('isXmlHttpRequest')
             ->willReturn(false);
 
-        $this->objectFinder
-            ->expects($this->once())
-            ->method('getService')
-            ->with('ErrorView')
-            ->willReturn($errorView);
-
-        $errorView
-            ->expects($this->once())
-            ->method('renderException')
-            ->with($request, $this->isInstanceOf(UserException::class))
-            ->willReturn($responseString);
-
         $actualResult = $this->subject->processException($request, $exception);
 
         $this->assertEquals(404, $actualResult->getStatusCode());
-        $this->assertEquals($responseString, $actualResult->getContent());
+        $this->assertEquals('Page not found: ', $actualResult->getContent());
     }
 
     public function testProcessRequest()
