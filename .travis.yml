@@ -15,7 +15,11 @@ services:
 before_install:
   - mkdir cache
   - composer install
+  - wget https://scrutinizer-ci.com/ocular.phar
   - if [ "`phpenv version-name`" != "hhvm" ]; then echo "extension = redis.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi
 
 script:
-  - phpunit
+  - phpunit --coverage-clover=coverage.clover
+
+after_script:
+  - php ocular.phar code-coverage:upload --format=php-clover coverage.clover

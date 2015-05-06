@@ -17,7 +17,7 @@ class SerializedRouteCollection extends RouteCollection
     /**
      * @var string[]
      */
-    private $routes;
+    private $serializedRoutes;
 
     /**
      * @var Route[]
@@ -29,7 +29,7 @@ class SerializedRouteCollection extends RouteCollection
      */
     public function __construct(array $routes)
     {
-        $this->routes = $routes;
+        $this->serializedRoutes = $routes;
     }
 
     /**
@@ -42,16 +42,16 @@ class SerializedRouteCollection extends RouteCollection
             return $this->cache[$name];
         }
 
-        if (!isset($this->routes[$name])) {
+        if (!isset($this->serializedRoutes[$name])) {
             throw new InvalidArgumentException(sprintf('invalid route: %s', $name));
         }
 
-        return $this->cache[$name] = unserialize($this->routes[$name]);
+        return $this->cache[$name] = unserialize($this->serializedRoutes[$name]);
     }
 
     private function init()
     {
-        return array_map([$this, 'get'], array_keys($this->routes));
+        return array_map([$this, 'get'], array_keys($this->serializedRoutes));
     }
 
     public function all()
@@ -84,7 +84,7 @@ class SerializedRouteCollection extends RouteCollection
      */
     public function count()
     {
-        return count($this->routes);
+        return count($this->serializedRoutes);
     }
 
     public function add($name, Route $route)

@@ -2,8 +2,9 @@
 
 namespace Tests\BrainExe\Core\Websockets\WebsocketListener;
 
+use BrainExe\Core\EventDispatcher\AbstractEvent;
 use BrainExe\Core\EventDispatcher\EventDispatcher;
-use BrainExe\Core\Redis\RedisInterface;
+use BrainExe\Core\Redis\Predis;
 use BrainExe\Core\Websockets\WebSocketEvent;
 use BrainExe\Core\Websockets\WebsocketListener;
 use BrainExe\Tests\RedisMockTrait;
@@ -24,29 +25,43 @@ class WebsocketListenerTest extends TestCase
     private $subject;
 
     /**
-     * @var RedisInterface|MockObject
+     * @var Predis|MockObject
      */
-    private $mockRedis;
+    private $redis;
 
     /**
      * @var EventDispatcher|MockObject
      */
-    private $mockEventDispatcher;
+    private $dispatcher;
 
 
     public function setUp()
     {
-        $this->mockRedis = $this->getRedisMock();
-        $this->mockEventDispatcher = $this->getMock(EventDispatcher::class, [], [], '', false);
+        $this->redis = $this->getRedisMock();
+        $this->dispatcher = $this->getMock(EventDispatcher::class, [], [], '', false);
 
         $this->subject = new WebsocketListener();
-        $this->subject->setRedis($this->mockRedis);
-        $this->subject->setEventDispatcher($this->mockEventDispatcher);
+        $this->subject->setRedis($this->redis);
+        $this->subject->setEventDispatcher($this->dispatcher);
     }
 
     public function testGetSubscribedEvents()
     {
         $events = $this->subject->getSubscribedEvents();
         $this->assertInternalType('array', $events);
+    }
+
+    public function testHandle()
+    {
+        /** @var AbstractEvent|MockObject $wrapped */
+        $wrapped = $this->getMock(AbstractEvent::class, [], [], '', false);
+        $event = new WebSocketEvent($wrapped);
+
+        $this->redis
+            ->expects($this->once())
+            ->method('publish')
+            ->with(WebsocketListener::CHANNEL, json_encode($event->payload));
+
+        $this->subject->handlePushEvent($event);
     }
 }

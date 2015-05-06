@@ -1,6 +1,6 @@
 <?php
 
-namespace BrainExe\Core\Authentication\UserSettings;
+namespace BrainExe\Core\Authentication\Settings;
 
 use BrainExe\Annotations\Annotations\Service;
 use BrainExe\Core\Traits\RedisTrait;
@@ -31,7 +31,7 @@ class Gateway
      */
     public function get($userId, $setting)
     {
-        return $this->getRedis()->hgetall($this->getKey($userId), $setting);
+        return $this->getRedis()->hget($this->getKey($userId), $setting);
     }
 
     /**

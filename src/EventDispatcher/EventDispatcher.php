@@ -3,6 +3,7 @@
 namespace BrainExe\Core\EventDispatcher;
 
 use BrainExe\Core\Websockets\WebSocketEvent;
+use RuntimeException;
 use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher as SymfonyEventDispatcher;
 use Symfony\Component\EventDispatcher\Event;
 
@@ -43,13 +44,17 @@ class EventDispatcher extends SymfonyEventDispatcher
      */
     public function dispatch($eventName, Event $event = null)
     {
+        if (empty($event)) {
+            throw new RuntimeException("You have to pass an Event into EventDispatcher::dispatch");
+        }
+
         $event->setDispatcher($this); // @todo needed?
 
         foreach ($this->catchall as $dispatcher) {
             $dispatcher->dispatch($eventName, $event);
         }
 
-        parent::dispatch($eventName, $event);
+        return parent::dispatch($eventName, $event);
     }
 
     /**

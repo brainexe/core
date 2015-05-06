@@ -33,11 +33,11 @@ class EventDispatcherTest extends PHPUnit_Framework_TestCase
     /**
      * @var Container|MockObject
      */
-    private $mockContainer;
+    private $container;
 
     public function setUp()
     {
-        $this->mockContainer = $this->getMock(Container::class, [], [], '', false);
+        $this->container = $this->getMock(Container::class, [], [], '', false);
         $this->subject = $this->getMock(EventDispatcher::class, ['dispatch'], [], '', false);
     }
 

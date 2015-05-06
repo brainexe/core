@@ -23,7 +23,7 @@ class IdGeneratorTest extends PHPUnit_Framework_TestCase
 
     public function testGenerateRandomNumericId()
     {
-        $actualResult = $this->subject->generateRandomNumericId();
+        $actualResult  = $this->subject->generateRandomNumericId();
         $actualResult2 = $this->subject->generateRandomNumericId();
 
         $this->assertInternalType('integer', $actualResult);

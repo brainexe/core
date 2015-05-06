@@ -12,7 +12,7 @@ class RedisLogger implements RedisInterface
 {
 
     /**
-     * @var PhpRedis
+     * @var Predis
      */
     private $redis;
 

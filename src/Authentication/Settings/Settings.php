@@ -1,13 +1,13 @@
 <?php
 
-namespace BrainExe\Core\Authentication\UserSettings;
+namespace BrainExe\Core\Authentication\Settings;
 
 use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Annotations\Annotations\Service;
 
 /**
  * @api
- * @Service("User.Settings", public=false)
+ * @Service("User.Settings", public=true)
  */
 class Settings
 {
@@ -52,6 +52,6 @@ class Settings
      */
     public function set($userId, $setting, $value)
     {
-        $this->gateway->get($userId, $setting, $value);
+        $this->gateway->set($userId, $setting, $value);
     }
 }

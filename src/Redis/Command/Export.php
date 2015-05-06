@@ -2,11 +2,9 @@
 
 namespace BrainExe\Core\Redis\Command;
 
-use BrainExe\Core\Redis\RedisInterface;
+use BrainExe\Core\Redis\Predis;
 use BrainExe\Core\Traits\RedisTrait;
 use Exception;
-use Predis\Client;
-use string;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -15,6 +13,7 @@ use BrainExe\Core\Annotations\Command as CommandAnnotation;
 
 /**
  * @CommandAnnotation("Redis.Command.Export", public=false)
+ * @codeCoverageIgnore
  */
 class Export extends Command
 {
@@ -55,12 +54,12 @@ class Export extends Command
     }
 
     /**
-     * @param RedisInterface $redis
+     * @param Predis $redis
      * @param string $key
      * @return string[]
      * @throws Exception
      */
-    protected function dump(RedisInterface $redis, $key)
+    protected function dump(Predis $redis, $key)
     {
         $parts = [];
 

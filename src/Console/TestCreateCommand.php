@@ -3,6 +3,8 @@
 namespace BrainExe\Core\Console;
 
 use BrainExe\Annotations\Annotations\Inject;
+use BrainExe\Core\Console\TestGenerator\ProcessMethod;
+use BrainExe\Core\Console\TestGenerator\TestData;
 use BrainExe\Core\DependencyInjection\Rebuild;
 use Exception;
 use PHPUnit_Framework_MockObject_MockObject;
@@ -21,7 +23,7 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 use BrainExe\Core\Annotations\Command as CommandAnnotation;
 
-require_once "TestData.php";
+require_once "TestGenerator/TestData.php";
 
 /**
  * @CommandAnnotation
@@ -34,7 +36,7 @@ class TestCreateCommand extends Command
      * Cached container builder
      * @var ContainerBuilder|null
      */
-    private $container = null;
+    public $container = null;
 
     /**
      * @var Rebuild
@@ -101,42 +103,9 @@ class TestCreateCommand extends Command
 
         $this->setupConstructor($serviceDefinition, $testData);
 
+        $methodProcessor = new ProcessMethod($this);
         foreach ($serviceDefinition->getMethodCalls() as $methodCall) {
-            list ($setterName, $references) = $methodCall;
-            /** @var Reference $reference */
-            foreach ($references as $reference) {
-                if (!$reference instanceof Reference) {
-                    continue;
-                }
-
-                $referenceServiceId = (string)$reference;
-
-                if ('%' === substr($referenceServiceId, 0, 1)) {
-                    // add config setter with current config value
-                    $parameterName  = substr($reference, 1, -1);
-                    $parameterValue = $this->container->getParameter($parameterName);
-
-                    $formattedParameter = var_export($parameterValue, true);
-
-                    $testData->setterCalls[] = sprintf(
-                        "\t\t\$this->subject->%s(%s);",
-                        $setterName,
-                        $formattedParameter
-                    );
-
-                } else {
-                    // add setter for model mock
-                    $referenceService = $this->getServiceDefinition($referenceServiceId);
-                    $mockName         = $this->getShortClassName($referenceService->getClass());
-
-                    $testData->setterCalls[] = sprintf(
-                        "\t\t\$this->subject->%s(\$this->%s);",
-                        $setterName,
-                        lcfirst($mockName)
-                    );
-                    $this->addMock($referenceService, $testData, $mockName);
-                }
-            }
+            $methodProcessor->processMethod($methodCall, $testData);
         }
 
         $template = file_get_contents(CORE_ROOT . '/../scripts/phpunit_template.php.tpl');
@@ -163,42 +132,9 @@ class TestCreateCommand extends Command
 
         // handle already existing test file
         if (file_exists($testFileName)) {
-            if ($input->getOption('no-interaction')) {
-                $output->writeln(sprintf("Test for '<info>%s</info>' already exist", $serviceId));
+            $template = $this->handleExistingFile($input, $output, $serviceId, $testFileName, $template);
+            if ($template === false) {
                 return;
-            }
-
-            /** @var QuestionHelper $helper */
-            $helper = $this->getHelper('question');
-
-            $choices  = [
-                'stop' => 'Stop',
-                'replace' => 'Replace full test file',
-                'diff' => 'Display the diff',
-                'header' => 'full setup only',
-            ];
-            $question = new ChoiceQuestion(
-                '<error>The test file already exist. What should i do now?</error>',
-                $choices
-            );
-
-            $answer = $helper->ask($input, $output, $question);
-
-            $originalTest = file_get_contents($testFileName);
-
-            $answerId = array_flip($choices)[$answer];
-            switch ($answerId) {
-                case 'replace':
-                    break;
-                case 'header';
-                    $template = $this->replaceHeaderOnly($originalTest, $template);
-                    break;
-                case 'diff':
-                    $this->displayPatch($originalTest, $template, $output);
-                    return;
-                case 'stop':
-                default:
-                    return;
             }
         }
 
@@ -230,7 +166,7 @@ class TestCreateCommand extends Command
      * @param string $serviceId
      * @return Definition
      */
-    private function getServiceDefinition($serviceId)
+    public function getServiceDefinition($serviceId)
     {
         return $this->container->getDefinition($serviceId);
     }
@@ -239,7 +175,7 @@ class TestCreateCommand extends Command
      * @param string $serviceId
      * @return object
      */
-    private function getService($serviceId)
+    public function getService($serviceId)
     {
         return $this->container->get($serviceId);
     }
@@ -314,7 +250,7 @@ class TestCreateCommand extends Command
      * @param string
      * @return string
      */
-    private function getShortClassName($fullClassName)
+    public function getShortClassName($fullClassName)
     {
         // Strip off namespace
         $lastBackslashPos = strrpos($fullClassName, '\\');
@@ -351,7 +287,7 @@ class TestCreateCommand extends Command
      * @param TestData $testData
      * @param string $mockName
      */
-    protected function addMock(Definition $referenceService, TestData $testData, $mockName)
+    public function addMock(Definition $referenceService, TestData $testData, $mockName)
     {
         $class = $referenceService->getClass();
         $testData->addUse($class);
@@ -429,4 +365,61 @@ class TestCreateCommand extends Command
 
         return preg_replace('/^.*?}/s', $header, $originalTest);
     }
+
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @param string $serviceId
+     * @param string $testFileName
+     * @param string $template
+     * @return string
+     * @throws Exception
+     */
+    protected function handleExistingFile(
+        InputInterface $input,
+        OutputInterface $output,
+        $serviceId,
+        $testFileName,
+        $template
+    ) {
+        if ($input->getOption('no-interaction')) {
+            $output->writeln(sprintf("Test for '<info>%s</info>' already exist", $serviceId));
+            return false;
+        }
+
+        /** @var QuestionHelper $helper */
+        $helper = $this->getHelper('question');
+
+        $choices = [
+            'stop' => 'Stop',
+            'replace' => 'Replace full test file',
+            'diff' => 'Display the diff',
+            'header' => 'full setup only',
+        ];
+        $question = new ChoiceQuestion(
+            '<error>The test file already exist. What should i do now?</error>',
+            $choices
+        );
+
+        $answer = $helper->ask($input, $output, $question);
+
+        $originalTest = file_get_contents($testFileName);
+
+        $answerId = array_flip($choices)[$answer];
+        switch ($answerId) {
+            case 'replace':
+                break;
+            case 'header':
+                $template = $this->replaceHeaderOnly($originalTest, $template);
+                break;
+            case 'diff':
+                $this->displayPatch($originalTest, $template, $output);
+                return $template;
+            case 'stop':
+            default:
+                return false;
+        }
+        return $template;
+    }
+
 }

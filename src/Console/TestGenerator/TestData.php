@@ -1,6 +1,6 @@
 <?php
 
-namespace BrainExe\Core\Console;
+namespace BrainExe\Core\Console\TestGenerator;
 
 /**
  * @codeCoverageIgnore

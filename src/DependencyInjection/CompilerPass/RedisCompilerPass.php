@@ -3,7 +3,6 @@
 namespace BrainExe\Core\DependencyInjection\CompilerPass;
 
 use BrainExe\Core\Annotations\CompilerPass;
-use BrainExe\Core\Redis\PhpRedis;
 use BrainExe\Core\Redis\Predis;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -26,17 +25,7 @@ class RedisCompilerPass implements CompilerPassInterface
         $database = $container->getParameter('redis.database');
         $host     = $container->getParameter('redis.host');
 
-        if ($class === PhpRedis::class) {
-            if (!empty($password)) {
-                $redis->addMethodCall('auth', [$password]);
-            }
-            if (!empty($database)) {
-                $redis->addMethodCall('select', [$database]);
-            }
-            if (!empty($host)) {
-                $redis->addMethodCall('connect', ['host' => $host]);
-            }
-        } elseif ($class === Predis::class) {
+        if ($class === Predis::class) {
             $arguments = [];
 
             if ($host) {
@@ -53,6 +42,5 @@ class RedisCompilerPass implements CompilerPassInterface
 
             $redis->setArguments([$arguments]);
         }
-
     }
 }
