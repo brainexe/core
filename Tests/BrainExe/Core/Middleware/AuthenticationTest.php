@@ -68,7 +68,7 @@ class AuthenticationTest extends TestCase
         );
 
         $userId = 42;
-        $user = new UserVO();
+        $user   = $this->loadUser($userId);
 
         $session = new Session(new MockArraySessionStorage());
         $session->set('user_id', $userId);
@@ -78,12 +78,6 @@ class AuthenticationTest extends TestCase
 
         $route = new Route('/path/');
         $routeName = null;
-
-        $this->userProvider
-            ->expects($this->once())
-            ->method('loadUserById')
-            ->with($userId)
-            ->willReturn($user);
 
         $actualResult = $this->subject->processRequest($request, $route, $routeName);
 
@@ -102,7 +96,7 @@ class AuthenticationTest extends TestCase
         );
 
         $userId = 42;
-        $user = new UserVO();
+        $user   = $this->loadUser($userId);
 
         $session = new Session(new MockArraySessionStorage());
         $session->set('user_id', $userId);
@@ -113,12 +107,6 @@ class AuthenticationTest extends TestCase
         $route = new Route('/path/');
         $route->setDefault('guest', true);
         $routeName = 'public stuff';
-
-        $this->userProvider
-            ->expects($this->once())
-            ->method('loadUserById')
-            ->with($userId)
-            ->willReturn($user);
 
         $actualResult = $this->subject->processRequest($request, $route, $routeName);
 
@@ -177,7 +165,7 @@ class AuthenticationTest extends TestCase
         );
 
         $userId = 42;
-        $user   = new UserVO();
+        $user = $this->loadUser($userId);
 
         $session = new Session(new MockArraySessionStorage());
         $session->set('user_id', $userId);
@@ -188,16 +176,27 @@ class AuthenticationTest extends TestCase
         $route = new Route('/path/');
         $routeName = 'random.route';
 
+        $actualResult = $this->subject->processRequest($request, $route, $routeName);
+
+        $this->assertNull($actualResult);
+        $this->assertEquals($userId, $request->attributes->get('user_id'));
+        $this->assertEquals($user, $request->attributes->get('user'));
+    }
+
+    /**
+     * @param int $userId
+     * @return UserVO
+     */
+    private function loadUser($userId)
+    {
+        $user = new UserVO();
+
         $this->userProvider
             ->expects($this->once())
             ->method('loadUserById')
             ->with($userId)
             ->willReturn($user);
 
-        $actualResult = $this->subject->processRequest($request, $route, $routeName);
-
-        $this->assertNull($actualResult);
-        $this->assertEquals($userId, $request->attributes->get('user_id'));
-        $this->assertEquals($user, $request->attributes->get('user'));
+        return $user;
     }
 }

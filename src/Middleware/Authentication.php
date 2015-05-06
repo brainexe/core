@@ -46,7 +46,7 @@ class Authentication extends AbstractMiddleware
      *  "@Authentication.IP"
      * })
      * @param boolean $guestsAllowed
-     * @param $allowedPrivateIps
+     * @param boolean $allowedPrivateIps
      * @param DatabaseUserProvider $userProvider
      * @param IP $ipCheck
      */
@@ -77,7 +77,7 @@ class Authentication extends AbstractMiddleware
             $userId = reset($this->userProvider->getAllUserNames());
         }
 
-        $loggedIn  = $userId > 0;
+        $loggedIn = $userId > 0;
         if ($loggedIn) {
             $user = $this->userProvider->loadUserById($userId);
         } else {

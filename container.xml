@@ -17,7 +17,7 @@
 		<parameter key="redis.host">127.0.0.1</parameter>
 		<parameter key="redis.password"/>
 		<parameter key="redis.database">0</parameter>
-		<parameter key="redis.class">BrainExe\Core\Redis\PhpRedis</parameter>
+		<parameter key="redis.class">BrainExe\Core\Redis\Predis</parameter>
 
 		<parameter key="cdn.url">/</parameter>
 		<parameter key="cache.dir">%application.root%cache/</parameter>

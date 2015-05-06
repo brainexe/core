@@ -20,6 +20,6 @@ class %class_name%Test extends TestCase
 %local_mocks%
         $this->subject = new %class_name%(%constructor_arguments%);
 %setters%
-}
+    }
 %default_tests%
 }

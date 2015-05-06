@@ -2,20 +2,20 @@
 
 namespace BrainExe\Tests;
 
-use BrainExe\Core\Redis\RedisInterface;
-use PHPUnit_Framework_MockObject_MockObject;
+use BrainExe\Core\Redis\Predis;
+use PHPUnit_Framework_MockObject_MockObject as MockObject;
 
 trait RedisMockTrait
 {
 
     /**
-     * @return PHPUnit_Framework_MockObject_MockObject
+     * @return MockObject
      */
     protected function getRedisMock()
     {
-        return $this->getMock(RedisInterface::class, [
-            'sadd', 'smembers',  'srem', 'get', 'setex', 'script', 'getLastError',
-            'multi', 'exec', 'execute', 'exists',
+        return $this->getMock(Predis::class, [
+            'sadd', 'smembers', 'srem', 'get', 'setex', 'script', 'getLastError',
+            'multi', 'exec', 'execute', 'exists', 'pipeline',
             'hgetall', 'hmset', 'hset', 'hdel', 'hget', 'hincrby',
             'evalsha', 'load', 'publish', 'subscribe',
             'del', 'add', 'keys', 'brPop', 'lpush',

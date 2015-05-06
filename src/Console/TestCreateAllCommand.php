@@ -114,7 +114,7 @@ class TestCreateAllCommand extends Command
         $testFileName = $this->getTestFileName($serviceNamespace);
 
         if (!file_exists($testFileName)) {
-            $output->writeln("create: <info>$serviceId</info> - <info>" . $serviceReflection->getFileName()."<info>");
+            $output->writeln("create: <info>$serviceId</info> - <info>" . $serviceReflection->getFileName() . "<info>");
 
             $input = new ArrayInput(['command' => 'test:create', 'service' => $serviceId]);
             $this->getApplication()->run($input, $output);

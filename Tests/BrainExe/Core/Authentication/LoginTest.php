@@ -9,14 +9,14 @@ use BrainExe\Core\Authentication\Login;
 use BrainExe\Core\Authentication\UserVO;
 use BrainExe\Core\EventDispatcher\EventDispatcher;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase;
+use PHPUnit_Framework_TestCase as TestCase;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 /**
  * @covers BrainExe\Core\Authentication\Login
  */
-class LoginTest extends PHPUnit_Framework_TestCase
+class LoginTest extends TestCase
 {
 
     /**
@@ -27,20 +27,20 @@ class LoginTest extends PHPUnit_Framework_TestCase
     /**
      * @var DatabaseUserProvider|MockObject
      */
-    private $mockDatabaseUserProvider;
+    private $userProvider;
 
     /**
      * @var EventDispatcher|MockObject
      */
-    private $mockDispatcher;
+    private $dispatcher;
 
     public function setUp()
     {
-        $this->mockDatabaseUserProvider = $this->getMock(DatabaseUserProvider::class, [], [], '', false);
-        $this->mockDispatcher = $this->getMock(EventDispatcher::class, [], [], '', false);
+        $this->userProvider = $this->getMock(DatabaseUserProvider::class, [], [], '', false);
+        $this->dispatcher   = $this->getMock(EventDispatcher::class, [], [], '', false);
 
-        $this->subject = new Login($this->mockDatabaseUserProvider);
-        $this->subject->setEventDispatcher($this->mockDispatcher);
+        $this->subject = new Login($this->userProvider);
+        $this->subject->setEventDispatcher($this->dispatcher);
     }
 
     /**
@@ -51,10 +51,10 @@ class LoginTest extends PHPUnit_Framework_TestCase
     {
         $username       = 'user name';
         $password       = 'password';
-        $oneTimeToken = 'token';
+        $oneTimeToken   = 'token';
         $session        = new Session(new MockArraySessionStorage());
 
-        $this->mockDatabaseUserProvider
+        $this->userProvider
             ->expects($this->once())
             ->method('loadUserByUsername')
             ->with($username)
@@ -78,13 +78,13 @@ class LoginTest extends PHPUnit_Framework_TestCase
         $userVo = new UserVO();
         $userVo->password_hash = $userPassword;
 
-        $this->mockDatabaseUserProvider
+        $this->userProvider
             ->expects($this->once())
             ->method('loadUserByUsername')
             ->with($username)
             ->willReturn($userVo);
 
-        $this->mockDatabaseUserProvider
+        $this->userProvider
             ->expects($this->once())
             ->method('verifyHash')
             ->with($password, $userPassword)
@@ -109,15 +109,15 @@ class LoginTest extends PHPUnit_Framework_TestCase
         $userVo = new UserVO();
         $userVo->id              = $userId = 42;
         $userVo->password_hash   = $userPassword;
-        $userVo->one_time_secret = false;
+        $userVo->one_time_secret = '';
 
-        $this->mockDatabaseUserProvider
+        $this->userProvider
             ->expects($this->once())
             ->method('loadUserByUsername')
             ->with($username)
             ->willReturn($userVo);
 
-        $this->mockDatabaseUserProvider
+        $this->userProvider
             ->expects($this->once())
             ->method('verifyHash')
             ->with($password, $userPassword)
@@ -133,7 +133,7 @@ class LoginTest extends PHPUnit_Framework_TestCase
             $authenticationVo,
             AuthenticateUserEvent::CHECK
         );
-        $this->mockDispatcher
+        $this->dispatcher
             ->expects($this->at(0))
             ->method('dispatchEvent')
             ->with($event);
@@ -142,7 +142,7 @@ class LoginTest extends PHPUnit_Framework_TestCase
             $authenticationVo,
             AuthenticateUserEvent::AUTHENTICATED
         );
-        $this->mockDispatcher
+        $this->dispatcher
             ->expects($this->at(01))
             ->method('dispatchEvent')
             ->with($event);

@@ -37,7 +37,7 @@ class CsrfTest extends TestCase
     public function testProcessGetRequestWithoutToken()
     {
         $currentCsrf  = '';
-        $newCsrf     = 'random';
+        $newCsrf = 'random';
         $session      = new Session(new MockArraySessionStorage());
 
         $request = new Request();
@@ -81,7 +81,7 @@ class CsrfTest extends TestCase
         $request->cookies->set(Csrf::CSRF, $currentCsrf);
 
         $response = new Response();
-        $route      = new Route('/route/');
+        $route = new Route('/route/');
         $routeName = null;
 
         $this->idGenerator

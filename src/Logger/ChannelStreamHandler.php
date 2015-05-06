@@ -43,7 +43,7 @@ class ChannelStreamHandler extends StreamHandler
     }
 
     /**
-     * @param $channel
+     * @param string $channel
      */
     public function setChannel($channel)
     {

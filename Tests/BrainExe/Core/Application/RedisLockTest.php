@@ -6,13 +6,13 @@ use BrainExe\Core\Application\RedisLock;
 use BrainExe\Core\Redis\RedisInterface;
 use BrainExe\Tests\RedisMockTrait;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase;
-use BrainExe\Core\Redis\PhpRedis;
+use PHPUnit_Framework_TestCase as TestCase;
+use BrainExe\Core\Redis\Predis;
 
 /**
  * @covers BrainExe\Core\Application\RedisLock
  */
-class RedisLockTest extends PHPUnit_Framework_TestCase
+class RedisLockTest extends TestCase
 {
     use RedisMockTrait;
 

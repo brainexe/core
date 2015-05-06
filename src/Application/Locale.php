@@ -28,11 +28,11 @@ class Locale
      */
     public function setLocale($locale)
     {
-        putenv("LANG=$locale.UTF-8");
-        setlocale(LC_MESSAGES, "$locale.UTF-8");
+        putenv(sprintf('LANG=%s.UTF-8', $locale));
+        setlocale(LC_MESSAGES, sprintf('%s.UTF-8', $locale));
 
         $domain = 'messages';
-        bindtextdomain($domain, ROOT . "/lang/");
+        bindtextdomain($domain, ROOT . '/lang/');
         bind_textdomain_codeset($domain, 'UTF-8');
         textdomain($domain);
     }

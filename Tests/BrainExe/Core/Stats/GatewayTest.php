@@ -76,10 +76,17 @@ class GatewayTest extends TestCase
 
     public function testGet()
     {
-        $this->markTestIncomplete('This is only a dummy implementation');
+        $key   = 'mockKey';
+        $value = 'mockValue';
 
-        $key           = null;
-        $actual_result = $this->subject->get($key);
+        $this->redis
+            ->expects($this->once())
+            ->method('hget')
+            ->with(Gateway::KEY, $key)
+            ->willReturn($value);
+
+        $actualResult = $this->subject->get($key);
+        $this->assertEquals($value, $actualResult);
     }
 
 }

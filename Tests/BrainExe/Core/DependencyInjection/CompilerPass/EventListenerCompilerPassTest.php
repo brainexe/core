@@ -4,7 +4,7 @@ namespace BrainExe\Tests\Core\DependencyInjection\CompilerPass;
 
 use BrainExe\Core\DependencyInjection\CompilerPass\EventListenerCompilerPass;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase;
+use PHPUnit_Framework_TestCase as TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -24,7 +24,7 @@ class TestEventDispatcher implements EventSubscriberInterface
     }
 }
 
-class EventListenerCompilerPassTest extends PHPUnit_Framework_TestCase
+class EventListenerCompilerPassTest extends TestCase
 {
 
     /**
@@ -35,32 +35,32 @@ class EventListenerCompilerPassTest extends PHPUnit_Framework_TestCase
     /**
      * @var ContainerBuilder|MockObject $container
      */
-    private $mockContainer;
+    private $container;
 
     /**
      * @var Definition|MockObject $container
      */
-    private $mockEventDispatcher;
+    private $dispatcher;
 
     public function setUp()
     {
         $this->subject = new EventListenerCompilerPass();
 
-        $this->mockContainer       = $this->getMock(ContainerBuilder::class);
-        $this->mockEventDispatcher = $this->getMock(Definition::class);
+        $this->container  = $this->getMock(ContainerBuilder::class);
+        $this->dispatcher = $this->getMock(Definition::class);
     }
 
     public function testAddSubscriber()
     {
         $serviceId = 'FooService';
 
-        $this->mockContainer
+        $this->container
             ->expects($this->at(0))
             ->method('getDefinition')
             ->with('EventDispatcher')
-            ->willReturn($this->mockEventDispatcher);
+            ->willReturn($this->dispatcher);
 
-        $this->mockContainer
+        $this->container
             ->expects($this->at(1))
             ->method('findTaggedServiceIds')
             ->with(EventListenerCompilerPass::TAG)
@@ -71,32 +71,32 @@ class EventListenerCompilerPassTest extends PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('getClass')
             ->willReturn(TestEventDispatcher::class);
-        $this->mockContainer
+        $this->container
             ->expects($this->at(2))
             ->method('getDefinition')
             ->with($serviceId)
             ->willReturn($definition);
 
-        $this->mockEventDispatcher
+        $this->dispatcher
             ->expects($this->at(0))
             ->method('addMethodCall')
             ->with('addListenerService', ['foo_event', [$serviceId, 'fooMethod'], 0]);
 
-        $this->mockEventDispatcher
+        $this->dispatcher
             ->expects($this->at(1))
             ->method('addMethodCall')
             ->with('addListenerService', ['foo_event2', [$serviceId, 'fooMethod2'], 10]);
 
-        $this->mockEventDispatcher
+        $this->dispatcher
             ->expects($this->at(2))
             ->method('addMethodCall')
             ->with('addListenerService', ['foo_event3', [$serviceId, 'fooMethod3'], 0]);
 
-        $this->mockEventDispatcher
+        $this->dispatcher
             ->expects($this->at(3))
             ->method('addMethodCall')
             ->with('addListenerService', ['foo_event3', [$serviceId, 'fooMethod4'], 20]);
 
-        $this->subject->process($this->mockContainer);
+        $this->subject->process($this->container);
     }
 }

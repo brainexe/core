@@ -3,13 +3,12 @@
 namespace BrainExe\Tests\Core\Application;
 
 use BrainExe\Core\Application\RedisSessionHandler;
-use BrainExe\Core\Redis\RedisInterface;
+use BrainExe\Core\Redis\Predis;
 use BrainExe\Tests\RedisMockTrait;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase;
-use BrainExe\Core\Redis\PhpRedis;
+use PHPUnit_Framework_TestCase as TestCase;
 
-class RedisSessionHandlerTest extends PHPUnit_Framework_TestCase
+class RedisSessionHandlerTest extends TestCase
 {
 
     use RedisMockTrait;
@@ -20,16 +19,16 @@ class RedisSessionHandlerTest extends PHPUnit_Framework_TestCase
     private $subject;
 
     /**
-     * @var RedisInterface|MockObject
+     * @var Predis|MockObject
      */
-    private $mockRedis;
+    private $redis;
 
     public function setUp()
     {
-        $this->mockRedis = $this->getRedisMock();
+        $this->redis = $this->getRedisMock();
 
         $this->subject = new RedisSessionHandler();
-        $this->subject->setRedis($this->mockRedis);
+        $this->subject->setRedis($this->redis);
     }
 
     public function testReadSession()
@@ -37,7 +36,7 @@ class RedisSessionHandlerTest extends PHPUnit_Framework_TestCase
         $payload    = 'foobar';
         $sessionId  = '121212';
 
-        $this->mockRedis
+        $this->redis
             ->expects($this->once())
             ->method('get')
             ->with("session:$sessionId")
@@ -55,7 +54,7 @@ class RedisSessionHandlerTest extends PHPUnit_Framework_TestCase
 
         $this->subject->open(null, $sessionId);
 
-        $this->mockRedis
+        $this->redis
             ->expects($this->once())
             ->method('setex')
             ->with("session:$sessionId", $this->isType('integer'), $payload);
@@ -67,7 +66,7 @@ class RedisSessionHandlerTest extends PHPUnit_Framework_TestCase
     {
         $sessionId = '121212';
 
-        $this->mockRedis
+        $this->redis
             ->expects($this->once())
             ->method('del')
             ->with("session:$sessionId");

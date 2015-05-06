@@ -44,11 +44,11 @@ class Login
     {
         $userVo = $this->userProvider->loadUserByUsername($username);
         if (empty($userVo)) {
-            throw new UserException("Invalid Username");
+            throw new UserException('Invalid Username');
         }
 
         if (!$this->userProvider->verifyHash($password, $userVo->getPassword())) {
-            throw new UserException("Invalid Password");
+            throw new UserException('Invalid Password');
         }
 
         $authenticationVo = new AuthenticationDataVO($userVo, $password, $oneTimeToken);

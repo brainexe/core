@@ -139,6 +139,7 @@ namespace BrainExe\Core\Redis;
  * @method mixed save()
  * @method mixed slaveof($host, $port)
  * @method mixed slowlog($subcommand, $argument = null)
+ * @deprecated use Predis only
  */
 interface RedisInterface
 {

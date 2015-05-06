@@ -10,7 +10,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * @CommandAnnotation("Redis.Command.Import", public=false)
+ * @CommandAnnotation("Redis.Command.Import")
+ * @codeCoverageIgnore
  */
 class Import extends Command
 {

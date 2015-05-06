@@ -38,7 +38,7 @@ class RegisterController implements ControllerInterface
 
     /**
      * @param Request $request
-     * @return RedirectResponse
+     * @return JsonResponse
      * @Route("/register/", name="authenticate.doRegister", methods="POST")
      * @Guest
      */

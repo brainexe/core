@@ -9,7 +9,6 @@ use BrainExe\Core\Authentication\Exception\UsernameNotFoundException;
 use BrainExe\Core\Traits\EventDispatcherTrait;
 use BrainExe\Core\Traits\IdGeneratorTrait;
 use BrainExe\Core\Traits\RedisTrait;
-use BrainExe\Core\Redis\PhpRedis;
 
 /**
  * @api
@@ -28,7 +27,7 @@ class DatabaseUserProvider
     /**
      * @var PasswordHasher
      */
-    private $passwordHasher;
+    private $hasher;
 
     /**
      * @Inject({"@PasswordHasher"})
@@ -36,10 +35,12 @@ class DatabaseUserProvider
      */
     public function __construct(PasswordHasher $passwordHasher)
     {
-        $this->passwordHasher = $passwordHasher;
+        $this->hasher = $passwordHasher;
     }
 
     /**
+     * @param string $username
+     * @return UserVO
      * @throws UsernameNotFoundException
      */
     public function loadUserByUsername($username)
@@ -87,7 +88,7 @@ class DatabaseUserProvider
      */
     public function generateHash($password)
     {
-        return $this->passwordHasher->generateHash($password);
+        return $this->hasher->generateHash($password);
     }
 
     /**
@@ -97,7 +98,7 @@ class DatabaseUserProvider
      */
     public function verifyHash($password, $hash)
     {
-        return $this->passwordHasher->verifyHash($password, $hash);
+        return $this->hasher->verifyHash($password, $hash);
     }
 
     /**
@@ -133,7 +134,7 @@ class DatabaseUserProvider
      */
     public function register(UserVO $user)
     {
-        $redis        = $this->getRedis()->multi(PhpRedis::PIPELINE);
+        $redis        = $this->getRedis()->pipeline();
         $passwordHash = $this->generateHash($user->password);
 
         $userArray = [

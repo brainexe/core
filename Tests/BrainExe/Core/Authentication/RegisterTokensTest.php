@@ -3,17 +3,16 @@
 namespace Tests\BrainExe\Core\Authentication\RegisterTokens;
 
 use BrainExe\Core\Authentication\RegisterTokens;
-use BrainExe\Core\Redis\RedisInterface;
 use BrainExe\Core\Util\IdGenerator;
 use BrainExe\Tests\RedisMockTrait;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase;
-use BrainExe\Core\Redis\PhpRedis;
+use PHPUnit_Framework_TestCase as TestCase;
+use BrainExe\Core\Redis\Predis;
 
 /**
  * @covers BrainExe\Core\Authentication\RegisterTokens
  */
-class RegisterTokensTest extends PHPUnit_Framework_TestCase
+class RegisterTokensTest extends TestCase
 {
 
     use RedisMockTrait;
@@ -24,35 +23,35 @@ class RegisterTokensTest extends PHPUnit_Framework_TestCase
     private $subject;
 
     /**
-     * @var RedisInterface|MockObject
+     * @var Predis|MockObject
      */
-    private $mockRedis;
+    private $redis;
 
     /**
      * @var IdGenerator|MockObject
      */
-    private $mockIdGenerator;
+    private $idGenerator;
 
     public function setUp()
     {
-        $this->mockRedis       = $this->getRedisMock();
-        $this->mockIdGenerator = $this->getMock(IdGenerator::class, [], [], '', false);
+        $this->redis       = $this->getRedisMock();
+        $this->idGenerator = $this->getMock(IdGenerator::class, [], [], '', false);
 
         $this->subject = new RegisterTokens();
-        $this->subject->setRedis($this->mockRedis);
-        $this->subject->setIdGenerator($this->mockIdGenerator);
+        $this->subject->setRedis($this->redis);
+        $this->subject->setIdGenerator($this->idGenerator);
     }
 
     public function testAddToken()
     {
         $tokenId = 11880;
 
-        $this->mockIdGenerator
+        $this->idGenerator
             ->expects($this->once())
             ->method('generateRandomId')
             ->willReturn($tokenId);
 
-        $this->mockRedis
+        $this->redis
             ->expects($this->once())
             ->method('sAdd')
             ->with(RegisterTokens::TOKEN_KEY, $tokenId);
@@ -66,7 +65,7 @@ class RegisterTokensTest extends PHPUnit_Framework_TestCase
     {
         $token = 11880;
 
-        $this->mockRedis
+        $this->redis
             ->expects($this->once())
             ->method('sRem')
             ->with(RegisterTokens::TOKEN_KEY, $token)

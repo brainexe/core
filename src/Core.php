@@ -10,7 +10,7 @@ if (!defined('CORE_ROOT')) {
 }
 
 if (!defined('ROOT')) {
-    define('ROOT', realpath(CORE_ROOT . '/../').'/');
+    define('ROOT', realpath(CORE_ROOT . '/../') . '/');
 }
 
 if (!defined('BRAINEXE_VENDOR_ROOT')) {
@@ -38,7 +38,7 @@ class Core
         $files = glob('cache/dic_*.php');
 
         /** @var Container $dic */
-        if ($files) {
+        if (!empty($files)) {
             include_once $files[0];
             preg_match('/dic_([\d]*)/', $files[0], $matches);
             $class = $matches[0];
