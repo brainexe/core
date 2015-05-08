@@ -32,7 +32,7 @@ class GlobalCompilerPassTest extends \PHPUnit_Framework_TestCase
         $serviceId = 'FooCompilerPass';
 
         $compilerMock = $this->getMock(CompilerPassInterface::class);
-        $loggerMock  = $this->getMock(Logger::class, [], [], '', false);
+        $loggerMock = $this->getMock(Logger::class, [], [], '', false);
 
         $this->mockContainer
             ->expects($this->at(0))

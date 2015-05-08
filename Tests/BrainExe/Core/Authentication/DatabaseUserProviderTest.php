@@ -158,7 +158,7 @@ class DatabaseUserProviderTest extends TestCase
         $user->id = $userId = 42;
 
         $newPassword = 'new_password';
-        $hash         = 'hash';
+        $hash = 'hash';
 
         $this->hasher
             ->expects($this->once())

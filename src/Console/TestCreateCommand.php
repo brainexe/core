@@ -322,11 +322,11 @@ class TestCreateCommand extends Command
         foreach ($serviceDefinition->getArguments() as $reference) {
             if ($reference instanceof Definition) {
                 $definition = $reference;
-                $mockName  = $this->getShortClassName($definition->getClass());
+                $mockName = $this->getShortClassName($definition->getClass());
             } elseif ($reference instanceof Reference) {
                 // add setter for model mock
                 $definition = $this->getServiceDefinition((string)$reference);
-                $mockName  = $this->getShortClassName($definition->getClass());
+                $mockName = $this->getShortClassName($definition->getClass());
             } else {
                 $data->constructorArguments[] = var_export($reference, true);
                 continue;

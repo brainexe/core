@@ -37,7 +37,7 @@ class LoginControllerTest extends PHPUnit_Framework_TestCase
 
     public function testDoLogin()
     {
-        $username       = 'username';
+        $username = 'username';
         $plainPassword = 'plain password';
         $oneTimeToken = 'one time token';
 

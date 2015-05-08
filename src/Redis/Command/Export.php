@@ -85,7 +85,7 @@ class Export extends Command
                 }
                 break;
             case 'set':
-                $set  = $redis->smembers($key);
+                $set = $redis->smembers($key);
                 foreach ($set as $k => $val) {
                     $parts[] = sprintf(
                         "SADD %s %s",

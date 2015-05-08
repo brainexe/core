@@ -28,7 +28,7 @@ class GatewayTest extends TestCase
 
     public function setUp()
     {
-        $this->redis  = $this->getRedisMock();
+        $this->redis = $this->getRedisMock();
 
         $this->subject = new Gateway();
         $this->subject->setRedis($this->redis);

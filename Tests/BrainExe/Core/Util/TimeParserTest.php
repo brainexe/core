@@ -54,7 +54,7 @@ class TimeParserTest extends PHPUnit_Framework_TestCase
             ['5s', 5],
             ['10S', 10],
             ['5t', false],
-            ['7m', 7*60],
+            ['7m', 7 * 60],
             ['now', 0]
         ];
     }

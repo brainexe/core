@@ -64,7 +64,7 @@ class AppKernelTest extends TestCase
 
     public function testHandle()
     {
-        $request  = new Request();
+        $request = new Request();
 
         $expectedResponse = new JsonResponse(['arguments']);
 
@@ -92,7 +92,7 @@ class AppKernelTest extends TestCase
             ->with($request, $route, $routeName)
             ->willReturn(null);
 
-        $callable = function ($arguments) {
+        $callable = function($arguments) {
             return $arguments;
         };
 

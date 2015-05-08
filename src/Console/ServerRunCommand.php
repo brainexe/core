@@ -68,7 +68,7 @@ class ServerRunCommand extends Command
             ->setTimeout(null)
             ->getProcess();
 
-        $process->run(function ($type, $buffer) use ($output, $input) {
+        $process->run(function($type, $buffer) use ($output, $input) {
             unset($type);
             if (!$input->getOption('quiet')) {
                 $output->write($buffer);

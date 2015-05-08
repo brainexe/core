@@ -40,7 +40,7 @@ class EventDispatcher extends SymfonyEventDispatcher
     /**
      * @param string $eventName
      * @param Event $event
-     * @return Event|void
+     * @return Event
      */
     public function dispatch($eventName, Event $event = null)
     {

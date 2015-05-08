@@ -47,7 +47,7 @@ class CacheTest extends TestCase
         $request = new Request();
         $request->setMethod('POST');
 
-        $route      = new Route('/path/');
+        $route = new Route('/path/');
         $routeName = null;
 
         $actualResponse = $this->subject->processRequest($request, $route, $routeName);

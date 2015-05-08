@@ -189,7 +189,7 @@ class AuthenticationTest extends TestCase
      */
     private function loadUser($userId)
     {
-        $user   = new UserVO();
+        $user = new UserVO();
 
         $this->userProvider
             ->expects($this->once())

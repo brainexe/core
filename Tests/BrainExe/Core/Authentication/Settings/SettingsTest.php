@@ -41,7 +41,7 @@ class SettingsTest extends TestCase
             ->with($userId, $setting)
             ->willReturn($expected);
 
-        $actual  = $this->subject->get($userId, $setting);
+        $actual = $this->subject->get($userId, $setting);
 
         $this->assertEquals($expected, $actual);
     }

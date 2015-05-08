@@ -45,12 +45,12 @@ class DebugCommand extends AbstractCommand
             $handler->register(
                 ROOT . 'assets/' . $file->getRelativePathname(),
                 $events,
-                function () {
+                function() {
                 }
             );
         }
 
-        $handler->cyclicWait(5, function (Handler $handler, $count) use ($output) {
+        $handler->cyclicWait(5, function(Handler $handler, $count) use ($output) {
             $output->write('.');
             if ($count) {
                 $input = new ArrayInput(['command' => 'assets:dump']);

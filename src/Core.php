@@ -10,7 +10,7 @@ if (!defined('CORE_ROOT')) {
 }
 
 if (!defined('ROOT')) {
-    define('ROOT', realpath(CORE_ROOT . '/../').'/');
+    define('ROOT', realpath(CORE_ROOT . '/../') . '/');
 }
 
 if (!defined('BRAINEXE_VENDOR_ROOT')) {

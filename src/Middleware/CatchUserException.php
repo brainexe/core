@@ -46,7 +46,7 @@ class CatchUserException extends AbstractMiddleware
                 json_encode([ControllerInterface::ALERT_DANGER, $message])
             );
         } else {
-            $responseString  = $exception->getMessage();
+            $responseString = $exception->getMessage();
             $response->setContent($responseString);
         }
 

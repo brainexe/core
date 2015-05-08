@@ -42,7 +42,7 @@ abstract class AbstractCommand extends Command
         $this->doExecute($input, $output);
 
         if (OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity()) {
-            $output->writeln(sprintf("<info>done in %0.1fms</info>", (microtime(true) - $start)*1000));
+            $output->writeln(sprintf("<info>done in %0.1fms</info>", (microtime(true) - $start) * 1000));
         } else {
             $output->writeln('<info>done</info>');
         }
