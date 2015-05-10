@@ -55,6 +55,28 @@ class Register
      */
     public function registerUser(UserVO $user, Session $session, $token = null)
     {
+        $this->checkInput($user);
+
+        if (!$this->registrationEnabled
+            && $token !== null
+            && !$this->registerTokens->fetchToken($token)
+        ) {
+            throw new UserException("You have to provide a valid register token!");
+        }
+
+        $userId = $this->userProvider->register($user);
+
+        $session->set('user', $user);
+
+        return $userId;
+    }
+
+    /**
+     * @param UserVO $user
+     * @throws UserException
+     */
+    protected function checkInput(UserVO $user)
+    {
         if (mb_strlen($user->username) <= 1) {
             throw new UserException("Username must not be empty");
         }
@@ -70,18 +92,5 @@ class Register
         } catch (UsernameNotFoundException $e) {
             // all fine
         }
-
-        if (!$this->registrationEnabled
-            && $token !== null
-            && !$this->registerTokens->fetchToken($token)
-        ) {
-            throw new UserException("You have to provide a valid register token!");
-        }
-
-        $userId = $this->userProvider->register($user);
-
-        $session->set('user', $user);
-
-        return $userId;
     }
 }

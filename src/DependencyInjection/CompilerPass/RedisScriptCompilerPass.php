@@ -10,6 +10,7 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
+ * @todo use Predis\Command\ScriptCommand
  * @CompilerPass
  */
 class RedisScriptCompilerPass implements CompilerPassInterface

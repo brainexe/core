@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 /**
- * @Middleware
+ * @Middleware("Middleware.CatchUserException")
  */
 class CatchUserException extends AbstractMiddleware
 {

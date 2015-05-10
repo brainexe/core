@@ -8,6 +8,7 @@ use BrainExe\Core\EventDispatcher\DelayedEvent;
 use BrainExe\Core\EventDispatcher\EventDispatcher;
 use BrainExe\Core\EventDispatcher\PushViaWebsocket;
 use BrainExe\Core\Websockets\WebSocketEvent;
+use Elasticsearch\Common\Exceptions\RuntimeException;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase;
 use Symfony\Component\DependencyInjection\Container;
@@ -38,7 +39,7 @@ class EventDispatcherTest extends PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->container = $this->getMock(Container::class, [], [], '', false);
-        $this->subject = $this->getMock(EventDispatcher::class, ['dispatch'], [], '', false);
+        $this->subject   = $this->getMock(EventDispatcher::class, ['dispatch'], [], '', false);
     }
 
     public function testDispatchEvent()
@@ -51,6 +52,26 @@ class EventDispatcherTest extends PHPUnit_Framework_TestCase
             ->with(TestEvent::TYPE, $event);
 
         $this->subject->dispatchEvent($event);
+    }
+
+    /**
+     * @expectedException RuntimeException
+     * @expectedExceptionMessage You have to pass an Event into EventDispatcher::dispatch
+     */
+    public function testDispatchEmpty()
+    {
+        $this->subject = $this->getMock(EventDispatcher::class, null, [], '', false);
+
+        $this->subject->dispatch(TestEvent::TYPE, null);
+    }
+
+    public function testDispatch()
+    {
+        $this->subject = $this->getMock(EventDispatcher::class, null, [], '', false);
+
+        $event = new TestWebsocketEvent(TestWebsocketEvent::TYPE);
+
+        $this->subject->dispatch(TestEvent::TYPE, $event);
     }
 
     public function testDispatchAsWebsocketEvent()

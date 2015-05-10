@@ -19,14 +19,14 @@ class DeleteUserEvent extends AbstractEvent
     private $userVo;
 
     /**
-     * @param UserVO $userVo
+     * @param UserVO $authentication
      * @param string $eventName
      */
-    public function __construct(UserVO $userVo, $eventName)
+    public function __construct(UserVO $authentication, $eventName)
     {
         parent::__construct($eventName);
 
-        $this->userVo = $userVo;
+        $this->userVo = $authentication;
     }
 
     /**

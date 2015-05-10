@@ -45,7 +45,7 @@ class EventDispatcher extends SymfonyEventDispatcher
     public function dispatch($eventName, Event $event = null)
     {
         if (empty($event)) {
-            throw new RuntimeException("You have to pass an Event into EventDispatcher::dispatch");
+            throw new RuntimeException('You have to pass an Event into EventDispatcher::dispatch');
         }
 
         $event->setDispatcher($this); // @todo needed?

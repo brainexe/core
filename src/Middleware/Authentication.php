@@ -7,6 +7,7 @@ use BrainExe\Core\Annotations\Middleware;
 use BrainExe\Core\Authentication\AnonymusUserVO;
 use BrainExe\Core\Authentication\DatabaseUserProvider;
 use BrainExe\Core\Authentication\IP;
+use BrainExe\Core\Authentication\UserVO;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,7 +15,7 @@ use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Route;
 
 /**
- * @Middleware(priority=8)
+ * @Middleware("Middleware.Authentication", priority=8)
  */
 class Authentication extends AbstractMiddleware
 {
@@ -33,6 +34,7 @@ class Authentication extends AbstractMiddleware
      * @var bool
      */
     private $allowedPrivateIps;
+
     /**
      * @var IP
      */
@@ -95,17 +97,27 @@ class Authentication extends AbstractMiddleware
             return null;
         }
 
-        if ($route->hasDefault('_role')) {
-            $role = $route->getDefault('_role');
-            if (!in_array($role, $user->roles)) {
-                throw new MethodNotAllowedException([]);
-            }
-        }
+        $this->checkForRole($route, $user);
 
         if (!$loggedIn) {
             return new RedirectResponse('#/login');
         }
 
         return null;
+    }
+
+    /**
+     * @param Route $route
+     * @param UserVO $user
+     * @throws MethodNotAllowedException
+     */
+    protected function checkForRole(Route $route, $user)
+    {
+        if ($route->hasDefault('_role')) {
+            $role = $route->getDefault('_role');
+            if (!in_array($role, $user->roles)) {
+                throw new MethodNotAllowedException([]);
+            }
+        }
     }
 }

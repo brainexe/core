@@ -130,10 +130,10 @@
 		<service id="Filesystem" class="BrainExe\Core\Util\Filesystem" public="false"/>
 		<service id="Finder" class="Symfony\Component\Finder\Finder" public="false"/>
 
-		<service id="cache.redis" class="Doctrine\Common\Cache\RedisCache" public="false">
+		<service id="cache.predis" class="Doctrine\Common\Cache\PredisCache" public="false">
 			<argument type="service" id="redis"/>
 		</service>
-		<service id="cache" alias="cache.redis" public="false" />
+		<service id="cache" alias="cache.predis" public="false" />
 
 		<service id="UrlGenerator" class="Symfony\Component\Routing\Generator\UrlGenerator" public="false">
 			<argument type="service" id="Core.RouteCollection"/>

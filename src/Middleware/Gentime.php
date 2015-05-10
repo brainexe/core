@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Middleware(priority=1)
+ * @Middleware("Middleware.Gentime", priority=1)
  */
 class Gentime extends AbstractMiddleware
 {

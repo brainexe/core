@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Route;
 /**
  * @todo use X-Cache / X-Validate
  * @todo invalidate
- * @Middleware(priority=null)
+ * @Middleware("Middleware.Cache", priority=null)
  */
 class Cache extends AbstractMiddleware
 {

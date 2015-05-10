@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Route;
 
 /**
- * @Middleware(priority=4)
+ * @Middleware("Middleware.Csrf", priority=4)
  */
 class Csrf extends AbstractMiddleware
 {

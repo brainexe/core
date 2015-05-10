@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Session\Session as SessionModel;
 use Symfony\Component\Routing\Route;
 
 /**
- * @Middleware(priority=10)
+ * @Middleware("Middleware.Session", priority=10)
  */
 class Session extends AbstractMiddleware
 {

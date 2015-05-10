@@ -48,8 +48,6 @@ class LoggerCompilerPass implements CompilerPassInterface
                 false,
                 $container->getParameter('hipchat.logLevel'),
             ])]);
-
         }
-
     }
 }
