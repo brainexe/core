@@ -2,10 +2,12 @@
 
 namespace Tests\BrainExe\Core\Authentication\Login;
 
+use BrainExe\Core\Application\UserException;
 use BrainExe\Core\Authentication\AuthenticationDataVO;
 use BrainExe\Core\Authentication\DatabaseUserProvider;
 use BrainExe\Core\Authentication\Event\AuthenticateUserEvent;
 use BrainExe\Core\Authentication\Login;
+use BrainExe\Core\Authentication\Token;
 use BrainExe\Core\Authentication\UserVO;
 use BrainExe\Core\EventDispatcher\EventDispatcher;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
@@ -34,12 +36,18 @@ class LoginTest extends TestCase
      */
     private $dispatcher;
 
+    /**
+     * @var Token|MockObject
+     */
+    private $token;
+
     public function setUp()
     {
         $this->userProvider = $this->getMock(DatabaseUserProvider::class, [], [], '', false);
         $this->dispatcher   = $this->getMock(EventDispatcher::class, [], [], '', false);
+        $this->token         = $this->getMock(Token::class, [], [], '', false);
 
-        $this->subject = new Login($this->userProvider);
+        $this->subject = new Login($this->userProvider, $this->token);
         $this->subject->setEventDispatcher($this->dispatcher);
     }
 
@@ -159,4 +167,21 @@ class LoginTest extends TestCase
         $this->assertEquals($event->getAuthenticationData(), $authenticationVo);
     }
 
+    /**
+     * @expectedException \BrainExe\Core\Application\UserException
+     * @expectedExceptionMessage Invalid Token
+     */
+    public function testLoginWithInvalidToken()
+    {
+        $token = 'token';
+
+        $session = new Session(new MockArraySessionStorage());
+
+        $this->token
+            ->expects($this->once())
+            ->method('getToken')
+            ->willReturn(null);
+
+        $this->subject->loginWithToken($token, $session);
+    }
 }

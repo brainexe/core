@@ -6,7 +6,9 @@ use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Core\Annotations\Controller;
 use BrainExe\Core\Annotations\Guest;
 use BrainExe\Core\Annotations\Route;
+use BrainExe\Core\Application\UserException;
 use BrainExe\Core\Authentication\Login;
+use BrainExe\Core\Authentication\UserVO;
 use BrainExe\Core\Controller\ControllerInterface;
 use BrainExe\Core\Traits\AddFlashTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -75,5 +77,18 @@ class LoginController implements ControllerInterface
         $username = $request->query->get('username');
 
         return $this->login->needsOneTimeToken($username);
+    }
+
+    /**
+     * @param Request $request
+     * @Route("/login/token/{token}", name="authenticate.needsOneTimeToken", methods="GET")
+     * @param string $token
+     * @return UserVO
+     * @throws UserException
+     * @Guest
+     */
+    public function loginWithToken(Request $request, $token)
+    {
+        return $this->login->loginWithToken($token, $request->getSession());
     }
 }

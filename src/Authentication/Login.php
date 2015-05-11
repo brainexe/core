@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
  */
 class Login
 {
+    const TOKEN_LOGIN = 'login';
 
     use EventDispatcherTrait;
 
@@ -24,12 +25,19 @@ class Login
     private $userProvider;
 
     /**
-     * @Inject("@DatabaseUserProvider")
-     * @param DatabaseUserProvider $userProvider
+     * @var Token
      */
-    public function __construct(DatabaseUserProvider $userProvider)
+    private $token;
+
+    /**
+     * @Inject({"@DatabaseUserProvider", "@Authentication.Token"})
+     * @param DatabaseUserProvider $userProvider
+     * @param Token $token
+     */
+    public function __construct(DatabaseUserProvider $userProvider, Token $token)
     {
         $this->userProvider = $userProvider;
+        $this->token        = $token;
     }
 
     /**
@@ -53,20 +61,24 @@ class Login
 
         $authenticationVo = new AuthenticationDataVO($userVo, $password, $oneTimeToken);
 
-        $event = new AuthenticateUserEvent(
-            $authenticationVo,
-            AuthenticateUserEvent::CHECK
-        );
-        $this->dispatchEvent($event);
+        $this->handleSuccessfulLogin($session, $authenticationVo, $userVo);
 
-        $session->set('user_id', $userVo->id);
+        return $userVo;
+    }
 
-        $event = new AuthenticateUserEvent(
-            $authenticationVo,
-            AuthenticateUserEvent::AUTHENTICATED
-        );
+    public function loginWithToken($token, SessionInterface $session)
+    {
+        $tokenData = $this->token->getToken($token);
 
-        $this->dispatchEvent($event);
+        if (empty($tokenData) || !in_array(self::TOKEN_LOGIN, $tokenData['roles'])) {
+            throw new UserException('Invalid Token');
+        }
+
+        $userVo = $this->userProvider->loadUserById($tokenData['user']);
+
+        $authenticationVo = new AuthenticationDataVO($userVo, null, null);
+
+        $this->handleSuccessfulLogin($session, $authenticationVo, $userVo);
 
         return $userVo;
     }
@@ -84,5 +96,23 @@ class Login
         }
 
         return !empty($user->one_time_secret);
+    }
+
+    /**
+     * @param SessionInterface $session
+     * @param AuthenticationDataVO $authenticationVo
+     * @param UserVO $userVo
+     * @return AuthenticateUserEvent
+     */
+    private function handleSuccessfulLogin(SessionInterface $session, $authenticationVo, $userVo)
+    {
+        $event = new AuthenticateUserEvent($authenticationVo, AuthenticateUserEvent::CHECK);
+        $this->dispatchEvent($event);
+
+        $session->set('user_id', $userVo->id);
+
+        $event = new AuthenticateUserEvent($authenticationVo, AuthenticateUserEvent::AUTHENTICATED);
+
+        $this->dispatchEvent($event);
     }
 }

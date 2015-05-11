@@ -6,7 +6,7 @@ use BrainExe\Core\Authentication\Controller\LoginController;
 use BrainExe\Core\Authentication\Login;
 use BrainExe\Core\Authentication\UserVO;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase;
+use PHPUnit_Framework_TestCase as TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 /**
  * @covers BrainExe\Core\Authentication\Controller\LoginController
  */
-class LoginControllerTest extends PHPUnit_Framework_TestCase
+class LoginControllerTest extends TestCase
 {
 
     /**
@@ -26,13 +26,12 @@ class LoginControllerTest extends PHPUnit_Framework_TestCase
     /**
      * @var Login|MockObject
      */
-    private $mockLogin;
+    private $login;
 
     public function setUp()
     {
-        $this->mockLogin = $this->getMock(Login::class, [], [], '', false);
-
-        $this->subject = new LoginController($this->mockLogin);
+        $this->login = $this->getMock(Login::class, [], [], '', false);
+        $this->subject = new LoginController($this->login);
     }
 
     public function testDoLogin()
@@ -51,7 +50,7 @@ class LoginControllerTest extends PHPUnit_Framework_TestCase
 
         $userVo = new UserVO();
 
-        $this->mockLogin
+        $this->login
             ->expects($this->once())
             ->method('tryLogin')
             ->with($username, $plainPassword, $oneTimeToken, $session)
@@ -60,5 +59,25 @@ class LoginControllerTest extends PHPUnit_Framework_TestCase
         $actualResult = $this->subject->doLogin($request);
 
         $this->assertInstanceOf(JsonResponse::class, $actualResult);
+    }
+
+    public function testLoginWithToken()
+    {
+        $user    = new UserVO();
+        $token   = 'token';
+        $session = new Session(new MockArraySessionStorage());
+
+        $request = new Request();
+        $request->setSession($session);
+
+        $this->login
+            ->expects($this->once())
+            ->method('loginWithToken')
+            ->with($token)
+            ->willReturn($user);
+
+        $actual = $this->subject->loginWithToken($request, $token);
+
+        $this->assertEquals($user, $actual);
     }
 }
