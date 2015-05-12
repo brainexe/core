@@ -13,7 +13,7 @@ use Generator;
 class Token
 {
 
-    const USER_KEY = 'tokens:user:%s';
+    const USER_KEY  = 'tokens:user:%s';
     const TOKEN_KEY = 'tokens';
 
     use RedisTrait;
@@ -55,15 +55,52 @@ class Token
     {
         $redis     = $this->getRedis();
         $tokensIds = $redis->smembers(sprintf(self::USER_KEY, $userId));
-        $tokens    = $redis->hmget(self::TOKEN_KEY, $tokensIds);
 
-        foreach ($tokens as $idx => $token) {
-            yield $tokensIds[$idx] => json_decode($token, true);
+        if (!empty($tokensIds)) {
+            $tokens = $redis->hmget(self::TOKEN_KEY, $tokensIds);
+
+            foreach ($tokens as $idx => $token) {
+                yield $tokensIds[$idx] => json_decode($token, true)['roles'];
+            }
         }
     }
 
-    public function revokeToken($token)
+    /**
+     * @param string $token
+     * @param string|null $role
+     * @return int
+     */
+    public function hasUserForRole($token, $role = null)
     {
+        $tokenData = $this->getToken($token);
+        if (empty($tokenData)) {
+            return null;
+        }
 
+        if ($role && !in_array($role, $tokenData['roles'])) {
+            return null;
+        }
+
+        return $tokenData['userId'];
+    }
+
+    /**
+     * @param string $token
+     */
+    public function revoke($token)
+    {
+        $tokenData = $this->getToken($token);
+        if (!$tokenData) {
+            return;
+        }
+
+        $userId = $tokenData['userId'];
+
+        $redis = $this->getRedis()->pipeline();
+
+        $redis->srem(sprintf(self::USER_KEY, $userId), $token);
+        $redis->hdel(self::TOKEN_KEY, $token);
+
+        $redis->execute();
     }
 }

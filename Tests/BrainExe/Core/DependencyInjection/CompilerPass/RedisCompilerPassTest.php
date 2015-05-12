@@ -4,14 +4,14 @@ namespace Tests\BrainExe\Core\DependencyInjection\CompilerPass\RedisCompilerPass
 
 use BrainExe\Core\DependencyInjection\CompilerPass\RedisCompilerPass;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase;
+use PHPUnit_Framework_TestCase as TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
 /**
  * @covers BrainExe\Core\DependencyInjection\CompilerPass\RedisCompilerPass
  */
-class RedisCompilerPassTest extends PHPUnit_Framework_TestCase
+class RedisCompilerPassTest extends TestCase
 {
 
     /**
@@ -22,11 +22,11 @@ class RedisCompilerPassTest extends PHPUnit_Framework_TestCase
     /**
      * @var ContainerBuilder|MockObject
      */
-    private $mockContainer;
+    private $container;
 
     public function setUp()
     {
-        $this->mockContainer = $this->getMock(ContainerBuilder::class);
+        $this->container = $this->getMock(ContainerBuilder::class);
 
         $this->subject = new RedisCompilerPass();
     }
@@ -41,22 +41,22 @@ class RedisCompilerPassTest extends PHPUnit_Framework_TestCase
 
         $redis = $this->getMock(Definition::class);
 
-        $this->mockContainer
+        $this->container
             ->expects($this->at(0))
             ->method('getDefinition')
             ->with('redis')
             ->willReturn($redis);
-        $this->mockContainer
+        $this->container
             ->expects($this->at(1))
             ->method('getParameter')
             ->with('redis.password')
             ->willReturn($password);
-        $this->mockContainer
+        $this->container
             ->expects($this->at(2))
             ->method('getParameter')
             ->with('redis.database')
             ->willReturn($database);
-        $this->mockContainer
+        $this->container
             ->expects($this->at(3))
             ->method('getParameter')
             ->with('redis.host')
@@ -80,6 +80,6 @@ class RedisCompilerPassTest extends PHPUnit_Framework_TestCase
 //            ->method('addMethodCall')
 //            ->with('connect', ['host' => $host]);
 
-        $this->subject->process($this->mockContainer);
+        $this->subject->process($this->container);
     }
 }

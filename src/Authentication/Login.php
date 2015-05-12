@@ -74,7 +74,7 @@ class Login
             throw new UserException('Invalid Token');
         }
 
-        $userVo = $this->userProvider->loadUserById($tokenData['user']);
+        $userVo = $this->userProvider->loadUserById($tokenData['userId']);
 
         $authenticationVo = new AuthenticationDataVO($userVo, null, null);
 

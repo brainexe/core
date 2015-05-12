@@ -5,6 +5,7 @@ namespace Tests\BrainExe\Core\Authentication\DatabaseUserProvider;
 use BrainExe\Core\Authentication\DatabaseUserProvider;
 use BrainExe\Core\Authentication\PasswordHasher;
 use BrainExe\Core\Authentication\UserVO;
+use BrainExe\Core\EventDispatcher\EventDispatcher;
 use BrainExe\Core\Redis\Predis;
 use BrainExe\Core\Util\IdGenerator;
 use BrainExe\Tests\RedisMockTrait;
@@ -39,15 +40,22 @@ class DatabaseUserProviderTest extends TestCase
      */
     private $hasher;
 
+    /**
+     * @var EventDispatcher|MockObject
+     */
+    private $dispatcher;
+
     public function setUp()
     {
         $this->redis          = $this->getRedisMock();
         $this->idGenerator    = $this->getMock(IdGenerator::class, [], [], '', false);
         $this->hasher         = $this->getMock(PasswordHasher::class, [], [], '', false);
+        $this->dispatcher     = $this->getMock(EventDispatcher::class, [], [], '', false);
 
         $this->subject = new DatabaseUserProvider($this->hasher);
         $this->subject->setRedis($this->redis);
         $this->subject->setIdGenerator($this->idGenerator);
+        $this->subject->setEventDispatcher($this->dispatcher);
     }
 
     /**
@@ -186,6 +194,51 @@ class DatabaseUserProviderTest extends TestCase
             ->with("user:$userId", 'username', $username);
 
         $this->subject->setUserProperty($user, 'username');
+    }
+
+    public function testDelete()
+    {
+        $userId = 42;
+
+        $user           = new UserVO();
+        $user->id       = $userId;
+        $user->username = 'UsErNaMe';
+
+        $this->redis
+            ->expects($this->once())
+            ->method('hgetall')
+            ->with('user:42')
+            ->willReturn([
+                'username' => 'UsErNaMe',
+                'roles' => '',
+                'one_time_secret' => '',
+                'password' => ''
+            ]);
+
+        $this->redis
+            ->expects($this->once())
+            ->method('hdel')
+            ->with(DatabaseUserProvider::REDIS_USER_NAMES, 'username');
+
+        $this->redis
+            ->expects($this->once())
+            ->method('del')
+            ->with('user:42');
+
+        $this->subject->deleteUser($userId);
+    }
+
+    public function testDeleteNotExisting()
+    {
+        $userId = 42;
+
+        $this->redis
+            ->expects($this->once())
+            ->method('hgetall')
+            ->with('user:42')
+            ->willReturn([]);
+
+        $this->subject->deleteUser($userId);
     }
 
     public function testRegister()

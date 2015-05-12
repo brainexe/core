@@ -184,4 +184,34 @@ class LoginTest extends TestCase
 
         $this->subject->loginWithToken($token, $session);
     }
+
+    public function testLoginWithToken()
+    {
+        $token = 'token';
+
+        $userVo = new UserVO();
+        $userId = 42;
+
+        $tokenData = [
+            'userId' => 42,
+            'roles' => [Login::TOKEN_LOGIN]
+        ];
+
+        $session = new Session(new MockArraySessionStorage());
+
+        $this->token
+            ->expects($this->once())
+            ->method('getToken')
+            ->willReturn($tokenData);
+
+        $this->userProvider
+            ->expects($this->once())
+            ->method('loadUserById')
+            ->with($userId)
+            ->willReturn($userVo);
+
+        $actual = $this->subject->loginWithToken($token, $session);
+
+        $this->assertEquals($userVo, $actual);
+    }
 }

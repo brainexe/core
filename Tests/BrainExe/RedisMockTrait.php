@@ -15,7 +15,7 @@ trait RedisMockTrait
     {
         return $this->getMock(Predis::class, [
             'sadd', 'smembers', 'srem', 'get', 'setex', 'script', 'getLastError',
-            'multi', 'exec', 'execute', 'exists', 'pipeline',
+            'multi', 'exec', 'execute', 'exists', 'pipeline', 'hmget',
             'hgetall', 'hmset', 'hset', 'hdel', 'hget', 'hincrby',
             'evalsha', 'load', 'publish', 'subscribe',
             'del', 'add', 'keys', 'brPop', 'lpush',

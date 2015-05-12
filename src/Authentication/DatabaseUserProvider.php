@@ -60,7 +60,11 @@ class DatabaseUserProvider
      */
     public function loadUserById($userId)
     {
-        $redisUser = $this->getRedis()->HGETALL($this->getKey($userId));
+        $redisUser = $this->getRedis()->hgetall($this->getKey($userId));
+
+        if (empty($redisUser)) {
+            return new AnonymusUserVO();
+        }
 
         $user                  = new UserVO();
         $user->id              = $userId;
@@ -162,16 +166,18 @@ class DatabaseUserProvider
      */
     public function deleteUser($userId)
     {
-        $redis = $this->getRedis();
-
         $user = $this->loadUserById($userId);
+
+        if ($user instanceof AnonymusUserVO) {
+            return;
+        }
 
         $event = new DeleteUserEvent($user, DeleteUserEvent::DELETE);
         $this->dispatchEvent($event);
 
+        $redis = $this->getRedis();
         $redis->hdel(self::REDIS_USER_NAMES, strtolower($user->getUsername()));
         $redis->del($this->getKey($userId));
-
     }
 
     /**
