@@ -39,7 +39,7 @@ class LoginController implements ControllerInterface
 
     /**
      * @param Request $request
-     * @return RedirectResponse
+     * @return JsonResponse
      * @Route("/login/", name="authenticate.doLogin", methods="POST")
      * @Guest
      */
@@ -47,7 +47,7 @@ class LoginController implements ControllerInterface
     {
         $username       = $request->request->get('username');
         $plainPassword  = $request->request->get('password');
-        $oneTimeToken   = $request->request->get('one_time_token');
+        $oneTimeToken   = $request->request->getAlnum('one_time_token');
 
         $user = $this->login->tryLogin(
             $username,

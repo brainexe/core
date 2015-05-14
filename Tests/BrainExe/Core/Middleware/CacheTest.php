@@ -48,9 +48,8 @@ class CacheTest extends TestCase
         $request->setMethod('POST');
 
         $route = new Route('/path/');
-        $routeName = null;
 
-        $actualResponse = $this->subject->processRequest($request, $route, $routeName);
+        $actualResponse = $this->subject->processRequest($request, $route);
         $this->assertNull($actualResponse);
 
         // response should not be saved
@@ -68,7 +67,6 @@ class CacheTest extends TestCase
         /** @var MockObject|Request $request */
         $request     = $this->getMock(Request::class);
         $route       = new Route('/path/');
-        $routeName   = null;
         $requestUri  = 'request';
 
         $route->setOption('cache', true);
@@ -90,7 +88,7 @@ class CacheTest extends TestCase
             ->with($requestUri)
             ->willReturn(false);
 
-        $actualResponse = $this->subject->processRequest($request, $route, $routeName);
+        $actualResponse = $this->subject->processRequest($request, $route);
         $this->assertNull($actualResponse);
 
         // invalid response
@@ -116,7 +114,6 @@ class CacheTest extends TestCase
         $response    = new Response();
         $response->headers->set('X-Cache', 'hit');
         $route       = new Route('/path/');
-        $routeName   = null;
         $requestUri  = 'request';
 
         $route->setOption('cache', true);
@@ -144,7 +141,7 @@ class CacheTest extends TestCase
             ->with($requestUri)
             ->willReturn($response);
 
-        $actualResponse = $this->subject->processRequest($request, $route, $routeName);
+        $actualResponse = $this->subject->processRequest($request, $route);
 
         $this->assertEquals($response, $actualResponse);
     }

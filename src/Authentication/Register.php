@@ -61,7 +61,7 @@ class Register
             && $token !== null
             && !$this->registerTokens->fetchToken($token)
         ) {
-            throw new UserException("You have to provide a valid register token!");
+            throw new UserException('You have to provide a valid register token!');
         }
 
         $userId = $this->userProvider->register($user);
@@ -78,17 +78,17 @@ class Register
     protected function checkInput(UserVO $user)
     {
         if (mb_strlen($user->username) <= 1) {
-            throw new UserException("Username must not be empty");
+            throw new UserException('Username must not be empty');
         }
 
         if (mb_strlen($user->password) <= 1) {
-            throw new UserException("Password must not be empty");
+            throw new UserException('Password must not be empty');
         }
 
         try {
             $this->userProvider->loadUserByUsername($user->getUsername());
 
-            throw new UserException(sprintf("User %s already exists", $user->getUsername()));
+            throw new UserException(sprintf('User %s already exists', $user->getUsername()));
         } catch (UsernameNotFoundException $e) {
             // all fine
         }

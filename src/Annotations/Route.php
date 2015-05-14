@@ -7,6 +7,7 @@ use Symfony\Component\Routing\Annotation\Route as SymfonyRoute;
 
 /**
  * @Annotation
+ * @api
  */
 class Route extends SymfonyRoute
 {

@@ -104,7 +104,7 @@ class AppKernel implements HttpKernelInterface
         $route     = $this->routes->get($routeName);
 
         foreach ($this->middlewares as $middleware) {
-            $response = $middleware->processRequest($request, $route, $routeName);
+            $response = $middleware->processRequest($request, $route);
             if ($response) {
                 // e.g. RedirectResponse or rendered error page
                 return $response;

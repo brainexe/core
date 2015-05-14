@@ -13,10 +13,9 @@ interface MiddlewareInterface
     /**
      * @param Request $request
      * @param Route $route
-     * @param string $routeName
      * @return Response|void $response
      */
-    public function processRequest(Request $request, Route $route, $routeName);
+    public function processRequest(Request $request, Route $route);
 
     /**
      * @param Request $request

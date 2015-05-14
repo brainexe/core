@@ -9,6 +9,7 @@ use Doctrine\Common\Annotations\Reader;
 
 /**
  * @Annotation
+ * @api
  */
 class Command extends Service
 {

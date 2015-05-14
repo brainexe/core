@@ -70,40 +70,25 @@ class Authentication extends AbstractMiddleware
     /**
      * {@inheritdoc}
      */
-    public function processRequest(Request $request, Route $route, $routeName)
+    public function processRequest(Request $request, Route $route)
     {
         $session   = $request->getSession();
         $userId    = $session->get('user_id');
 
-        if (!$userId && $this->allowedPrivateIps && $this->ip->isLocalRequest($request)) {
-            $userId = reset($this->userProvider->getAllUserNames());
-        }
-
-        $loggedIn = $userId > 0;
-        if ($loggedIn) {
-            $user = $this->userProvider->loadUserById($userId);
-        } else {
-            $user = new AnonymusUserVO();
-        }
+        $user = $this->loadUser($userId);
 
         $request->attributes->set('user', $user);
         $request->attributes->set('user_id', $userId);
 
-        if ($this->guestsAllowed) {
-            return null;
-        }
-
-        if ($route->hasDefault('_guest')) {
-            return null;
-        }
-
         $this->checkForRole($route, $user);
 
-        if (!$loggedIn) {
-            return new RedirectResponse('#/login');
+        if ($this->guestsAllowed || $route->hasDefault('_guest')) {
+            return null;
         }
 
-        return null;
+        if (!$userId > 0) {
+            return new RedirectResponse('#/login');
+        }
     }
 
     /**
@@ -118,6 +103,21 @@ class Authentication extends AbstractMiddleware
             if (!in_array($role, $user->roles)) {
                 throw new MethodNotAllowedException([]);
             }
+        }
+    }
+
+    /**
+     * @param int $userId
+     * @return AnonymusUserVO|UserVO
+     */
+    private function loadUser($userId)
+    {
+        if ($userId > 0) {
+            $user = $this->userProvider->loadUserById($userId);
+            return $user;
+        } else {
+            $user = new AnonymusUserVO();
+            return $user;
         }
     }
 }

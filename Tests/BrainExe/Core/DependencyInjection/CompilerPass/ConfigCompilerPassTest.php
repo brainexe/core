@@ -21,64 +21,64 @@ class ConfigCompilerPassTest extends PHPUnit_Framework_TestCase
     /**
      * @var ContainerBuilder|MockObject $container
      */
-    private $mockContainer;
+    private $container;
 
     /**
      * @var ParameterBag|MockObject
      */
-    private $mockParameterBag;
+    private $parameterBag;
 
     /**
      * @var Finder|MockObject
      */
-    private $mockFinder;
+    private $finder;
 
     /**
      * @var FileSystem|MockObject
      */
-    private $mockFileSystem;
+    private $fileSystem;
 
     public function setUp()
     {
-        $this->mockContainer = $this->getMock(ContainerBuilder::class);
-        $this->mockParameterBag = $this->getMock(ParameterBag::class);
-        $this->mockFileSystem = $this->getMock(FileSystem::class);
-        $this->mockFinder = $this->getMock(Finder::class, [], [], '', false);
+        $this->container    = $this->getMock(ContainerBuilder::class);
+        $this->parameterBag = $this->getMock(ParameterBag::class);
+        $this->fileSystem   = $this->getMock(FileSystem::class);
+        $this->finder       = $this->getMock(Finder::class, [], [], '', false);
 
-        $this->subject = new ConfigCompilerPass();
+        $this->subject = new ConfigCompilerPass($this->finder);
     }
 
     public function testProcessWithInvalidRoot()
     {
         $this->markTestIncomplete();
-        $this->mockContainer
+        $this->container
             ->expects($this->once())
             ->method('setParameter')
             ->with('core_standalone');
 
-        $this->mockFinder
+        $this->finder
             ->expects($this->once())
             ->method('files')
             ->willReturnSelf();
-        $this->mockFinder
+        $this->finder
             ->expects($this->once())
             ->method('depth')
             ->willReturnSelf();
-        $this->mockFinder
+        $this->finder
             ->expects($this->once())
             ->method('in')
             ->willReturnSelf();
-        $this->mockFinder
+        $this->finder
             ->expects($this->once())
             ->method('name')
-            ->willReturnSelf();
+            ->willReturn([]);
 
-        $this->mockFileSystem
+        $this->fileSystem
             ->expects($this->once())
             ->method('exists')
             ->with(ROOT . 'app')
             ->willReturn(false);
 
-        $this->subject->process($this->mockContainer);
+        $this->subject->process($this->container);
     }
 }

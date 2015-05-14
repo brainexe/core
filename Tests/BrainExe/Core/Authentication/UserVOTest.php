@@ -3,13 +3,12 @@
 namespace Tests\BrainExe\Core\Authentication\RegisterTokens;
 
 use BrainExe\Core\Authentication\UserVO;
-use PHPUnit_Framework_TestCase;
-use Symfony\Component\Security\Core\Role\Role;
+use PHPUnit_Framework_TestCase as TestCase;
 
 /**
  * @covers BrainExe\Core\Authentication\UserVO
  */
-class UserVOTest extends PHPUnit_Framework_TestCase
+class UserVOTest extends TestCase
 {
 
     /**
@@ -36,6 +35,15 @@ class UserVOTest extends PHPUnit_Framework_TestCase
         $actualRoles = $this->subject->getRoles();
 
         $this->assertEquals($this->subject->roles, $actualRoles);
+    }
+
+    public function testGetProperties()
+    {
+        $this->subject->username = 'username';
+        $this->subject->password_hash = 'password';
+
+        $this->assertEquals('username', $this->subject->getUsername());
+        $this->assertEquals('password', $this->subject->getPassword());
     }
 
     public function testToJson()

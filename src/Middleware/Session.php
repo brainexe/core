@@ -31,7 +31,7 @@ class Session extends AbstractMiddleware
     /**
      * {@inheritdoc}
      */
-    public function processRequest(Request $request, Route $route, $routeName)
+    public function processRequest(Request $request, Route $route)
     {
         $request->setSession($this->session);
     }

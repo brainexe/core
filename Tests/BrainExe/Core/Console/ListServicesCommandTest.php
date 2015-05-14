@@ -26,20 +26,20 @@ class ListServicesCommandTest extends PHPUnit_Framework_TestCase
     /**
      * @var Rebuild|MockObject
      */
-    private $mockRebuild;
+    private $rebuild;
 
     /**
      * @var EventDispatcher|MockObject
      */
-    private $mockEventDispatcher;
+    private $dispatcher;
 
     public function setUp()
     {
-        $this->mockRebuild = $this->getMock(Rebuild::class, [], [], '', false);
-        $this->mockEventDispatcher = $this->getMock(EventDispatcher::class, [], [], '', false);
+        $this->rebuild    = $this->getMock(Rebuild::class, [], [], '', false);
+        $this->dispatcher = $this->getMock(EventDispatcher::class, [], [], '', false);
 
-        $this->subject = new ListServicesCommand($this->mockRebuild);
-        $this->subject->setEventDispatcher($this->mockEventDispatcher);
+        $this->subject = new ListServicesCommand($this->rebuild);
+        $this->subject->setEventDispatcher($this->dispatcher);
     }
 
     public function testExecuteShowAll()
@@ -101,7 +101,7 @@ done\n", $output);
         $definition1      = $this->getMock(Definition::class);
         $definition2      = $this->getMock(Definition::class);
 
-        $this->mockRebuild
+        $this->rebuild
             ->expects($this->once())
             ->method('rebuildDIC')
             ->with(false)

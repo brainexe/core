@@ -52,20 +52,12 @@ class Controller extends ServiceDefinitionBuilder
                 /** @var Role $roleAnnotation */
                 $roleAnnotation = $this->reader->getMethodAnnotation($method, Role::class);
 
-                $defaults = $routeAnnotation->getDefaults();
-                $defaults['_controller'] = [
-                    $this->getServiceId(),
-                    $method->getName()
-                ];
-                if ($guestAnnotation) {
-                    $defaults['_guest'] = true;
-                }
-
-                if ($roleAnnotation) {
-                    $defaults['_role'] = $roleAnnotation->role;
-                }
-
-                $routeAnnotation->setDefaults($defaults);
+                $this->setDefaults(
+                    $routeAnnotation,
+                    $method,
+                    $guestAnnotation,
+                    $roleAnnotation
+                );
 
                 $definition->addTag(ControllerCompilerPass::ROUTE_TAG, [$routeAnnotation]);
             }
@@ -79,7 +71,35 @@ class Controller extends ServiceDefinitionBuilder
     {
         return sprintf(
             '__Controller.%s',
-            str_replace('Controller', '', $this->serviceId)
+            $this->serviceId
         );
+    }
+
+    /**
+     * @param Route $routeAnnotation
+     * @param ReflectionMethod $method
+     * @param Guest $guestAnnotation
+     * @param Role $roleAnnotation
+     */
+    protected function setDefaults(
+        Route $routeAnnotation,
+        ReflectionMethod $method,
+        Guest $guestAnnotation = null,
+        Role $roleAnnotation = null
+    ) {
+        $defaults = $routeAnnotation->getDefaults();
+        $defaults['_controller'] = [
+            $this->getServiceId(),
+            $method->getName()
+        ];
+        if ($guestAnnotation) {
+            $defaults['_guest'] = true;
+        }
+
+        if ($roleAnnotation) {
+            $defaults['_role'] = $roleAnnotation->role;
+        }
+
+        $routeAnnotation->setDefaults($defaults);
     }
 }

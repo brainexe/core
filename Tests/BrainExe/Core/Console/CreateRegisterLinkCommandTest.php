@@ -23,13 +23,13 @@ class CreateRegisterLinkCommandTest extends PHPUnit_Framework_TestCase
     /**
      * @var RegisterTokens|MockObject
      */
-    private $mockRegisterTokens;
+    private $registerTokens;
 
     public function setUp()
     {
-        $this->mockRegisterTokens = $this->getMock(RegisterTokens::class, [], [], '', false);
+        $this->registerTokens = $this->getMock(RegisterTokens::class, [], [], '', false);
 
-        $this->subject = new CreateRegisterLinkCommand($this->mockRegisterTokens);
+        $this->subject = new CreateRegisterLinkCommand($this->registerTokens);
     }
 
     public function testExecute()
@@ -41,7 +41,7 @@ class CreateRegisterLinkCommandTest extends PHPUnit_Framework_TestCase
 
         $token = 11880;
 
-        $this->mockRegisterTokens
+        $this->registerTokens
             ->expects($this->once())
             ->method('addToken')
             ->willReturn($token);

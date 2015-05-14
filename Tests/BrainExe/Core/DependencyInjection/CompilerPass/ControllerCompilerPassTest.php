@@ -20,19 +20,19 @@ class ControllerCompilerPassTest extends PHPUnit_Framework_TestCase
     /**
      * @var ContainerBuilder|MockObject $container
      */
-    private $mockContainer;
+    private $container;
 
     /**
      * @var Definition|MockObject $container
      */
-    private $mockRouterDefinition;
+    private $routerDefinition;
 
     public function setUp()
     {
         $this->subject = $this->getMock(ControllerCompilerPass::class, ['dumpMatcher']);
 
-        $this->mockContainer        = $this->getMock(ContainerBuilder::class);
-        $this->mockRouterDefinition = $this->getMock(Definition::class);
+        $this->container        = $this->getMock(ContainerBuilder::class);
+        $this->routerDefinition = $this->getMock(Definition::class);
     }
 
     public function testProcess()
@@ -50,19 +50,19 @@ class ControllerCompilerPassTest extends PHPUnit_Framework_TestCase
             ]
         ];
 
-        $this->mockContainer
+        $this->container
             ->expects($this->at(0))
             ->method('getDefinition')
             ->with('Core.RouteCollection')
-            ->willReturn($this->mockRouterDefinition);
+            ->willReturn($this->routerDefinition);
 
-        $this->mockContainer
+        $this->container
             ->expects($this->at(1))
             ->method('findTaggedServiceIds')
             ->with(ControllerCompilerPass::ROUTE_TAG)
             ->willReturn($serviceIds);
 
-        $this->mockContainer
+        $this->container
             ->expects($this->at(2))
             ->method('getDefinition')
             ->with($serviceId)
@@ -76,8 +76,8 @@ class ControllerCompilerPassTest extends PHPUnit_Framework_TestCase
         $this->subject
             ->expects($this->once())
             ->method('dumpMatcher')
-            ->with($this->mockContainer);
+            ->with($this->container);
 
-        $this->subject->process($this->mockContainer);
+        $this->subject->process($this->container);
     }
 }

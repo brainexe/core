@@ -24,13 +24,13 @@ class MiddlewareCompilerPass implements CompilerPassInterface
         $servicePriorities = [];
         foreach ($serviceIds as $serviceId => $tag) {
             if (null === $tag[0]['priority']) {
+                // todo check priority/isEnabled() dynamically
                 continue;
             }
             $servicePriorities[$serviceId] = $tag[0]['priority'];
         }
 
-        asort($servicePriorities);
-        $servicePriorities = array_reverse($servicePriorities);
+        arsort($servicePriorities);
 
         $appKernel = $container->getDefinition('AppKernel');
 

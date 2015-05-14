@@ -33,8 +33,6 @@ class RedisCompilerPassTest extends TestCase
 
     public function testProcess()
     {
-        $this->markTestSkipped();
-
         $password = 'testetst';
         $database = 12;
         $host     = 'localhost';
@@ -65,20 +63,13 @@ class RedisCompilerPassTest extends TestCase
         $redis
             ->expects($this->at(0))
             ->method('setArguments')
-            ->with([$password]);
-
-//        $redis
-//            ->expects($this->at(0))
-//            ->method('addMethodCall')
-//            ->with('auth', [$password]);
-//        $redis
-//            ->expects($this->at(1))
-//            ->method('addMethodCall')
-//            ->with('select', [$database]);
-//        $redis
-//            ->expects($this->at(1))
-//            ->method('addMethodCall')
-//            ->with('connect', ['host' => $host]);
+            ->with([
+                0 => [
+                    'password' => $password,
+                    'host' => $host,
+                    'database' => $database
+                ]
+            ]);
 
         $this->subject->process($this->container);
     }

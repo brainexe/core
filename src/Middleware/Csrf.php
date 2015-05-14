@@ -28,7 +28,7 @@ class Csrf extends AbstractMiddleware
     /**
      * {@inheritdoc}
      */
-    public function processRequest(Request $request, Route $route, $routeName)
+    public function processRequest(Request $request, Route $route)
     {
         $givenToken = $request->cookies->get(self::CSRF);
 

@@ -11,22 +11,6 @@ abstract class AbstractCommand extends Command
 {
 
     /**
-     * @param OutputInterface $output
-     * @param Process $process
-     * @todo use mustRun()
-     */
-    protected function checkProcess(OutputInterface $output, Process $process)
-    {
-        if (!$process->isSuccessful()) {
-            $error   = $process->getErrorOutput();
-            $command = $process->getCommandLine();
-
-            $output->writeln(sprintf('<error>Error in command: %s</error>', $command));
-            $output->writeln(sprintf('<error>%s</error>', $error));
-        }
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function execute(InputInterface $input, OutputInterface $output)
@@ -42,7 +26,7 @@ abstract class AbstractCommand extends Command
         $this->doExecute($input, $output);
 
         if (OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity()) {
-            $output->writeln(sprintf("<info>done in %0.1fms</info>", (microtime(true) - $start) * 1000));
+            $output->writeln(sprintf('<info>done in %0.1fms</info>', (microtime(true) - $start) * 1000));
         } else {
             $output->writeln('<info>done</info>');
         }

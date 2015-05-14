@@ -77,9 +77,8 @@ class AuthenticationTest extends TestCase
         $request->setSession($session);
 
         $route = new Route('/path/');
-        $routeName = null;
 
-        $actualResult = $this->subject->processRequest($request, $route, $routeName);
+        $actualResult = $this->subject->processRequest($request, $route);
 
         $this->assertNull($actualResult);
         $this->assertEquals($userId, $request->attributes->get('user_id'));
@@ -106,9 +105,8 @@ class AuthenticationTest extends TestCase
 
         $route = new Route('/path/');
         $route->setDefault('guest', true);
-        $routeName = 'public stuff';
 
-        $actualResult = $this->subject->processRequest($request, $route, $routeName);
+        $actualResult = $this->subject->processRequest($request, $route);
 
         $this->assertNull($actualResult);
         $this->assertEquals($userId, $request->attributes->get('user_id'));
@@ -134,13 +132,12 @@ class AuthenticationTest extends TestCase
         $request->setSession($session);
 
         $route = new Route('/path/');
-        $routeName = 'random.route';
 
         $this->userProvider
             ->expects($this->never())
             ->method('loadUserById');
 
-        $actualResult = $this->subject->processRequest($request, $route, $routeName);
+        $actualResult = $this->subject->processRequest($request, $route);
 
         $this->assertInstanceOf(RedirectResponse::class, $actualResult);
         $this->assertEquals($userId, $request->attributes->get('user_id'));
@@ -174,13 +171,39 @@ class AuthenticationTest extends TestCase
         $request->setSession($session);
 
         $route = new Route('/path/');
-        $routeName = 'random.route';
 
-        $actualResult = $this->subject->processRequest($request, $route, $routeName);
+        $actualResult = $this->subject->processRequest($request, $route);
 
         $this->assertNull($actualResult);
         $this->assertEquals($userId, $request->attributes->get('user_id'));
         $this->assertEquals($user, $request->attributes->get('user'));
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Routing\Exception\MethodNotAllowedException
+     */
+    public function testProcessRequestWithoutRole()
+    {
+        $this->subject = new Authentication(
+            false,
+            false,
+            $this->userProvider,
+            $this->mockIp
+        );
+
+        $userId = 42;
+        $this->loadUser($userId);
+
+        $session = new Session(new MockArraySessionStorage());
+        $session->set('user_id', $userId);
+
+        $request = new Request();
+        $request->setSession($session);
+
+        $route = new Route('/path/');
+        $route->setDefault('_role', 'admin');
+
+        $this->subject->processRequest($request, $route);
     }
 
     /**

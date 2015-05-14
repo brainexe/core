@@ -20,8 +20,8 @@ class CompilerPass extends ServiceDefinitionBuilder
         /** @var Definition $definition */
         list($serviceId, $definition) = parent::build($reflectionClass, $annotation);
 
-        $definition->setPublic(false);
         $definition->addTag(GlobalCompilerPass::TAG, ['priority' => $annotation->priority]);
+        $definition->setPublic(false);
 
         return [$serviceId, $definition];
     }

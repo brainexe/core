@@ -10,6 +10,7 @@ use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * @Command
@@ -23,6 +24,11 @@ class ListServicesCommand extends AbstractCommand
      * @var Rebuild
      */
     private $rebuild;
+
+    /**
+     * @var ContainerBuilder
+     */
+    private $dic;
 
     /**
      * {@inheritdoc}
@@ -50,39 +56,47 @@ class ListServicesCommand extends AbstractCommand
      */
     protected function doExecute(InputInterface $input, OutputInterface $output)
     {
-        $dic = $this->rebuild->rebuildDIC(false);
+        $this->dic = $this->rebuild->rebuildDIC(false);
 
         $table = new Table($output);
         $table->setHeaders(['service-id', 'visibility']);
 
-        $ids = $dic->getServiceIds();
+        $ids = $this->dic->getServiceIds();
 
         sort($ids);
 
         $visibility = $input->getArgument('visibility');
 
         foreach ($ids as $id) {
-            if (!$dic->hasDefinition($id)) {
+            if (!$this->dic->hasDefinition($id)) {
                 continue;
             }
-            $definition = $dic->getDefinition($id);
-
-            $isPublic = $definition->isPublic();
-
-            if ($visibility) {
-                if ($visibility === 'public' && !$isPublic) {
-                    continue;
-                } elseif ($visibility === 'private' && $isPublic) {
-                    continue;
-                }
-            }
-
-            $table->addRow([
-                $id,
-                $isPublic ? '<info>public</info>' : '<error>private</error>'
-            ]);
+            $this->addDefinition($id, $table, $visibility);
         }
 
         $table->render();
+    }
+
+    /**
+     * @param string $id
+     * @param Table $table
+     * @param bool $visibility
+     */
+    private function addDefinition($id, Table $table, $visibility)
+    {
+        $definition = $this->dic->getDefinition($id);
+
+        $isPublic = $definition->isPublic();
+
+        if ($visibility === 'public' && !$isPublic) {
+            return;
+        } elseif ($visibility === 'private' && $isPublic) {
+            return;
+        }
+
+        $table->addRow([
+           $id,
+           $isPublic ? '<info>public</info>' : '<error>private</error>'
+        ]);
     }
 }

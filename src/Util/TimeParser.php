@@ -28,17 +28,15 @@ class TimeParser
     /**
      * @param string $string
      * @throws UserException
-     * @return integer
+     * @return int
      */
     public function parseString($string)
     {
-        if (empty($string)) {
-            return 0;
-        }
-
         $now = time();
 
-        if (is_numeric($string)) {
+        if (empty($string)) {
+            return 0;
+        } elseif (is_numeric($string)) {
             $timestamp = $now + (int)$string;
         } elseif (preg_match('/^(\d+)\s*(\w)$/', trim($string), $matches)) {
             $modifier = strtolower($matches[2]);

@@ -38,18 +38,25 @@ class CatchUserException extends AbstractMiddleware
             $response  = new Response('', 500);
         }
 
+        $this->setMessage($request, $exception, $response);
+
+        return $response;
+    }
+
+    /**
+     * @param Request $request
+     * @param Exception $exception
+     * @param Response $response
+     */
+    protected function setMessage(Request $request, Exception $exception, Response $response)
+    {
         /** @var Exception $exception */
         if ($request->isXmlHttpRequest()) {
             $message = $exception->getMessage() ?: _('An error occurred');
-            $response->headers->set(
-                'X-Flash',
-                json_encode([ControllerInterface::ALERT_DANGER, $message])
-            );
+            $response->headers->set('X-Flash', json_encode([ControllerInterface::ALERT_DANGER, $message]));
         } else {
             $responseString = $exception->getMessage();
             $response->setContent($responseString);
         }
-
-        return $response;
     }
 }

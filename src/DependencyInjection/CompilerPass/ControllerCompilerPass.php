@@ -18,7 +18,7 @@ class ControllerCompilerPass implements CompilerPassInterface
 {
 
     const CONTROLLER_TAG = 'controller';
-    const ROUTE_TAG = 'route';
+    const ROUTE_TAG      = 'route';
 
     /**
      * {@inheritdoc}

@@ -31,7 +31,7 @@ class Locale extends AbstractMiddleware
     /**
      * {@inheritdoc}
      */
-    public function processRequest(Request $request, Route $route, $routeName)
+    public function processRequest(Request $request, Route $route)
     {
         $session = $request->getSession();
 

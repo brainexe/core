@@ -4,8 +4,8 @@ namespace BrainExe\Core\EventDispatcher\Events;
 
 use BrainExe\Core\EventDispatcher\AbstractEvent;
 
-class TimingEvent extends AbstractEvent {
-
+class TimingEvent extends AbstractEvent
+{
     const TIMING_EVENT = 'timing';
 
     /**

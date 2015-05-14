@@ -6,6 +6,7 @@ use BrainExe\Core\Application\UserException;
 use BrainExe\Core\Authentication\AuthenticationDataVO;
 use BrainExe\Core\Authentication\DatabaseUserProvider;
 use BrainExe\Core\Authentication\Event\AuthenticateUserEvent;
+use BrainExe\Core\Authentication\Exception\UsernameNotFoundException;
 use BrainExe\Core\Authentication\Login;
 use BrainExe\Core\Authentication\Token;
 use BrainExe\Core\Authentication\UserVO;
@@ -183,6 +184,38 @@ class LoginTest extends TestCase
             ->willReturn(null);
 
         $this->subject->loginWithToken($token, $session);
+    }
+
+    public function testNeedsToken()
+    {
+        $username = 'username';
+        $user     = new UserVO();
+        $user->one_time_secret = 'token';
+
+        $this->userProvider
+            ->expects($this->once())
+            ->method('loadUserByUsername')
+            ->with($username)
+            ->willReturn($user);
+
+        $actual = $this->subject->needsOneTimeToken($username);
+
+        $this->assertTrue($actual);
+    }
+
+    public function testNeedsTokenWithoutUser()
+    {
+        $username = 'username';
+
+        $this->userProvider
+            ->expects($this->once())
+            ->method('loadUserByUsername')
+            ->with($username)
+            ->willThrowException(new UsernameNotFoundException());
+
+        $actual = $this->subject->needsOneTimeToken($username);
+
+        $this->assertFalse($actual);
     }
 
     public function testLoginWithToken()

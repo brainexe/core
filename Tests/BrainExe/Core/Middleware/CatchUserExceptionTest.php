@@ -73,9 +73,8 @@ class CatchUserExceptionTest extends TestCase
         /** @var Route|MockObject $route */
         $route      = $this->getMock(Route::class, [], [], '', false);
         $request    = new Request();
-        $routeName = 'route';
 
-        $actualResult = $this->subject->processRequest($request, $route, $routeName);
+        $actualResult = $this->subject->processRequest($request, $route);
 
         $this->assertNull($actualResult);
     }

@@ -3,6 +3,8 @@
 namespace BrainExe\Core\Console;
 
 use BrainExe\Annotations\Annotations\Inject;
+use BrainExe\Core\Console\TestGenerator\HandleExistingFile;
+use BrainExe\Core\Console\TestGenerator\MethodCodeGenerator;
 use BrainExe\Core\Console\TestGenerator\ProcessMethod;
 use BrainExe\Core\Console\TestGenerator\TestData;
 use BrainExe\Core\DependencyInjection\Rebuild;
@@ -71,11 +73,9 @@ class TestCreateCommand extends Command
     {
         $this->initContainerBuilder();
 
-        $serviceId = $input->getArgument('service');
-
-        $serviceObject     = $this->getService($serviceId);
-        $serviceDefinition = $this->getServiceDefinition($serviceId);
-
+        $serviceId            = $input->getArgument('service');
+        $serviceObject        = $this->getService($serviceId);
+        $serviceDefinition    = $this->getServiceDefinition($serviceId);
         $serviceReflection    = new ReflectionClass($serviceObject);
         $serviceFullClassName = $serviceReflection->getName();
         $serviceClassName     = $this->getShortClassName($serviceFullClassName);
@@ -86,21 +86,7 @@ class TestCreateCommand extends Command
         $testData->addUse(PHPUnit_Framework_MockObject_MockObject::class, 'MockObject');
         $testData->addUse($serviceFullClassName);
 
-        $blacklistedMethods = $this->getBlacklistedMethods($serviceReflection);
-
-        $methods = $serviceReflection->getMethods(ReflectionMethod::IS_PUBLIC);
-        foreach ($methods as $method) {
-            $methodName = $method->getName();
-
-            if (in_array($methodName, $blacklistedMethods)) {
-                continue;
-            }
-
-            if ($method->getDeclaringClass() == $serviceReflection) {
-                $testData->defaultTests[] = $this->getDummyTestCode($testData, $method);
-            }
-        }
-
+        $this->generateMethods($serviceReflection, $testData, $serviceFullClassName);
         $this->setupConstructor($serviceDefinition, $testData);
 
         $methodProcessor = new ProcessMethod($this);
@@ -121,18 +107,26 @@ class TestCreateCommand extends Command
         $template = str_replace('%mock_properties%', implode("\n", $testData->mockProperties), $template);
         $template = str_replace('%use_statements%', $testData->renderUse(), $template);
         $template = str_replace('%local_mocks%', implode("\n", $testData->localMocks), $template);
-        $template = str_replace('%constructor_arguments%', implode(", ", $testData->constructorArguments), $template);
+        $template = str_replace('%constructor_arguments%', implode(', ', $testData->constructorArguments), $template);
 
         $testFileName = $this->getTestFileName($serviceFullClassName);
 
         if ($input->getOption('dry')) {
             $output->writeln($template);
             return;
-        }
+        } elseif (file_exists($testFileName)) {
+            // handle already existing test file
+            $fileHandler = new HandleExistingFile();
+            $handler = $this->getHelper('question');
+            $template = $fileHandler->handleExistingFile(
+                $input,
+                $output,
+                $handler,
+                $serviceId,
+                $testFileName,
+                $template
+            );
 
-        // handle already existing test file
-        if (file_exists($testFileName)) {
-            $template = $this->handleExistingFile($input, $output, $serviceId, $testFileName, $template);
             if ($template === false) {
                 return;
             }
@@ -190,51 +184,31 @@ class TestCreateCommand extends Command
     }
 
     /**
-     * Generated dummy test code for a given service method
-     *
-     * @param TestData $data
-     * @param ReflectionMethod $method
-     * @return string
+     * @param ReflectionClass $serviceReflection
+     * @param TestData $testData
+     * @param string $serviceFullClassName
      */
-    private function getDummyTestCode(TestData $data, ReflectionMethod $method)
+    protected function generateMethods(ReflectionClass $serviceReflection, TestData $testData, $serviceFullClassName)
     {
-        $methodName = $method->getName();
+        $blacklistedMethods = $this->getBlacklistedMethods($serviceReflection);
 
-        $parameterList = [];
-        $variableList  = [];
+        $methodCodeGenerator = new MethodCodeGenerator();
+        $methods             = $serviceReflection->getMethods(ReflectionMethod::IS_PUBLIC);
+        foreach ($methods as $method) {
+            $methodName = $method->getName();
 
-        foreach ($method->getParameters() as $parameter) {
-            $parameterList[] = $variableName = sprintf('$' . $parameter->getName());
-
-            $value = 'null';
-            if ($parameter->isOptional()) {
-                $value = $parameter->getDefaultValue();
-            }
-            if ($parameter->getClass()) {
-                $class = $parameter->getClass()->name;
-                $data->addUse($class);
-                $value = sprintf('new %s()', $this->getShortClassName($class));
+            if (in_array($methodName, $blacklistedMethods)) {
+                continue;
             }
 
-            $variableList[] = sprintf("\t\t%s = %s;", $variableName, $value);
+            if ($method->getDeclaringClass() == $serviceReflection) {
+                $testData->defaultTests[] = $methodCodeGenerator->getDummyTestCode(
+                    $testData,
+                    $method,
+                    $serviceFullClassName
+                );
+            }
         }
-
-        $code = sprintf("\tpublic function test%s() {\n", ucfirst($methodName));
-        $code .= "\t\t\$this->markTestIncomplete('This is only a dummy implementation');\n\n";
-
-        $code .= implode("\n", $variableList) . "\n";
-        $parameterString = implode(', ', $parameterList);
-
-        $hasReturnValue = strpos($method->getDocComment(), '@return') !== false;
-        if ($hasReturnValue) {
-            $code .= sprintf("\t\t\$actual = \$this->subject->%s(%s);\n", $methodName, $parameterString);
-        } else {
-            $code .= sprintf("\t\t\$this->subject->%s(%s);\n", $methodName, $parameterString);
-        }
-
-        $code .= "\t}\n";
-
-        return $code;
     }
 
     private function initContainerBuilder()
@@ -247,7 +221,7 @@ class TestCreateCommand extends Command
     }
 
     /**
-     * @param string
+     * @param string $fullClassName
      * @return string
      */
     public function getShortClassName($fullClassName)
@@ -302,7 +276,11 @@ class TestCreateCommand extends Command
                 $mockName
             );
         } else {
-            $mock = sprintf("\t\t\$this->%s = \$this->getMock(%s::class);", lcfirst($mockName), $mockName);
+            $mock = sprintf(
+                "\t\t\$this->%s = \$this->getMock(%s::class);",
+                lcfirst($mockName),
+                $mockName
+            );
         }
 
         $testData->localMocks[]     = $mock;
@@ -337,89 +315,4 @@ class TestCreateCommand extends Command
             $this->addMock($definition, $data, $mockName);
         }
     }
-
-    /**
-     * @param string $originalTest
-     * @param string $newTest
-     * @param OutputInterface $output
-     * @todo finish
-     */
-    private function displayPatch($originalTest, $newTest, OutputInterface $output)
-    {
-        $output->writeln('<info>Diff: Not implemented yet</info>');
-    }
-
-    /**
-     * @param string $originalTest
-     * @param string $newTest
-     * @throws Exception
-     * @return string
-     */
-    private function replaceHeaderOnly($originalTest, $newTest)
-    {
-        if (!preg_match('/^.*?}/s', $newTest, $matches)) {
-            throw new Exception('No header found in new test');
-        }
-
-        $header = $matches[0];
-
-        return preg_replace('/^.*?}/s', $header, $originalTest);
-    }
-
-    /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     * @param string $serviceId
-     * @param string $testFileName
-     * @param string $template
-     * @return string
-     * @throws Exception
-     */
-    protected function handleExistingFile(
-        InputInterface $input,
-        OutputInterface $output,
-        $serviceId,
-        $testFileName,
-        $template
-    ) {
-        if ($input->getOption('no-interaction')) {
-            $output->writeln(sprintf("Test for '<info>%s</info>' already exist", $serviceId));
-            return false;
-        }
-
-        /** @var QuestionHelper $helper */
-        $helper = $this->getHelper('question');
-
-        $choices = [
-            'stop' => 'Stop',
-            'replace' => 'Replace full test file',
-            'diff' => 'Display the diff',
-            'header' => 'full setup only',
-        ];
-        $question = new ChoiceQuestion(
-            '<error>The test file already exist. What should i do now?</error>',
-            $choices
-        );
-
-        $answer = $helper->ask($input, $output, $question);
-
-        $originalTest = file_get_contents($testFileName);
-
-        $answerId = array_flip($choices)[$answer];
-        switch ($answerId) {
-            case 'replace':
-                break;
-            case 'header':
-                $template = $this->replaceHeaderOnly($originalTest, $template);
-                break;
-            case 'diff':
-                $this->displayPatch($originalTest, $template, $output);
-                return $template;
-            case 'stop':
-            default:
-                return false;
-        }
-        return $template;
-    }
-
 }

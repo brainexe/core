@@ -47,14 +47,13 @@ class CsrfTest extends TestCase
 
         $response  = new Response();
         $route     = new Route('/route/');
-        $routeName = null;
 
         $this->idGenerator
             ->expects($this->once())
             ->method('generateRandomId')
             ->willReturn($newCsrf);
 
-        $this->subject->processRequest($request, $route, $routeName);
+        $this->subject->processRequest($request, $route);
         $this->subject->processResponse($request, $response);
 
         $expectedCookie = new Cookie(Csrf::CSRF, $newCsrf);
@@ -81,15 +80,14 @@ class CsrfTest extends TestCase
         $request->cookies->set(Csrf::CSRF, $currentCsrf);
 
         $response = new Response();
-        $route = new Route('/route/');
-        $routeName = null;
+        $route    = new Route('/route/');
 
         $this->idGenerator
             ->expects($this->once())
             ->method('generateRandomId')
             ->willReturn($newCsrf);
 
-        $this->subject->processRequest($request, $route, $routeName);
+        $this->subject->processRequest($request, $route);
         $this->subject->processResponse($request, $response);
 
         $expectedCookie = new Cookie(Csrf::CSRF, $newCsrf);
@@ -114,14 +112,13 @@ class CsrfTest extends TestCase
 
         $response   = new Response();
         $route      = new Route('/route/');
-        $routeName = null;
 
         $this->idGenerator
             ->expects($this->once())
             ->method('generateRandomId')
             ->willReturn($newCsrf);
 
-        $this->subject->processRequest($request, $route, $routeName);
+        $this->subject->processRequest($request, $route);
         $this->subject->processResponse($request, $response);
 
         $expectedCookie = new Cookie(Csrf::CSRF, $newCsrf);

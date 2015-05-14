@@ -35,29 +35,35 @@ class ProcessMethod
                 continue;
             }
 
-            $referenceServiceId = (string)$reference;
+            $this->addReference($testData, $reference, $setterName);
+        }
+    }
 
-            if ('%' === substr($referenceServiceId, 0, 1)) {
-                // add config setter with current config value
-                $parameterName  = substr($reference, 1, -1);
-                $parameterValue = $this->command->container->getParameter($parameterName);
+    /**
+     * @param TestData $testData
+     * @param Reference $reference
+     * @param string $setterName
+     */
+    protected function addReference(TestData $testData, $reference, $setterName)
+    {
+        $referenceServiceId = (string)$reference;
 
-                $formattedParameter = var_export($parameterValue, true);
+        if ('%' === substr($referenceServiceId, 0, 1)) {
+            // add config setter with current config value
+            $parameterName  = substr($reference, 1, -1);
+            $parameterValue = $this->command->container->getParameter($parameterName);
 
-                $testData->setterCalls[] = sprintf("\t\t\$this->subject->%s(%s);", $setterName, $formattedParameter);
+            $formattedParameter = var_export($parameterValue, true);
 
-            } else {
-                // add setter for model mock
-                $referenceService = $this->command->getServiceDefinition($referenceServiceId);
-                $mockName         = $this->command->getShortClassName($referenceService->getClass());
+            $testData->setterCalls[] = sprintf("\t\t\$this->subject->%s(%s);", $setterName, $formattedParameter);
 
-                $testData->setterCalls[] = sprintf(
-                    "\t\t\$this->subject->%s(\$this->%s);",
-                    $setterName,
-                    lcfirst($mockName)
-                );
-                $this->command->addMock($referenceService, $testData, $mockName);
-            }
+        } else {
+            // add setter for model mock
+            $referenceService = $this->command->getServiceDefinition($referenceServiceId);
+            $mockName         = $this->command->getShortClassName($referenceService->getClass());
+
+            $testData->setterCalls[] = sprintf("\t\t\$this->subject->%s(\$this->%s);", $setterName, lcfirst($mockName));
+            $this->command->addMock($referenceService, $testData, $mockName);
         }
     }
 }

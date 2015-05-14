@@ -9,6 +9,7 @@ use Doctrine\Common\Annotations\Reader;
 
 /**
  * @Annotation
+ * @api
  */
 class CompilerPass extends Service
 {

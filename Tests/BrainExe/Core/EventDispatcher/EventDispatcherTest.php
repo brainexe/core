@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\BrainExe\Core\EventDispatcher\EventDispatcher;
+namespace Tests\BrainExe\Core\EventDispatcher;
 
 use BrainExe\Core\EventDispatcher\AbstractEvent;
 use BrainExe\Core\EventDispatcher\BackgroundEvent;

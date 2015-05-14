@@ -1,6 +1,6 @@
 <?php
 
-namespace BrainExe\Core\Authentication\TokCommand;
+namespace BrainExe\Core\Authentication\Command;
 
 use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Core\Annotations\Command as CommandAnnotation;
@@ -55,8 +55,7 @@ class ListTokens extends Command
         $table->setHeaders(['token', 'roles']);
 
         foreach ($tokens as $token => $data) {
-            echo "$token\n\n";
-            $table->addRow([$token, implode(',', $data['roles'])]);
+            $table->addRow([$token, implode(',', $data)]);
         }
 
         $table->render();

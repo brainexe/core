@@ -1,6 +1,6 @@
 <?php
 
-namespace BrainExe\Core\Authentication\TokCommand;
+namespace BrainExe\Core\Authentication\Command;
 
 use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Core\Annotations\Command as CommandAnnotation;

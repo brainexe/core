@@ -2,7 +2,7 @@
 
 namespace BrainExe\Tests\Core\Traits;
 
-use BrainExe\Core\Redis\RedisInterface;
+use BrainExe\Core\Redis\Predis;
 use BrainExe\Core\Traits\RedisCacheTrait;
 use BrainExe\Tests\RedisMockTrait;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
@@ -19,23 +19,23 @@ class RedisCacheTraitTest extends PHPUnit_Framework_TestCase
     private $subject;
 
     /**
-     * @var RedisInterface|MockObject
+     * @var Predis|MockObject
      */
-    private $mockRedis;
+    private $redis;
 
     public function setUp()
     {
-        $this->mockRedis = $this->getRedisMock();
+        $this->redis = $this->getRedisMock();
 
         $this->subject = $this->getMockForTrait(RedisCacheTrait::class);
-        $this->subject->setRedis($this->mockRedis);
+        $this->subject->setRedis($this->redis);
     }
 
     public function testInvalidate()
     {
         $key = 'key';
 
-        $this->mockRedis
+        $this->redis
             ->expects($this->once())
             ->method('DEL')
             ->with($key);
@@ -53,7 +53,7 @@ class RedisCacheTraitTest extends PHPUnit_Framework_TestCase
             return $value;
         };
 
-        $this->mockRedis
+        $this->redis
             ->expects($this->once())
             ->method('GET')
             ->with($key)
@@ -74,13 +74,13 @@ class RedisCacheTraitTest extends PHPUnit_Framework_TestCase
             return $value;
         };
 
-        $this->mockRedis
+        $this->redis
             ->expects($this->once())
             ->method('GET')
             ->with($key)
             ->willReturn(null);
 
-        $this->mockRedis
+        $this->redis
             ->expects($this->once())
             ->method('SETEX')
             ->with($key, $ttl, serialize($value));

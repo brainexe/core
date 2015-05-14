@@ -30,15 +30,15 @@ class LoginControllerTest extends TestCase
 
     public function setUp()
     {
-        $this->login = $this->getMock(Login::class, [], [], '', false);
+        $this->login   = $this->getMock(Login::class, [], [], '', false);
         $this->subject = new LoginController($this->login);
     }
 
     public function testDoLogin()
     {
-        $username = 'username';
+        $username      = 'username';
         $plainPassword = 'plain password';
-        $oneTimeToken = 'one time token';
+        $oneTimeToken  = 'onetimetoken';
 
         $session = new Session(new MockArraySessionStorage());
 
@@ -79,5 +79,21 @@ class LoginControllerTest extends TestCase
         $actual = $this->subject->loginWithToken($request, $token);
 
         $this->assertEquals($user, $actual);
+    }
+
+    public function testNeedsOneTimeToken()
+    {
+        $request = new Request();
+        $request->query->set('username', 'username');
+
+        $this->login
+            ->expects($this->once())
+            ->method('needsOneTimeToken')
+            ->with('username')
+            ->willReturn(true);
+
+        $actual = $this->subject->needsOneTimeToken($request);
+
+        $this->assertTrue($actual);
     }
 }

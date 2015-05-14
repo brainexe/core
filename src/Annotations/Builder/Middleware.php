@@ -21,7 +21,9 @@ class Middleware extends ServiceDefinitionBuilder
         list($serviceId, $definition) = parent::build($reflectionClass, $annotation);
 
         $definition->setPublic(false);
-        $definition->addTag(MiddlewareCompilerPass::TAG, ['priority' => $annotation->priority]);
+        $definition->addTag(MiddlewareCompilerPass::TAG, [
+            'priority' => $annotation->priority
+        ]);
 
         return [$serviceId, $definition];
     }

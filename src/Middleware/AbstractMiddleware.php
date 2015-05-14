@@ -7,13 +7,16 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Route;
 
+/**
+ * @codeCoverageIgnore
+ */
 abstract class AbstractMiddleware implements MiddlewareInterface
 {
 
     /**
      * {@inheritdoc}
      */
-    public function processRequest(Request $request, Route $route, $routeName)
+    public function processRequest(Request $request, Route $route)
     {
     }
 

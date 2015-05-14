@@ -35,11 +35,10 @@ class SessionTest extends TestCase
 
     public function testProcessRequest()
     {
-        $request    = new Request();
-        $route      = new Route('/route/');
-        $routeName = null;
+        $request = new Request();
+        $route   = new Route('/route/');
 
-        $this->subject->processRequest($request, $route, $routeName);
+        $this->subject->processRequest($request, $route);
 
         $this->assertInstanceOf(SessionInterface::class, $request->getSession());
     }

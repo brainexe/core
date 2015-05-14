@@ -3,7 +3,6 @@
 namespace Tests\BrainExe\Core\Console\LoadRedisScriptsCommand;
 
 use BrainExe\Core\Console\LoadRedisScriptsCommand;
-use BrainExe\Core\Redis\RedisInterface;
 use BrainExe\Core\Redis\RedisScripts;
 use BrainExe\Tests\RedisMockTrait;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;

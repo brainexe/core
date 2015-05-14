@@ -21,7 +21,6 @@ class RebuildTest extends PHPUnit_Framework_TestCase
 
     public function testRebuildWithBootContainer()
     {
-        $this->markTestIncomplete();
         $subject = new Rebuild();
 
         $actualResult = $subject->rebuildDIC(true);

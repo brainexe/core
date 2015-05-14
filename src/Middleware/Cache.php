@@ -45,7 +45,7 @@ class Cache extends AbstractMiddleware
     /**
      * {@inheritdoc}
      */
-    public function processRequest(Request $request, Route $route, $routeName)
+    public function processRequest(Request $request, Route $route)
     {
         if (!$this->cacheEnabled || !$route->getOption('cache') || !$request->isMethod('GET')) {
             return null;

@@ -89,7 +89,7 @@ class AppKernelTest extends TestCase
         $this->middleWare
             ->expects($this->once())
             ->method('processRequest')
-            ->with($request, $route, $routeName)
+            ->with($request, $route)
             ->willReturn(null);
 
         $callable = function($arguments) {
@@ -148,7 +148,7 @@ class AppKernelTest extends TestCase
         $this->middleWare
             ->expects($this->once())
             ->method('processRequest')
-            ->with($request, $route, $routeName)
+            ->with($request, $route)
             ->willReturn($response);
 
         $this->urlMatcher

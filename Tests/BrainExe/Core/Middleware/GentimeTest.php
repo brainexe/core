@@ -36,7 +36,7 @@ class GentimeTest extends TestCase
 
     public function testProcessResponse()
     {
-        $request = new Request();
+        $request  = new Request();
         $response = new Response();
 
         $this->logger

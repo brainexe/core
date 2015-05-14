@@ -2,6 +2,7 @@
 
 namespace BrainExe\Core\DependencyInjection\CompilerPass;
 
+use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Core\Annotations\CompilerPass;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -24,15 +25,15 @@ class ConfigCompilerPass implements CompilerPassInterface
     {
         $container->setParameter('core_standalone', CORE_STANDALONE);
 
-        $loader
-            = new XmlFileLoader($container, new FileLocator('config'));
+        // todo inject
+        $loader     = new XmlFileLoader($container, new FileLocator('config'));
         $finder     = new Finder();
         $filesystem = new FileSystem();
 
         // load container.xml file from all "brainexe" components
         $finder
             ->files()
-            ->depth("<= 1")
+            ->depth('<= 1')
             ->in([CORE_ROOT . '/..', ROOT, BRAINEXE_VENDOR_ROOT])
             ->name('container.xml');
 

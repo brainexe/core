@@ -32,9 +32,13 @@ class ClearCacheEvent extends AbstractEvent
      * @param InputInterface $input
      * @param OutputInterface $output
      */
-    public function __construct(Application $application, InputInterface $input, OutputInterface $output)
-    {
-        $this->event_name  = self::NAME;
+    public function __construct(
+        Application $application,
+        InputInterface $input,
+        OutputInterface $output
+    ) {
+        parent::__construct(self::NAME);
+
         $this->output      = $output;
         $this->input       = $input;
         $this->application = $application;

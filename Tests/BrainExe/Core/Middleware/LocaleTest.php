@@ -30,8 +30,7 @@ class LocaleTest extends TestCase
 
     public function setUp()
     {
-        $this->locale = $this->getMock(LocaleModel::class);
-
+        $this->locale  = $this->getMock(LocaleModel::class);
         $this->subject = new Locale($this->locale);
     }
 
@@ -40,7 +39,6 @@ class LocaleTest extends TestCase
         $request   = new Request();
         $route     = new Route('/route/');
         $session   = new Session(new MockArraySessionStorage());
-        $routeName = null;
 
         $request->setSession($session);
         $request->query->set('locale', 'en_EN');
@@ -55,14 +53,14 @@ class LocaleTest extends TestCase
             ->method('getLocales')
             ->willReturn(['en_EN', 'de_DE']);
 
-        $this->subject->processRequest($request, $route, $routeName);
+        $this->subject->processRequest($request, $route);
     }
-    public function testProcessRequestWithInvalueLocaleInQuery()
+
+    public function testProcessRequestWithInvalidLocaleInQuery()
     {
         $request    = new Request();
         $route      = new Route('/route/');
         $session    = new Session(new MockArraySessionStorage());
-        $routeName = null;
 
         $request->setSession($session);
         $request->query->set('locale', 'fo_ba');
@@ -77,7 +75,7 @@ class LocaleTest extends TestCase
             ->method('getLocales')
             ->willReturn(['en_EN', 'de_DE']);
 
-        $this->subject->processRequest($request, $route, $routeName);
+        $this->subject->processRequest($request, $route);
     }
 
     public function testProcessRequestWithoutLocaleInQuery()
@@ -85,11 +83,10 @@ class LocaleTest extends TestCase
         $request    = new Request();
         $route      = new Route('/route/');
         $session    = new Session(new MockArraySessionStorage());
-        $routeName = null;
 
         $request->setSession($session);
 
-        $this->subject->processRequest($request, $route, $routeName);
+        $this->subject->processRequest($request, $route);
     }
 
     public function testProcessResponse()

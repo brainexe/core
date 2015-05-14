@@ -196,6 +196,19 @@ class DatabaseUserProviderTest extends TestCase
         $this->subject->setUserProperty($user, 'username');
     }
 
+    public function testSetUserPropertyArray()
+    {
+        $user        = new UserVO();
+        $user->id    = $userId = 42;
+        $user->roles = ['foo', 'bar'];
+        $this->redis
+            ->expects($this->once())
+            ->method('hSet')
+            ->with("user:$userId", 'roles', 'foo,bar');
+
+        $this->subject->setUserProperty($user, 'roles');
+    }
+
     public function testDelete()
     {
         $userId = 42;
