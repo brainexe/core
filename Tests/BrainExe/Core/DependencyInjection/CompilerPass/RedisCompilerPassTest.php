@@ -26,8 +26,10 @@ class RedisCompilerPassTest extends TestCase
 
     public function setUp()
     {
-        $this->container = $this->getMock(ContainerBuilder::class);
-
+        $this->container  = $this->getMock(ContainerBuilder::class, [
+            'getParameter',
+            'getDefinition',
+        ]);
         $this->subject = new RedisCompilerPass();
     }
 

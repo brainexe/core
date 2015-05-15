@@ -27,9 +27,6 @@
     "symfony/process": "~2.6",
     "symfony/routing": "~2.6",
     "brainexe/annotations": "*",
-
-    "brainexe/expression": "*",
-
     "brainexe/message-queue": "*",
     "monolog/monolog": "1.12.*",
     "doctrine/cache": "1.4.*",

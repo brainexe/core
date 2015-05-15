@@ -10,7 +10,7 @@ use BrainExe\Core\EventDispatcher\PushViaWebsocket;
 use BrainExe\Core\Websockets\WebSocketEvent;
 use Elasticsearch\Common\Exceptions\RuntimeException;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase;
+use PHPUnit_Framework_TestCase as TestCase;
 use Symfony\Component\DependencyInjection\Container;
 
 class TestEvent extends AbstractEvent
@@ -23,7 +23,7 @@ class TestWebsocketEvent extends AbstractEvent implements PushViaWebsocket
     const TYPE = 'websocket.test';
 }
 
-class EventDispatcherTest extends PHPUnit_Framework_TestCase
+class EventDispatcherTest extends TestCase
 {
 
     /**
@@ -39,7 +39,15 @@ class EventDispatcherTest extends PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->container = $this->getMock(Container::class, [], [], '', false);
-        $this->subject   = $this->getMock(EventDispatcher::class, ['dispatch'], [], '', false);
+        $this->subject   = $this->getMock(EventDispatcher::class, ['dispatch'], [$this->container, true], '');
+    }
+
+    /**
+     * @param $enabled
+     */
+    private function setEnabled($enabled)
+    {
+        $this->subject = $this->getMock(EventDispatcher::class, ['dispatch'], [$this->container, $enabled], '');
     }
 
     public function testDispatchEvent()
@@ -95,7 +103,7 @@ class EventDispatcherTest extends PHPUnit_Framework_TestCase
 
     public function testDispatchInBackground()
     {
-        $this->subject->setEnabled(true);
+        $this->setEnabled(true);
 
         $event = new TestEvent(TestEvent::TYPE);
         $timestamp = 0;
@@ -112,7 +120,7 @@ class EventDispatcherTest extends PHPUnit_Framework_TestCase
 
     public function testDispatchWhenNotEnabled()
     {
-        $this->subject->setEnabled(false);
+        $this->setEnabled(false);
 
         $event = new TestEvent(TestEvent::TYPE);
         $timestamp = 0;

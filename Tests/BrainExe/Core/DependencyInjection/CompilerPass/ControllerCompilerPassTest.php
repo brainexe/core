@@ -18,20 +18,22 @@ class ControllerCompilerPassTest extends PHPUnit_Framework_TestCase
     private $subject;
 
     /**
-     * @var ContainerBuilder|MockObject $container
+     * @var ContainerBuilder|MockObject
      */
     private $container;
 
     /**
-     * @var Definition|MockObject $container
+     * @var Definition|MockObject
      */
     private $routerDefinition;
 
     public function setUp()
     {
-        $this->subject = $this->getMock(ControllerCompilerPass::class, ['dumpMatcher']);
-
-        $this->container        = $this->getMock(ContainerBuilder::class);
+        $this->subject   = $this->getMock(ControllerCompilerPass::class, ['dumpMatcher']);
+        $this->container  = $this->getMock(ContainerBuilder::class, [
+            'findTaggedServiceIds',
+            'getDefinition',
+        ]);
         $this->routerDefinition = $this->getMock(Definition::class);
     }
 

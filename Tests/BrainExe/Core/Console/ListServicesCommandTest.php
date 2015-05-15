@@ -97,7 +97,11 @@ done\n", $output);
 
         $commandTester = new CommandTester($this->subject);
 
-        $containerBuilder = $this->getMock(ContainerBuilder::class);
+        $containerBuilder  = $this->getMock(ContainerBuilder::class, [
+            'getServiceIds',
+            'getDefinition',
+            'hasDefinition'
+        ]);
         $definition1      = $this->getMock(Definition::class);
         $definition2      = $this->getMock(Definition::class);
 

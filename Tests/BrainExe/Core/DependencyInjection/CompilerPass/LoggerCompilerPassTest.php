@@ -33,8 +33,11 @@ class LoggerCompilerPassTest extends TestCase
     public function setUp()
     {
         $this->subject = new LoggerCompilerPass();
-
-        $this->container = $this->getMock(ContainerBuilder::class);
+        $this->container  = $this->getMock(ContainerBuilder::class, [
+            'getDefinition',
+            'getParameter',
+            'findTaggedServiceIds'
+        ]);
         $this->logger    = $this->getMock(Definition::class);
     }
 

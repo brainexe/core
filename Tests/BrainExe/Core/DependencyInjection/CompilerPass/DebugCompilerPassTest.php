@@ -19,35 +19,37 @@ class DebugCompilerPassTest extends TestCase
      */
     private $subject;
 
+    /**
+     * @var ContainerBuilder|MockObject
+     */
+    private $container;
+
     public function setUp()
     {
-        $this->subject = new DebugCompilerPass();
+        $this->container  = $this->getMock(ContainerBuilder::class, [
+            'getDefinitions',
+            'getParameter',
+        ]);
 
+        $this->subject = new DebugCompilerPass();
     }
 
     public function testProcessWithoutDebug()
     {
-        /** @var ContainerBuilder|MockObject $container */
-        $container = $this->getMock(ContainerBuilder::class);
-
-        $container->expects($this->once())
+        $this->container->expects($this->once())
             ->method('getParameter')
             ->with('debug')
             ->willReturn(false);
 
-        $container->expects($this->never())
+        $this->container->expects($this->never())
             ->method('getDefinitions');
 
-        $this->subject->process($container);
+        $this->subject->process($this->container);
     }
 
     public function testProcessWithDebug()
     {
-
-        /** @var ContainerBuilder|MockObject $container */
-        $container = $this->getMock(ContainerBuilder::class);
-
-        $container->expects($this->once())
+        $this->container->expects($this->once())
             ->method('getParameter')
             ->with('debug')
             ->willReturn(true);
@@ -55,7 +57,7 @@ class DebugCompilerPassTest extends TestCase
         /** @var MockObject|Definition $service */
         $service = $this->getMock(Definition::class);
 
-        $container->expects($this->once())
+        $this->container->expects($this->once())
             ->method('getDefinitions')
             ->willReturn([$service]);
 
@@ -63,7 +65,6 @@ class DebugCompilerPassTest extends TestCase
             ->method('setPublic')
             ->with(true);
 
-        $this->subject->process($container);
+        $this->subject->process($this->container);
     }
-
 }

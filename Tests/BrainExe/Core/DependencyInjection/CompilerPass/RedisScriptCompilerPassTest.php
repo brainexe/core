@@ -40,12 +40,16 @@ class RedisScriptCompilerPassTest extends PHPUnit_Framework_TestCase
     /**
      * @var ContainerBuilder|MockObject
      */
-    private $mockContainer;
+    private $container;
 
     public function setUp()
     {
-        $this->mockContainer = $this->getMock(ContainerBuilder::class);
-
+        $this->container  = $this->getMock(ContainerBuilder::class, [
+            'getServiceIds',
+            'getDefinition',
+            'hasDefinition',
+            'findTaggedServiceIds'
+        ]);
         $this->subject = new RedisScriptCompilerPass();
     }
 
@@ -58,19 +62,19 @@ class RedisScriptCompilerPassTest extends PHPUnit_Framework_TestCase
             $serviceId = 'service_id' => []
         ];
 
-        $this->mockContainer
+        $this->container
             ->expects($this->at(0))
             ->method('getDefinition')
             ->with('RedisScripts')
             ->willReturn($redisScripts);
 
-        $this->mockContainer
+        $this->container
             ->expects($this->at(1))
             ->method('findTaggedServiceIds')
             ->with(RedisScriptCompilerPass::TAG)
             ->willReturn($taggedServices);
 
-        $this->mockContainer
+        $this->container
             ->expects($this->at(2))
             ->method('getDefinition')
             ->with($serviceId)
@@ -91,7 +95,7 @@ class RedisScriptCompilerPassTest extends PHPUnit_Framework_TestCase
             ->method('addMethodCall')
             ->with('registerScript', ['name2', sha1('script2'), 'script2']);
 
-        $this->subject->process($this->mockContainer);
+        $this->subject->process($this->container);
     }
 
     /**
@@ -106,19 +110,19 @@ class RedisScriptCompilerPassTest extends PHPUnit_Framework_TestCase
             $serviceId = 'service_id' => []
         ];
 
-        $this->mockContainer
+        $this->container
             ->expects($this->at(0))
             ->method('getDefinition')
             ->with('RedisScripts')
             ->willReturn($redisScripts);
 
-        $this->mockContainer
+        $this->container
             ->expects($this->at(1))
             ->method('findTaggedServiceIds')
             ->with(RedisScriptCompilerPass::TAG)
             ->willReturn($taggedServices);
 
-        $this->mockContainer
+        $this->container
             ->expects($this->at(2))
             ->method('getDefinition')
             ->with($serviceId)
@@ -133,6 +137,6 @@ class RedisScriptCompilerPassTest extends PHPUnit_Framework_TestCase
             ->expects($this->never())
             ->method('addMethodCall');
 
-        $this->subject->process($this->mockContainer);
+        $this->subject->process($this->container);
     }
 }

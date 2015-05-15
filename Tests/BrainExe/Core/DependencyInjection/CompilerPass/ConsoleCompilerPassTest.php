@@ -20,46 +20,49 @@ class ConsoleCompilerPassTest extends PHPUnit_Framework_TestCase
     /**
      * @var ContainerBuilder|MockObject $container
      */
-    private $mockContainer;
+    private $container;
 
     /**
      * @var Definition|MockObject $container
      */
-    private $mockConsoleDefinition;
+    private $consoleDefinition;
 
     public function setUp()
     {
         $this->subject = new ConsoleCompilerPass();
-        $this->mockContainer = $this->getMock(ContainerBuilder::class);
-        $this->mockConsoleDefinition = $this->getMock(Definition::class);
+        $this->container  = $this->getMock(ContainerBuilder::class, [
+            'findTaggedServiceIds',
+            'getDefinition',
+        ]);
+        $this->consoleDefinition = $this->getMock(Definition::class);
     }
 
     public function testAddSubscriber()
     {
         $serviceId = 'FooListener';
 
-        $this->mockContainer
+        $this->container
             ->expects($this->once())
             ->method('findTaggedServiceIds')
             ->with(ConsoleCompilerPass::TAG)
             ->willReturn([$serviceId => []]);
 
-        $this->mockContainer
+        $this->container
             ->expects($this->once())
             ->method('getDefinition')
             ->with('Console')
-            ->willReturn($this->mockConsoleDefinition);
+            ->willReturn($this->consoleDefinition);
 
-        $this->mockConsoleDefinition
+        $this->consoleDefinition
             ->expects($this->at(0))
             ->method('addMethodCall')
             ->with('setAutoExit', [false]);
 
-        $this->mockConsoleDefinition
+        $this->consoleDefinition
             ->expects($this->at(1))
             ->method('addMethodCall')
             ->with('addCommands', [[new Reference($serviceId)]]);
 
-        $this->subject->process($this->mockContainer);
+        $this->subject->process($this->container);
     }
 }

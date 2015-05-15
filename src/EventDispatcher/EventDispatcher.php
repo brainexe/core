@@ -2,11 +2,18 @@
 
 namespace BrainExe\Core\EventDispatcher;
 
+use BrainExe\Annotations\Annotations\Inject;
+use BrainExe\Annotations\Annotations\Service;
 use BrainExe\Core\Websockets\WebSocketEvent;
 use RuntimeException;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher as SymfonyEventDispatcher;
 use Symfony\Component\EventDispatcher\Event;
 
+/**
+ * @Service("EventDispatcher", public=false)
+ * @api
+ */
 class EventDispatcher extends SymfonyEventDispatcher
 {
 
@@ -21,20 +28,23 @@ class EventDispatcher extends SymfonyEventDispatcher
     private $catchall = [];
 
     /**
+     * @Inject({"@service_container", "%message_queue.enabled%"})
+     * @param ContainerInterface $container
+     * @param bool $enabled
+     */
+    public function __construct(ContainerInterface $container, $enabled)
+    {
+        parent::__construct($container);
+        $this->enabled = $enabled;
+    }
+
+    /**
      * @param Catchall $dispatcher
      */
     public function addCatchall(Catchall $dispatcher)
     {
         $dispatcher->setDispatcher($this);
         $this->catchall[] = $dispatcher;
-    }
-
-    /**
-     * @param bool $enabled
-     */
-    public function setEnabled($enabled)
-    {
-        $this->enabled = $enabled;
     }
 
     /**

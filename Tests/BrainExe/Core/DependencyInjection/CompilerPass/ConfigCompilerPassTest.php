@@ -40,7 +40,9 @@ class ConfigCompilerPassTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->container    = $this->getMock(ContainerBuilder::class);
+        $this->container  = $this->getMock(ContainerBuilder::class, [
+            'setParameter',
+        ]);
         $this->parameterBag = $this->getMock(ParameterBag::class);
         $this->fileSystem   = $this->getMock(FileSystem::class);
         $this->finder       = $this->getMock(Finder::class, [], [], '', false);

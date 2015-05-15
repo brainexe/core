@@ -2,9 +2,13 @@
 
 namespace BrainExe\Core\Redis;
 
+use BrainExe\Annotations\Annotations\Service;
 use Predis\Client;
-use Predis\Pipeline\Pipeline;
 
+/**
+ * @api
+ * @Service("redis", public=false)
+ */
 class Predis extends Client implements RedisInterface
 {
 

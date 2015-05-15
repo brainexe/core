@@ -19,12 +19,18 @@ class GlobalCompilerPassTest extends \PHPUnit_Framework_TestCase
     /**
      * @var ContainerBuilder|MockObject $container
      */
-    private $mockContainer;
+    private $container;
 
     public function setUp()
     {
-        $this->subject = new GlobalCompilerPass();
-        $this->mockContainer = $this->getMock(ContainerBuilder::class);
+        $this->subject    = new GlobalCompilerPass();
+        $this->container  = $this->getMock(ContainerBuilder::class, [
+            'getDefinition',
+            'getParameter',
+            'setParameter',
+            'get',
+            'findTaggedServiceIds'
+        ]);
     }
 
     public function testProcessCompiler()
@@ -34,27 +40,27 @@ class GlobalCompilerPassTest extends \PHPUnit_Framework_TestCase
         $compilerMock = $this->getMock(CompilerPassInterface::class);
         $loggerMock = $this->getMock(Logger::class, [], [], '', false);
 
-        $this->mockContainer
+        $this->container
             ->expects($this->at(0))
             ->method('setParameter');
 
-        $this->mockContainer
+        $this->container
             ->expects($this->at(1))
             ->method('setParameter');
 
-        $this->mockContainer
+        $this->container
             ->expects($this->at(2))
             ->method('findTaggedServiceIds')
             ->with(GlobalCompilerPass::TAG)
             ->willReturn([$serviceId => [['priority' => 10]]]);
 
-        $this->mockContainer
+        $this->container
             ->expects($this->at(3))
             ->method('get')
             ->with($serviceId)
             ->willReturn($compilerMock);
 
-        $this->mockContainer
+        $this->container
             ->expects($this->at(4))
             ->method('get')
             ->with('monolog.logger')
@@ -63,8 +69,8 @@ class GlobalCompilerPassTest extends \PHPUnit_Framework_TestCase
         $compilerMock
             ->expects($this->once())
             ->method('process')
-            ->with($this->mockContainer);
+            ->with($this->container);
 
-        $this->subject->process($this->mockContainer);
+        $this->subject->process($this->container);
     }
 }

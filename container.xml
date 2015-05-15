@@ -41,8 +41,6 @@
 	</parameters>
 
     <services>
-        <service id="redis" class="BrainExe\Core\Redis\Predis" public="false"></service>
-
 		<service id="monolog.ErrorHandler" class="Monolog\ErrorHandler">
 			<argument type="service" id="Monolog.Logger"/>
 			<call method="registerErrorHandler"/>
@@ -97,15 +95,6 @@
 				</argument>
 			</call>
         </service>
-		<service id="EventDispatcher" class="BrainExe\Core\EventDispatcher\EventDispatcher" public="false">
-			<argument type="service" id="service_container"/>
-			<call method="setEnabled">
-				<argument>%message_queue.enabled%</argument>
-			</call>
-			<call method="addCatchall">
-				<argument type="service" id="Expression.Listener"></argument>
-			</call>
-		</service>
 
 		<service id="Console" class="Symfony\Component\Console\Application"/>
 
@@ -130,10 +119,9 @@
 		<service id="Filesystem" class="BrainExe\Core\Util\Filesystem" public="false"/>
 		<service id="Finder" class="Symfony\Component\Finder\Finder" public="false"/>
 
-		<service id="cache.predis" class="Doctrine\Common\Cache\PredisCache" public="false">
+		<service id="cache" class="Doctrine\Common\Cache\PredisCache" public="false">
 			<argument type="service" id="redis"/>
 		</service>
-		<service id="cache" alias="cache.predis" public="false" />
 
 		<service id="UrlGenerator" class="Symfony\Component\Routing\Generator\UrlGenerator" public="false">
 			<argument type="service" id="Core.RouteCollection"/>
