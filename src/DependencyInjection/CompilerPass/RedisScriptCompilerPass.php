@@ -3,14 +3,11 @@
 namespace BrainExe\Core\DependencyInjection\CompilerPass;
 
 use BrainExe\Core\Annotations\CompilerPass;
-use BrainExe\Core\Redis\RedisScriptInterface;
-use Exception;
-use ReflectionClass;
+use BrainExe\Core\Redis\RedisScript;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
- * @todo use Predis\Command\ScriptCommand
  * @CompilerPass
  */
 class RedisScriptCompilerPass implements CompilerPassInterface
@@ -23,27 +20,18 @@ class RedisScriptCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $redisScript = $container->getDefinition('RedisScripts');
+        $redis = $container->getDefinition('redis');
 
         $taggedServices = $container->findTaggedServiceIds(self::TAG);
         foreach (array_keys($taggedServices) as $serviceId) {
             $definition = $container->getDefinition($serviceId);
-            /** @var RedisScriptInterface $class */
-            $class = $definition->getClass();
+            /** @var RedisScript $script */
+            $script = $container->get($serviceId);
 
-            $reflection = new ReflectionClass($class);
-            if (!$reflection->implementsInterface(RedisScriptInterface::class)) {
-                throw new Exception(sprintf(
-                    "Class %s dies not implements the interface 'RedisScriptInterface'",
-                    $class
-                ));
-            }
-            $scripts = $class::getRedisScripts();
-
-            foreach ($scripts as $name => $script) {
-                $sha1 = sha1($script);
-                $redisScript->addMethodCall('registerScript', [$name, $sha1, $script]);
-            }
+            $redis->addMethodCall('defineCommand', [
+                $script->getName(),
+                $definition->getClass()
+            ]);
         }
     }
 }

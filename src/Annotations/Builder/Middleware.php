@@ -2,13 +2,13 @@
 
 namespace BrainExe\Core\Annotations\Builder;
 
-use BrainExe\Annotations\Loader\Annotation\ServiceDefinitionBuilder;
+use BrainExe\Annotations\Builder\ServiceDefinition;
 use BrainExe\Core\Annotations\CompilerPass as Annotation;
 use BrainExe\Core\DependencyInjection\CompilerPass\MiddlewareCompilerPass;
 use ReflectionClass;
 use Symfony\Component\DependencyInjection\Definition;
 
-class Middleware extends ServiceDefinitionBuilder
+class Middleware extends ServiceDefinition
 {
     /**
      * @param ReflectionClass $reflectionClass

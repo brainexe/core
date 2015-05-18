@@ -2,12 +2,12 @@
 
 namespace BrainExe\Core\Annotations\Builder;
 
-use BrainExe\Annotations\Loader\Annotation\ServiceDefinitionBuilder;
+use BrainExe\Annotations\Builder\ServiceDefinition;
 use BrainExe\Core\DependencyInjection\CompilerPass\EventListenerCompilerPass;
 use ReflectionClass;
 use Symfony\Component\DependencyInjection\Definition;
 
-class EventListener extends ServiceDefinitionBuilder
+class EventListener extends ServiceDefinition
 {
 
     /**

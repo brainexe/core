@@ -2,7 +2,7 @@
 
 namespace BrainExe\Core\Annotations\Builder;
 
-use BrainExe\Annotations\Loader\Annotation\ServiceDefinitionBuilder;
+use BrainExe\Annotations\Builder\ServiceDefinition;
 use BrainExe\Core\Annotations\Guest;
 use BrainExe\Core\Annotations\Role;
 use BrainExe\Core\Annotations\Route;
@@ -11,7 +11,7 @@ use ReflectionClass;
 use ReflectionMethod;
 use Symfony\Component\DependencyInjection\Definition;
 
-class Controller extends ServiceDefinitionBuilder
+class Controller extends ServiceDefinition
 {
 
     /**

@@ -2,13 +2,13 @@
 
 namespace BrainExe\Core\Annotations\Builder;
 
-use BrainExe\Annotations\Loader\Annotation\ServiceDefinitionBuilder;
+use BrainExe\Annotations\Builder\ServiceDefinition;
 use BrainExe\Core\Annotations\CompilerPass as Annotation;
 use BrainExe\Core\DependencyInjection\CompilerPass\GlobalCompilerPass;
 use ReflectionClass;
 use Symfony\Component\DependencyInjection\Definition;
 
-class CompilerPass extends ServiceDefinitionBuilder
+class CompilerPass extends ServiceDefinition
 {
     /**
      * @param ReflectionClass $reflectionClass

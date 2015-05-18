@@ -43,7 +43,6 @@ class EventDispatcher extends SymfonyEventDispatcher
      */
     public function addCatchall(Catchall $dispatcher)
     {
-        $dispatcher->setDispatcher($this);
         $this->catchall[] = $dispatcher;
     }
 
@@ -57,8 +56,6 @@ class EventDispatcher extends SymfonyEventDispatcher
         if (empty($event)) {
             throw new RuntimeException('You have to pass an Event into EventDispatcher::dispatch');
         }
-
-        $event->setDispatcher($this); // @todo needed?
 
         foreach ($this->catchall as $dispatcher) {
             $dispatcher->dispatch($eventName, $event);

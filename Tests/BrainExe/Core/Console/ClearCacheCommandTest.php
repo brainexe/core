@@ -98,12 +98,6 @@ class ClearCacheCommandTest extends PHPUnit_Framework_TestCase
             ->method('rebuildDIC')
             ->with(true);
 
-        $input = new ArrayInput(['command' => 'redis:scripts:load']);
-        $application
-            ->expects($this->once())
-            ->method('run')
-            ->with($input);
-
         $commandTester->execute([]);
         $output = $commandTester->getDisplay();
 

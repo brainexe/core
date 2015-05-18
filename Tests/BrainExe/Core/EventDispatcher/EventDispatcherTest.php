@@ -8,9 +8,9 @@ use BrainExe\Core\EventDispatcher\DelayedEvent;
 use BrainExe\Core\EventDispatcher\EventDispatcher;
 use BrainExe\Core\EventDispatcher\PushViaWebsocket;
 use BrainExe\Core\Websockets\WebSocketEvent;
-use Elasticsearch\Common\Exceptions\RuntimeException;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase as TestCase;
+use RuntimeException;
 use Symfony\Component\DependencyInjection\Container;
 
 class TestEvent extends AbstractEvent

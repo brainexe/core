@@ -3,10 +3,9 @@
 namespace BrainExe\Core\DependencyInjection;
 
 use BrainExe\Annotations\Annotations\Service;
-use BrainExe\Annotations\Loader\AnnotationLoader;
+use BrainExe\Annotations\Loader;
 use BrainExe\Core\Core;
 use BrainExe\Core\DependencyInjection\CompilerPass\GlobalCompilerPass;
-use Doctrine\Common\Cache\ArrayCache;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
@@ -25,11 +24,8 @@ class Rebuild
      */
     public function rebuildDIC($boot = true)
     {
-
-        $cache = new ArrayCache();
-
         $containerBuilder = new ContainerBuilder();
-        $annotationLoader = new AnnotationLoader($containerBuilder, $cache);
+        $annotationLoader = new Loader($containerBuilder);
         $appFinder        = new Finder();
 
         $appFinder

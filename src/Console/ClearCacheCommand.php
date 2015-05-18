@@ -83,9 +83,6 @@ class ClearCacheCommand extends Command
         $this->rebuild->rebuildDIC(true);
         $output->writeln('<info>done</info>');
 
-        $input = new ArrayInput(['command' => 'redis:scripts:load']);
-        $this->getApplication()->run($input, $output);
-
         $event = new ClearCacheEvent($this->getApplication(), $input, $output);
         $this->dispatchEvent($event);
     }

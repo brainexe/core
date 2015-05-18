@@ -12,4 +12,12 @@ use Predis\Client;
 class Predis extends Client implements RedisInterface
 {
 
+    /**
+     * @param string $name
+     * @param string $command
+     */
+    public function defineCommand($name, $command)
+    {
+        $this->getProfile()->defineCommand($name, $command);
+    }
 }
