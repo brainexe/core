@@ -71,21 +71,12 @@ class AppKernel implements HttpKernelInterface
         try {
             $response = $this->handleRequest($request);
         } catch (Exception $exception) {
-            foreach ($this->middlewares as $middleware) {
-                $response = $middleware->processException($request, $exception);
-                if ($response !== null) {
-                    break;
-                }
-            }
+            $response = $this->applyExceptionMiddleware($request, $exception);
         }
 
         $response = $this->prepareResponse($request, $response);
 
-        $middlewareIdx = count($this->middlewares) - 1;
-        for ($i = $middlewareIdx; $i >= 0; $i--) {
-            $middleware = $this->middlewares[$i];
-            $middleware->processResponse($request, $response);
-        }
+        $this->applyResponseMiddleware($request, $response);
 
         return $response;
     }
@@ -132,5 +123,35 @@ class AppKernel implements HttpKernelInterface
         }
 
         return $response;
+    }
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     */
+    protected function applyResponseMiddleware(Request $request, Response $response)
+    {
+        $middlewareIdx = count($this->middlewares) - 1;
+        for ($i = $middlewareIdx; $i >= 0; $i--) {
+            $middleware = $this->middlewares[$i];
+            $middleware->processResponse($request, $response);
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @param Exception $exception
+     * @return Response|null
+     */
+    protected function applyExceptionMiddleware(Request $request, Exception $exception)
+    {
+        foreach ($this->middlewares as $middleware) {
+            $response = $middleware->processException($request, $exception);
+            if ($response !== null) {
+                return $response;
+            }
+        }
+
+        return null;
     }
 }

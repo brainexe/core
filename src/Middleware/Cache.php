@@ -6,6 +6,7 @@ use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Core\Annotations\Middleware;
 use BrainExe\Core\Traits\CacheTrait;
 use BrainExe\Core\Traits\LoggerTrait;
+use Doctrine\Common\Cache\CacheProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Route;
@@ -56,14 +57,7 @@ class Cache extends AbstractMiddleware
         $cache = $this->getCache();
 
         if ($cache->contains($this->cacheKey)) {
-            $this->debug(sprintf('fetch from cache: %s', $this->cacheKey));
-
-            /** @var Response $response */
-            $response = $cache->fetch($this->cacheKey);
-            $this->cacheKey = null;
-
-            $response->headers->set('X-Cache', 'hit');
-            return $response;
+            return $this->handleCached($cache);
         }
 
         return null;
@@ -97,5 +91,22 @@ class Cache extends AbstractMiddleware
     private function generateCacheKey(Request $request)
     {
         return $request->getRequestUri();
+    }
+
+    /**
+     * @param CacheProvider$cache
+     * @return Response
+     */
+    protected function handleCached(CacheProvider $cache)
+    {
+        $this->debug(sprintf('fetch from cache: %s', $this->cacheKey));
+
+        /** @var Response $response */
+        $response       = $cache->fetch($this->cacheKey);
+        $this->cacheKey = null;
+
+        $response->headers->set('X-Cache', 'hit');
+
+        return $response;
     }
 }

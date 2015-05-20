@@ -58,7 +58,7 @@ class LoginControllerTest extends TestCase
 
         $actualResult = $this->subject->doLogin($request);
 
-        $this->assertInstanceOf(JsonResponse::class, $actualResult);
+        $this->assertEquals($userVo, $actualResult);
     }
 
     public function testLoginWithToken()

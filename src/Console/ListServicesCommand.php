@@ -3,9 +3,10 @@
 namespace BrainExe\Core\Console;
 
 use BrainExe\Annotations\Annotations\Inject;
-use BrainExe\Core\Annotations\Command;
+use BrainExe\Core\Annotations\Command as CommandAnnotation;
 use BrainExe\Core\DependencyInjection\Rebuild;
 use BrainExe\Core\Traits\EventDispatcherTrait;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -13,9 +14,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
- * @Command
+ * @CommandAnnotation
  */
-class ListServicesCommand extends AbstractCommand
+class ListServicesCommand extends Command
 {
 
     use EventDispatcherTrait;
@@ -54,7 +55,7 @@ class ListServicesCommand extends AbstractCommand
     /**
      * {@inheritdoc}
      */
-    protected function doExecute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->dic = $this->rebuild->rebuildDIC(false);
 
@@ -88,15 +89,28 @@ class ListServicesCommand extends AbstractCommand
 
         $isPublic = $definition->isPublic();
 
+        if ($this->isVisible($visibility, $isPublic)) {
+            $table->addRow([
+                $id,
+                $isPublic ? '<info>public</info>' : '<error>private</error>'
+            ]);
+        }
+    }
+
+    /**
+     * @param $visibility
+     * @param $isPublic
+     * @return bool
+     */
+    private function isVisible($visibility, $isPublic)
+    {
         if ($visibility === 'public' && !$isPublic) {
-            return;
+            return false;
         } elseif ($visibility === 'private' && $isPublic) {
-            return;
+            return false;
         }
 
-        $table->addRow([
-           $id,
-           $isPublic ? '<info>public</info>' : '<error>private</error>'
-        ]);
+        return true;
     }
+
 }

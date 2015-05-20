@@ -10,9 +10,7 @@ use BrainExe\Core\Application\UserException;
 use BrainExe\Core\Authentication\Login;
 use BrainExe\Core\Authentication\UserVO;
 use BrainExe\Core\Controller\ControllerInterface;
-use BrainExe\Core\Traits\AddFlashTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -20,8 +18,6 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class LoginController implements ControllerInterface
 {
-
-    use AddFlashTrait;
 
     /**
      * @var Login
@@ -56,14 +52,7 @@ class LoginController implements ControllerInterface
             $request->getSession()
         );
 
-        $response = new JsonResponse($user);
-        $this->addFlash(
-            $response,
-            self::ALERT_SUCCESS,
-            sprintf(_('Welcome %s'), $user->username)
-        );
-
-        return $response;
+        return $user;
     }
 
     /**

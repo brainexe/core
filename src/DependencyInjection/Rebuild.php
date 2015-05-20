@@ -25,11 +25,31 @@ class Rebuild
     public function rebuildDIC($boot = true)
     {
         $containerBuilder = new ContainerBuilder();
-        $annotationLoader = new Loader($containerBuilder);
-        $appFinder        = new Finder();
 
-        $appFinder
-            ->directories()
+        $this->readAnnotations($containerBuilder);
+
+        $containerBuilder->addCompilerPass(new GlobalCompilerPass());
+        $containerBuilder->compile();
+
+        $this->dumpContainer($containerBuilder);
+
+        if ($boot) {
+            $core = new Core();
+            return $core->boot();
+        }
+
+        return $containerBuilder;
+    }
+
+    /**
+     * @param ContainerBuilder $container
+     */
+    protected function readAnnotations(ContainerBuilder $container)
+    {
+        $annotationLoader = new Loader($container);
+        $appFinder = new Finder();
+
+        $appFinder->directories()
             ->in([ROOT, CORE_ROOT, BRAINEXE_VENDOR_ROOT])
             ->depth("<=1")
             ->name('src');
@@ -46,10 +66,13 @@ class Rebuild
             }
             $annotationLoader->load($dirName);
         }
+    }
 
-        $containerBuilder->addCompilerPass(new GlobalCompilerPass());
-        $containerBuilder->compile();
-
+    /**
+     * @param ContainerBuilder $container
+     */
+    protected function dumpContainer(ContainerBuilder $container)
+    {
         $randomId      = mt_rand();
         $containerName = sprintf('dic_%d', $randomId);
         $containerFile = sprintf('cache/dic_%d.php', $randomId);
@@ -58,16 +81,9 @@ class Rebuild
             unlink($file);
         }
 
-        $dumper            = new PhpDumper($containerBuilder);
-        $containerContent  = $dumper->dump(['class' => $containerName]);
+        $dumper           = new PhpDumper($container);
+        $containerContent = $dumper->dump(['class' => $containerName]);
         file_put_contents($containerFile, $containerContent);
         chmod($containerFile, 0777);
-
-        if ($boot) {
-            $core = new Core();
-            return $core->boot();
-        }
-
-        return $containerBuilder;
     }
 }

@@ -6,7 +6,7 @@ use BrainExe\Core\Console\ListServicesCommand;
 use BrainExe\Core\DependencyInjection\Rebuild;
 use BrainExe\Core\EventDispatcher\EventDispatcher;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase;
+use PHPUnit_Framework_TestCase as TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -15,7 +15,7 @@ use Symfony\Component\DependencyInjection\Definition;
 /**
  * @covers BrainExe\Core\Console\ListServicesCommand
  */
-class ListServicesCommandTest extends PHPUnit_Framework_TestCase
+class ListServicesCommandTest extends TestCase
 {
 
     /**
@@ -49,13 +49,12 @@ class ListServicesCommandTest extends PHPUnit_Framework_TestCase
         $commandTester->execute([]);
         $output = $commandTester->getDisplay();
 
-        $this->assertEquals("List all services...+------------+------------+
+        $this->assertEquals("+------------+------------+
 | service-id | visibility |
 +------------+------------+
 | service_1  | public     |
 | service_2  | private    |
-+------------+------------+
-done\n", $output);
++------------+------------+\n", $output);
     }
 
     public function testExecuteFilterPublic()
@@ -65,13 +64,13 @@ done\n", $output);
         $commandTester->execute(['visibility' => 'public']);
         $output = $commandTester->getDisplay();
 
-        $this->assertEquals("List all services...+------------+------------+
+        $this->assertEquals("+------------+------------+
 | service-id | visibility |
 +------------+------------+
 | service_1  | public     |
-+------------+------------+
-done\n", $output);
++------------+------------+\n", $output);
     }
+
     public function testExecuteFilterPrivate()
     {
         $commandTester = $this->setupMocks();
@@ -79,12 +78,11 @@ done\n", $output);
         $commandTester->execute(['visibility' => 'private']);
         $output = $commandTester->getDisplay();
 
-        $this->assertEquals("List all services...+------------+------------+
+        $this->assertEquals("+------------+------------+
 | service-id | visibility |
 +------------+------------+
 | service_2  | private    |
-+------------+------------+
-done\n", $output);
++------------+------------+\n", $output);
     }
 
     /**

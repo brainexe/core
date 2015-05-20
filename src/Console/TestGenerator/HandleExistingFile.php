@@ -14,7 +14,6 @@ use Symfony\Component\Console\Question\ChoiceQuestion;
 class HandleExistingFile
 {
 
-
     /**
      * @param string $originalTest
      * @param string $newTest
