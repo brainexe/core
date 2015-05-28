@@ -5,6 +5,9 @@ namespace BrainExe\Core\Traits;
 use BrainExe\Annotations\Annotations\Inject;
 use Doctrine\Common\Cache\CacheProvider;
 
+/**
+ * @api
+ */
 trait CacheTrait
 {
 

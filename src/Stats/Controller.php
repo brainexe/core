@@ -56,13 +56,13 @@ class Controller
     }
 
     /**
-     * @Route("/stats/event/delete/", methods="POST")
+     * @Route("/stats/event/", methods="DELETE")
      * @param Request $request
      * @return bool
      */
     public function deleteJob(Request $request)
     {
-        $jobId = $request->request->get('job_id');
+        $jobId = $request->query->get('job_id');
         $this->messageQueue->deleteEvent($jobId);
 
         return true;

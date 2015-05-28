@@ -52,10 +52,16 @@ class SettingsTest extends TestCase
         $expected = ['expected'];
 
         $this->gateway
-            ->expects($this->once())
+            ->expects($this->at(0))
             ->method('getAll')
             ->with($userId)
             ->willReturn($expected);
+
+        $this->gateway
+            ->expects($this->at(1))
+            ->method('getAll')
+            ->with(0)
+            ->willReturn([]);
 
         $actual = $this->subject->getAll($userId);
 

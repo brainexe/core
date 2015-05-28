@@ -5,6 +5,9 @@ namespace BrainExe\Core\Traits;
 use BrainExe\Annotations\Annotations\Inject;
 use Monolog\Logger;
 
+/**
+ * @api
+ */
 trait LoggerTrait
 {
 
@@ -30,7 +33,6 @@ trait LoggerTrait
      * @param mixed $level
      * @param string $message
      * @param array $context
-     * @return null
      */
     public function log($level, $message, array $context = [])
     {

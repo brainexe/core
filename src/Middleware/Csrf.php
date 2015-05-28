@@ -16,7 +16,9 @@ use Symfony\Component\Routing\Route;
 class Csrf extends AbstractMiddleware
 {
 
-    const CSRF = 'csrf';
+    const CSRF   = 'csrf';
+    const HEADER = 'X-XSRF-TOKEN';
+    const COOKIE = 'XSRF-TOKEN';
 
     use IdGeneratorTrait;
 
@@ -30,23 +32,23 @@ class Csrf extends AbstractMiddleware
      */
     public function processRequest(Request $request, Route $route)
     {
-        $givenToken = $request->cookies->get(self::CSRF);
+        $givenToken = $request->headers->get(self::HEADER);
 
-        if (empty($givenToken)) {
-            $this->renewCsrfToken();
-        }
-
-        if (!$request->isMethod('POST') && !$route->hasOption(self::CSRF)) {
+        if ($request->isMethod('GET') && !$route->hasOption(self::CSRF)) {
+            if (empty($givenToken)) {
+                $this->renewCsrfToken();
+            }
             return;
         }
 
         $expectedToken = $request->getSession()->get(self::CSRF);
 
-        $this->renewCsrfToken();
-
         if (empty($givenToken) || $givenToken !== $expectedToken) {
             throw new MethodNotAllowedException(['POST'], "invalid CSRF token");
         }
+
+        // for the next request we expect a new token
+        $this->renewCsrfToken();
     }
 
     /**
@@ -56,7 +58,7 @@ class Csrf extends AbstractMiddleware
     {
         if ($this->newToken) {
             $request->getSession()->set(self::CSRF, $this->newToken);
-            $response->headers->setCookie(new Cookie(self::CSRF, $this->newToken));
+            $response->headers->setCookie(new Cookie(self::COOKIE, $this->newToken, 0, '/', null, false, false));
             $this->newToken = null;
         }
     }

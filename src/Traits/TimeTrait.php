@@ -5,6 +5,9 @@ namespace BrainExe\Core\Traits;
 use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Core\Util\Time;
 
+/**
+ * @api
+ */
 trait TimeTrait
 {
 

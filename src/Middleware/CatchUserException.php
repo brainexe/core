@@ -4,8 +4,6 @@ namespace BrainExe\Core\Middleware;
 
 use BrainExe\Core\Annotations\Middleware;
 use BrainExe\Core\Application\UserException;
-use BrainExe\Core\Controller\ControllerInterface;
-use BrainExe\Core\Traits\ServiceContainerTrait;
 use Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,38 +23,32 @@ class CatchUserException extends AbstractMiddleware
     {
         if ($exception instanceof ResourceNotFoundException) {
             $exception = new UserException(sprintf('Page not found: %s', $request->getRequestUri()), 0, $exception);
-
-            $response = new Response('', 404);
+            $response  = new Response('', 404);
         } elseif ($exception instanceof MethodNotAllowedException) {
             $exception = new UserException('You are not allowed to access the page', 0, $exception);
             $response  = new Response('', 405);
         } elseif ($exception instanceof UserException) {
             // just pass a UserException to Frontend
-            $response  = new Response('', 200);
+            $response  = new Response('', 500);
         } else {
             $exception = new UserException($exception->getMessage(), 0, $exception);
             $response  = new Response('', 500);
         }
 
-        $this->setMessage($request, $exception, $response);
+        $this->setMessage($exception, $response);
 
         return $response;
     }
 
     /**
-     * @param Request $request
      * @param Exception $exception
      * @param Response $response
      */
-    protected function setMessage(Request $request, Exception $exception, Response $response)
+    protected function setMessage(Exception $exception, Response $response)
     {
-        /** @var Exception $exception */
-        if ($request->isXmlHttpRequest()) {
-            $message = $exception->getMessage() ?: _('An error occurred');
-            $response->headers->set('X-Flash', json_encode([ControllerInterface::ALERT_DANGER, $message]));
-        } else {
-            $responseString = $exception->getMessage();
-            $response->setContent($responseString);
-        }
+        $message = $exception->getMessage() ?: _('An error occurred');
+        $response->headers->set('X-Flash-Type', 'danger');
+        $response->headers->set('X-Flash-Message', $message);
+        $response->setContent($message);
     }
 }

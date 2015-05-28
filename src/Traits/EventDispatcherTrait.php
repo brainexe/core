@@ -6,6 +6,9 @@ use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Core\EventDispatcher\AbstractEvent;
 use BrainExe\Core\EventDispatcher\EventDispatcher;
 
+/**
+ * @api
+ */
 trait EventDispatcherTrait
 {
 

@@ -22,7 +22,9 @@ class Stats extends AbstractMiddleware
      */
     public function processResponse(Request $request, Response $response)
     {
-        $event = new Event(Event::INCREASE, 'request:handle');
+        $event = new Event(Event::INCREASE, sprintf('request:%s:%s', $request->getMethod(), $request->getPathInfo()));
+        $this->dispatchEvent($event);
+        $event = new Event(Event::INCREASE, sprintf('response:code:%d', $response->getStatusCode()));
         $this->dispatchEvent($event);
     }
 
@@ -31,7 +33,7 @@ class Stats extends AbstractMiddleware
      */
     public function processException(Request $request, Exception $exception)
     {
-        $event = new Event(Event::INCREASE, 'request:error');
+        $event = new Event(Event::INCREASE, sprintf('request:code:%d', 500));
         $this->dispatchEvent($event);
     }
 }

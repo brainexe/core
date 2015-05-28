@@ -39,15 +39,10 @@ class CatchUserExceptionTest extends TestCase
         /** @var Request|MockObject $request */
         $request = $this->getMock(Request::class, ['isXmlHttpRequest']);
 
-        $request
-            ->expects($this->once())
-            ->method('isXmlHttpRequest')
-            ->willReturn(true);
-
         $actualResult = $this->subject->processException($request, $exception);
 
         $this->assertEquals($expectedStatusCode, $actualResult->getStatusCode());
-        $this->assertTrue($actualResult->headers->has('X-Flash'));
+        $this->assertTrue($actualResult->headers->has('X-Flash-Type'));
     }
 
     public function testProcessException()
@@ -56,11 +51,6 @@ class CatchUserExceptionTest extends TestCase
         $request = $this->getMock(Request::class, ['isXmlHttpRequest']);
 
         $exception = new ResourceNotFoundException();
-
-        $request
-            ->expects($this->once())
-            ->method('isXmlHttpRequest')
-            ->willReturn(false);
 
         $actualResult = $this->subject->processException($request, $exception);
 
@@ -84,7 +74,7 @@ class CatchUserExceptionTest extends TestCase
         return [
             [new ResourceNotFoundException(), 404],
             [new MethodNotAllowedException(['POST']), 405],
-            [new UserException('test'), 200],
+            [new UserException('test'), 500],
             [new Exception('test'), 500],
         ];
     }

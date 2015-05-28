@@ -13,7 +13,7 @@ interface MiddlewareInterface
     /**
      * @param Request $request
      * @param Route $route
-     * @return Response|void $response
+     * @return Response|null $response
      */
     public function processRequest(Request $request, Route $route);
 

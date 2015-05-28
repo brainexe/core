@@ -6,13 +6,12 @@ use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Core\Annotations\Controller;
 use BrainExe\Core\Annotations\Route;
 use BrainExe\Core\Authentication\Token;
-use BrainExe\Core\Controller\ControllerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @Controller("Authentication.Controller.TokenController")
  */
-class TokenController implements ControllerInterface
+class TokenController
 {
 
     /**
@@ -56,7 +55,7 @@ class TokenController implements ControllerInterface
 
     /**
      * @param Request $request
-     * @Route("/user/tokens/{token}", name="authenticate.tokens.revoke", methods="DELETE")
+     * @Route("/user/tokens/{token}/", name="authenticate.tokens.revoke", methods="DELETE")
      * @param string $token
      * @return bool
      */

@@ -17,7 +17,8 @@ class Parameter extends AbstractMiddleware
      */
     public function processRequest(Request $request, Route $route)
     {
-        if ($request->isMethod('POST') && 'json' === $request->getContentType()) {
+
+        if (in_array($request->getMethod(), ['POST', 'PUT']) && 'json' === $request->getContentType()) {
             $parameters = json_decode($request->getContent(), true);
 
             if (is_array($parameters)) {

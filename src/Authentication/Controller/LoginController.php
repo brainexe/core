@@ -9,14 +9,14 @@ use BrainExe\Core\Annotations\Route;
 use BrainExe\Core\Application\UserException;
 use BrainExe\Core\Authentication\Login;
 use BrainExe\Core\Authentication\UserVO;
-use BrainExe\Core\Controller\ControllerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @Controller
  */
-class LoginController implements ControllerInterface
+class LoginController
 {
 
     /**
@@ -70,14 +70,20 @@ class LoginController implements ControllerInterface
 
     /**
      * @param Request $request
-     * @Route("/login/token/{token}", name="authenticate.needsOneTimeToken", methods="GET")
+     * @Route("/login/token/{token}", name="authenticate.loginWithToken ", methods="GET")
      * @param string $token
-     * @return UserVO
+     * @return UserVO|RedirectResponse
      * @throws UserException
      * @Guest
      */
     public function loginWithToken(Request $request, $token)
     {
-        return $this->login->loginWithToken($token, $request->getSession());
+        $result = $this->login->loginWithToken($token, $request->getSession());
+
+        if ($request->isXmlHttpRequest()) {
+            return $result;
+        }
+
+        return new RedirectResponse(sprintf('/?user=%d', $result->id));
     }
 }

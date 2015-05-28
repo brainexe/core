@@ -30,7 +30,8 @@
     "brainexe/message-queue": "*",
     "monolog/monolog": "1.12.*",
     "doctrine/cache": "1.4.*",
-    "predis/predis": "1.1.*"
+    "predis/predis": "1.1.*",
+    "mtdowling/cron-expression": "dev-master"
   },
   "require-dev": {
     "phpunit/phpunit": "~4.6",

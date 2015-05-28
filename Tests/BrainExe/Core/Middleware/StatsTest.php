@@ -57,9 +57,15 @@ class StatsTest extends TestCase
         $request  = new Request();
         $response = new Response();
 
-        $event = new Event(Event::INCREASE, 'request:handle');
+        $event = new Event(Event::INCREASE, 'request:GET:/');
         $this->dispatcher
-            ->expects($this->once())
+            ->expects($this->at(0))
+            ->method('dispatchEvent')
+            ->with($event);
+
+        $event = new Event(Event::INCREASE, 'response:code:200');
+        $this->dispatcher
+            ->expects($this->at(1))
             ->method('dispatchEvent')
             ->with($event);
 
@@ -71,7 +77,7 @@ class StatsTest extends TestCase
         $request   = new Request();
         $exception = new Exception();
 
-        $event = new Event(Event::INCREASE, 'request:error');
+        $event = new Event(Event::INCREASE, 'request:code:500');
         $this->dispatcher
             ->expects($this->once())
             ->method('dispatchEvent')

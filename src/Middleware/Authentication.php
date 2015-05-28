@@ -21,7 +21,7 @@ class Authentication extends AbstractMiddleware
 {
 
     /**
-     * @var
+     * @var bool
      */
     private $guestsAllowed;
 

@@ -2,6 +2,10 @@
 
 namespace BrainExe\Core\Traits;
 
+/**
+ * @api
+ * @deprecated
+ */
 trait RedisCacheTrait
 {
 

@@ -7,17 +7,13 @@ use BrainExe\Core\Annotations\Controller;
 use BrainExe\Core\Annotations\Route;
 use BrainExe\Core\Authentication\DatabaseUserProvider;
 use BrainExe\Core\Authentication\UserVO;
-use BrainExe\Core\Controller\ControllerInterface;
-use BrainExe\Core\Traits\AddFlashTrait;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @Controller
  */
-class PasswordController implements ControllerInterface
+class PasswordController
 {
-
-    use AddFlashTrait;
 
     /**
      * @var DatabaseUserProvider

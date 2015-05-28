@@ -8,19 +8,13 @@ use BrainExe\Core\Annotations\Guest;
 use BrainExe\Core\Annotations\Route;
 use BrainExe\Core\Authentication\Register;
 use BrainExe\Core\Authentication\UserVO;
-use BrainExe\Core\Controller\ControllerInterface;
-use BrainExe\Core\Traits\AddFlashTrait;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @Controller
  */
-class RegisterController implements ControllerInterface
+class RegisterController
 {
-
-    use AddFlashTrait;
 
     /**
      * @var Register
@@ -38,7 +32,7 @@ class RegisterController implements ControllerInterface
 
     /**
      * @param Request $request
-     * @return JsonResponse
+     * @return UserVO
      * @Route("/register/", name="authenticate.doRegister", methods="POST")
      * @Guest
      */
@@ -54,13 +48,6 @@ class RegisterController implements ControllerInterface
 
         $this->register->registerUser($user, $request->getSession(), $token);
 
-        $response = new JsonResponse($user);
-        $this->addFlash(
-            $response,
-            self::ALERT_SUCCESS,
-            sprintf('Welcome %s', $user->username)
-        );
-
-        return $response;
+        return $user;
     }
 }

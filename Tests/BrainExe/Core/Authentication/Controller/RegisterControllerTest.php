@@ -6,8 +6,7 @@ use BrainExe\Core\Authentication\Controller\RegisterController;
 use BrainExe\Core\Authentication\Register;
 use BrainExe\Core\Authentication\UserVO;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use PHPUnit_Framework_TestCase as TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
@@ -15,7 +14,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 /**
  * @covers BrainExe\Core\Authentication\Controller\RegisterController
  */
-class RegisterControllerTest extends PHPUnit_Framework_TestCase
+class RegisterControllerTest extends TestCase
 {
 
     /**
@@ -26,20 +25,20 @@ class RegisterControllerTest extends PHPUnit_Framework_TestCase
     /**
      * @var Register|MockObject
      */
-    private $mockRegister;
+    private $register;
 
     public function setUp()
     {
-        $this->mockRegister = $this->getMock(Register::class, [], [], '', false);
+        $this->register = $this->getMock(Register::class, [], [], '', false);
 
-        $this->subject = new RegisterController($this->mockRegister);
+        $this->subject = new RegisterController($this->register);
     }
 
     public function testDoRegister()
     {
-        $username       = 'username';
+        $username      = 'username';
         $plainPassword = 'plain password';
-        $token          = 'token';
+        $token         = 'token';
 
         $session = new Session(new MockArraySessionStorage());
 
@@ -53,13 +52,13 @@ class RegisterControllerTest extends PHPUnit_Framework_TestCase
         $userVo->username = $username;
         $userVo->password = $plainPassword;
 
-        $this->mockRegister
+        $this->register
             ->expects($this->once())
             ->method('registerUser')
             ->with($userVo, $session, $token);
 
         $actualResult = $this->subject->doRegister($request);
 
-        $this->assertInstanceOf(JsonResponse::class, $actualResult);
+        $this->assertEquals($userVo, $actualResult);
     }
 }

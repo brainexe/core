@@ -56,7 +56,7 @@ class CsrfTest extends TestCase
         $this->subject->processRequest($request, $route);
         $this->subject->processResponse($request, $response);
 
-        $expectedCookie = new Cookie(Csrf::CSRF, $newCsrf);
+        $expectedCookie = new Cookie(Csrf::COOKIE, $newCsrf, 0, '/', null, false, false);
 
         $this->assertEquals([$expectedCookie], $response->headers->getCookies());
         $this->assertEquals($newCsrf, $session->get(Csrf::CSRF));
@@ -77,7 +77,33 @@ class CsrfTest extends TestCase
         $request = new Request();
         $request->setSession($session);
         $request->setMethod('POST');
-        $request->cookies->set(Csrf::CSRF, $currentCsrf);
+        $request->headers->set(Csrf::HEADER, $currentCsrf);
+        
+        $response = new Response();
+        $route    = new Route('/route/');
+
+        $this->subject->processRequest($request, $route);
+        $this->subject->processResponse($request, $response);
+
+        $expectedCookie = new Cookie(Csrf::COOKIE, $newCsrf, 0, '/', null, false, false);
+
+        $this->assertEquals([$expectedCookie], $response->headers->getCookies());
+        $this->assertEquals($newCsrf, $session->get(Csrf::CSRF));
+    }
+
+    public function testProcessPostRequestValidToken()
+    {
+        $currentCsrf   = 'token';
+        $newCsrf       = 'new token';
+        $expectedToken = $currentCsrf;
+
+        $session = new Session(new MockArraySessionStorage());
+        $session->set(Csrf::CSRF, $expectedToken);
+
+        $request = new Request();
+        $request->setSession($session);
+        $request->setMethod('POST');
+        $request->headers->set(Csrf::HEADER, $expectedToken);
 
         $response = new Response();
         $route    = new Route('/route/');
@@ -90,38 +116,7 @@ class CsrfTest extends TestCase
         $this->subject->processRequest($request, $route);
         $this->subject->processResponse($request, $response);
 
-        $expectedCookie = new Cookie(Csrf::CSRF, $newCsrf);
-
-        $this->assertEquals([$expectedCookie], $response->headers->getCookies());
-        $this->assertEquals($newCsrf, $session->get(Csrf::CSRF));
-    }
-
-    public function testProcessPostRequestValidToken()
-    {
-        $currentCsrf = 'token';
-        $newCsrf     = 'new token';
-        $expectedToken = $currentCsrf;
-
-        $session = new Session(new MockArraySessionStorage());
-        $session->set(Csrf::CSRF, $expectedToken);
-
-        $request = new Request();
-        $request->setSession($session);
-        $request->setMethod('POST');
-        $request->cookies->set(Csrf::CSRF, $currentCsrf);
-
-        $response   = new Response();
-        $route      = new Route('/route/');
-
-        $this->idGenerator
-            ->expects($this->once())
-            ->method('generateRandomId')
-            ->willReturn($newCsrf);
-
-        $this->subject->processRequest($request, $route);
-        $this->subject->processResponse($request, $response);
-
-        $expectedCookie = new Cookie(Csrf::CSRF, $newCsrf);
+        $expectedCookie = new Cookie(Csrf::COOKIE, $newCsrf, 0, '/', null, false, false);
 
         $this->assertEquals([$expectedCookie], $response->headers->getCookies());
         $this->assertEquals($newCsrf, $session->get(Csrf::CSRF));

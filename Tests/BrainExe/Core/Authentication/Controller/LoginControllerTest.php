@@ -8,6 +8,7 @@ use BrainExe\Core\Authentication\UserVO;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase as TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
@@ -61,11 +62,33 @@ class LoginControllerTest extends TestCase
         $this->assertEquals($userVo, $actualResult);
     }
 
-    public function testLoginWithToken()
+    public function testLoginWithTokenWithXHR()
     {
         $user    = new UserVO();
         $token   = 'token';
         $session = new Session(new MockArraySessionStorage());
+
+        $request = new Request();
+        $request->setSession($session);
+
+        $request->headers->set('X-Requested-With', 'XMLHttpRequest');
+
+        $this->login
+            ->expects($this->once())
+            ->method('loginWithToken')
+            ->with($token)
+            ->willReturn($user);
+
+        $actual = $this->subject->loginWithToken($request, $token);
+
+        $this->assertEquals($user, $actual);
+    }
+    public function testLoginWithTokenWithNotXHR()
+    {
+        $user     = new UserVO();
+        $user->id = 1;
+        $token    = 'token';
+        $session  = new Session(new MockArraySessionStorage());
 
         $request = new Request();
         $request->setSession($session);
@@ -78,7 +101,9 @@ class LoginControllerTest extends TestCase
 
         $actual = $this->subject->loginWithToken($request, $token);
 
-        $this->assertEquals($user, $actual);
+        $expected = new RedirectResponse('/?user=1');
+
+        $this->assertEquals($expected, $actual);
     }
 
     public function testNeedsOneTimeToken()

@@ -66,6 +66,12 @@ class Login
         return $userVo;
     }
 
+    /**
+     * @param string $token
+     * @param SessionInterface $session
+     * @return UserVO
+     * @throws UserException
+     */
     public function loginWithToken($token, SessionInterface $session)
     {
         $tokenData = $this->token->getToken($token);

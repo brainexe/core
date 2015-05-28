@@ -3,20 +3,18 @@
 namespace BrainExe\Core\Websockets;
 
 use BrainExe\Core\Annotations\EventListener;
-use BrainExe\Core\Traits\EventDispatcherTrait;
 use BrainExe\Core\Traits\RedisTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * @EventListener
+ * @EventListener("Websocket.Listener")
  */
-class WebsocketListener implements EventSubscriberInterface
+class Listener implements EventSubscriberInterface
 {
 
     const CHANNEL = 'websocket:push';
 
     use RedisTrait;
-    use EventDispatcherTrait;
 
     /**
      * @{inheritdoc}

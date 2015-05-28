@@ -5,13 +5,12 @@ namespace BrainExe\Core\Authentication\Controller;
 use BrainExe\Core\Annotations\Controller;
 use BrainExe\Core\Annotations\Route;
 use BrainExe\Core\Authentication\AnonymusUserVO;
-use BrainExe\Core\Controller\ControllerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @Controller
  */
-class LogoutController implements ControllerInterface
+class LogoutController
 {
 
     /**

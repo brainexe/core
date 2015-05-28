@@ -56,7 +56,7 @@ class Core
         date_default_timezone_set($dic->getParameter('timezone'));
 
         // TODO improve error logging
-        $dic->get('monolog.ErrorHandler');
+//        $dic->get('monolog.ErrorHandler');
 
         return $dic;
     }

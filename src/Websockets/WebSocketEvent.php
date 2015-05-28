@@ -22,7 +22,8 @@ class WebSocketEvent extends AbstractEvent
      */
     public function __construct(AbstractEvent $payload)
     {
-        $this->event_name = self::PUSH;
+        parent::__construct(self::PUSH);
+
         $this->payload = $payload;
     }
 }

@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Route;
 
 /**
- * @Middleware("Middleware.Session", priority=null)
+ * @Middleware("Middleware.Locale", priority=null)
  */
 class Locale extends AbstractMiddleware
 {

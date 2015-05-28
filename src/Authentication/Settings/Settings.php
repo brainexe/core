@@ -33,7 +33,13 @@ class Settings
      */
     public function get($userId, $setting)
     {
-        return $this->gateway->get($userId, $setting);
+        $value = $this->gateway->get($userId, $setting);
+
+        if (empty($value) && $userId) {
+            $value = $this->get(0, $setting);
+        }
+
+        return $value;
     }
 
     /**
@@ -42,7 +48,13 @@ class Settings
      */
     public function getAll($userId)
     {
-        return $this->gateway->getAll($userId);
+        $values = $this->gateway->getAll($userId);
+
+        if ($userId) {
+            $values = array_merge($this->getAll(0), $values);
+        }
+
+        return $values;
     }
 
     /**

@@ -5,6 +5,9 @@ namespace BrainExe\Core\Traits;
 use BrainExe\Annotations\Annotations\Inject;
 use Symfony\Component\DependencyInjection\Container;
 
+/**
+ * @api
+ */
 trait ConfigTrait
 {
     /**

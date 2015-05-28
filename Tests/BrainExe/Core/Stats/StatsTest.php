@@ -27,7 +27,6 @@ class StatsTest extends TestCase
     {
         $this->gateway = $this->getMock(Gateway::class);
         $this->subject = new Stats($this->gateway);
-
     }
 
     public function testIncrease()
