@@ -3,17 +3,18 @@
 namespace BrainExe\Core\Redis\Command;
 
 use BrainExe\Core\Traits\RedisTrait;
-use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use BrainExe\Core\Annotations\Command as CommandAnnotation;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @CommandAnnotation("Redis.Command.Import")
  * @codeCoverageIgnore
  */
-class Import extends Command
+class Import extends SymfonyCommand
 {
 
     use RedisTrait;
@@ -24,8 +25,9 @@ class Import extends Command
     protected function configure()
     {
         $this->setName('redis:import')
-             ->setDescription('Import Redis database')
-             ->addArgument('file', InputArgument::OPTIONAL, 'File to export', 'database.txt');
+            ->setDescription('Import Redis database')
+            ->addArgument('file', InputArgument::OPTIONAL, 'File to export', 'database.txt')
+            ->addOption('flush', null, InputOption::VALUE_NONE, 'Flush the current database before import');
     }
 
     /**
@@ -36,6 +38,10 @@ class Import extends Command
         $redis   = $this->getRedis();
         $file    = $input->getArgument('file');
         $content = file_get_contents($file);
+
+        if ($input->getOption('flush')) {
+            $redis->flushdb();
+        }
 
         foreach (explode("\n", $content) as $line) {
             preg_match_all('/"(?:\\\\.|[^\\\\"])*"|\S+/', $line, $matches);

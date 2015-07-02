@@ -27,6 +27,14 @@ trait EventDispatcherTrait
     }
 
     /**
+     * @return EventDispatcher
+     */
+    public function getDispatcher()
+    {
+        return $this->dispatcher;
+    }
+
+    /**
      * @param AbstractEvent $event
      */
     public function dispatchEvent(AbstractEvent $event)

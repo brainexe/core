@@ -2,42 +2,62 @@
 <container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 	<parameters>
 		<parameter key="debug">false</parameter>
-		<parameter key="cache.enabled">true</parameter>
+		<parameter key="cache.enabled">true</parameter> <!--todo needed ?-->
 		<parameter key="server.address">localhost:8080</parameter>
+
+		<parameter key="qr.baseUrl">https://api.qrserver.com/v1/create-qr-code/?size=%%dx%%d&amp;data=%s</parameter>
+		<parameter key="locales" type="collection"></parameter>
 
 		<parameter key="hipchat.api_token"/>
 		<parameter key="hipchat.room"/>
 		<parameter key="hipchat.name">%application.name%</parameter>
 		<parameter key="hipchat.logLevel" type="collection">Monolog\Logger::ERROR</parameter>
 
-		<parameter key="xhgui.header.php"></parameter>
-
 		<parameter key="timezone">Europe/Berlin</parameter>
 
 		<parameter key="redis.host">127.0.0.1</parameter>
 		<parameter key="redis.password"/>
 		<parameter key="redis.database">0</parameter>
-		<parameter key="redis.class">BrainExe\Core\Redis\Predis</parameter>
+		<parameter key="redis.class">BrainExe\Core\Redis\Predis</parameter><!--todo needed?-->
 
-		<parameter key="cdn.url">/</parameter>
 		<parameter key="cache.dir">%application.root%cache/</parameter>
-		<parameter key="template.dir">%application.root%templates/</parameter>
-
 		<parameter key="logger.dir">%application.root%logs/</parameter>
-		<parameter key="logger.error.log">%logger.dir%error.log</parameter>
-		<parameter key="logger.info.log">%logger.dir%info.log</parameter>
-		<parameter key="logger.message_queue.log">%logger.dir%message_queue.log</parameter>
-		<parameter key="logger.redis.log">%logger.dir%redis.log</parameter>
 
 		<parameter key="application.name" on-invalid="exception"/>
 		<parameter key="application.guests_allowed">false</parameter>
 		<parameter key="application.allowed_private_ips">false</parameter>
 		<parameter key="application.registration_enabled">true</parameter>
 
+		<parameter key="logger.channels" type="collection">
+			<parameter type="collection">
+				<parameter>%logger.dir%error.log</parameter>
+				<parameter type="constant">Monolog\Logger::ERROR</parameter>
+			</parameter>
+			<parameter type="collection">
+				<parameter>%logger.dir%info.log</parameter>
+				<parameter type="constant">Monolog\Logger::INFO</parameter>
+			</parameter>
+			<parameter type="collection">
+				<parameter>%logger.dir%debug.log</parameter>
+				<parameter type="constant">Monolog\Logger::DEBUG</parameter>
+			</parameter>
+			<parameter type="collection">
+				<parameter>%logger.dir%message_queue.log</parameter>
+				<parameter type="constant">Monolog\Logger::INFO</parameter>
+				<parameter>message_queue</parameter>
+			</parameter>
+			<parameter type="collection">
+				<parameter>%logger.dir%gentime.log</parameter>
+				<parameter type="constant">Monolog\Logger::INFO</parameter>
+				<parameter>gentime</parameter>
+			</parameter>
+			<parameter type="collection">
+				<parameter>%logger.dir%redis.log</parameter>
+				<parameter type="constant">Monolog\Logger::DEBUG</parameter>
+				<parameter>redis</parameter>
+			</parameter>
+		</parameter>
         <parameter key="message_queue.enabled">true</parameter>
-
-		<parameter key="piwik.site"></parameter>
-		<parameter key="piwik.id"></parameter>
 	</parameters>
 
     <services>
@@ -50,50 +70,6 @@
 
         <service id="monolog.logger" class="Monolog\Logger" public="false">
             <argument>%application.name%</argument>
-			<!--TODO generic solution-->
-			<call method="pushHandler">
-				<argument type="service">
-					<service class="BrainExe\Core\Logger\ChannelStreamHandler">
-						<argument>%logger.error.log%</argument>
-						<argument type="constant">Monolog\Logger::ERROR</argument>
-					</service>
-				</argument>
-			</call>
-			<call method="pushHandler">
-				<argument type="service">
-					<service class="BrainExe\Core\Logger\ChannelStreamHandler">
-						<argument>%logger.info.log%</argument>
-						<argument type="constant">Monolog\Logger::INFO</argument>
-					</service>
-				</argument>
-			</call>
-			<call method="pushHandler">
-				<argument type="service">
-					<service class="BrainExe\Core\Logger\ChannelStreamHandler">
-						<argument>%logger.message_queue.log%</argument>
-						<argument type="constant">Monolog\Logger::INFO</argument>
-                        <argument>message_queue</argument>
-                    </service>
-				</argument>
-			</call>
-			<call method="pushHandler">
-				<argument type="service">
-					<service class="BrainExe\Core\Logger\ChannelStreamHandler">
-						<argument>%logger.dir%gentime.log</argument>
-						<argument type="constant">Monolog\Logger::DEBUG</argument>
-						<argument>gentime</argument>
-					</service>
-				</argument>
-			</call>
-			<call method="pushHandler">
-				<argument type="service">
-					<service class="BrainExe\Core\Logger\ChannelStreamHandler">
-						<argument>%logger.dir%redis.log</argument>
-						<argument type="constant">Monolog\Logger::DEBUG</argument>
-						<argument>redis</argument>
-					</service>
-				</argument>
-			</call>
         </service>
 
 		<service id="Console" class="Symfony\Component\Console\Application"/>
@@ -121,6 +97,7 @@
 
 		<service id="cache" class="Doctrine\Common\Cache\PredisCache" public="false">
 			<argument type="service" id="redis"/>
+			<call method="setNamespace">cache</call>
 		</service>
 
 		<service id="UrlGenerator" class="Symfony\Component\Routing\Generator\UrlGenerator" public="false">

@@ -4,6 +4,7 @@ namespace Tests\BrainExe\Core\Middleware\CsrfMiddleware;
 
 use BrainExe\Core\Middleware\Csrf;
 use BrainExe\Core\Util\IdGenerator;
+use BrainExe\Core\Util\Time;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase as TestCase;
 use Symfony\Component\HttpFoundation\Cookie;
@@ -15,7 +16,6 @@ use Symfony\Component\Routing\Route;
 
 class CsrfTest extends TestCase
 {
-
     /**
      * @var Csrf
      */
@@ -26,18 +26,25 @@ class CsrfTest extends TestCase
      */
     private $idGenerator;
 
+    /**
+     * @var Time|MockObject
+     */
+    public $time;
+
     public function setUp()
     {
         $this->idGenerator = $this->getMock(IdGenerator::class, [], [], '', false);
+        $this->time        = $this->getMock(Time::class, [], [], '', false);
 
         $this->subject = new Csrf();
         $this->subject->setIdGenerator($this->idGenerator);
+        $this->subject->setTime($this->time);
     }
 
     public function testProcessGetRequestWithoutToken()
     {
         $currentCsrf  = '';
-        $newCsrf = 'random';
+        $newCsrf      = 'random';
         $session      = new Session(new MockArraySessionStorage());
 
         $request = new Request();
@@ -78,7 +85,7 @@ class CsrfTest extends TestCase
         $request->setSession($session);
         $request->setMethod('POST');
         $request->headers->set(Csrf::HEADER, $currentCsrf);
-        
+
         $response = new Response();
         $route    = new Route('/route/');
 
@@ -104,6 +111,12 @@ class CsrfTest extends TestCase
         $request->setSession($session);
         $request->setMethod('POST');
         $request->headers->set(Csrf::HEADER, $expectedToken);
+
+        $now = 100000;
+        $this->time
+            ->expects($this->exactly(2))
+            ->method('now')
+            ->willReturn($now);
 
         $response = new Response();
         $route    = new Route('/route/');

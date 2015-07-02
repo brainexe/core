@@ -3,12 +3,12 @@
 namespace Tests\BrainExe\Core\Util\QRCode;
 
 use BrainExe\Core\Util\QRCode;
-use PHPUnit_Framework_TestCase;
+use PHPUnit_Framework_TestCase as TestCase;
 
 /**
  * @covers BrainExe\Core\Util\QRCode
  */
-class QRCodeTest extends PHPUnit_Framework_TestCase
+class QRCodeTest extends TestCase
 {
 
     /**
@@ -18,18 +18,18 @@ class QRCodeTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->subject = new QRCode();
+        $baseUrl = 'https://qr.example.com/?size=%dx%d&data=%s';
+        $this->subject = new QRCode($baseUrl);
     }
 
-    public function testGeneratreQRLink()
+    public function testGenerateQRLink()
     {
         $data = 'data';
         $size = 250;
 
-        $actualResult = $this->subject->generateQRLink($data, $size);
+        $actual   = $this->subject->generateQRLink($data, $size);
+        $expected = 'https://qr.example.com/?size=250x250&data=data';
 
-        $expectedResult = 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=data';
-
-        $this->assertEquals($expectedResult, $actualResult);
+        $this->assertEquals($expected, $actual);
     }
 }

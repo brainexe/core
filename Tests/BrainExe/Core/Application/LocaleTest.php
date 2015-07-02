@@ -3,12 +3,12 @@
 namespace Tests\BrainExe\Core\Application\Locale;
 
 use BrainExe\Core\Application\Locale;
-use PHPUnit_Framework_TestCase;
+use PHPUnit_Framework_TestCase as TestCase;
 
 /**
  * @covers BrainExe\Core\Application\Locale
  */
-class LocaleTest extends PHPUnit_Framework_TestCase
+class LocaleTest extends TestCase
 {
 
     /**
@@ -18,7 +18,7 @@ class LocaleTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->subject = new Locale();
+        $this->subject = new Locale(['de', 'en']);
     }
 
     public function testGetLocales()

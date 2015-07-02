@@ -56,8 +56,9 @@ class StatsTest extends TestCase
     {
         $request  = new Request();
         $response = new Response();
+        $request->attributes->set('_route', 'route');
 
-        $event = new Event(Event::INCREASE, 'request:GET:/');
+        $event = new Event(Event::INCREASE, 'request:route:route');
         $this->dispatcher
             ->expects($this->at(0))
             ->method('dispatchEvent')

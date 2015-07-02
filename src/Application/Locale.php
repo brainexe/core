@@ -2,6 +2,7 @@
 
 namespace BrainExe\Core\Application;
 
+use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Annotations\Annotations\Service;
 
 /**
@@ -11,15 +12,25 @@ class Locale
 {
 
     /**
-     * @todo add to app config
+     * @var string[]
+     */
+    private $locales;
+
+    /**
+     * @Inject("%locales%");
+     * @param string[] $locales
+     */
+    public function __construct(array $locales)
+    {
+        $this->locales = $locales;
+    }
+
+    /**
      * @return string[]
      */
     public function getLocales()
     {
-        return [
-            'en_EN',
-            'de_DE'
-        ];
+        return $this->locales;
     }
 
     /**

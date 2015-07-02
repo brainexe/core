@@ -22,7 +22,7 @@ class Stats extends AbstractMiddleware
      */
     public function processResponse(Request $request, Response $response)
     {
-        $event = new Event(Event::INCREASE, sprintf('request:%s:%s', $request->getMethod(), $request->getPathInfo()));
+        $event = new Event(Event::INCREASE, sprintf('request:route:%s', $request->attributes->get('_route')));
         $this->dispatchEvent($event);
         $event = new Event(Event::INCREASE, sprintf('response:code:%d', $response->getStatusCode()));
         $this->dispatchEvent($event);

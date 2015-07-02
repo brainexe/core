@@ -2,6 +2,7 @@
 
 namespace BrainExe\Core\Util;
 
+use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Annotations\Annotations\Service;
 
 /**
@@ -10,6 +11,19 @@ use BrainExe\Annotations\Annotations\Service;
  */
 class QRCode
 {
+    /**
+     * @var string
+     */
+    private $baseUrl;
+
+    /**
+     * @Inject("%qr.baseUrl%")
+     * @param string $baseUrl
+     */
+    public function __construct($baseUrl)
+    {
+        $this->baseUrl = $baseUrl;
+    }
 
     /**
      * @param string $data
@@ -18,9 +32,6 @@ class QRCode
      */
     public function generateQRLink($data, $size = 250)
     {
-        // todo container.xml
-        $baseUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=%dx%d&data=%s';
-
-        return sprintf($baseUrl, $size, $size, urlencode($data));
+        return sprintf($this->baseUrl, $size, $size, urlencode($data));
     }
 }

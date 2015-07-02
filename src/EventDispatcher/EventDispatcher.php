@@ -9,6 +9,7 @@ use RuntimeException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher as SymfonyEventDispatcher;
 use Symfony\Component\EventDispatcher\Event;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @Service("EventDispatcher", public=false)
@@ -23,7 +24,7 @@ class EventDispatcher extends SymfonyEventDispatcher
     private $enabled = true;
 
     /**
-     * @var Catchall[]
+     * @var EventDispatcherInterface[]
      */
     private $catchall = [];
 
@@ -39,9 +40,9 @@ class EventDispatcher extends SymfonyEventDispatcher
     }
 
     /**
-     * @param Catchall $dispatcher
+     * @param EventDispatcherInterface $dispatcher
      */
-    public function addCatchall(Catchall $dispatcher)
+    public function addCatchall(EventDispatcherInterface $dispatcher)
     {
         $this->catchall[] = $dispatcher;
     }

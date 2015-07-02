@@ -280,7 +280,7 @@ class DatabaseUserProviderTest extends TestCase
         $this->redis
             ->expects($this->once())
             ->method('HMSET')
-            ->with("user:$userId", $this->isType('array')) // todo fuzzy
+            ->with("user:$userId", $this->isType('array'))
             ->willReturn($this->redis);
 
         $this->redis

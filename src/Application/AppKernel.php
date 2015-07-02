@@ -74,7 +74,7 @@ class AppKernel implements HttpKernelInterface
             $response = $this->applyExceptionMiddleware($request, $exception);
         }
 
-        $response = $this->prepareResponse($request, $response);
+        $response = $this->prepareResponse($response);
 
         $this->applyResponseMiddleware($request, $response);
 
@@ -110,15 +110,12 @@ class AppKernel implements HttpKernelInterface
     }
 
     /**
-     * @param Request $request
      * @param Response|mixed $response
      * @return Response
      */
-    private function prepareResponse(Request $request, $response)
+    private function prepareResponse($response)
     {
-        unset ($request);
         if (!$response instanceof Response) {
-            // todo support more content types
             return new JsonResponse($response);
         }
 

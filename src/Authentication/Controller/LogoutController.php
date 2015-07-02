@@ -20,8 +20,7 @@ class LogoutController
      */
     public function logout(Request $request)
     {
-        $request->getSession()->set('user_id', null);
-        $request->getSession()->set('user', null);
+        $request->getSession()->clear();
 
         return new AnonymusUserVO();
     }

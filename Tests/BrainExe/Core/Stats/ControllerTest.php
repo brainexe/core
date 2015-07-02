@@ -4,10 +4,12 @@ namespace BrainExe\Tests\Stats;
 
 use BrainExe\Core\Stats\Controller;
 use BrainExe\Core\Stats\Stats;
+use BrainExe\Tests\RedisMockTrait;
 use PHPUnit_Framework_TestCase as TestCase;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use BrainExe\MessageQueue\Gateway as MessageQueueGateway;
 use BrainExe\Core\EventDispatcher\EventDispatcher;
+use Predis\Client;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -15,6 +17,8 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class ControllerTest extends TestCase
 {
+
+    use RedisMockTrait;
 
     /**
      * @var Controller
@@ -36,14 +40,21 @@ class ControllerTest extends TestCase
      */
     private $stats;
 
+    /**
+     * @var Client|MockObject
+     */
+    private $redis;
+
     public function setUp()
     {
         $this->messageQueue = $this->getMock(MessageQueueGateway::class, [], [], '', false);
         $this->dispatcher   = $this->getMock(EventDispatcher::class, [], [], '', false);
         $this->stats        = $this->getMock(Stats::class, [], [], '', false);
+        $this->redis        = $this->getRedisMock();
 
         $this->subject = new Controller($this->stats, $this->messageQueue);
         $this->subject->setEventDispatcher($this->dispatcher);
+        $this->subject->setRedis($this->redis);
     }
 
     public function testIndex()
@@ -68,6 +79,11 @@ class ControllerTest extends TestCase
                 'foo1' => 'bar1'
             ]);
 
+        $this->redis
+            ->expects($this->once())
+            ->method('info')
+            ->willReturn(['info']);
+
         $actualResult = $this->subject->index();
 
         $expectedResult = [
@@ -77,6 +93,7 @@ class ControllerTest extends TestCase
                 'foo1' => 'bar1',
                 'message_queue:queued' => $messageQueueJobs
             ],
+            'redis' => ['info']
         ];
 
         $this->assertEquals($expectedResult, $actualResult);

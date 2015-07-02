@@ -59,6 +59,19 @@ class GatewayTest extends TestCase
         $this->subject->set($key, $value);
     }
 
+    public function testSetEmpty()
+    {
+        $key   = 'key';
+        $value = 0;
+
+        $this->redis
+            ->expects($this->once())
+            ->method('hdel')
+            ->with(Gateway::KEY);
+
+        $this->subject->set($key, $value);
+    }
+
     public function testGetAll()
     {
         $expected = ['values'];
@@ -88,5 +101,4 @@ class GatewayTest extends TestCase
         $actualResult = $this->subject->get($key);
         $this->assertEquals($value, $actualResult);
     }
-
 }

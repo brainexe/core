@@ -22,7 +22,6 @@ class UrlMatcher
         $context = new RequestContext();
         $context->fromRequest($request);
 
-        // TODO fallback: SymfonyUrlMatcher
         include_once ROOT . 'cache/router_matcher.php';
 
         $matcher = new ProjectUrlMatcher($context);

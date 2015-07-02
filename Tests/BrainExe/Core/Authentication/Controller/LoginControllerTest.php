@@ -83,6 +83,7 @@ class LoginControllerTest extends TestCase
 
         $this->assertEquals($user, $actual);
     }
+
     public function testLoginWithTokenWithNotXHR()
     {
         $user     = new UserVO();
@@ -101,7 +102,7 @@ class LoginControllerTest extends TestCase
 
         $actual = $this->subject->loginWithToken($request, $token);
 
-        $expected = new RedirectResponse('/?user=1');
+        $expected = new RedirectResponse('/');
 
         $this->assertEquals($expected, $actual);
     }

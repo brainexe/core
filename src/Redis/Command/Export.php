@@ -2,23 +2,24 @@
 
 namespace BrainExe\Core\Redis\Command;
 
-use BrainExe\Core\Redis\Predis;
 use BrainExe\Core\Traits\RedisTrait;
+use BrainExe\Core\Annotations\Command as CommandAnnotation;
 use Exception;
-use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use BrainExe\Core\Annotations\Command as CommandAnnotation;
 
 /**
  * @CommandAnnotation("Redis.Command.Export", public=false)
  * @codeCoverageIgnore
  */
-class Export extends Command
+class Export extends SymfonyCommand
 {
 
     use RedisTrait;
+
+    const BULK_SIZE = 100;
 
     /**
      * {@inheritdoc}
@@ -42,7 +43,7 @@ class Export extends Command
             $parts = array_merge($parts, $this->dump($key));
         }
 
-        $content = implode("\n", $parts);
+        $content = implode("\n\n", $parts);
 
         $output->writeln($content);
 
@@ -80,8 +81,6 @@ class Export extends Command
                 throw new Exception(sprintf('Unsupported type "%s" for key %s', $type, $key));
         }
 
-        $parts[] = "\n";
-
         return $parts;
     }
 
@@ -102,9 +101,21 @@ class Export extends Command
      */
     protected function processZset($key, array &$parts)
     {
-        $zset = $this->redis->zrange($key, 0, -1, 'WITHSCORES');
-        foreach ($zset as $value => $score) {
-            $parts[] = sprintf('ZADD %s %s %s', $this->escape($key), $this->escape($value), $this->escape($score));
+        $zsets = $this->redis->zrange($key, 0, -1, 'WITHSCORES');
+        if (!$zsets) {
+            return;
+        }
+
+        foreach (array_chunk($zsets, self::BULK_SIZE, true) as $zset) {
+            $part = [];
+            $part[] = 'ZADD';
+            $part[] = $this->escape($key);
+
+            foreach ($zset as $value => $score) {
+                $part[] = $this->escape($score);
+                $part[] = $this->escape($value);
+            }
+            $parts[] = implode(' ', $part);
         }
     }
 
@@ -114,9 +125,14 @@ class Export extends Command
      */
     protected function processSet($key, array &$parts)
     {
-        $set = $this->redis->smembers($key);
-        foreach ($set as $k => $val) {
-            $parts[] = sprintf('SADD %s %s', $this->escape($key), $this->escape($val));
+        $sets = $this->redis->smembers($key);
+        if (!$sets) {
+            return;
+        }
+
+        foreach (array_chunk($sets, self::BULK_SIZE) as $set) {
+            $set = array_map([$this, 'escape'], $set);
+            $parts[] = sprintf('SADD %s %s', $key, implode(' ', $set));
         }
     }
 
@@ -124,11 +140,22 @@ class Export extends Command
      * @param string $key
      * @param array $parts
      */
-    protected function processHash($key, array &$parts)
+    private function processHash($key, array &$parts)
     {
-        $hash = $this->redis->hgetall($key);
-        foreach ($hash as $k => $val) {
-            $parts[] = sprintf('HSET %s %s %s', $this->escape($key), $this->escape($k), $this->escape($val));
+        $hashes = $this->redis->hgetall($key);
+        if (!$hashes) {
+            return;
+        }
+
+        foreach (array_chunk($hashes, self::BULK_SIZE, true) as $hash) {
+            $part = [];
+            $part[] = 'HMSET';
+            $part[] = $this->escape($key);
+            foreach ($hash as $k => $val) {
+                $part[] = $this->escape($k);
+                $part[] = $this->escape($val);
+            }
+            $parts[] = implode(' ', $part);
         }
     }
 
@@ -136,7 +163,7 @@ class Export extends Command
      * @param string $key
      * @param array $parts
      */
-    protected function processString($key, array &$parts)
+    private function processString($key, array &$parts)
     {
         $parts[] = sprintf('SET %s %s', $key, $this->escape($this->redis->get($key)));
     }

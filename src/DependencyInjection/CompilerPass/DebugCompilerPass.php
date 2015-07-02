@@ -22,7 +22,7 @@ class DebugCompilerPass implements CompilerPassInterface
         }
 
         foreach ($container->getDefinitions() as $definition) {
-            $definition->setPublic(true);
+            //$definition->setPublic(true); // todo keep in code?
         }
     }
 }

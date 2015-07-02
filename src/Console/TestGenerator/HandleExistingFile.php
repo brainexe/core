@@ -43,7 +43,6 @@ class HandleExistingFile
         $output->writeln('<info>Diff: Not implemented yet</info>');
     }
 
-
     /**
      * @param InputInterface $input
      * @param OutputInterface $output

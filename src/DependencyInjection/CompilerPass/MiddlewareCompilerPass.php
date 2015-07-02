@@ -24,7 +24,7 @@ class MiddlewareCompilerPass implements CompilerPassInterface
         $servicePriorities = [];
         foreach ($serviceIds as $serviceId => $tag) {
             if (null === $tag[0]['priority']) {
-                // todo check priority/isEnabled() dynamically
+                // todo check isEnabled() dynamically
                 continue;
             }
             $servicePriorities[$serviceId] = $tag[0]['priority'];

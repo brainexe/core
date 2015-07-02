@@ -6,6 +6,7 @@ use BrainExe\Core\Application\UserException;
 use BrainExe\Core\DependencyInjection\ObjectFinder;
 use BrainExe\Core\Middleware\CatchUserException;
 use Exception;
+use Monolog\Logger;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase as TestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,9 +25,17 @@ class CatchUserExceptionTest extends TestCase
      */
     private $subject;
 
+    /**
+     * @var Logger
+     */
+    private $logger;
+
     public function setUp()
     {
+        $this->logger = $this->getMock(Logger::class, [], [], '', false);
+
         $this->subject = new CatchUserException();
+        $this->subject->setLogger($this->logger);
     }
 
     /**

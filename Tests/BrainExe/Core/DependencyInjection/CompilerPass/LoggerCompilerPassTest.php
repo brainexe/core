@@ -87,6 +87,17 @@ class LoggerCompilerPassTest extends TestCase
             ->with('hipchat.logLevel')
             ->willReturn('hipchat_loglevel');
 
+        $this->container
+            ->expects($this->at(8))
+            ->method('getParameter')
+            ->with('core_standalone')
+            ->willReturn(false);
+        $this->container
+            ->expects($this->at(9))
+            ->method('getParameter')
+            ->with('logger.channels')
+            ->willReturn([]);
+
         $this->logger
             ->expects($this->at(3))
             ->method('addMethodCall')
@@ -116,6 +127,17 @@ class LoggerCompilerPassTest extends TestCase
             ->method('getParameter')
             ->with('debug')
             ->willReturn(true);
+
+        $this->container
+            ->expects($this->at(4))
+            ->method('getParameter')
+            ->with('core_standalone')
+            ->willReturn(false);
+        $this->container
+            ->expects($this->at(5))
+            ->method('getParameter')
+            ->with('logger.channels')
+            ->willReturn([]);
 
         $this->logger
             ->expects($this->at(0))

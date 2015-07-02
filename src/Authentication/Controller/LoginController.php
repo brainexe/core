@@ -84,6 +84,6 @@ class LoginController
             return $result;
         }
 
-        return new RedirectResponse(sprintf('/?user=%d', $result->id));
+        return new RedirectResponse('/');
     }
 }

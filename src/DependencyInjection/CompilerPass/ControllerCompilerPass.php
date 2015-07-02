@@ -5,6 +5,7 @@ namespace BrainExe\Core\DependencyInjection\CompilerPass;
 use BrainExe\Core\Annotations\CompilerPass;
 use BrainExe\Core\Annotations\Route as RouteAnnotation;
 use BrainExe\Core\Application\SerializedRouteCollection;
+use Exception;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Routing\Generator\Dumper\PhpGeneratorDumper;
@@ -33,7 +34,10 @@ class ControllerCompilerPass implements CompilerPassInterface
                 /** @var RouteAnnotation $route */
                 $route = $routeRaw[0];
 
-                $name = $route->getName() ?: md5($route->getPath());
+                $name = $route->getName();
+                if (!$name) {
+                    throw new Exception(sprintf('"name" is missing for @Route(%s)', $controllerId));
+                }
                 if ($route->isCsrf()) {
                     $route->setOptions(['csrf' => true]);
                 }

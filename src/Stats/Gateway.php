@@ -30,7 +30,11 @@ class Gateway
      */
     public function set($key, $value)
     {
-        $this->getRedis()->hset(self::KEY, $key, $value);
+        if ($value) {
+            $this->getRedis()->hset(self::KEY, $key, $value);
+        } else {
+            $this->getRedis()->hdel(self::KEY, $key);
+        }
     }
 
     /**

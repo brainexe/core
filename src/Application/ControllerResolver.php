@@ -19,7 +19,7 @@ class ControllerResolver implements ControllerResolverInterface
     private $container;
 
     /**
-     * @Inject("@Service_container")
+     * @Inject("@service_container")
      * @param Container $container
      */
     public function __construct(Container $container)
@@ -32,9 +32,7 @@ class ControllerResolver implements ControllerResolverInterface
      */
     public function getController(Request $request)
     {
-        $controller = $request->attributes->get('_controller');
-
-        list($serviceId, $method) = $controller;
+        list($serviceId, $method) = $request->attributes->get('_controller');
 
         $service = $this->container->get($serviceId);
 

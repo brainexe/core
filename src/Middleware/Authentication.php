@@ -4,10 +4,12 @@ namespace BrainExe\Core\Middleware;
 
 use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Core\Annotations\Middleware;
+use BrainExe\Core\Application\UserException;
 use BrainExe\Core\Authentication\AnonymusUserVO;
 use BrainExe\Core\Authentication\DatabaseUserProvider;
 use BrainExe\Core\Authentication\IP;
 use BrainExe\Core\Authentication\UserVO;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -86,7 +88,10 @@ class Authentication extends AbstractMiddleware
             return null;
         }
 
-        if (!$userId > 0) {
+        if (!$userId) {
+            if ($request->isXmlHttpRequest()) {
+                throw new UserException(gettext('Not logged in'));
+            }
             return new RedirectResponse('#/login');
         }
     }

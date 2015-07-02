@@ -39,8 +39,8 @@ class ControllerCompilerPassTest extends PHPUnit_Framework_TestCase
 
     public function testProcess()
     {
-        $route1 = new Route([]);
-        $route2 = new Route([]);
+        $route1 = new Route(['name' => 'foo']);
+        $route2 = new Route(['name' => 'bar']);
 
         $route1->setCsrf(true);
 

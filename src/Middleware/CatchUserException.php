@@ -4,6 +4,7 @@ namespace BrainExe\Core\Middleware;
 
 use BrainExe\Core\Annotations\Middleware;
 use BrainExe\Core\Application\UserException;
+use BrainExe\Core\Traits\LoggerTrait;
 use Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,6 +16,8 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
  */
 class CatchUserException extends AbstractMiddleware
 {
+
+    use LoggerTrait;
 
     /**
      * {@inheritdoc}
@@ -34,6 +37,8 @@ class CatchUserException extends AbstractMiddleware
             $exception = new UserException($exception->getMessage(), 0, $exception);
             $response  = new Response('', 500);
         }
+
+        $this->error($exception->getMessage());
 
         $this->setMessage($exception, $response);
 

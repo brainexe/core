@@ -30,7 +30,6 @@ class ClearSessionsCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-
         $redis = $this->getRedis();
 
         $sessionIds = $redis->keys('session:*');
