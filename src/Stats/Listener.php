@@ -11,6 +11,12 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class Listener implements EventSubscriberInterface
 {
+
+    /**
+     * @var Stats
+     */
+    private $stats;
+
     /**
      * @Inject({"@Stats.Stats"})
      * @param Stats $stats

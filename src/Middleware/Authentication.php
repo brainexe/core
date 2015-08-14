@@ -9,7 +9,7 @@ use BrainExe\Core\Authentication\AnonymusUserVO;
 use BrainExe\Core\Authentication\DatabaseUserProvider;
 use BrainExe\Core\Authentication\IP;
 use BrainExe\Core\Authentication\UserVO;
-use Symfony\Component\HttpFoundation\JsonResponse;
+
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

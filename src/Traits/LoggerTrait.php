@@ -19,7 +19,7 @@ trait LoggerTrait
     private $logger;
 
     /**
-     * @Inject("@monolog.logger")
+     * @Inject("@logger")
      * @param Logger $logger
      */
     public function setLogger(Logger $logger)

@@ -28,7 +28,7 @@
     "symfony/routing": "~2.7",
     "brainexe/annotations": "*",
     "brainexe/message-queue": "*",
-    "monolog/monolog": "1.15.*", // TODO
+    "monolog/monolog": "1.15.*",
     "doctrine/cache": "1.4.*",
     "predis/predis": "1.1.*",
     "mtdowling/cron-expression": "dev-master"

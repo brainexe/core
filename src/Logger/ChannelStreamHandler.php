@@ -2,7 +2,7 @@
 
 namespace BrainExe\Core\Logger;
 
-use Monolog\Formatter\LineFormatter;
+
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 

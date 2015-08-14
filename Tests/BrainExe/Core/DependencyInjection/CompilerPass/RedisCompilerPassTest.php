@@ -38,6 +38,7 @@ class RedisCompilerPassTest extends TestCase
         $password = 'testetst';
         $database = 12;
         $host     = 'localhost';
+        $port     = 212;
 
         $redis = $this->getMock(Definition::class);
 
@@ -61,6 +62,11 @@ class RedisCompilerPassTest extends TestCase
             ->method('getParameter')
             ->with('redis.host')
             ->willReturn($host);
+        $this->container
+            ->expects($this->at(4))
+            ->method('getParameter')
+            ->with('redis.port')
+            ->willReturn($port);
 
         $redis
             ->expects($this->at(0))
@@ -69,7 +75,8 @@ class RedisCompilerPassTest extends TestCase
                 0 => [
                     'password' => $password,
                     'host' => $host,
-                    'database' => $database
+                    'database' => $database,
+                    'port' => $port
                 ]
             ]);
 

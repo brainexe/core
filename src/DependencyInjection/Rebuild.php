@@ -74,16 +74,13 @@ class Rebuild
     protected function dumpContainer(ContainerBuilder $container)
     {
         $randomId      = mt_rand();
-        $containerName = sprintf('dic_%d', $randomId);
-        $containerFile = sprintf('cache/dic_%d.php', $randomId);
-
-        foreach (glob('cache/dic_*.php') as $file) {
-            unlink($file);
-        }
+        $className = sprintf('dic_%d', $randomId);
+        $containerFile = 'cache/dic.php';
 
         $dumper           = new PhpDumper($container);
-        $containerContent = $dumper->dump(['class' => $containerName]);
-        file_put_contents($containerFile, $containerContent);
+        $containerContent = $dumper->dump(['class' => $className]);
+        file_put_contents('cache/dic.php', $containerContent);
+        file_put_contents('cache/dic.txt', $className);
         chmod($containerFile, 0777);
     }
 }

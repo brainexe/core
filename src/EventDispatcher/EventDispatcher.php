@@ -31,12 +31,12 @@ class EventDispatcher extends SymfonyEventDispatcher
     /**
      * @Inject({"@service_container", "%message_queue.enabled%"})
      * @param ContainerInterface $container
-     * @param bool $enabled
+     * @param bool $backgroundEnabled
      */
-    public function __construct(ContainerInterface $container, $enabled)
+    public function __construct(ContainerInterface $container, $backgroundEnabled)
     {
         parent::__construct($container);
-        $this->enabled = $enabled;
+        $this->enabled = $backgroundEnabled;
     }
 
     /**

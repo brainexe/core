@@ -22,6 +22,7 @@ class RedisCompilerPass implements CompilerPassInterface
         $password = $container->getParameter('redis.password');
         $database = $container->getParameter('redis.database');
         $host     = $container->getParameter('redis.host');
+        $port     = $container->getParameter('redis.port');
 
         $arguments = [];
 
@@ -35,6 +36,9 @@ class RedisCompilerPass implements CompilerPassInterface
 
         if ($database) {
             $arguments['database'] = $database;
+        }
+        if ($port) {
+            $arguments['port'] = $port;
         }
 
         $redis->setArguments([$arguments]);

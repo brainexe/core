@@ -17,8 +17,9 @@ class Command extends ServiceDefinition
         /** @var Definition $definition */
         list($serviceId, $definition) = parent::build($reflectionClass, $annotation);
 
-        $definition->setPublic(false);
         $definition->addTag(ConsoleCompilerPass::TAG);
+
+        $serviceId = sprintf('__console.%s', $serviceId);
 
         return [$serviceId, $definition];
     }

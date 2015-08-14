@@ -17,6 +17,7 @@
 
 		<parameter key="redis.host">127.0.0.1</parameter>
 		<parameter key="redis.password"/>
+		<parameter key="redis.port"/>
 		<parameter key="redis.database">0</parameter>
 		<parameter key="redis.class">BrainExe\Core\Redis\Predis</parameter><!--todo needed?-->
 
@@ -56,19 +57,24 @@
 				<parameter type="constant">Monolog\Logger::DEBUG</parameter>
 				<parameter>redis</parameter>
 			</parameter>
+			<parameter type="collection">
+				<parameter>%logger.dir%dic.log</parameter>
+				<parameter type="constant">Monolog\Logger::DEBUG</parameter>
+				<parameter>dic</parameter>
+			</parameter>
 		</parameter>
         <parameter key="message_queue.enabled">true</parameter>
 	</parameters>
 
     <services>
 		<service id="monolog.ErrorHandler" class="Monolog\ErrorHandler">
-			<argument type="service" id="Monolog.Logger"/>
+			<argument type="service" id="logger"/>
 			<call method="registerErrorHandler"/>
 			<call method="registerExceptionHandler"/>
 			<call method="registerFatalHandler"/>
 		</service>
 
-        <service id="monolog.logger" class="Monolog\Logger" public="false">
+        <service id="logger" class="Monolog\Logger" public="false">
             <argument>%application.name%</argument>
         </service>
 

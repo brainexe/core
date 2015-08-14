@@ -8,7 +8,7 @@ use BrainExe\Core\EventDispatcher\Events\ClearCacheEvent;
 use BrainExe\Core\Traits\EventDispatcherTrait;
 use BrainExe\Core\Util\FileSystem;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\ArrayInput;
+
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
@@ -55,9 +55,9 @@ class ClearCacheCommand extends Command
      */
     public function __construct(Finder $finder, FileSystem $filesystem, Rebuild $rebuild)
     {
-        $this->finder = $finder;
+        $this->finder     = $finder;
         $this->filesystem = $filesystem;
-        $this->rebuild = $rebuild;
+        $this->rebuild    = $rebuild;
 
         parent::__construct();
     }
@@ -73,7 +73,7 @@ class ClearCacheCommand extends Command
             ->files()
             ->in(ROOT . 'cache')
             ->name('*.php')
-            ->notName('assets.php');
+            ->notName('assets.php'); // delete not modified
 
         $this->filesystem->remove($files);
 

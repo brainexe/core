@@ -4,7 +4,8 @@ namespace BrainExe\Core\Logger;
 
 use Monolog\Formatter\LineFormatter;
 
-class Formatter extends LineFormatter {
+class Formatter extends LineFormatter
+{
 
     /**
      * @param array $record

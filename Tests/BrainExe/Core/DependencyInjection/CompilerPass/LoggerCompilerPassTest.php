@@ -46,7 +46,7 @@ class LoggerCompilerPassTest extends TestCase
         $this->container
             ->expects($this->at(0))
             ->method('getDefinition')
-            ->with('monolog.Logger')
+            ->with('logger')
             ->willReturn($this->logger);
 
         $this->container
@@ -113,7 +113,7 @@ class LoggerCompilerPassTest extends TestCase
         $this->container
             ->expects($this->at(0))
             ->method('getDefinition')
-            ->with('monolog.Logger')
+            ->with('logger')
             ->willReturn($this->logger);
 
         $this->container

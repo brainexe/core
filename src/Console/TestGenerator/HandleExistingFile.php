@@ -97,5 +97,4 @@ class HandleExistingFile
 
         return $template;
     }
-
 }

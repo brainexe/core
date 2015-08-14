@@ -29,7 +29,7 @@ class ListServicesCommand extends Command
     /**
      * @var ContainerBuilder
      */
-    private $dic;
+    private $container;
 
     /**
      * {@inheritdoc}
@@ -57,19 +57,19 @@ class ListServicesCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->dic = $this->rebuild->rebuildDIC(false);
+        $this->container = $this->rebuild->rebuildDIC(false);
 
         $table = new Table($output);
         $table->setHeaders(['service-id', 'visibility']);
 
-        $ids = $this->dic->getServiceIds();
+        $ids = $this->container->getServiceIds();
 
         sort($ids);
 
         $visibility = $input->getArgument('visibility');
 
         foreach ($ids as $id) {
-            if (!$this->dic->hasDefinition($id)) {
+            if (!$this->container->hasDefinition($id)) {
                 continue;
             }
             $this->addDefinition($id, $table, $visibility);
@@ -85,7 +85,7 @@ class ListServicesCommand extends Command
      */
     private function addDefinition($id, Table $table, $visibility)
     {
-        $definition = $this->dic->getDefinition($id);
+        $definition = $this->container->getDefinition($id);
 
         $isPublic = $definition->isPublic();
 
@@ -112,5 +112,4 @@ class ListServicesCommand extends Command
 
         return true;
     }
-
 }

@@ -27,6 +27,9 @@ if (!defined('CORE_STANDALONE')) {
 class Core
 {
 
+    // todo cleaner solution
+    private static $loaded;
+
     /**
      * @return Container
      */
@@ -35,14 +38,15 @@ class Core
         chdir(ROOT);
         umask(0);
 
-        $files = glob('cache/dic_*.php');
-
+        $fileName = 'cache/dic.php';
         /** @var Container $dic */
-        if (!empty($files)) {
-            include_once $files[0];
-            preg_match('/dic_([\d]*)/', $files[0], $matches);
-            $class = $matches[0];
-            $dic   = new $class();
+        if (is_file($fileName)) {
+            $className = file_get_contents('cache/dic.txt');
+            if (self::$loaded !== $className) {
+                include $fileName;
+            }
+            $dic = new $className();
+            self::$loaded = $className;
         } else {
             $rebuild = new Rebuild();
             $dic = $rebuild->rebuildDIC(true);

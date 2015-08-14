@@ -5,12 +5,12 @@ namespace BrainExe\Tests\Core\DependencyInjection\CompilerPass;
 use BrainExe\Core\DependencyInjection\CompilerPass\ConfigCompilerPass;
 use BrainExe\Core\Util\FileSystem;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase;
+use PHPUnit_Framework_TestCase as TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
-class ConfigCompilerPassTest extends PHPUnit_Framework_TestCase
+class ConfigCompilerPassTest extends TestCase
 {
 
     /**

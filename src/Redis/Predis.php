@@ -9,7 +9,7 @@ use Predis\Client;
  * @api
  * @Service("redis", public=false)
  */
-class Predis extends Client implements RedisInterface
+class Predis extends Client
 {
 
     /**

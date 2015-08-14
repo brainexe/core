@@ -27,7 +27,7 @@ class SerializedRouteCollection extends RouteCollection
     /**
      * @param string[] $routes
      */
-    public function __construct(array $routes)
+    public function __construct(array $routes = [])
     {
         $this->serializedRoutes = $routes;
     }
