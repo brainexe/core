@@ -5,6 +5,7 @@ namespace BrainExe\Core\Middleware;
 use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Core\Annotations\Middleware;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session as SessionModel;
 use Symfony\Component\Routing\Route;
 
@@ -34,5 +35,13 @@ class Session extends AbstractMiddleware
     public function processRequest(Request $request, Route $route)
     {
         $request->setSession($this->session);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function processResponse(Request $request, Response $response)
+    {
+        $this->session->save();
     }
 }

@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Matcher\Dumper\PhpMatcherDumper;
 use Symfony\Component\Routing\Route;
 
 /**
- * @CompilerPass
+ * @CompilerPass(priority=5)
  */
 class ControllerCompilerPass implements CompilerPassInterface
 {

@@ -38,7 +38,7 @@ class Listener implements EventSubscriberInterface
      */
     public function notify(Notification $event)
     {
-        $this->notifier->addRecord($event);
-//        $this->notifier->addRecord() // TODO
+        $this->notifier->addRecord($event->getLevel(), $event->getMessage(), [
+        ]);
     }
 }

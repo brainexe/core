@@ -77,4 +77,12 @@ class Notification extends AbstractEvent
     {
         return $this->subject;
     }
+
+    /**
+     * @return string
+     */
+    public function getMessage()
+    {
+        return $this->message;
+    }
 }
