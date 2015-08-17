@@ -17,7 +17,7 @@ trait RedisMockTrait
             'sadd', 'smembers', 'srem', 'get', 'setex', 'script', 'getLastError',
             'multi', 'exec', 'execute', 'exists', 'pipeline', 'hmget',
             'hgetall', 'hmset', 'hset', 'hdel', 'hget', 'hincrby',
-            'evalsha', 'load', 'publish', 'subscribe', 'info',
+            'evalsha', 'load', 'publish', 'subscribe', 'info', 'hincrbyfloat',
             'del', 'add', 'keys', 'brPop', 'lpush', 'runmessagequeue',
             'zrangebyscore', 'zcard', 'zRevRangeByScore', 'zadd', 'zDeleteRangeByScore', 'zrem'
         ], [], '', false);

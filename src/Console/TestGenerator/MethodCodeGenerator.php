@@ -31,7 +31,7 @@ class MethodCodeGenerator
             $this->processMethod($data, $shortClassName, $parameter, $variableName, $variableList);
         }
 
-        $code = sprintf("\tpublic function test%s() {\n", ucfirst($methodName));
+        $code = sprintf("\tpublic function test%s()\n\t{\n", ucfirst($methodName));
         $code .= "\t\t\$this->markTestIncomplete('This is only a dummy implementation');\n\n";
 
         $code .= implode("\n", $variableList) . "\n";

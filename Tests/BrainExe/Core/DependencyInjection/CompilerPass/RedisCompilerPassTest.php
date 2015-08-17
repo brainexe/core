@@ -7,6 +7,7 @@ use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase as TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Exception\ParameterNotFoundException;
 
 /**
  * @covers BrainExe\Core\DependencyInjection\CompilerPass\RedisCompilerPass
@@ -67,6 +68,11 @@ class RedisCompilerPassTest extends TestCase
             ->method('getParameter')
             ->with('redis.port')
             ->willReturn($port);
+        $this->container
+            ->expects($this->at(5))
+            ->method('getParameter')
+            ->with('redis.slave.password')
+            ->willThrowException(new ParameterNotFoundException('foo'));
 
         $redis
             ->expects($this->at(0))

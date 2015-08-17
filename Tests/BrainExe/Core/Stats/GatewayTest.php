@@ -38,10 +38,20 @@ class GatewayTest extends TestCase
         $key   = 'key';
         $value = 'value';
 
+        $pipeline = $this->getRedisMock();
         $this->redis
+            ->expects($this->once())
+            ->method('pipeline')
+            ->willReturn($pipeline);
+
+        $pipeline
             ->expects($this->once())
             ->method('hincrby')
             ->with(Gateway::KEY, $key, $value);
+
+        $pipeline
+            ->expects($this->once())
+            ->method('execute');
 
         $this->subject->increase($key, $value);
     }
@@ -51,10 +61,20 @@ class GatewayTest extends TestCase
         $key   = 'key';
         $value = 'value';
 
+        $pipeline = $this->getRedisMock();
         $this->redis
+            ->expects($this->once())
+            ->method('pipeline')
+            ->willReturn($pipeline);
+
+        $pipeline
             ->expects($this->once())
             ->method('hset')
             ->with(Gateway::KEY, $key, $value);
+
+        $pipeline
+            ->expects($this->once())
+            ->method('execute');
 
         $this->subject->set($key, $value);
     }
@@ -64,10 +84,20 @@ class GatewayTest extends TestCase
         $key   = 'key';
         $value = 0;
 
+        $pipeline = $this->getRedisMock();
         $this->redis
+            ->expects($this->once())
+            ->method('pipeline')
+            ->willReturn($pipeline);
+
+        $pipeline
             ->expects($this->once())
             ->method('hdel')
             ->with(Gateway::KEY);
+
+        $pipeline
+            ->expects($this->once())
+            ->method('execute');
 
         $this->subject->set($key, $value);
     }

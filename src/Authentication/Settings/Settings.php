@@ -6,9 +6,8 @@ use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Annotations\Annotations\Service;
 
 /**
- * @todo public?
  * @api
- * @Service("User.Settings", public=true)
+ * @Service("User.Settings", public=false)
  */
 class Settings
 {

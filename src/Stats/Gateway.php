@@ -21,7 +21,9 @@ class Gateway
      */
     public function increase($key, $value = 1)
     {
-        $this->getRedis()->hincrby(self::KEY, $key, $value);
+        $pipeline = $this->getRedis()->pipeline(['fire-and-forget' => true]);
+        $pipeline->hincrby(self::KEY, $key, $value);
+        $pipeline->execute();
     }
 
     /**
@@ -30,11 +32,13 @@ class Gateway
      */
     public function set($key, $value)
     {
+        $pipeline = $this->getRedis()->pipeline(['fire-and-forget' => true]);
         if ($value) {
-            $this->getRedis()->hset(self::KEY, $key, $value);
+            $pipeline->hset(self::KEY, $key, $value);
         } else {
-            $this->getRedis()->hdel(self::KEY, $key);
+            $pipeline->hdel(self::KEY, $key);
         }
+        $pipeline->execute();
     }
 
     /**

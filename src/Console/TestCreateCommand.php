@@ -108,6 +108,7 @@ class TestCreateCommand extends Command
         $template = str_replace('%use_statements%', $testData->renderUse(), $template);
         $template = str_replace('%local_mocks%', implode("\n", $testData->localMocks), $template);
         $template = str_replace('%constructor_arguments%', implode(', ', $testData->constructorArguments), $template);
+        $template = str_replace("\t", '    ', $template);
 
         $testFileName = $this->getTestFileName($serviceFullClassName);
 
