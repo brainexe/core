@@ -2,7 +2,7 @@
 <container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 	<parameters>
 		<parameter key="debug">false</parameter>
-		<parameter key="cache.enabled">true</parameter> <!--todo needed ?-->
+		<parameter key="cache.enabled">true</parameter>
 		<parameter key="server.address">localhost:8080</parameter>
 
 		<parameter key="qr.baseUrl">https://api.qrserver.com/v1/create-qr-code/?size=%%dx%%d&amp;data=%s</parameter>
@@ -19,7 +19,6 @@
 		<parameter key="redis.password"/>
 		<parameter key="redis.port"/>
 		<parameter key="redis.database">0</parameter>
-		<parameter key="redis.class">BrainExe\Core\Redis\Predis</parameter><!--todo needed?-->
 
 		<parameter key="cache.dir">%application.root%cache/</parameter>
 		<parameter key="logger.dir">%application.root%logs/</parameter>
@@ -94,7 +93,6 @@
 			</argument>
 		</service>
 
-		<!--TODO-->
 		<service id="service_container" class="Symfony\Component\DependencyInjection\Container" public="false"/>
 
 		<service id="ProcessBuilder" class="Symfony\Component\Process\ProcessBuilder" public="false"/>

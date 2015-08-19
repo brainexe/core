@@ -27,9 +27,6 @@ if (!defined('CORE_STANDALONE')) {
 class Core
 {
 
-    // todo cleaner solution
-    private static $loaded;
-
     /**
      * @return Container
      */
@@ -42,11 +39,10 @@ class Core
         /** @var Container $dic */
         if (is_file($fileName)) {
             $className = file_get_contents('cache/dic.txt');
-            if (self::$loaded !== $className) {
+            if (!class_exists($className, false)) {
                 include $fileName;
             }
             $dic = new $className();
-            self::$loaded = $className;
         } else {
             $rebuild = new Rebuild();
             $dic = $rebuild->rebuildDIC(true);

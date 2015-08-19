@@ -19,6 +19,10 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 class ListServicesCommand extends Command
 {
 
+    const TYPE_PRIVATE   = 'private';
+    const TYPE_PROTECTED = 'protected';
+    const TYPE_PUBLIC    = 'public';
+
     use EventDispatcherTrait;
 
     /**
@@ -38,7 +42,7 @@ class ListServicesCommand extends Command
     {
         $this->setName('debug:list:services')
             ->setDescription('List all services')
-            ->addArgument('visibility', InputArgument::OPTIONAL, 'public or private');
+            ->addArgument('visibility', InputArgument::OPTIONAL, 'public, protected or private');
     }
 
     /**
@@ -81,35 +85,28 @@ class ListServicesCommand extends Command
     /**
      * @param string $id
      * @param Table $table
-     * @param bool $visibility
+     * @param bool $restrictedVisibility
      */
-    private function addDefinition($id, Table $table, $visibility)
+    private function addDefinition($id, Table $table, $restrictedVisibility)
     {
         $definition = $this->container->getDefinition($id);
 
-        $isPublic = $definition->isPublic();
+        if (!$definition->isPublic()) {
+            $currentVisibility = self::TYPE_PRIVATE;
+            $color = 'error';
+        } elseif (strpos($id, '__') === 0) {
+            $currentVisibility = self::TYPE_PROTECTED;
+            $color = 'comment';
+        } else {
+            $currentVisibility = self::TYPE_PUBLIC;
+            $color = 'info';
+        }
 
-        if ($this->isVisible($visibility, $isPublic)) {
+        if (!$restrictedVisibility || $restrictedVisibility == $currentVisibility) {
             $table->addRow([
                 $id,
-                $isPublic ? '<info>public</info>' : '<error>private</error>'
+                "<$color>$currentVisibility</$color>"
             ]);
         }
-    }
-
-    /**
-     * @param $visibility
-     * @param $isPublic
-     * @return bool
-     */
-    private function isVisible($visibility, $isPublic)
-    {
-        if ($visibility === 'public' && !$isPublic) {
-            return false;
-        } elseif ($visibility === 'private' && $isPublic) {
-            return false;
-        }
-
-        return true;
     }
 }

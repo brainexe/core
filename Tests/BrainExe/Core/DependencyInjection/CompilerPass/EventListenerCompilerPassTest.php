@@ -17,11 +17,14 @@ class TestEventDispatcher implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-        'foo_event' => 'fooMethod',
-        'foo_event2' => ['fooMethod2', 10],
-        'foo_event3' => [['fooMethod3'], ['fooMethod4', 20]]
+            'foo_event' => 'fooMethod',
+            'foo_event2' => ['fooMethod2', 10],
+            'foo_event3' => [['fooMethod3'], ['fooMethod4', 20]]
         ];
     }
+    public function fooMethod() {}
+    public function fooMethod2() {}
+    public function fooMethod3() {}
 }
 
 class EventListenerCompilerPassTest extends TestCase
@@ -53,6 +56,10 @@ class EventListenerCompilerPassTest extends TestCase
         $this->dispatcher = $this->getMock(Definition::class);
     }
 
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage Invalid event dispatcher method: FooService::fooMethod4()
+     */
     public function testAddSubscriber()
     {
         $serviceId = 'FooService';
@@ -71,11 +78,32 @@ class EventListenerCompilerPassTest extends TestCase
 
         $definition = $this->getMock(Definition::class);
         $definition
-            ->expects($this->once())
+            ->expects($this->any())
             ->method('getClass')
             ->willReturn(TestEventDispatcher::class);
         $this->container
             ->expects($this->at(2))
+            ->method('getDefinition')
+            ->with($serviceId)
+            ->willReturn($definition);
+        $this->container
+            ->expects($this->at(3))
+            ->method('getDefinition')
+            ->with($serviceId)
+            ->willReturn($definition);
+        $this->container
+            ->expects($this->at(4))
+            ->method('getDefinition')
+            ->with($serviceId)
+            ->willReturn($definition);
+        $this->container
+            ->expects($this->at(5))
+            ->method('getDefinition')
+            ->with($serviceId)
+            ->willReturn($definition);
+
+        $this->container
+            ->expects($this->at(6))
             ->method('getDefinition')
             ->with($serviceId)
             ->willReturn($definition);
@@ -94,11 +122,6 @@ class EventListenerCompilerPassTest extends TestCase
             ->expects($this->at(2))
             ->method('addMethodCall')
             ->with('addListenerService', ['foo_event3', [$serviceId, 'fooMethod3'], 0]);
-
-        $this->dispatcher
-            ->expects($this->at(3))
-            ->method('addMethodCall')
-            ->with('addListenerService', ['foo_event3', [$serviceId, 'fooMethod4'], 20]);
 
         $this->subject->process($this->container);
     }

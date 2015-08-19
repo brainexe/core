@@ -4,6 +4,7 @@ namespace BrainExe\Core\Traits;
 
 use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Core\Redis\Predis;
+use Predis\Client;
 
 /**
  * @api

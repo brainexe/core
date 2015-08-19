@@ -3,6 +3,7 @@
 namespace BrainExe\Core\DependencyInjection\CompilerPass;
 
 use BrainExe\Core\Annotations\CompilerPass;
+use Exception;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -17,10 +18,16 @@ class EventListenerCompilerPass implements CompilerPassInterface
     const TAG = 'event_subscriber';
 
     /**
+     * @var ContainerBuilder
+     */
+    private $container;
+
+    /**
      * {@inheritdoc}
      */
     public function process(ContainerBuilder $container)
     {
+        $this->container = $container;
         $dispatcher = $container->getDefinition('EventDispatcher');
         $services   = $container->findTaggedServiceIds(self::TAG);
 
@@ -69,12 +76,18 @@ class EventListenerCompilerPass implements CompilerPassInterface
      * @param Definition $dispatcher
      * @param string $name
      * @param string $serviceId
-     * @param string $action
+     * @param string $method
      * @param integer $priority
+     * @throws Exception
      */
-    private function addListener(Definition $dispatcher, $name, $serviceId, $action, $priority = 0)
+    private function addListener(Definition $dispatcher, $name, $serviceId, $method, $priority = 0)
     {
-        $parameters = [$name, [$serviceId, $action], $priority];
+        $parameters = [$name, [$serviceId, $method], $priority];
+
+        $class = $this->container->getDefinition($serviceId)->getClass();
+        if (!method_exists($class, $method)) {
+            throw new Exception(sprintf('Invalid event dispatcher method: %s::%s()', $serviceId, $method));
+        }
 
         $dispatcher->addMethodCall('addListenerService', $parameters);
     }

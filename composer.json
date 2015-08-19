@@ -28,7 +28,7 @@
     "symfony/routing": "~2.7",
     "brainexe/annotations": "*",
     "brainexe/message-queue": "*",
-    "monolog/monolog": "~1.16",
+    "monolog/monolog": "~1.12",
     "doctrine/cache": "~1.4",
     "predis/predis": "~1.1",
     "mtdowling/cron-expression": "dev-master"
@@ -43,7 +43,7 @@
   ],
   "extra": {
     "branch-alias": {
-      "dev-master": "1.0-dev"
+      "dev-master": "1.1.x-dev"
     }
   }
 }
