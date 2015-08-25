@@ -6,12 +6,9 @@ use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Core\DependencyInjection\Rebuild;
 use BrainExe\Core\EventDispatcher\Events\ClearCacheEvent;
 use BrainExe\Core\Traits\EventDispatcherTrait;
-use BrainExe\Core\Util\FileSystem;
 use Symfony\Component\Console\Command\Command;
-
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Finder\Finder;
 use BrainExe\Core\Annotations\Command as CommandAnnotation;
 
 /**
@@ -21,16 +18,6 @@ class ClearCacheCommand extends Command
 {
 
     use EventDispatcherTrait;
-
-    /**
-     * @var Finder
-     */
-    private $finder;
-
-    /**
-     * @var FileSystem
-     */
-    private $filesystem;
 
     /**
      * @var Rebuild
@@ -48,15 +35,11 @@ class ClearCacheCommand extends Command
     }
 
     /**
-     * @Inject({"@Finder", "@FileSystem", "@Core.Rebuild"})
-     * @param Finder $finder
-     * @param FileSystem $filesystem
+     * @Inject({"@Core.Rebuild"})
      * @param Rebuild $rebuild
      */
-    public function __construct(Finder $finder, FileSystem $filesystem, Rebuild $rebuild)
+    public function __construct(Rebuild $rebuild)
     {
-        $this->finder     = $finder;
-        $this->filesystem = $filesystem;
         $this->rebuild    = $rebuild;
 
         parent::__construct();
@@ -67,18 +50,6 @@ class ClearCacheCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->write('Clear Cache...');
-
-        $files = $this->finder
-            ->files()
-            ->in(ROOT . 'cache')
-            ->name('*.php')
-            ->notName('assets.php'); // delete not modified
-
-        $this->filesystem->remove($files);
-
-        $output->writeln('<info>done</info>');
-
         $output->write('Rebuild DIC...');
         $this->rebuild->rebuildDIC(true);
         $output->writeln('<info>done</info>');

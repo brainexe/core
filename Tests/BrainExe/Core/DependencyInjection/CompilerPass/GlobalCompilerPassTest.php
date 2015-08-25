@@ -30,16 +30,16 @@ class GlobalCompilerPassTest extends TestCase
             'getParameter',
             'setParameter',
             'get',
-            'findTaggedServiceIds'
+            'findTaggedServiceIds',
+            'reset'
         ]);
     }
 
     public function testProcessCompiler()
     {
         $serviceId = 'FooCompilerPass';
-
-        $compilerMock = $this->getMock(CompilerPassInterface::class);
-        $loggerMock = $this->getMock(Logger::class, [], [], '', false);
+        $compiler  = $this->getMock(CompilerPassInterface::class);
+        $logger    = $this->getMock(Logger::class, [], [], '', false);
 
         $this->container
             ->expects($this->at(0))
@@ -59,16 +59,18 @@ class GlobalCompilerPassTest extends TestCase
             ->expects($this->at(3))
             ->method('get')
             ->with($serviceId)
-            ->willReturn($compilerMock);
+            ->willReturn($compiler);
 
-        /*
         $this->container
             ->expects($this->at(4))
+            ->method('reset');
+
+        $this->container
+            ->expects($this->at(5))
             ->method('get')
             ->with('logger')
-            ->willReturn($loggerMock);
-        */
-        $compilerMock
+            ->willReturn($logger);
+        $compiler
             ->expects($this->once())
             ->method('process')
             ->with($this->container);

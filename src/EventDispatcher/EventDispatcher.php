@@ -7,7 +7,7 @@ use BrainExe\Annotations\Annotations\Service;
 use BrainExe\Core\Websockets\WebSocketEvent;
 use RuntimeException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher as SymfonyEventDispatcher;
+use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -15,7 +15,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @Service("EventDispatcher", public=false)
  * @api
  */
-class EventDispatcher extends SymfonyEventDispatcher
+class EventDispatcher extends ContainerAwareEventDispatcher
 {
 
     /**

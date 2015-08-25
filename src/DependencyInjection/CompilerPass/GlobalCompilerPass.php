@@ -41,12 +41,12 @@ class GlobalCompilerPass implements CompilerPassInterface
             $loggerStore[] = sprintf('DIC: %0.2fms %s\n', $diff * 1000, $serviceId);
         }
 
-        # todo fix logging
-        #/** @var Logger $logger */
-        #$logger = $container->get('logger');
-        #foreach ($loggerStore as $log) {
-        #    $logger->debug($log);
-        #}
-        #$logger->debug(sprintf('DIC: %0.2fms total time\n', $totalTime * 1000), ['context' => 'dic']);
+        $container->reset();
+        /** @var Logger $logger */
+        $logger = $container->get('logger');
+        foreach ($loggerStore as $log) {
+            $logger->debug($log);
+        }
+        $logger->debug(sprintf("DIC: %0.2fms total time", $totalTime * 1000), ['context' => 'dic']);
     }
 }

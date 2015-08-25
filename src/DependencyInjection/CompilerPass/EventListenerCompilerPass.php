@@ -15,7 +15,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class EventListenerCompilerPass implements CompilerPassInterface
 {
 
-    const TAG = 'event_subscriber';
+    const TAG        = 'event_subscriber.class';
+    const TAG_METHOD = 'event_subscriber.method';
 
     /**
      * @var ContainerBuilder
@@ -29,8 +30,8 @@ class EventListenerCompilerPass implements CompilerPassInterface
     {
         $this->container = $container;
         $dispatcher = $container->getDefinition('EventDispatcher');
-        $services   = $container->findTaggedServiceIds(self::TAG);
 
+        $services   = $container->findTaggedServiceIds(self::TAG);
         foreach (array_keys($services) as $serviceId) {
             /** @var EventSubscriberInterface $class */
             $class = $container->getDefinition($serviceId)->getClass();
@@ -38,6 +39,20 @@ class EventListenerCompilerPass implements CompilerPassInterface
             foreach ($class::getSubscribedEvents() as $eventName => $params) {
                 $this->addEvent($dispatcher, $params, $eventName, $serviceId);
             }
+        }
+
+        $services   = $container->findTaggedServiceIds(self::TAG_METHOD);
+        foreach ($services as $serviceId => $arguments) {
+            $arguments = $arguments[0];
+            print_r($arguments);
+            $this->addListener($dispatcher, $arguments['event'], $serviceId, $arguments['method'], $arguments['priority']);
+
+//            /** @var EventSubscriberInterface $class */
+//            $class = $container->getDefinition($serviceId)->getClass();
+
+//            foreach ($class::getSubscribedEvents() as $eventName => $params) {
+//                $this->addEvent($dispatcher, $params, $eventName, $serviceId);
+//            }
         }
     }
 
@@ -74,15 +89,15 @@ class EventListenerCompilerPass implements CompilerPassInterface
 
     /**
      * @param Definition $dispatcher
-     * @param string $name
+     * @param string $eventName
      * @param string $serviceId
      * @param string $method
      * @param integer $priority
      * @throws Exception
      */
-    private function addListener(Definition $dispatcher, $name, $serviceId, $method, $priority = 0)
+    private function addListener(Definition $dispatcher, $eventName, $serviceId, $method, $priority = 0)
     {
-        $parameters = [$name, [$serviceId, $method], $priority];
+        $parameters = [$eventName, [$serviceId, $method], $priority];
 
         $class = $this->container->getDefinition($serviceId)->getClass();
         if (!method_exists($class, $method)) {

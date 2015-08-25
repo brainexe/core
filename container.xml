@@ -5,8 +5,7 @@
 		<parameter key="cache.enabled">true</parameter>
 		<parameter key="server.address">localhost:8080</parameter>
 
-		<parameter key="qr.baseUrl">https://api.qrserver.com/v1/create-qr-code/?size=%%dx%%d&amp;data=%s</parameter>
-		<parameter key="locales" type="collection"></parameter>
+		<parameter key="locales" type="collection"/>
 
 		<parameter key="hipchat.api_token"/>
 		<parameter key="hipchat.room"/>

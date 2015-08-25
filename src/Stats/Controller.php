@@ -10,6 +10,7 @@ use BrainExe\Core\Traits\TimeTrait;
 use BrainExe\MessageQueue\Gateway as MessageQueueGateway;
 use BrainExe\Core\Traits\EventDispatcherTrait;
 use BrainExe\MessageQueue\Job;
+use Predis\PredisException;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -54,10 +55,16 @@ class Controller
             'message_queue:queued' => $this->messageQueue->countJobs(),
         ]);
 
+        try {
+            $redisStats = $this->getRedis()->info();
+        } catch (PredisException $e) {
+            $redisStats = [];
+        }
+
         return [
             'jobs'  => $this->messageQueue->getEventsByType(),
             'stats' => $stats,
-            'redis' => $this->getRedis()->info()
+            'redis' => $redisStats
         ];
     }
 

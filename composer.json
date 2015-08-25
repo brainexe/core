@@ -26,9 +26,9 @@
     "symfony/http-kernel": "~2.7",
     "symfony/process": "~2.7",
     "symfony/routing": "~2.7",
-    "brainexe/annotations": "*",
-    "brainexe/message-queue": "*",
-    "monolog/monolog": "~1.12",
+    "brainexe/annotations": "~1.1",
+    "brainexe/message-queue": "~1.1",
+    "monolog/monolog": "~1.16",
     "doctrine/cache": "~1.4",
     "predis/predis": "~1.1",
     "mtdowling/cron-expression": "dev-master"
