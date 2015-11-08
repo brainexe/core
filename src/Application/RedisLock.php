@@ -18,19 +18,13 @@ class RedisLock
     /**
      * @param string $name
      * @param integer $lockTime
-     * @return boolean $got_lock
+     * @return bool $got_lock
      */
     public function lock($name, $lockTime)
     {
         $redis = $this->getRedis();
 
-        $exists = $redis->EXISTS(self::REDIS_PREFIX . $name);
-        if (!$exists) {
-            $redis->SETEX($name, $lockTime, 1);
-            return true;
-        }
-
-        return false;
+        return $redis->SET(self::REDIS_PREFIX . $name, '1', 'EX', $lockTime, 'NX');
     }
 
     /**

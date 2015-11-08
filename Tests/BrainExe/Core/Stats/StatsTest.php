@@ -37,12 +37,25 @@ class StatsTest extends TestCase
         $this->gateway
             ->expects($this->once())
             ->method('increase')
-            ->with($key, $value);
+            ->with([$key => $value]);
 
         $this->subject->increase($key, $value);
     }
 
     public function testSet()
+    {
+        $key   = 'key';
+        $value = 'value';
+
+        $this->gateway
+            ->expects($this->once())
+            ->method('set')
+            ->with($key, $value);
+
+        $this->subject->set($key, $value);
+    }
+
+    public function testSetArray()
     {
         $key   = 'key';
         $value = 'value';

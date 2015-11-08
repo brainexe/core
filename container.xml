@@ -5,7 +5,10 @@
 		<parameter key="cache.enabled">true</parameter>
 		<parameter key="server.address">localhost:8080</parameter>
 
+		<!-- This value in filled during container build process -->
 		<parameter key="locales" type="collection"/>
+
+		<parameter key="session.lifetime">30758400</parameter>
 
 		<parameter key="hipchat.api_token"/>
 		<parameter key="hipchat.room"/>
@@ -86,8 +89,14 @@
 						<argument key="cookie_lifetime">30758400</argument>
 						<argument key="name">sid_%application.name%</argument>
 					</argument>
-
-					<argument type="service" id="RedisSessionHandler"/>
+					<argument type="service">
+						<service class="Predis\Session\Handler">
+							<argument type="service" id="redis"/>
+							<argument type="collection">
+								<argument key="gc_maxlifetime">%session.lifetime%</argument>
+							</argument>
+						</service>
+					</argument>
 				</service>
 			</argument>
 		</service>

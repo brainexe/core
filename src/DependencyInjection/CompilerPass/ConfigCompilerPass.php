@@ -49,5 +49,10 @@ class ConfigCompilerPass implements CompilerPassInterface
             }
         }
 
+        // store json-config
+        file_put_contents(
+            ROOT . 'cache/config.json',
+            json_encode($container->getParameterBag()->all(), JSON_PRETTY_PRINT)
+        );
     }
 }

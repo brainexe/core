@@ -46,14 +46,14 @@ class GatewayTest extends TestCase
 
         $pipeline
             ->expects($this->once())
-            ->method('hincrby')
-            ->with(Gateway::KEY, $key, $value);
+            ->method('zincrby')
+            ->with(Gateway::KEY, $value, $key);
 
         $pipeline
             ->expects($this->once())
             ->method('execute');
 
-        $this->subject->increase($key, $value);
+        $this->subject->increase([$key => $value]);
     }
 
     public function testSet()
@@ -92,7 +92,7 @@ class GatewayTest extends TestCase
 
         $pipeline
             ->expects($this->once())
-            ->method('hdel')
+            ->method('zrem')
             ->with(Gateway::KEY);
 
         $pipeline
@@ -108,7 +108,7 @@ class GatewayTest extends TestCase
 
         $this->redis
             ->expects($this->once())
-            ->method('hgetall')
+            ->method('zrevrangebyscore')
             ->with(Gateway::KEY)
             ->willReturn($expected);
 

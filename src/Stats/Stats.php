@@ -31,7 +31,7 @@ class Stats
      */
     public function increase($key, $value = 1)
     {
-        $this->gateway->increase($key, $value);
+        $this->gateway->increase([$key => $value]);
     }
 
     /**

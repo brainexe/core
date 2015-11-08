@@ -33,42 +33,17 @@ class RedisLockTest extends TestCase
         $this->subject->setRedis($this->mockRedis);
     }
 
-    public function testLockWhenNotLockedYet()
-    {
-        $name     = 'lock';
-        $lockTime = 10;
-
-        $this->mockRedis
-            ->expects($this->once())
-            ->method('EXISTS')
-            ->with("lock:$name")
-            ->willReturn(false);
-
-        $this->mockRedis
-            ->expects($this->once())
-            ->method('SETEX')
-            ->with($name, $lockTime)
-            ->willReturn(true);
-
-        $actualResult = $this->subject->lock($name, $lockTime);
-
-        $this->assertTrue($actualResult);
-    }
-
-    public function testLockWhenLocked()
+    public function testLock()
     {
         $name = 'lock';
         $lockTime = 10;
 
         $this->mockRedis
             ->expects($this->once())
-            ->method('EXISTS')
-            ->with("lock:$name")
-            ->willReturn(true);
+            ->method('SET')
+            ->with("lock:$name", "1", 'EX', $lockTime, 'NX');
 
-        $actualResult = $this->subject->lock($name, $lockTime);
-
-        $this->assertFalse($actualResult);
+        $this->subject->lock($name, $lockTime);
     }
 
     public function testUnlock()

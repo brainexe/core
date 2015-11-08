@@ -10,19 +10,19 @@ use BrainExe\Core\Traits\RedisTrait;
  */
 class Gateway
 {
-
-    const KEY = 'stats';
+    const KEY = 'statistics';
 
     use RedisTrait;
 
     /**
-     * @param string $key
-     * @param int $value
+     * @param int[] $values
      */
-    public function increase($key, $value = 1)
+    public function increase(array $values)
     {
         $pipeline = $this->getRedis()->pipeline(['fire-and-forget' => true]);
-        $pipeline->hincrby(self::KEY, $key, $value);
+        foreach ($values as $key => $value) {
+            $pipeline->zincrby(self::KEY, $value, $key);
+        }
         $pipeline->execute();
     }
 
@@ -36,8 +36,9 @@ class Gateway
         if ($value) {
             $pipeline->hset(self::KEY, $key, $value);
         } else {
-            $pipeline->hdel(self::KEY, $key);
+            $pipeline->zrem(self::KEY, $key);
         }
+
         $pipeline->execute();
     }
 
@@ -46,7 +47,7 @@ class Gateway
      */
     public function getAll()
     {
-        return $this->getRedis()->hgetall(self::KEY);
+        return $this->getRedis()->zrevrangebyscore(self::KEY, 0, '+inf', ['withscores' => true]);
     }
 
     /**
