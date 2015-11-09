@@ -263,7 +263,7 @@ class DatabaseUserProviderTest extends TestCase
 
         $this->idGenerator
             ->expects($this->once())
-            ->method('generateRandomNumericId')
+            ->method('generateUniqueId')
             ->willReturn($userId);
 
         $this->redis

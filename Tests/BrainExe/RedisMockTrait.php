@@ -9,16 +9,16 @@ trait RedisMockTrait
 {
 
     /**
-     * @return MockObject
+     * @return MockObject|Predis
      */
     protected function getRedisMock()
     {
         return $this->getMock(Predis::class, [
             'sadd', 'smembers', 'srem', 'get', 'setex', 'script', 'getLastError',
-            'multi', 'exec', 'execute', 'exists', 'pipeline', 'hmget',
+            'multi', 'exec', 'execute', 'exists', 'pipeline', 'hmget', 'incr',
             'hgetall', 'hmset', 'hset', 'hdel', 'hget', 'hincrby', 'set',
             'evalsha', 'load', 'publish', 'subscribe', 'info', 'hincrbyfloat',
-            'del', 'add', 'keys', 'brPop', 'lpush', 'runmessagequeue',
+            'del', 'add', 'keys', 'brPop', 'lpush', 'runmessagequeue', 'LLEN', 'lrange',
             'zrangebyscore', 'zcard', 'zRevRangeByScore', 'zadd', 'zincrby', 'zDeleteRangeByScore', 'zrem'
         ], [], '', false);
     }

@@ -39,7 +39,7 @@ class StatsTest extends TestCase
             ->method('increase')
             ->with([$key => $value]);
 
-        $this->subject->increase($key, $value);
+        $this->subject->increase([$key => $value]);
     }
 
     public function testSet()
@@ -52,7 +52,7 @@ class StatsTest extends TestCase
             ->method('set')
             ->with($key, $value);
 
-        $this->subject->set($key, $value);
+        $this->subject->set([$key => $value]);
     }
 
     public function testSetArray()
@@ -65,7 +65,7 @@ class StatsTest extends TestCase
             ->method('set')
             ->with($key, $value);
 
-        $this->subject->set($key, $value);
+        $this->subject->set([$key => $value]);
     }
 
     public function testGetAll()
@@ -96,5 +96,4 @@ class StatsTest extends TestCase
         $actual = $this->subject->get($key);
         $this->assertEquals($expected, $actual);
     }
-
 }

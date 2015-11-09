@@ -28,8 +28,15 @@ class CatchUserException extends AbstractMiddleware
             $exception = new UserException(sprintf('Page not found: %s', $request->getRequestUri()), 0, $exception);
             $response  = new Response('', 404);
         } elseif ($exception instanceof MethodNotAllowedException) {
-            $exception = new UserException('You are not allowed to access the page', 0, $exception);
-            $response  = new Response('', 405);
+            $exception = new UserException(
+                sprintf(
+                    'You are not allowed to access the page. Allowed methods: %s',
+                    implode(',', $exception->getAllowedMethods())
+                ),
+                0,
+                $exception
+            );
+            $response = new Response('', 405);
         } elseif ($exception instanceof UserException) {
             // just pass a UserException to Frontend
             $response  = new Response('', 500);
@@ -39,6 +46,7 @@ class CatchUserException extends AbstractMiddleware
         }
 
         $this->error($exception->getMessage());
+        $this->error($exception->getTraceAsString());
 
         $this->setMessage($exception, $response);
 

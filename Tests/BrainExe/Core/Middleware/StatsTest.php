@@ -8,6 +8,7 @@ use BrainExe\Core\Middleware\Gentime;
 use BrainExe\Core\Middleware\Parameter;
 use BrainExe\Core\Middleware\Stats;
 use BrainExe\Core\Stats\Event;
+use BrainExe\Core\Stats\MultiEvent;
 use Exception;
 use Monolog\Logger;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
@@ -58,15 +59,12 @@ class StatsTest extends TestCase
         $response = new Response();
         $request->attributes->set('_route', 'route');
 
-        $event = new Event(Event::INCREASE, 'request:route:route');
+        $event = new MultiEvent(MultiEvent::INCREASE, [
+            'request:route:route' => 1,
+            'response:code:200'   => 1
+        ]);
         $this->dispatcher
-            ->expects($this->at(0))
-            ->method('dispatchEvent')
-            ->with($event);
-
-        $event = new Event(Event::INCREASE, 'response:code:200');
-        $this->dispatcher
-            ->expects($this->at(1))
+            ->expects($this->once())
             ->method('dispatchEvent')
             ->with($event);
 

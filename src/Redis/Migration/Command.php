@@ -16,7 +16,7 @@ use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Process\ProcessBuilder;
 
 /**
- * @CommandAnnotation("Redis.Migration.Export", public=false)
+ * @CommandAnnotation("Redis.Migration.Export")
  * @codeCoverageIgnore
  */
 class Command extends SymfonyCommand

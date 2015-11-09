@@ -71,7 +71,7 @@ class DatabaseUserProvider
         $user->username        = $redisUser['username'];
         $user->email           = isset($redisUser['email']) ? $redisUser['email'] : '';
         $user->password_hash   = $redisUser['password'];
-        $user->one_time_secret = $redisUser['one_time_secret'];
+        $user->one_time_secret = isset($redisUser['one_time_secret']) ? $redisUser['one_time_secret'] : null;
         $user->roles           = array_filter(explode(',', $redisUser['roles']));
         $user->avatar          = isset($redisUser['avatar']) ? $redisUser['avatar'] : '';
 
@@ -149,7 +149,7 @@ class DatabaseUserProvider
             'avatar' => $user->avatar
         ];
 
-        $newUserId = $this->generateRandomNumericId();
+        $newUserId = $this->generateUniqueId();
 
         $redis->HSET(self::REDIS_USER_NAMES, strtolower($user->getUsername()), $newUserId);
         $redis->HMSET($this->getKey($newUserId), $userArray);

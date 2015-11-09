@@ -4,12 +4,12 @@ namespace BrainExe\Core\Stats;
 
 use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Core\Annotations\EventListener;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use BrainExe\Core\Annotations\Listen;
 
 /**
  * @EventListener("Stats.Listener")
  */
-class Listener implements EventSubscriberInterface
+class Listener
 {
 
     /**
@@ -27,29 +27,38 @@ class Listener implements EventSubscriberInterface
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public static function getSubscribedEvents()
-    {
-        return [
-            Event::INCREASE => 'handleIncreaseEvent',
-            Event::SET      => 'handleSetEvent',
-        ];
-    }
-
-    /**
+     * @Listen(Event::INCREASE)
      * @param Event $event
      */
     public function handleIncreaseEvent(Event $event)
     {
-        $this->stats->increase($event->getKey(), $event->getValue());
+        $this->stats->increase([$event->getKey() => $event->getValue()]);
     }
 
     /**
+     * @Listen(Event::SET)
      * @param Event $event
      */
     public function handleSetEvent(Event $event)
     {
-        $this->stats->set($event->getKey(), $event->getValue());
+        $this->stats->set([$event->getKey() => $event->getValue()]);
+    }
+
+    /**
+     * @Listen(MultiEvent::INCREASE)
+     * @param MultiEvent $event
+     */
+    public function handleMultiIncreaseEvent(MultiEvent $event)
+    {
+        $this->stats->increase($event->getValues());
+    }
+
+    /**
+     * @Listen(MultiEvent::SET)
+     * @param MultiEvent $event
+     */
+    public function handleMultiSetEvent(MultiEvent $event)
+    {
+        $this->stats->set($event->getValues());
     }
 }

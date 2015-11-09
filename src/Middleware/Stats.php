@@ -4,6 +4,7 @@ namespace BrainExe\Core\Middleware;
 
 use BrainExe\Core\Annotations\Middleware;
 use BrainExe\Core\Stats\Event;
+use BrainExe\Core\Stats\MultiEvent;
 use BrainExe\Core\Traits\EventDispatcherTrait;
 use Exception;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,9 +23,10 @@ class Stats extends AbstractMiddleware
      */
     public function processResponse(Request $request, Response $response)
     {
-        $event = new Event(Event::INCREASE, sprintf('request:route:%s', $request->attributes->get('_route')));
-        $this->dispatchEvent($event);
-        $event = new Event(Event::INCREASE, sprintf('response:code:%d', $response->getStatusCode()));
+        $event = new MultiEvent(MultiEvent::INCREASE, [
+            sprintf('request:route:%s', $request->attributes->get('_route')) => 1,
+            sprintf('response:code:%d', $response->getStatusCode())          => 1,
+        ]);
         $this->dispatchEvent($event);
     }
 

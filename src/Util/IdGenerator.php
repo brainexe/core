@@ -3,6 +3,7 @@
 namespace BrainExe\Core\Util;
 
 use BrainExe\Annotations\Annotations\Service;
+use BrainExe\Core\Traits\RedisTrait;
 
 /**
  * @Service(public=false)
@@ -12,17 +13,22 @@ class IdGenerator
 {
 
     const ID_LENGTH = 10;
+    const LAST_ID   = 'idgenerator:lastid';
+
+    use RedisTrait;
 
     /**
-     * @return integer
+     * @return string
      */
-    public function generateRandomNumericId()
+    public function generateUniqueId()
     {
-        return mt_rand();
+        $newId = $this->getRedis()->INCR(self::LAST_ID);
+
+        return $newId;
     }
 
     /**
-     * @param integer $length
+     * @param int $length
      * @return string
      */
     public function generateRandomId($length = self::ID_LENGTH)

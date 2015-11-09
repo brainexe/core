@@ -17,7 +17,7 @@ trait RedisCacheTrait
      * @param integer $ttl
      * @return mixed
      */
-    public function wrapCache($key, $callback, $ttl = 3600)
+    public function wrapCache($key, callable $callback, $ttl = 3600)
     {
         $cachedValue = $this->redis->GET($key);
         if ($cachedValue) {

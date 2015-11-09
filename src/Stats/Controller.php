@@ -47,12 +47,12 @@ class Controller
     /**
      * @Route("/stats/", name="status.index")
      */
-    public function index()
+    public function     index()
     {
         $stats = $this->stats->getAll();
 
         $stats = array_merge($stats, [
-            'message_queue:queued' => $this->messageQueue->countJobs(),
+            'message_queue:queued' => $this->messageQueue->countAllJobs(),
         ]);
 
         try {
@@ -105,7 +105,7 @@ class Controller
     public function resetStats(Request $request)
     {
         $key = $request->request->get('key');
-        $this->stats->set($key, 0);
+        $this->stats->set([$key => 0]);
 
         return true;
     }

@@ -1,6 +1,6 @@
 {
   "name": "brainexe/core",
-  "description": "Framework core",
+  "description": "Framework core - used for brainexe/homie",
   "homepage": "https://mdoetsch.de",
   "minimum-stability": "dev",
   "license": "MIT",
@@ -26,10 +26,12 @@
     "symfony/http-kernel": "~2.7",
     "symfony/process": "~2.7",
     "symfony/routing": "~2.7",
+    "symfony/proxy-manager-bridge": "~2.7",
+    "zendframework/zend-stdlib": "~2.7",
     "brainexe/annotations": "~1.1",
     "brainexe/message-queue": "~1.1",
-    "monolog/monolog": "~1.16",
-    "doctrine/cache": "~1.4",
+    "monolog/monolog": "~1.17",
+    "doctrine/cache": "~1.5",
     "predis/predis": "~1.1",
     "mtdowling/cron-expression": "dev-master"
   },

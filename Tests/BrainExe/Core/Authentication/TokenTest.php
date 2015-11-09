@@ -256,5 +256,4 @@ class TokenTest extends TestCase
 
         $this->subject->revoke($token);
     }
-
 }

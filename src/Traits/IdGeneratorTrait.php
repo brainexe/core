@@ -27,9 +27,9 @@ trait IdGeneratorTrait
     /**
      * @return integer
      */
-    protected function generateRandomNumericId()
+    protected function generateUniqueId()
     {
-        return $this->idGenerator->generateRandomNumericId();
+        return $this->idGenerator->generateUniqueId();
     }
 
     /**

@@ -28,7 +28,7 @@ class RedisCompilerPass implements CompilerPassInterface
         try {
             $slaveArguments  = $this->getArguments($container, '.slave');
             $masterArguments['alias'] = 'master';
-            $slaveArguments['alias'] = 'slave';
+            $slaveArguments['alias']  = 'slave';
             $parameters = [$masterArguments, $slaveArguments];
             $options    = [
                 'replication' =>

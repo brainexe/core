@@ -3,7 +3,10 @@
 namespace Tests\BrainExe\Core\Util\IdGenerator;
 
 use BrainExe\Core\Util\IdGenerator;
+use BrainExe\Tests\RedisMockTrait;
 use PHPUnit_Framework_TestCase;
+use BrainExe\Core\Redis\Predis;
+use PHPUnit_Framework_MockObject_MockObject as MockObject;
 
 /**
  * @covers BrainExe\Core\Util\IdGenerator
@@ -11,38 +14,35 @@ use PHPUnit_Framework_TestCase;
 class IdGeneratorTest extends PHPUnit_Framework_TestCase
 {
 
+    use RedisMockTrait;
+
     /**
      * @var IdGenerator
      */
     private $subject;
 
+    /**
+     * @var MockObject|Predis
+     */
+    private $redis;
+
     public function setUp()
     {
+        $this->redis = $this->getRedisMock();
+
         $this->subject = new IdGenerator();
+        $this->subject->setRedis($this->redis);
     }
 
-    public function testGenerateRandomNumericId()
+    public function testGenerateUniqueId()
     {
-        $actualResult  = $this->subject->generateRandomNumericId();
-        $actualResult2 = $this->subject->generateRandomNumericId();
+        $this->redis
+            ->expects($this->once())
+            ->method('incr')
+            ->willReturn($expected = 100);
 
-        $this->assertInternalType('integer', $actualResult);
-        $this->assertGreaterThan(0, $actualResult);
+        $actual  = $this->subject->generateUniqueId();
 
-        $this->assertNotEquals($actualResult, $actualResult2);
-    }
-
-    public function testGenerateRandomId()
-    {
-        $actualResult = $this->subject->generateRandomId(10);
-        $actualResult2 = $this->subject->generateRandomId(10);
-
-        $this->assertInternalType('string', $actualResult);
-        $this->assertInternalType('string', $actualResult2);
-
-        $this->assertEquals(10, strlen($actualResult));
-        $this->assertEquals(10, strlen($actualResult2));
-
-        $this->assertNotEquals($actualResult, $actualResult2);
+        $this->assertEquals($expected, $actual);
     }
 }

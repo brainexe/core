@@ -26,21 +26,21 @@ class Stats
     }
 
     /**
-     * @param string $key
-     * @param int $value
+     * @param array $values
      */
-    public function increase($key, $value = 1)
+    public function increase(array $values)
     {
-        $this->gateway->increase([$key => $value]);
+        $this->gateway->increase($values);
     }
 
     /**
-     * @param string $key
-     * @param int $value
+     * @param array $values
      */
-    public function set($key, $value)
+    public function set(array $values)
     {
-        $this->gateway->set($key, $value);
+        foreach ($values as $key => $value) {
+            $this->gateway->set($key, $value);
+        }
     }
 
     /**

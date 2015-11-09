@@ -69,7 +69,7 @@ class ControllerTest extends TestCase
 
         $this->messageQueue
             ->expects($this->once())
-            ->method('countJobs')
+            ->method('countAllJobs')
             ->willReturn($messageQueueJobs);
         $this->stats
             ->expects($this->once())
@@ -125,7 +125,7 @@ class ControllerTest extends TestCase
         $this->stats
             ->expects($this->once())
             ->method('set')
-            ->with($key, 0);
+            ->with([$key => 0]);
 
         $actualResult = $this->subject->resetStats($request);
 

@@ -21,7 +21,7 @@ class RegisterTokens
      */
     public function addToken()
     {
-        $token = $this->generateRandomId();
+        $token = $this->generateUniqueId();
 
         $this->getRedis()->sAdd(self::TOKEN_KEY, $token);
 

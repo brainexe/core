@@ -11,7 +11,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * @CommandAnnotation("Redis.Command.Export", public=false)
+ * @CommandAnnotation("Redis.Command.Export")
  * @codeCoverageIgnore
  */
 class Export extends SymfonyCommand
@@ -77,6 +77,9 @@ class Export extends SymfonyCommand
             case 'zset':
                 $this->processZset($key, $parts);
                 break;
+            case 'list':
+                $this->processList($key, $parts);
+                break;
             default:
                 throw new Exception(sprintf('Unsupported type "%s" for key %s', $type, $key));
         }
@@ -133,6 +136,21 @@ class Export extends SymfonyCommand
         foreach (array_chunk($sets, self::BULK_SIZE) as $set) {
             $set = array_map([$this, 'escape'], $set);
             $parts[] = sprintf('SADD %s %s', $key, implode(' ', $set));
+        }
+    }
+    /**
+     * @param string $key
+     * @param array $parts
+     */
+    protected function processList($key, array &$parts)
+    {
+        $members = $this->redis->lrange($key, 0, 100000);
+        if (!$members) {
+            return;
+        }
+
+        foreach ($members as $member) {
+            $parts[] = sprintf('LPUSH %s %s', $key, $this->escape($member));
         }
     }
 

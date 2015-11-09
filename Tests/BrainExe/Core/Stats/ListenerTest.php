@@ -27,13 +27,6 @@ class ListenerTest extends TestCase
         $this->subject = new Listener($this->stats);
     }
 
-    public function testGetSubscribedEvents()
-    {
-        $actual = $this->subject->getSubscribedEvents();
-
-        $this->assertInternalType('array', $actual);
-    }
-
     public function testHandleIncreaseEvent()
     {
         $event = new Event(Event::INCREASE, 'key', 'value');
@@ -41,7 +34,7 @@ class ListenerTest extends TestCase
         $this->stats
             ->expects($this->once())
             ->method('increase')
-            ->with('key', 'value');
+            ->with(['key' => 'value']);
 
         $this->subject->handleIncreaseEvent($event);
     }
@@ -53,9 +46,8 @@ class ListenerTest extends TestCase
         $this->stats
             ->expects($this->once())
             ->method('set')
-            ->with('key', 'value');
+            ->with(['key' => 'value']);
 
         $this->subject->handleSetEvent($event);
     }
-
 }

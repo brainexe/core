@@ -31,21 +31,27 @@ class EventListenerCompilerPass implements CompilerPassInterface
         $this->container = $container;
         $dispatcher = $container->getDefinition('EventDispatcher');
 
-        $services   = $container->findTaggedServiceIds(self::TAG);
+        $services = $container->findTaggedServiceIds(self::TAG);
         foreach (array_keys($services) as $serviceId) {
-            /** @var EventSubscriberInterface $class */
             $class = $container->getDefinition($serviceId)->getClass();
-
-            foreach ($class::getSubscribedEvents() as $eventName => $params) {
-                $this->addEvent($dispatcher, $params, $eventName, $serviceId);
+            if (method_exists($class, 'getSubscribedEvents')) {
+                foreach ($class::getSubscribedEvents() as $eventName => $params) {
+                    $this->addEvent($dispatcher, $params, $eventName, $serviceId);
+                }
             }
         }
 
-        $services   = $container->findTaggedServiceIds(self::TAG_METHOD);
+        $services = $container->findTaggedServiceIds(self::TAG_METHOD);
         foreach ($services as $serviceId => $arguments) {
-            $arguments = $arguments[0];
-            print_r($arguments);
-            $this->addListener($dispatcher, $arguments['event'], $serviceId, $arguments['method'], $arguments['priority']);
+            foreach ($arguments as $args) {
+                $this->addListener(
+                    $dispatcher,
+                    $args['event'],
+                    $serviceId,
+                    $args['method'],
+                    $args['priority']
+                );
+            }
 
 //            /** @var EventSubscriberInterface $class */
 //            $class = $container->getDefinition($serviceId)->getClass();
