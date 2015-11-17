@@ -38,7 +38,7 @@ class GlobalCompilerPass implements CompilerPassInterface
             $container->get($serviceId)->process($container);
 
             $totalTime += $diff = microtime(true) - $startTime;
-            $loggerStore[] = sprintf('DIC: %0.2fms %s\n', $diff * 1000, $serviceId);
+            $loggerStore[] = sprintf('DIC: %0.2fms %s', $diff * 1000, $serviceId);
         }
 
         $container->reset();

@@ -144,9 +144,9 @@ class DatabaseUserProvider
         $userArray = [
             'username' => $user->getUsername(),
             'password' => $passwordHash,
-            'roles' => implode(',', $user->roles),
+            'roles'    => implode(',', $user->roles),
             'one_time_secret' => $user->one_time_secret,
-            'avatar' => $user->avatar
+            'avatar'   => $user->avatar
         ];
 
         $newUserId = $this->generateUniqueId();
