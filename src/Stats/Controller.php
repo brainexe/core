@@ -47,7 +47,7 @@ class Controller
     /**
      * @Route("/stats/", name="status.index")
      */
-    public function     index()
+    public function index()
     {
         $stats = $this->stats->getAll();
 
@@ -62,7 +62,7 @@ class Controller
         }
 
         return [
-            'jobs'  => $this->messageQueue->getEventsByType(),
+            'jobs'  => iterator_to_array($this->messageQueue->getEventsByType()),
             'stats' => $stats,
             'redis' => $redisStats
         ];

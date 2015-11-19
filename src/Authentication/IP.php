@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @api
+ * @deprecated
  * @Service("Authentication.IP", public=false)
  */
 class IP

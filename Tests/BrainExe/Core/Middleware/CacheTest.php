@@ -3,6 +3,7 @@
 namespace Tests\BrainExe\Core\Middleware\CacheMiddleware;
 
 use BrainExe\Core\Middleware\Cache;
+use Doctrine\Common\Cache\CacheProvider;
 use Doctrine\Common\Cache\RedisCache;
 use Monolog\Logger;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
@@ -23,9 +24,9 @@ class CacheTest extends TestCase
     private $subject;
 
     /**
-     * @var RedisCache|MockObject
+     * @var CacheProvider|MockObject
      */
-    private $redisCache;
+    private $cache;
 
     /**
      * @var Logger|MockObject
@@ -34,11 +35,11 @@ class CacheTest extends TestCase
 
     public function setUp()
     {
-        $this->redisCache = $this->getMock(RedisCache::class, [], [], '', false);
-        $this->logger     = $this->getMock(Logger::class, [], [], '', false);
+        $this->cache  = $this->getMock(CacheProvider::class);
+        $this->logger = $this->getMock(Logger::class, [], [], '', false);
 
         $this->subject = new Cache(true);
-        $this->subject->setCache($this->redisCache);
+        $this->subject->setCache($this->cache);
         $this->subject->setLogger($this->logger);
     }
 
@@ -55,7 +56,7 @@ class CacheTest extends TestCase
         // response should not be saved
         $response = new Response();
 
-        $this->redisCache
+        $this->cache
             ->expects($this->never())
             ->method('save');
 
@@ -82,7 +83,7 @@ class CacheTest extends TestCase
             ->method('getRequestUri')
             ->willReturn($requestUri);
 
-        $this->redisCache
+        $this->cache
             ->expects($this->once())
             ->method('contains')
             ->with($requestUri)
@@ -98,7 +99,7 @@ class CacheTest extends TestCase
 
         // save valid response
         $response = new Response();
-        $this->redisCache
+        $this->cache
             ->expects($this->once())
             ->method('save')
             ->with($requestUri, $response, Cache::DEFAULT_TTL)
@@ -129,13 +130,13 @@ class CacheTest extends TestCase
             ->method('getRequestUri')
             ->willReturn($requestUri);
 
-        $this->redisCache
+        $this->cache
             ->expects($this->once())
             ->method('contains')
             ->with($requestUri)
             ->willReturn(true);
 
-        $this->redisCache
+        $this->cache
             ->expects($this->once())
             ->method('fetch')
             ->with($requestUri)

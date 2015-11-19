@@ -9,7 +9,7 @@ use BrainExe\Annotations\Annotations\Service;
  */
 class PasswordHasher
 {
-    const COST = 7;
+    const COST = 10;
 
     /**
      * @param string $password

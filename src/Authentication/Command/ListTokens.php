@@ -48,7 +48,6 @@ class ListTokens extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $userId = (int)$input->getArgument('user');
-
         $tokens = $this->token->getTokensForUser($userId);
 
         $table = new Table($output);

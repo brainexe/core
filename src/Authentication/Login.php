@@ -117,7 +117,10 @@ class Login
 
         $session->set('user_id', $userVo->id);
 
-        $event = new AuthenticateUserEvent($authenticationVo, AuthenticateUserEvent::AUTHENTICATED);
+        $event = new AuthenticateUserEvent(
+            $authenticationVo,
+            AuthenticateUserEvent::AUTHENTICATED
+        );
 
         $this->dispatchEvent($event);
     }

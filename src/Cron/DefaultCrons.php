@@ -10,6 +10,9 @@ use BrainExe\Core\Cron\CronDefinition;
  */
 class DefaultCrons implements CronDefinition
 {
+    const MINUTE = 'minute';
+    const HOURLY = 'hourly';
+    const DAILY  = 'daily';
 
     /**
      * @return string[]
@@ -17,8 +20,9 @@ class DefaultCrons implements CronDefinition
     public static function getCrons()
     {
         return [
-            'daily'  => '@daily',
-            'hourly' => '@hourly'
+            self::MINUTE => '* * * * *',
+            self::HOURLY => '@hourly',
+            self::DAILY  => '@daily',
         ];
     }
 }

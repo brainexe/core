@@ -38,9 +38,12 @@ class CacheListener
     /**
      * @Listen(ClearCacheEvent::NAME)
      */
-    public function handleRebuildCache(ClearCacheEvent $job)
+    public function handleRebuildCache()
     {
         $crons = require ROOT . 'cache/crons.php';
+        if (!$crons) {
+            return;
+        }
 
         foreach ($this->gateway->getEventsByType(CronEvent::CRON) as $id => $job) {
             $name = $job->event->event->timingId;
@@ -48,7 +51,6 @@ class CacheListener
                 unset($crons[$name]);
             }
         }
-
         foreach ($crons as $timingId => $expression) {
             $event = new CronEvent(
                 new TimingEvent($timingId),

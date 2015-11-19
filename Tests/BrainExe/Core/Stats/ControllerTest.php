@@ -2,6 +2,7 @@
 
 namespace BrainExe\Tests\Stats;
 
+use ArrayIterator;
 use BrainExe\Core\Stats\Controller;
 use BrainExe\Core\Stats\Stats;
 use BrainExe\Tests\RedisMockTrait;
@@ -65,7 +66,7 @@ class ControllerTest extends TestCase
         $this->messageQueue
             ->expects($this->once())
             ->method('getEventsByType')
-            ->willReturn($eventsByType);
+            ->willReturn(new ArrayIterator($eventsByType));
 
         $this->messageQueue
             ->expects($this->once())
