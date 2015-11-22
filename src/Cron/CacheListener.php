@@ -47,10 +47,16 @@ class CacheListener
 
         foreach ($this->gateway->getEventsByType(CronEvent::CRON) as $id => $job) {
             $name = $job->event->event->timingId;
+            print_r($id);
+            echo "\n";
+            print_r($name);
+            echo "\n";
+            echo "\n";
             if (isset($crons[$name])) {
                 unset($crons[$name]);
             }
         }
+        print_r($crons);
         foreach ($crons as $timingId => $expression) {
             $event = new CronEvent(
                 new TimingEvent($timingId),

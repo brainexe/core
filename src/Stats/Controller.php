@@ -82,7 +82,7 @@ class Controller
             $since = $this->now();
         }
 
-        return $this->messageQueue->getEventsByType($type, $since);
+        return iterator_to_array($this->messageQueue->getEventsByType($type, $since));
     }
 
     /**
