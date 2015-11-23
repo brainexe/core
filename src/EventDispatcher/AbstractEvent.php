@@ -13,13 +13,13 @@ abstract class AbstractEvent extends Event
     /**
      * @var string
      */
-    public $event_name;
+    public $eventName;
 
     /**
      * @param string $eventName
      */
     public function __construct($eventName)
     {
-        $this->event_name = $eventName;
+        $this->eventName = $eventName;
     }
 }

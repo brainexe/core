@@ -7,5 +7,4 @@ namespace BrainExe\Core\EventDispatcher;
  */
 interface PushViaWebsocket
 {
-
 }

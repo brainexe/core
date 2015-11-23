@@ -92,7 +92,7 @@ class AppKernelTest extends TestCase
             ->with($request, $route)
             ->willReturn(null);
 
-        $callable = function($arguments) {
+        $callable = function ($arguments) {
             return $arguments;
         };
 

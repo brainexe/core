@@ -80,5 +80,4 @@ class GatewayTest extends TestCase
 
         $this->subject->set($userId, $setting, $value);
     }
-
 }

@@ -23,7 +23,7 @@ class RegisterTokens
     {
         $token = $this->generateUniqueId();
 
-        $this->getRedis()->sAdd(self::TOKEN_KEY, $token);
+        $this->getRedis()->sAdd(self::TOKEN_KEY, [$token]);
 
         return $token;
     }

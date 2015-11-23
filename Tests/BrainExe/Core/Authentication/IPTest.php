@@ -3,7 +3,6 @@
 namespace Tests\BrainExe\Core\Authentication;
 
 use BrainExe\Core\Authentication\IP;
-use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase as TestCase;
 use Symfony\Component\HttpFoundation\Request;
 

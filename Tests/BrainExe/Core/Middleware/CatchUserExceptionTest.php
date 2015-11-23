@@ -3,7 +3,6 @@
 namespace Tests\BrainExe\Core\Middleware\UserExceptionMiddleware;
 
 use BrainExe\Core\Application\UserException;
-use BrainExe\Core\DependencyInjection\ObjectFinder;
 use BrainExe\Core\Middleware\CatchUserException;
 use Exception;
 use Monolog\Logger;

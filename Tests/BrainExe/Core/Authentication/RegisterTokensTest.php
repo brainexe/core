@@ -54,7 +54,7 @@ class RegisterTokensTest extends TestCase
         $this->redis
             ->expects($this->once())
             ->method('sAdd')
-            ->with(RegisterTokens::TOKEN_KEY, $tokenId);
+            ->with(RegisterTokens::TOKEN_KEY, [$tokenId]);
 
         $actualResult = $this->subject->addToken();
 

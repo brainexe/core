@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\Container;
 
 /**
  * @Service(public=false)
- * @api
+ * @deprecated
  */
 class ObjectFinder
 {

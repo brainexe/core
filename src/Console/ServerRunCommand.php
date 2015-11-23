@@ -46,7 +46,7 @@ class ServerRunCommand extends Command
     protected function configure()
     {
         $this
-            ->addArgument('address', InputArgument::OPTIONAL, 'Address:port')
+            ->addArgument('address', InputArgument::OPTIONAL, 'host:port')
             ->addOption('quiet', 'q', InputOption::VALUE_NONE)
             ->setName('server:run')
             ->setDescription('Runs PHP built-in web server');

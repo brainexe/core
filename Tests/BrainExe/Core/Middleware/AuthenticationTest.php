@@ -4,7 +4,6 @@ namespace Tests\BrainExe\Core\Middleware\AuthenticationMiddleware;
 
 use BrainExe\Core\Authentication\AnonymusUserVO;
 use BrainExe\Core\Authentication\DatabaseUserProvider;
-use BrainExe\Core\Authentication\IP;
 use BrainExe\Core\Authentication\UserVO;
 use BrainExe\Core\Middleware\Authentication;
 use Exception;
@@ -33,21 +32,13 @@ class AuthenticationTest extends TestCase
      */
     private $userProvider;
 
-    /**
-     * @var IP|MockObject
-     */
-    private $mockIp;
-
     public function setUp()
     {
         $this->userProvider = $this->getMock(DatabaseUserProvider::class, [], [], '', false);
-        $this->mockIp       = $this->getMock(IP::class, [], [], '', false);
 
         $this->subject = new Authentication(
             false,
-            false,
-            $this->userProvider,
-            $this->mockIp
+            $this->userProvider
         );
     }
 
@@ -62,9 +53,7 @@ class AuthenticationTest extends TestCase
     {
         $this->subject = new Authentication(
             true,
-            false,
-            $this->userProvider,
-            $this->mockIp
+            $this->userProvider
         );
 
         $userId = 42;
@@ -89,9 +78,7 @@ class AuthenticationTest extends TestCase
     {
         $this->subject = new Authentication(
             false,
-            false,
-            $this->userProvider,
-            $this->mockIp
+            $this->userProvider
         );
 
         $userId = 42;
@@ -117,9 +104,7 @@ class AuthenticationTest extends TestCase
     {
         $this->subject = new Authentication(
             false,
-            false,
-            $this->userProvider,
-            $this->mockIp
+            $this->userProvider
         );
 
         $userId = 0;
@@ -156,9 +141,7 @@ class AuthenticationTest extends TestCase
     {
         $this->subject = new Authentication(
             false,
-            false,
-            $this->userProvider,
-            $this->mockIp
+            $this->userProvider
         );
 
         $userId = 42;
@@ -186,9 +169,7 @@ class AuthenticationTest extends TestCase
     {
         $this->subject = new Authentication(
             false,
-            false,
-            $this->userProvider,
-            $this->mockIp
+            $this->userProvider
         );
 
         $userId = 42;

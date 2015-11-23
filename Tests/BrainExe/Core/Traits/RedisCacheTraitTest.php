@@ -49,7 +49,7 @@ class RedisCacheTraitTest extends PHPUnit_Framework_TestCase
         $ttl   = 100;
         $value = 'value';
 
-        $callback = function() use ($value) {
+        $callback = function () use ($value) {
             return $value;
         };
 
@@ -70,7 +70,7 @@ class RedisCacheTraitTest extends PHPUnit_Framework_TestCase
         $ttl   = 100;
         $value = 'value';
 
-        $callback = function() use ($value) {
+        $callback = function () use ($value) {
             return $value;
         };
 

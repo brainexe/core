@@ -45,4 +45,18 @@ class IdGeneratorTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals($expected, $actual);
     }
+
+    public function testGenerateRandomId()
+    {
+        $actualResult = $this->subject->generateRandomId(10);
+        $actualResult2 = $this->subject->generateRandomId(10);
+
+        $this->assertInternalType('string', $actualResult);
+        $this->assertInternalType('string', $actualResult2);
+
+        $this->assertEquals(10, strlen($actualResult));
+        $this->assertEquals(10, strlen($actualResult2));
+
+        $this->assertNotEquals($actualResult, $actualResult2);
+    }
 }

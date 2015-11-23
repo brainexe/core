@@ -2,7 +2,7 @@
 
 namespace BrainExe\Core\DependencyInjection\CompilerPass;
 
-use BrainExe\Annotations\Annotations\Inject;
+
 use BrainExe\Core\Annotations\CompilerPass;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;

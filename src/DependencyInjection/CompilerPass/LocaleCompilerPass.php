@@ -3,10 +3,9 @@
 namespace BrainExe\Core\DependencyInjection\CompilerPass;
 
 use BrainExe\Core\Annotations\CompilerPass;
-use BrainExe\Core\EventDispatcher\AbstractEvent;
+
 use BrainExe\Core\Util\Glob;
-use Exception;
-use ReflectionClass;
+
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 

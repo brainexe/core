@@ -2,7 +2,7 @@
 
 namespace BrainExe\Core\EventDispatcher;
 
-use BrainExe\MessageQueue\Event\MessageQueueEvent;
+use BrainExe\Core\MessageQueue\Event\MessageQueueEvent;
 
 /**
  * @api
@@ -17,7 +17,7 @@ class BackgroundEvent extends MessageQueueEvent
      */
     public function __construct(AbstractEvent $event)
     {
-        $this->event_name = self::BACKGROUND;
+        parent::__construct(self::BACKGROUND);
         $this->event = $event;
     }
 }

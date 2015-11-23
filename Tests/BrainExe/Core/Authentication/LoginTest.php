@@ -2,7 +2,6 @@
 
 namespace Tests\BrainExe\Core\Authentication\Login;
 
-use BrainExe\Core\Application\UserException;
 use BrainExe\Core\Authentication\AuthenticationDataVO;
 use BrainExe\Core\Authentication\DatabaseUserProvider;
 use BrainExe\Core\Authentication\Event\AuthenticateUserEvent;

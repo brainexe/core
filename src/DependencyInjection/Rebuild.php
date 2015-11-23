@@ -6,12 +6,12 @@ use BrainExe\Annotations\Annotations\Service;
 use BrainExe\Annotations\Loader;
 use BrainExe\Core\Core;
 use BrainExe\Core\DependencyInjection\CompilerPass\GlobalCompilerPass;
-use Symfony\Bridge\ProxyManager\LazyProxy\Instantiator\RuntimeInstantiator;
+
 use Symfony\Bridge\ProxyManager\LazyProxy\PhpDumper\ProxyDumper;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
-use Symfony\Component\DependencyInjection\LazyProxy\Instantiator\RealServiceInstantiator;
+
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -80,7 +80,7 @@ class Rebuild
         $className     = sprintf('dic_%d', $randomId);
         $containerFile = 'cache/dic.php';
 
-        $dumper           = new PhpDumper($container);
+        $dumper = new PhpDumper($container);
         $dumper->setProxyDumper(new ProxyDumper());
 
         $containerContent = $dumper->dump(['class' => $className]);

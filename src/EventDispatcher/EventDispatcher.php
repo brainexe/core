@@ -70,7 +70,7 @@ class EventDispatcher extends ContainerAwareEventDispatcher
      */
     public function dispatchEvent(AbstractEvent $event)
     {
-        $this->dispatch($event->event_name, $event);
+        $this->dispatch($event->eventName, $event);
         if ($event instanceof PushViaWebsocket) {
             /** @var AbstractEvent $event */
             $this->dispatchAsWebsocketEvent($event);
@@ -84,7 +84,7 @@ class EventDispatcher extends ContainerAwareEventDispatcher
     {
         $wrappedEvent = new WebSocketEvent($event);
 
-        $this->dispatch($wrappedEvent->event_name, $wrappedEvent);
+        $this->dispatch($wrappedEvent->eventName, $wrappedEvent);
     }
 
     /**

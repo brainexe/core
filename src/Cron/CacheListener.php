@@ -10,7 +10,7 @@ use BrainExe\Core\EventDispatcher\Events\ClearCacheEvent;
 use BrainExe\Core\EventDispatcher\Events\TimingEvent;
 use BrainExe\Core\Traits\EventDispatcherTrait;
 use BrainExe\Core\Traits\LoggerTrait;
-use BrainExe\MessageQueue\Gateway;
+use BrainExe\Core\MessageQueue\Gateway;
 
 /**
  * @EventListener("Crons.CacheListener")
@@ -47,16 +47,10 @@ class CacheListener
 
         foreach ($this->gateway->getEventsByType(CronEvent::CRON) as $id => $job) {
             $name = $job->event->event->timingId;
-            print_r($id);
-            echo "\n";
-            print_r($name);
-            echo "\n";
-            echo "\n";
             if (isset($crons[$name])) {
                 unset($crons[$name]);
             }
         }
-        print_r($crons);
         foreach ($crons as $timingId => $expression) {
             $event = new CronEvent(
                 new TimingEvent($timingId),
@@ -64,7 +58,6 @@ class CacheListener
             );
 
             $this->dispatchEvent($event);
-
             $this->debug(sprintf('Registered cron "%s" with expression: "%s"', $timingId, $expression));
         }
     }

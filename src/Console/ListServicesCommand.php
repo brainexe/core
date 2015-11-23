@@ -47,11 +47,11 @@ class ListServicesCommand extends Command
 
     /**
      * @Inject("@Core.Rebuild")
-     * @param Rebuild $routes
+     * @param Rebuild $rebuild
      */
-    public function __construct(Rebuild $routes)
+    public function __construct(Rebuild $rebuild)
     {
-        $this->rebuild = $routes;
+        $this->rebuild = $rebuild;
 
         parent::__construct();
     }

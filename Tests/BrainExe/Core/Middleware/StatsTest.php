@@ -2,21 +2,16 @@
 
 namespace Tests\BrainExe\Core\Middleware\GentimeMiddleware;
 
-use BrainExe\Core\Authentication\UserVO;
 use BrainExe\Core\EventDispatcher\EventDispatcher;
-use BrainExe\Core\Middleware\Gentime;
-use BrainExe\Core\Middleware\Parameter;
 use BrainExe\Core\Middleware\Stats;
 use BrainExe\Core\Stats\Event;
 use BrainExe\Core\Stats\MultiEvent;
 use Exception;
-use Monolog\Logger;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase as TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Route;
-use Tests\BrainExe\Core\EventDispatcher\EventDispatcher\EventDispatcherTest;
 
 /**
  * @covers BrainExe\Core\Middleware\Stats
@@ -58,10 +53,12 @@ class StatsTest extends TestCase
         $request  = new Request();
         $response = new Response();
         $request->attributes->set('_route', 'route');
+        $request->attributes->set('user_id', 42);
 
         $event = new MultiEvent(MultiEvent::INCREASE, [
             'request:route:route' => 1,
-            'response:code:200'   => 1
+            'response:code:200'   => 1,
+            'request:user:42'     => 1
         ]);
         $this->dispatcher
             ->expects($this->once())
@@ -74,9 +71,12 @@ class StatsTest extends TestCase
     public function testProcessException()
     {
         $request   = new Request();
-        $exception = new Exception();
+        $exception = new Exception('test');
 
-        $event = new Event(Event::INCREASE, 'request:code:500');
+        $event = new MultiEvent(MultiEvent::INCREASE, [
+            'response:code:500'    => 1,
+            'exception:Exception' => 1,
+        ]);
         $this->dispatcher
             ->expects($this->once())
             ->method('dispatchEvent')

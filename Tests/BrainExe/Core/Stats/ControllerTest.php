@@ -2,13 +2,12 @@
 
 namespace BrainExe\Tests\Stats;
 
-use ArrayIterator;
 use BrainExe\Core\Stats\Controller;
 use BrainExe\Core\Stats\Stats;
 use BrainExe\Tests\RedisMockTrait;
 use PHPUnit_Framework_TestCase as TestCase;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use BrainExe\MessageQueue\Gateway as MessageQueueGateway;
+use BrainExe\Core\MessageQueue\Gateway as MessageQueueGateway;
 use BrainExe\Core\EventDispatcher\EventDispatcher;
 use Predis\Client;
 use Symfony\Component\HttpFoundation\Request;
@@ -66,7 +65,7 @@ class ControllerTest extends TestCase
         $this->messageQueue
             ->expects($this->once())
             ->method('getEventsByType')
-            ->willReturn(new ArrayIterator($eventsByType));
+            ->willReturn($eventsByType);
 
         $this->messageQueue
             ->expects($this->once())

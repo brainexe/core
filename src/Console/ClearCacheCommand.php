@@ -40,7 +40,7 @@ class ClearCacheCommand extends Command
      */
     public function __construct(Rebuild $rebuild)
     {
-        $this->rebuild    = $rebuild;
+        $this->rebuild = $rebuild;
 
         parent::__construct();
     }

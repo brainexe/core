@@ -23,6 +23,7 @@ class Cache extends AbstractMiddleware
     use LoggerTrait;
 
     const DEFAULT_TTL = 60;
+    const PREFIX = 'cache:';
 
     /**
      * @var string
@@ -90,7 +91,7 @@ class Cache extends AbstractMiddleware
      */
     private function generateCacheKey(Request $request)
     {
-        return $request->getRequestUri();
+        return self::PREFIX . $request->getRequestUri();
     }
 
     /**

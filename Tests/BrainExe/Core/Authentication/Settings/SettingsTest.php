@@ -81,5 +81,4 @@ class SettingsTest extends TestCase
 
         $this->subject->set($userId, $setting, $value);
     }
-
 }

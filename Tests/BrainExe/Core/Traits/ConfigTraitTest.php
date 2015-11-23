@@ -21,7 +21,7 @@ class ConfigTraitTest extends PHPUnit_Framework_TestCase
 {
 
     /**
-     * @var ConfigTrait
+     * @var ConfigTest
      */
     private $subject;
 

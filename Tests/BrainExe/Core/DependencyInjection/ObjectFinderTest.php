@@ -4,9 +4,10 @@ namespace BrainExe\Tests\Core\DependencyInjection;
 
 use BrainExe\Core\DependencyInjection\ObjectFinder;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
+use PHPUnit_Framework_TestCase as TestCase;
 use Symfony\Component\DependencyInjection\Container;
 
-class ObjectFinderTest extends \PHPUnit_Framework_TestCase
+class ObjectFinderTest extends TestCase
 {
 
     /**
@@ -17,13 +18,13 @@ class ObjectFinderTest extends \PHPUnit_Framework_TestCase
     /**
      * @var Container|MockObject
      */
-    private $mockContainer;
+    private $container;
 
     public function setup()
     {
-        $this->mockContainer = $this->getMock(Container::class);
+        $this->container = $this->getMock(Container::class);
 
-        $this->subject = new ObjectFinder($this->mockContainer);
+        $this->subject = new ObjectFinder($this->container);
     }
 
     public function testGetService()
@@ -31,7 +32,7 @@ class ObjectFinderTest extends \PHPUnit_Framework_TestCase
         $serviceId = 'FooService';
         $service = new \stdClass();
 
-        $this->mockContainer
+        $this->container
             ->expects($this->once())
             ->method('get')
             ->with($serviceId)

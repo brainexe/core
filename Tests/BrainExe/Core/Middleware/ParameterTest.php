@@ -2,14 +2,9 @@
 
 namespace Tests\BrainExe\Core\Middleware\GentimeMiddleware;
 
-use BrainExe\Core\Authentication\UserVO;
-use BrainExe\Core\Middleware\Gentime;
 use BrainExe\Core\Middleware\Parameter;
-use Monolog\Logger;
-use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase as TestCase;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Route;
 
 /**

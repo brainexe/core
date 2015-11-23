@@ -20,6 +20,6 @@ class DeleteUserEventTest extends TestCase
         $subject = new DeleteUserEvent($user, $eventName);
 
         $this->assertEquals($user, $subject->getUserVO());
-        $this->assertEquals($eventName, $subject->event_name);
+        $this->assertEquals($eventName, $subject->eventName);
     }
 }

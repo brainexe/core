@@ -2,7 +2,6 @@
 
 namespace BrainExe\Core\Logger;
 
-
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 
@@ -72,14 +71,5 @@ class ChannelStreamHandler extends StreamHandler
         unset($record['context']['channel']);
 
         return $supported;
-    }
-
-    /**
-     * @codeCoverageIgnore
-     * {@inheritdoc}
-     */
-    protected function write(array $record)
-    {
-        parent::write($record);
     }
 }

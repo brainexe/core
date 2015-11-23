@@ -7,9 +7,7 @@ use BrainExe\Core\Annotations\Middleware;
 use BrainExe\Core\Application\UserException;
 use BrainExe\Core\Authentication\AnonymusUserVO;
 use BrainExe\Core\Authentication\DatabaseUserProvider;
-use BrainExe\Core\Authentication\IP;
 use BrainExe\Core\Authentication\UserVO;
-
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,28 +36,17 @@ class Authentication extends AbstractMiddleware
     private $allowedPrivateIps;
 
     /**
-     * @var IP
-     */
-    private $ip;
-
-    /**
      * @Inject({
      *  "%application.guests_allowed%",
-     *  "%application.allowed_private_ips%",
      *  "@DatabaseUserProvider",
-     *  "@Authentication.IP"
      * })
      * @param boolean $guestsAllowed
-     * @param boolean $allowedPrivateIps
      * @param DatabaseUserProvider $userProvider
-     * @param IP $ipCheck
      */
-    public function __construct($guestsAllowed, $allowedPrivateIps, DatabaseUserProvider $userProvider, IP $ipCheck)
+    public function __construct($guestsAllowed, DatabaseUserProvider $userProvider)
     {
         $this->guestsAllowed     = $guestsAllowed;
         $this->userProvider      = $userProvider;
-        $this->allowedPrivateIps = $allowedPrivateIps;
-        $this->ip                = $ipCheck;
     }
 
     /**
@@ -94,6 +81,8 @@ class Authentication extends AbstractMiddleware
             }
             return new RedirectResponse('#/login');
         }
+
+        return null;
     }
 
     /**

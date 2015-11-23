@@ -29,11 +29,10 @@
     "symfony/proxy-manager-bridge": "~2.7",
     "zendframework/zend-stdlib": "~2.7",
     "brainexe/annotations": "~1.1",
-    "brainexe/message-queue": "~1.1",
     "monolog/monolog": "~1.17",
     "doctrine/cache": "~1.5",
     "predis/predis": "~1.1",
-    "mtdowling/cron-expression": "dev-master"
+    "mtdowling/cron-expression": "1.0.*"
   },
   "require-dev": {
     "phpunit/phpunit": "~4.7",

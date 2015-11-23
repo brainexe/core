@@ -2,7 +2,7 @@
 
 namespace BrainExe\Core\EventDispatcher;
 
-use BrainExe\MessageQueue\Event\MessageQueueEvent;
+use BrainExe\Core\MessageQueue\Event\MessageQueueEvent;
 
 /**
  * @api

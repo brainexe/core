@@ -14,6 +14,7 @@ use BrainExe\Core\Annotations\Command as CommandAnnotation;
 use Symfony\Component\Yaml\Dumper;
 
 /**
+ * @todo
  * @CommandAnnotation
  * @codeCoverageIgnore
  */
@@ -38,11 +39,11 @@ class SwaggerDumpCommand extends Command
 
     /**
      * @Inject("@Core.RouteCollection")
-     * @param SerializedRouteCollection $routes
+     * @param SerializedRouteCollection $rebuild
      */
-    public function __construct(SerializedRouteCollection $routes)
+    public function __construct(SerializedRouteCollection $rebuild)
     {
-        $this->routes = $routes;
+        $this->routes = $rebuild;
 
         parent::__construct();
     }

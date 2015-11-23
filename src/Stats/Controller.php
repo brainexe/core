@@ -7,9 +7,9 @@ use BrainExe\Core\Annotations\Controller as ControllerAnnotation;
 use BrainExe\Core\Annotations\Route;
 use BrainExe\Core\Traits\RedisTrait;
 use BrainExe\Core\Traits\TimeTrait;
-use BrainExe\MessageQueue\Gateway as MessageQueueGateway;
+use BrainExe\Core\MessageQueue\Gateway as MessageQueueGateway;
 use BrainExe\Core\Traits\EventDispatcherTrait;
-use BrainExe\MessageQueue\Job;
+use BrainExe\Core\MessageQueue\Job;
 use Predis\PredisException;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -62,7 +62,7 @@ class Controller
         }
 
         return [
-            'jobs'  => iterator_to_array($this->messageQueue->getEventsByType()),
+            'jobs'  => $this->messageQueue->getEventsByType(),
             'stats' => $stats,
             'redis' => $redisStats
         ];
@@ -82,7 +82,7 @@ class Controller
             $since = $this->now();
         }
 
-        return iterator_to_array($this->messageQueue->getEventsByType($type, $since));
+        return $this->messageQueue->getEventsByType($type, $since);
     }
 
     /**

@@ -22,7 +22,6 @@ class Gentime extends AbstractMiddleware
     public function processResponse(Request $request, Response $response)
     {
         $startTime = $request->server->get('REQUEST_TIME_FLOAT');
-        $diff      = microtime(true) - $startTime;
         $user      = $request->attributes->get('user');
 
         if ($user) {
@@ -32,6 +31,7 @@ class Gentime extends AbstractMiddleware
             $username = '-anonymous-';
         }
 
+        $diff = microtime(true) - $startTime;
         $this->info(
             sprintf(
                 '%0.2fms (route: %s, user:%s)',

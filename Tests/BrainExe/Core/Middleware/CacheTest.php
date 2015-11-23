@@ -4,7 +4,6 @@ namespace Tests\BrainExe\Core\Middleware\CacheMiddleware;
 
 use BrainExe\Core\Middleware\Cache;
 use Doctrine\Common\Cache\CacheProvider;
-use Doctrine\Common\Cache\RedisCache;
 use Monolog\Logger;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase as TestCase;
@@ -86,7 +85,7 @@ class CacheTest extends TestCase
         $this->cache
             ->expects($this->once())
             ->method('contains')
-            ->with($requestUri)
+            ->with(Cache::PREFIX . $requestUri)
             ->willReturn(false);
 
         $actualResponse = $this->subject->processRequest($request, $route);
@@ -102,7 +101,7 @@ class CacheTest extends TestCase
         $this->cache
             ->expects($this->once())
             ->method('save')
-            ->with($requestUri, $response, Cache::DEFAULT_TTL)
+            ->with(Cache::PREFIX . $requestUri, $response, Cache::DEFAULT_TTL)
             ->willReturn(false);
 
         $this->subject->processResponse($request, $response);
@@ -133,13 +132,13 @@ class CacheTest extends TestCase
         $this->cache
             ->expects($this->once())
             ->method('contains')
-            ->with($requestUri)
+            ->with(Cache::PREFIX . $requestUri)
             ->willReturn(true);
 
         $this->cache
             ->expects($this->once())
             ->method('fetch')
-            ->with($requestUri)
+            ->with(Cache::PREFIX . $requestUri)
             ->willReturn($response);
 
         $actualResponse = $this->subject->processRequest($request, $route);
