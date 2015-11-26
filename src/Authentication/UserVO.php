@@ -13,6 +13,11 @@ class UserVO implements JsonSerializable
     const ROLE_ADMIN = 'admin';
     const ROLE_USER  = 'user';
 
+    const ROLES = [
+        self::ROLE_ADMIN,
+        self::ROLE_USER
+    ];
+
     /**
      * @var integer
      */
@@ -99,11 +104,20 @@ class UserVO implements JsonSerializable
      */
     public function jsonSerialize()
     {
+        return $this->toArray();
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray()
+    {
         return [
-            'id'       => $this->id,
+            'userId'   => $this->id,
             'username' => $this->username,
-            'avatar'   => $this->avatar,
             'roles'    => $this->roles,
+            'email'    => $this->email,
+            'avatar'   => $this->avatar,
         ];
     }
 }

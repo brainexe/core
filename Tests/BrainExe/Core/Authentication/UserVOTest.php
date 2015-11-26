@@ -52,14 +52,16 @@ class UserVOTest extends TestCase
         $this->subject->id            = $userId = 42;
         $this->subject->password      = 'password';
         $this->subject->password_hash = 'password_hash';
+        $this->subject->email         = 'email@localhost';
 
         $actualResult = $this->subject->jsonSerialize();
 
         $expectedResult = [
             'username' => $username,
-            'id' => $userId,
+            'userId' => $userId,
             'avatar' => null,
-            'roles' => []
+            'roles' => [],
+            'email' => 'email@localhost'
         ];
         $this->assertEquals($expectedResult, $actualResult);
     }
