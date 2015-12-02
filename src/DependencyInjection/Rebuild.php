@@ -86,6 +86,6 @@ class Rebuild
         $containerContent = $dumper->dump(['class' => $className]);
         file_put_contents('cache/dic.php', $containerContent);
         file_put_contents('cache/dic.txt', $className);
-        chmod($containerFile, 0777);
+        @chmod($containerFile, 0777);
     }
 }

@@ -5,10 +5,12 @@ namespace BrainExe\Core;
 use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Core\Annotations\EventListener;
 use BrainExe\Core\Annotations\Listen;
+use BrainExe\Core\DependencyInjection\CompilerPass\Cron;
 use BrainExe\Core\EventDispatcher\CronEvent;
 use BrainExe\Core\EventDispatcher\Events\ClearCacheEvent;
 use BrainExe\Core\EventDispatcher\Events\TimingEvent;
 use BrainExe\Core\Traits\EventDispatcherTrait;
+use BrainExe\Core\Traits\FileCacheTrait;
 use BrainExe\Core\Traits\LoggerTrait;
 use BrainExe\Core\MessageQueue\Gateway;
 
@@ -18,6 +20,7 @@ use BrainExe\Core\MessageQueue\Gateway;
 class CacheListener
 {
 
+    use FileCacheTrait;
     use EventDispatcherTrait;
     use LoggerTrait;
 
@@ -40,7 +43,7 @@ class CacheListener
      */
     public function handleRebuildCache()
     {
-        $crons = require ROOT . 'cache/crons.php';
+        $crons = $this->includeFile(Cron::CACHE_FILE);
         if (!$crons) {
             return;
         }

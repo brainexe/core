@@ -2,13 +2,12 @@
 
 namespace BrainExe\Tests\Stats;
 
+use BrainExe\Core\MessageQueue\Gateway as MessageQueueGateway;
 use BrainExe\Core\Stats\Controller;
 use BrainExe\Core\Stats\Stats;
 use BrainExe\Tests\RedisMockTrait;
-use PHPUnit_Framework_TestCase as TestCase;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use BrainExe\Core\MessageQueue\Gateway as MessageQueueGateway;
-use BrainExe\Core\EventDispatcher\EventDispatcher;
+use PHPUnit_Framework_TestCase as TestCase;
 use Predis\Client;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -31,11 +30,6 @@ class ControllerTest extends TestCase
     private $messageQueue;
 
     /**
-     * @var EventDispatcher|MockObject
-     */
-    private $dispatcher;
-
-    /**
      * @var Stats|MockObject
      */
     private $stats;
@@ -48,12 +42,10 @@ class ControllerTest extends TestCase
     public function setUp()
     {
         $this->messageQueue = $this->getMock(MessageQueueGateway::class, [], [], '', false);
-        $this->dispatcher   = $this->getMock(EventDispatcher::class, [], [], '', false);
         $this->stats        = $this->getMock(Stats::class, [], [], '', false);
         $this->redis        = $this->getRedisMock();
 
         $this->subject = new Controller($this->stats, $this->messageQueue);
-        $this->subject->setEventDispatcher($this->dispatcher);
         $this->subject->setRedis($this->redis);
     }
 
@@ -97,23 +89,6 @@ class ControllerTest extends TestCase
         ];
 
         $this->assertEquals($expectedResult, $actualResult);
-    }
-
-    public function testDeleteJob()
-    {
-        $jobId = 10;
-        $request = new Request();
-        $request->request->set('job_id', $jobId);
-
-        $this->messageQueue
-            ->expects($this->once())
-            ->method('deleteEvent')
-            ->willReturn($jobId);
-
-
-        $actualResult = $this->subject->deleteJob($request);
-
-        $this->assertTrue($actualResult);
     }
 
     public function testResetStats()

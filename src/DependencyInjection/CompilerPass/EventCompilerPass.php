@@ -4,6 +4,7 @@ namespace BrainExe\Core\DependencyInjection\CompilerPass;
 
 use BrainExe\Core\Annotations\CompilerPass;
 use BrainExe\Core\EventDispatcher\AbstractEvent;
+use BrainExe\Core\Traits\FileCacheTrait;
 use Exception;
 use ReflectionClass;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -14,6 +15,8 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  */
 class EventCompilerPass implements CompilerPassInterface
 {
+    use FileCacheTrait;
+
     /**
      * {@inheritdoc}
      */
@@ -53,8 +56,6 @@ class EventCompilerPass implements CompilerPassInterface
             };
         }
 
-        $content = '<?php return ' . var_export($events, true) . ';';
-        $file  = sprintf('%scache/events.php', ROOT);
-        file_put_contents($file, $content);
+        $this->dumpVariableToCache('events', $events);
     }
 }

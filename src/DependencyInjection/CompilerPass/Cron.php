@@ -4,6 +4,7 @@ namespace BrainExe\Core\DependencyInjection\CompilerPass;
 
 use BrainExe\Core\Annotations\CompilerPass;
 use BrainExe\Core\Cron\CronDefinition as CronInterface;
+use BrainExe\Core\Traits\FileCacheTrait;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -12,8 +13,10 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  */
 class Cron implements CompilerPassInterface
 {
+    use FileCacheTrait;
 
     const TAG = 'cron';
+    const CACHE_FILE = 'crons';
 
     /**
      * {@inheritdoc}
@@ -30,6 +33,6 @@ class Cron implements CompilerPassInterface
             $allCrons = array_merge($allCrons, $cron::getCrons());
         }
 
-        file_put_contents(ROOT . 'cache/crons.php', "<?php return " . var_export($allCrons, true) . ";");
+        $this->dumpVariableToCache(self::CACHE_FILE, $allCrons);
     }
 }

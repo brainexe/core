@@ -5,11 +5,8 @@ namespace BrainExe\Core\Stats;
 use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Core\Annotations\Controller as ControllerAnnotation;
 use BrainExe\Core\Annotations\Route;
-use BrainExe\Core\Traits\RedisTrait;
-use BrainExe\Core\Traits\TimeTrait;
 use BrainExe\Core\MessageQueue\Gateway as MessageQueueGateway;
-use BrainExe\Core\Traits\EventDispatcherTrait;
-use BrainExe\Core\MessageQueue\Job;
+use BrainExe\Core\Traits\RedisTrait;
 use Predis\PredisException;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -18,10 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class Controller
 {
-
-    use EventDispatcherTrait;
     use RedisTrait;
-    use TimeTrait;
 
     /**
      * @var MessageQueueGateway
@@ -68,35 +62,6 @@ class Controller
         ];
     }
 
-    /**
-     * @Route("/jobs/{type}/", name="status.jobs.type", methods="GET")
-     * @param Request $request
-     * @param string $type
-     * @return Job[]
-     */
-    public function getJobs(Request $request, $type)
-    {
-        $since = 0;
-
-        if ($request->query->get('futureOnly')) {
-            $since = $this->now();
-        }
-
-        return $this->messageQueue->getEventsByType($type, $since);
-    }
-
-    /**
-     * @Route("/stats/event/", methods="DELETE", name="stats.deleteJob")
-     * @param Request $request
-     * @return bool
-     */
-    public function deleteJob(Request $request)
-    {
-        $jobId = $request->query->get('job_id');
-        $this->messageQueue->deleteEvent($jobId);
-
-        return true;
-    }
     /**
      * @Route("/stats/reset/", methods="POST", name="stats.reset")
      * @param Request $request

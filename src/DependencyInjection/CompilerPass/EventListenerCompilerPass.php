@@ -51,13 +51,6 @@ class EventListenerCompilerPass implements CompilerPassInterface
                     $args['priority']
                 );
             }
-
-//            /** @var EventSubscriberInterface $class */
-//            $class = $container->getDefinition($serviceId)->getClass();
-
-//            foreach ($class::getSubscribedEvents() as $eventName => $params) {
-//                $this->addEvent($dispatcher, $params, $eventName, $serviceId);
-//            }
         }
     }
 
