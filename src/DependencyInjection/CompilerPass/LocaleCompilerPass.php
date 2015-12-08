@@ -12,7 +12,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 /**
  * @CompilerPass
  */
-class LocateCompilerPass implements CompilerPassInterface
+class LocaleCompilerPass implements CompilerPassInterface
 {
     /**
      * {@inheritdoc}
@@ -30,8 +30,6 @@ class LocateCompilerPass implements CompilerPassInterface
         $locales = array_map(function ($file) {
             return basename($file, '.po');
         }, $locales);
-
-        array_unshift($locales, 'en'); // EN is default locale
 
         $container->setParameter('locales', $locales);
     }

@@ -13,12 +13,12 @@ services:
   - redis-server
 
 before_install:
-  - mkdir cache
+  - mkdir cache -p
   - composer install
-  - wget https://scrutinizer-ci.com/ocular.phar
+  - wget https://scrutinizer-ci.com/ocular.phar -q
 
 script:
   - phpunit --coverage-clover=coverage.clover
 
 after_script:
-  - if [ $TRAVIS_TEST_RESULT == 0 ]; then php ocular.phar code-coverage:upload --format=php-clover coverage.clover; fi
+  - php ocular.phar code-coverage:upload --format=php-clover coverage.clover

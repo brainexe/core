@@ -118,5 +118,6 @@
 				<service class="Symfony\Component\Routing\RequestContext"/>
 			</argument>
 		</service>
+		<service id="Mailer" class="PHPMailer" public="false"/>
 	</services>
 </container>
