@@ -20,24 +20,37 @@ class Login
     use EventDispatcherTrait;
 
     /**
-     * @var DatabaseUserProvider
+     * @var LoadUser
      */
-    private $userProvider;
+    private $loadUser;
 
     /**
      * @var Token
      */
     private $token;
+    /**
+     * @var PasswordHasher
+     */
+    private $passwordHasher;
 
     /**
-     * @Inject({"@DatabaseUserProvider", "@Authentication.Token"})
-     * @param DatabaseUserProvider $userProvider
+     * @Inject({
+     *     "@Authentication.LoadUser",
+     *     "@Authentication.Token",
+     *     "@PasswordHasher"
+     * })
+     * @param LoadUser $userProvider
      * @param Token $token
+     * @param PasswordHasher $passwordHasher
      */
-    public function __construct(DatabaseUserProvider $userProvider, Token $token)
-    {
-        $this->userProvider = $userProvider;
-        $this->token        = $token;
+    public function __construct(
+        LoadUser $userProvider,
+        Token $token,
+        PasswordHasher $passwordHasher
+    ) {
+        $this->loadUser       = $userProvider;
+        $this->token          = $token;
+        $this->passwordHasher = $passwordHasher;
     }
 
     /**
@@ -50,12 +63,12 @@ class Login
      */
     public function tryLogin($username, $password, $oneTimeToken, SessionInterface $session)
     {
-        $userVo = $this->userProvider->loadUserByUsername($username);
+        $userVo = $this->loadUser->loadUserByUsername($username);
         if (empty($userVo)) {
             throw new UserException('Invalid Username');
         }
 
-        if (!$this->userProvider->verifyHash($password, $userVo->getPassword())) {
+        if (!$this->passwordHasher->verifyHash($password, $userVo->getPassword())) {
             throw new UserException('Invalid Password');
         }
 
@@ -80,7 +93,7 @@ class Login
             throw new UserException('Invalid Token');
         }
 
-        $userVo = $this->userProvider->loadUserById($tokenData['userId']);
+        $userVo = $this->loadUser->loadUserById($tokenData['userId']);
 
         $authenticationVo = new AuthenticationDataVO($userVo, null, null);
 
@@ -96,7 +109,7 @@ class Login
     public function needsOneTimeToken($username)
     {
         try {
-            $user = $this->userProvider->loadUserByUsername($username);
+            $user = $this->loadUser->loadUserByUsername($username);
         } catch (UsernameNotFoundException $e) {
             return false;
         }

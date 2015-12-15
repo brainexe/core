@@ -30,28 +30,33 @@ class DatabaseUserProvider
     private $hasher;
 
     /**
-     * @Inject({"@PasswordHasher"})
-     * @param PasswordHasher $passwordHasher
+     * @var LoadUser
      */
-    public function __construct(PasswordHasher $passwordHasher)
+    private $loadUser;
+
+    /**
+     * @Inject({
+        "@PasswordHasher",
+        "@Authentication.LoadUser",
+     * })
+     * @param PasswordHasher $passwordHasher
+     * @param LoadUser $loadUser
+     */
+    public function __construct(PasswordHasher $passwordHasher, LoadUser $loadUser)
     {
-        $this->hasher = $passwordHasher;
+        $this->hasher   = $passwordHasher;
+        $this->loadUser = $loadUser;
     }
 
     /**
      * @param string $username
      * @return UserVO
+     * @deprecated use LoadUser
      * @throws UsernameNotFoundException
      */
     public function loadUserByUsername($username)
     {
-        $userId = $this->getRedis()->HGET(self::REDIS_USER_NAMES, strtolower($username));
-
-        if (empty($userId)) {
-            throw new UsernameNotFoundException(sprintf('Username "%s" does not exist.', $username));
-        }
-
-        return $this->loadUserById($userId);
+        return $this->loadUser->loadUserByUsername($username);
     }
 
     /**
@@ -60,22 +65,7 @@ class DatabaseUserProvider
      */
     public function loadUserById($userId)
     {
-        $redisUser = $this->getRedis()->hgetall($this->getKey($userId));
-
-        if (empty($redisUser)) {
-            return new AnonymusUserVO();
-        }
-
-        $user                  = new UserVO();
-        $user->id              = $userId;
-        $user->username        = $redisUser['username'];
-        $user->email           = isset($redisUser['email']) ? $redisUser['email'] : '';
-        $user->password_hash   = $redisUser['password'];
-        $user->one_time_secret = isset($redisUser['one_time_secret']) ? $redisUser['one_time_secret'] : null;
-        $user->roles           = array_filter(explode(',', $redisUser['roles']));
-        $user->avatar          = isset($redisUser['avatar']) ? $redisUser['avatar'] : '';
-
-        return $user;
+        return $this->loadUser->loadUserById($userId);
     }
 
     /**
@@ -166,7 +156,7 @@ class DatabaseUserProvider
      */
     public function deleteUser($userId)
     {
-        $user = $this->loadUserById($userId);
+        $user = $this->loadUser->loadUserById($userId);
 
         if ($user instanceof AnonymusUserVO) {
             return;

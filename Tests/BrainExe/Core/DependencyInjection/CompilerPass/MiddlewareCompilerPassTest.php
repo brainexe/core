@@ -29,7 +29,8 @@ class MiddlewareCompilerPassTest extends PHPUnit_Framework_TestCase
     {
         $this->container  = $this->getMock(ContainerBuilder::class, [
             'getDefinition',
-            'findTaggedServiceIds'
+            'setParameter',
+            'getParameter',
         ]);
         $this->subject = new MiddlewareCompilerPass();
 
@@ -39,16 +40,13 @@ class MiddlewareCompilerPassTest extends PHPUnit_Framework_TestCase
     {
         $appKernel = $this->getMock(Definition::class);
 
-        $serviceIds = [
-            $serviceId1 = 'service_id1' => [0 => ['priority' => 5]],
-            'service_id2' => [0 => ['priority' => null]],
-        ];
-
         $this->container
             ->expects($this->once())
-            ->method('findTaggedServiceIds')
-            ->with(MiddlewareCompilerPass::TAG)
-            ->willReturn($serviceIds);
+            ->method('getParameter')
+            ->with('application.middlewares')
+            ->willReturn([
+                $serviceId1 = 'service_id1',
+            ]);
 
         $this->container
             ->expects($this->once())
@@ -60,6 +58,11 @@ class MiddlewareCompilerPassTest extends PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('addMethodCall')
             ->with('setMiddlewares', [[new Reference($serviceId1)]]);
+
+        $this->container
+            ->expects($this->once())
+            ->method('setParameter')
+            ->with('application.middlewares', []);
 
         $this->subject->process($this->container);
     }

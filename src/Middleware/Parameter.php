@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Route;
 
 /**
- * @Middleware("Middleware.Parameter", priority=10)
+ * @Middleware("Middleware.Parameter")
  */
 class Parameter extends AbstractMiddleware
 {

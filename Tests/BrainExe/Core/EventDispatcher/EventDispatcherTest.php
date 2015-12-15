@@ -42,12 +42,8 @@ class EventDispatcherTest extends TestCase
         $this->subject   = $this->getMock(EventDispatcher::class, ['dispatch'], [$this->container, true], '');
     }
 
-    /**
-     * @param $enabled
-     */
-    private function setEnabled($enabled)
+    private function setEnabled()
     {
-        $this->subject = $this->getMock(EventDispatcher::class, ['dispatch'], [$this->container, $enabled], '');
     }
 
     public function testDispatchEvent()
@@ -103,7 +99,7 @@ class EventDispatcherTest extends TestCase
 
     public function testDispatchInBackground()
     {
-        $this->setEnabled(true);
+        $this->subject = $this->getMock(EventDispatcher::class, ['dispatch'], [$this->container], '');
 
         $event = new TestEvent(TestEvent::TYPE);
         $timestamp = 0;
@@ -114,21 +110,6 @@ class EventDispatcherTest extends TestCase
             ->expects($this->once())
             ->method('dispatch')
             ->with(BackgroundEvent::BACKGROUND, $wrappedEvent);
-
-        $this->subject->dispatchInBackground($event, $timestamp);
-    }
-
-    public function testDispatchWhenNotEnabled()
-    {
-        $this->setEnabled(false);
-
-        $event = new TestEvent(TestEvent::TYPE);
-        $timestamp = 0;
-
-        $this->subject
-            ->expects($this->once())
-            ->method('dispatch')
-            ->with(TestEvent::TYPE, $event);
 
         $this->subject->dispatchInBackground($event, $timestamp);
     }

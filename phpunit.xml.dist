@@ -16,25 +16,6 @@
 			<directory>./Tests/</directory>
 		</testsuite>
 	</testsuites>
-	<listeners>
-		<listener class="JohnKary\PHPUnit\Listener\SpeedTrapListener">
-			<arguments>
-				<array>
-					<element key="slowThreshold">
-						<integer>1000</integer>
-					</element>
-					<element key="reportLength">
-						<integer>5</integer>
-					</element>
-				</array>
-			</arguments>
-		</listener>
-		<listener class="PHPUnit\Runner\CleverAndSmart\TestListener">
-			<arguments>
-				<object class="PHPUnit\Runner\CleverAndSmart\Storage\Sqlite3Storage"/>
-			</arguments>
-		</listener>
-	</listeners>
 
 	<filter>
 		<whitelist>

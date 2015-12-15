@@ -17,10 +17,6 @@ if (!defined('BRAINEXE_VENDOR_ROOT')) {
     define('BRAINEXE_VENDOR_ROOT', ROOT . 'vendor/brainexe/');
 }
 
-if (!defined('CORE_STANDALONE')) {
-    define('CORE_STANDALONE', false);
-}
-
 /**
  * @api
  */

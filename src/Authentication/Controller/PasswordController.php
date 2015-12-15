@@ -10,7 +10,7 @@ use BrainExe\Core\Authentication\UserVO;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @Controller
+ * @Controller("Authentication.PasswordController")
  */
 class PasswordController
 {
@@ -18,7 +18,7 @@ class PasswordController
     /**
      * @var DatabaseUserProvider
      */
-    private $userProvider;
+    private $user;
 
     /**
      * @Inject("@DatabaseUserProvider")
@@ -26,7 +26,7 @@ class PasswordController
      */
     public function __construct(DatabaseUserProvider $userProvider)
     {
-        $this->userProvider = $userProvider;
+        $this->user = $userProvider;
     }
 
     /**
@@ -39,8 +39,7 @@ class PasswordController
         $password = $request->request->get('password');
         /** @var UserVO $user */
         $user = $request->attributes->get('user');
-
-        $this->userProvider->changePassword($user, $password);
+        $this->user->changePassword($user, $password);
 
         return true;
     }

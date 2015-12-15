@@ -15,11 +15,6 @@ class Middleware extends Service
 {
 
     /**
-     * @var int
-     */
-    public $priority = 5;
-
-    /**
      * {@inheritdoc}
      */
     public static function getBuilder(Reader $reader)

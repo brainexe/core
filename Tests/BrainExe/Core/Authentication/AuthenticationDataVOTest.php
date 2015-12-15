@@ -19,6 +19,5 @@ class AuthenticationDataVOTest extends TestCase
         $this->assertEquals($userVo, $subject->userVo);
         $this->assertEquals($password, $subject->password);
         $this->assertEquals($oneTimeToken, $subject->oneTimeToken);
-
     }
 }

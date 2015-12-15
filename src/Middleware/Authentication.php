@@ -7,7 +7,9 @@ use BrainExe\Core\Annotations\Middleware;
 use BrainExe\Core\Application\UserException;
 use BrainExe\Core\Authentication\AnonymusUserVO;
 use BrainExe\Core\Authentication\DatabaseUserProvider;
+use BrainExe\Core\Authentication\LoadUser;
 use BrainExe\Core\Authentication\UserVO;
+use Homie\Sensors\Formatter\Load;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,38 +17,32 @@ use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Route;
 
 /**
- * @Middleware("Middleware.Authentication", priority=8)
+ * @Middleware("Middleware.Authentication")
  */
 class Authentication extends AbstractMiddleware
 {
-
     /**
      * @var bool
      */
     private $guestsAllowed;
 
     /**
-     * @var DatabaseUserProvider
+     * @var LoadUser
      */
-    private $userProvider;
-
-    /**
-     * @var bool
-     */
-    private $allowedPrivateIps;
+    private $loadUser;
 
     /**
      * @Inject({
      *  "%application.guests_allowed%",
-     *  "@DatabaseUserProvider",
+     *  "@Authentication.LoadUser",
      * })
      * @param boolean $guestsAllowed
-     * @param DatabaseUserProvider $userProvider
+     * @param LoadUser $loadUser
      */
-    public function __construct($guestsAllowed, DatabaseUserProvider $userProvider)
+    public function __construct($guestsAllowed, LoadUser $loadUser)
     {
-        $this->guestsAllowed     = $guestsAllowed;
-        $this->userProvider      = $userProvider;
+        $this->guestsAllowed = $guestsAllowed;
+        $this->loadUser      = $loadUser;
     }
 
     /**
@@ -107,7 +103,7 @@ class Authentication extends AbstractMiddleware
     private function loadUser($userId)
     {
         if ($userId > 0) {
-            $user = $this->userProvider->loadUserById($userId);
+            $user = $this->loadUser->loadUserById($userId);
             return $user;
         } else {
             $user = new AnonymusUserVO();

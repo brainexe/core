@@ -27,7 +27,6 @@
 
 		<parameter key="application.name" on-invalid="exception"/>
 		<parameter key="application.guests_allowed">false</parameter>
-		<parameter key="application.allowed_private_ips">false</parameter>
 		<parameter key="application.registration_enabled">true</parameter>
 
 		<parameter key="logger.channels" type="collection">
@@ -64,7 +63,8 @@
 				<parameter>dic</parameter>
 			</parameter>
 		</parameter>
-        <parameter key="message_queue.enabled">true</parameter>
+
+		<parameter key="application.middlewares" type="collection"></parameter>
 	</parameters>
 
     <services>
@@ -86,7 +86,7 @@
 				<service class="Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage">
 					<argument type="collection">
 						<argument key="cookie_httponly">true</argument>
-						<argument key="cookie_lifetime">30758400</argument>
+						<argument key="cookie_lifetime">%session.lifetime%</argument>
 						<argument key="name">sid_%application.name%</argument>
 					</argument>
 					<argument type="service">
@@ -107,7 +107,7 @@
 		<service id="Filesystem" class="BrainExe\Core\Util\Filesystem" public="false"/>
 		<service id="Finder" class="Symfony\Component\Finder\Finder" public="false"/>
 
-		<service id="cache" class="Doctrine\Common\Cache\PredisCache" public="false">
+		<service id="Cache" class="Doctrine\Common\Cache\PredisCache" public="false">
 			<argument type="service" id="redis"/>
 			<call method="setNamespace">cache</call>
 		</service>

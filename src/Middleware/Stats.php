@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Middleware("Middleware.Stats", priority=20)
+ * @Middleware("Middleware.Stats")
  */
 class Stats extends AbstractMiddleware
 {

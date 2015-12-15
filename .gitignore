@@ -1,8 +1,7 @@
-.idea
-vendor
-composer.phar
-composer.lock
-/coverage
-/cache
-logs/*
+/.idea
 /.phpunit-cas.db
+/cache
+/composer.lock
+/coverage
+/logs/*
+/vendor

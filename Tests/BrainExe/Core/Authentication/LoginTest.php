@@ -3,10 +3,11 @@
 namespace Tests\BrainExe\Core\Authentication\Login;
 
 use BrainExe\Core\Authentication\AuthenticationDataVO;
-use BrainExe\Core\Authentication\DatabaseUserProvider;
 use BrainExe\Core\Authentication\Event\AuthenticateUserEvent;
 use BrainExe\Core\Authentication\Exception\UsernameNotFoundException;
+use BrainExe\Core\Authentication\LoadUser;
 use BrainExe\Core\Authentication\Login;
+use BrainExe\Core\Authentication\PasswordHasher;
 use BrainExe\Core\Authentication\Token;
 use BrainExe\Core\Authentication\UserVO;
 use BrainExe\Core\EventDispatcher\EventDispatcher;
@@ -27,9 +28,9 @@ class LoginTest extends TestCase
     private $subject;
 
     /**
-     * @var DatabaseUserProvider|MockObject
+     * @var LoadUser|MockObject
      */
-    private $userProvider;
+    private $loadUser;
 
     /**
      * @var EventDispatcher|MockObject
@@ -41,13 +42,19 @@ class LoginTest extends TestCase
      */
     private $token;
 
+    /**
+     * @var PasswordHasher|MockObject
+     */
+    private $passwordHasher;
+
     public function setUp()
     {
-        $this->userProvider = $this->getMock(DatabaseUserProvider::class, [], [], '', false);
-        $this->dispatcher   = $this->getMock(EventDispatcher::class, [], [], '', false);
-        $this->token         = $this->getMock(Token::class, [], [], '', false);
+        $this->loadUser       = $this->getMock(LoadUser::class, [], [], '', false);
+        $this->dispatcher     = $this->getMock(EventDispatcher::class, [], [], '', false);
+        $this->token          = $this->getMock(Token::class, [], [], '', false);
+        $this->passwordHasher = $this->getMock(PasswordHasher::class, [], [], '', false);
 
-        $this->subject = new Login($this->userProvider, $this->token);
+        $this->subject = new Login($this->loadUser, $this->token, $this->passwordHasher);
         $this->subject->setEventDispatcher($this->dispatcher);
     }
 
@@ -62,7 +69,7 @@ class LoginTest extends TestCase
         $oneTimeToken   = 'token';
         $session        = new Session(new MockArraySessionStorage());
 
-        $this->userProvider
+        $this->loadUser
             ->expects($this->once())
             ->method('loadUserByUsername')
             ->with($username)
@@ -86,13 +93,13 @@ class LoginTest extends TestCase
         $userVo = new UserVO();
         $userVo->password_hash = $userPassword;
 
-        $this->userProvider
+        $this->loadUser
             ->expects($this->once())
             ->method('loadUserByUsername')
             ->with($username)
             ->willReturn($userVo);
 
-        $this->userProvider
+        $this->passwordHasher
             ->expects($this->once())
             ->method('verifyHash')
             ->with($password, $userPassword)
@@ -119,13 +126,13 @@ class LoginTest extends TestCase
         $userVo->password_hash   = $userPassword;
         $userVo->one_time_secret = '';
 
-        $this->userProvider
+        $this->loadUser
             ->expects($this->once())
             ->method('loadUserByUsername')
             ->with($username)
             ->willReturn($userVo);
 
-        $this->userProvider
+        $this->passwordHasher
             ->expects($this->once())
             ->method('verifyHash')
             ->with($password, $userPassword)
@@ -191,7 +198,7 @@ class LoginTest extends TestCase
         $user     = new UserVO();
         $user->one_time_secret = 'token';
 
-        $this->userProvider
+        $this->loadUser
             ->expects($this->once())
             ->method('loadUserByUsername')
             ->with($username)
@@ -206,7 +213,7 @@ class LoginTest extends TestCase
     {
         $username = 'username';
 
-        $this->userProvider
+        $this->loadUser
             ->expects($this->once())
             ->method('loadUserByUsername')
             ->with($username)
@@ -236,7 +243,7 @@ class LoginTest extends TestCase
             ->method('getToken')
             ->willReturn($tokenData);
 
-        $this->userProvider
+        $this->loadUser
             ->expects($this->once())
             ->method('loadUserById')
             ->with($userId)

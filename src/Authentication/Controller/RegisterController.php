@@ -36,7 +36,7 @@ class RegisterController
      * @Route("/register/", name="authenticate.doRegister", methods="POST")
      * @Guest
      */
-    public function doRegister(Request $request)
+    public function register(Request $request)
     {
         $username       = $request->request->get('username');
         $plainPassword  = $request->request->get('password');

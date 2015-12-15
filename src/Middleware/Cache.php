@@ -14,11 +14,10 @@ use Symfony\Component\Routing\Route;
 /**
  * @todo use X-Cache / X-Validate
  * @todo invalidate
- * @Middleware("Middleware.Cache", priority=null)
+ * @Middleware("Middleware.Cache")
  */
 class Cache extends AbstractMiddleware
 {
-
     use CacheTrait;
     use LoggerTrait;
 

@@ -57,7 +57,7 @@ class LoginControllerTest extends TestCase
             ->with($username, $plainPassword, $oneTimeToken, $session)
             ->willReturn($userVo);
 
-        $actualResult = $this->subject->doLogin($request);
+        $actualResult = $this->subject->login($request);
 
         $this->assertEquals($userVo, $actualResult);
     }
