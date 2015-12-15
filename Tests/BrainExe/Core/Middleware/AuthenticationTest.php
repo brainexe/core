@@ -3,7 +3,7 @@
 namespace Tests\BrainExe\Core\Middleware\AuthenticationMiddleware;
 
 use BrainExe\Core\Authentication\AnonymusUserVO;
-use BrainExe\Core\Authentication\DatabaseUserProvider;
+use BrainExe\Core\Authentication\LoadUser;
 use BrainExe\Core\Authentication\UserVO;
 use BrainExe\Core\Middleware\Authentication;
 use Exception;
@@ -28,17 +28,17 @@ class AuthenticationTest extends TestCase
     private $subject;
 
     /**
-     * @var DatabaseUserProvider|MockObject
+     * @var LoadUser|MockObject
      */
-    private $userProvider;
+    private $loadUser;
 
     public function setUp()
     {
-        $this->userProvider = $this->getMock(DatabaseUserProvider::class, [], [], '', false);
+        $this->loadUser = $this->getMock(LoadUser::class, [], [], '', false);
 
         $this->subject = new Authentication(
             false,
-            $this->userProvider
+            $this->loadUser
         );
     }
 
@@ -53,7 +53,7 @@ class AuthenticationTest extends TestCase
     {
         $this->subject = new Authentication(
             true,
-            $this->userProvider
+            $this->loadUser
         );
 
         $userId = 42;
@@ -78,7 +78,7 @@ class AuthenticationTest extends TestCase
     {
         $this->subject = new Authentication(
             false,
-            $this->userProvider
+            $this->loadUser
         );
 
         $userId = 42;
@@ -104,7 +104,7 @@ class AuthenticationTest extends TestCase
     {
         $this->subject = new Authentication(
             false,
-            $this->userProvider
+            $this->loadUser
         );
 
         $userId = 0;
@@ -118,7 +118,7 @@ class AuthenticationTest extends TestCase
 
         $route = new Route('/path/');
 
-        $this->userProvider
+        $this->loadUser
             ->expects($this->never())
             ->method('loadUserById');
 
@@ -141,7 +141,7 @@ class AuthenticationTest extends TestCase
     {
         $this->subject = new Authentication(
             false,
-            $this->userProvider
+            $this->loadUser
         );
 
         $userId = 42;
@@ -169,7 +169,7 @@ class AuthenticationTest extends TestCase
     {
         $this->subject = new Authentication(
             false,
-            $this->userProvider
+            $this->loadUser
         );
 
         $userId = 42;
@@ -195,7 +195,7 @@ class AuthenticationTest extends TestCase
     {
         $user = new UserVO();
 
-        $this->userProvider
+        $this->loadUser
             ->expects($this->once())
             ->method('loadUserById')
             ->with($userId)

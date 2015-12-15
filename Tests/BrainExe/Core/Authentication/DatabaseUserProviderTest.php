@@ -1,8 +1,10 @@
 <?php
 
-namespace Tests\BrainExe\Core\Authentication\DatabaseUserProvider;
+namespace Tests\BrainExe\Core\Authentication;
 
+use BrainExe\Core\Authentication\AnonymusUserVO;
 use BrainExe\Core\Authentication\DatabaseUserProvider;
+use BrainExe\Core\Authentication\LoadUser;
 use BrainExe\Core\Authentication\PasswordHasher;
 use BrainExe\Core\Authentication\UserVO;
 use BrainExe\Core\EventDispatcher\EventDispatcher;
@@ -45,72 +47,55 @@ class DatabaseUserProviderTest extends TestCase
      */
     private $dispatcher;
 
+    /**
+     * @var LoadUser|MockObject
+     */
+    private $loadUser;
+
     public function setUp()
     {
         $this->redis          = $this->getRedisMock();
         $this->idGenerator    = $this->getMock(IdGenerator::class, [], [], '', false);
+        $this->loadUser       = $this->getMock(LoadUser::class, [], [], '', false);
         $this->hasher         = $this->getMock(PasswordHasher::class, [], [], '', false);
         $this->dispatcher     = $this->getMock(EventDispatcher::class, [], [], '', false);
 
-        $this->subject = new DatabaseUserProvider($this->hasher);
+        $this->subject = new DatabaseUserProvider($this->hasher, $this->loadUser);
         $this->subject->setRedis($this->redis);
         $this->subject->setIdGenerator($this->idGenerator);
         $this->subject->setEventDispatcher($this->dispatcher);
     }
 
-    /**
-     * @expectedException \BrainExe\Core\Authentication\Exception\UsernameNotFoundException
-     * @expectedExceptionMessage Username "UserName" does not exist.
-     */
-    public function testLoadUserByUsernameWithInvalidUser()
-    {
-        $username = 'UserName';
-
-        $this->redis
-            ->expects($this->once())
-            ->method('HGET')
-            ->with(DatabaseUserProvider::REDIS_USER_NAMES, 'username')
-            ->willReturn(null);
-
-        $this->subject->loadUserByUsername($username);
-    }
-
     public function testLoadUserByUsername()
     {
-        $username = 'UserName';
-        $userId  = 41;
+        $username = 'foobar';
+        $user     = new UserVO();
 
-        $userRaw = [
-            'username' => $username,
-            'email' => $email = 'email@example.com',
-            'password' => $password = 'password',
-            'one_time_secret' => $oneTimeSecret = 'one_time_secret',
-        'roles' => 'role_1,role_2'
-        ];
-
-        $this->redis
+        $this->loadUser
             ->expects($this->once())
-            ->method('HGET')
-            ->with(DatabaseUserProvider::REDIS_USER_NAMES, 'username')
-            ->willReturn($userId);
+            ->method('loadUserByUsername')
+            ->with($username)
+            ->willReturn($user);
 
-        $this->redis
+        $actual = $this->subject->loadUserByUsername($username);
+
+        $this->assertEquals($user, $actual);
+    }
+
+    public function testLoadUserById()
+    {
+        $userId = 42;
+        $user   = new UserVO();
+
+        $this->loadUser
             ->expects($this->once())
-            ->method('HGETALL')
-            ->with("user:$userId")
-            ->willReturn($userRaw);
+            ->method('loadUserById')
+            ->with($userId)
+            ->willReturn($user);
 
-        $actualResult = $this->subject->loadUserByUsername($username);
+        $actual = $this->subject->loadUserById($userId);
 
-        $expectedUser                  = new UserVO();
-        $expectedUser->id              = $userId;
-        $expectedUser->username        = $username;
-        $expectedUser->email           = $email;
-        $expectedUser->password_hash   = $password;
-        $expectedUser->one_time_secret = $oneTimeSecret;
-        $expectedUser->roles           = ['role_1', 'role_2'];
-
-        $this->assertEquals($expectedUser, $actualResult);
+        $this->assertEquals($user, $actual);
     }
 
     public function testGetAllUserNames()
@@ -217,16 +202,11 @@ class DatabaseUserProviderTest extends TestCase
         $user->id       = $userId;
         $user->username = 'UsErNaMe';
 
-        $this->redis
+        $this->loadUser
             ->expects($this->once())
-            ->method('hgetall')
-            ->with('user:42')
-            ->willReturn([
-                'username' => 'UsErNaMe',
-                'roles' => '',
-                'one_time_secret' => '',
-                'password' => ''
-            ]);
+            ->method('loadUserById')
+            ->with($userId)
+            ->willReturn($user);
 
         $this->redis
             ->expects($this->once())
@@ -245,11 +225,13 @@ class DatabaseUserProviderTest extends TestCase
     {
         $userId = 42;
 
-        $this->redis
+        $user = new AnonymusUserVO();
+
+        $this->loadUser
             ->expects($this->once())
-            ->method('hgetall')
-            ->with('user:42')
-            ->willReturn([]);
+            ->method('loadUserById')
+            ->with($userId)
+            ->willReturn($user);
 
         $this->subject->deleteUser($userId);
     }

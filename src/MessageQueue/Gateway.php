@@ -23,7 +23,7 @@ class Gateway
     const QUEUE_DELAYED   = 'message_queue:delayed';
     const QUEUE_IMMEDIATE = 'message_queue:immediate';
     const META_DATA       = 'message_queue:meta_data';
-    const RETRY_TIME      = 3600; // try again after 20 seconds
+    const RETRY_TIME      = 3600; // try again after 1 hour
 
     /**
      * @param integer $eventId

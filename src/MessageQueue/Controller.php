@@ -52,15 +52,13 @@ class Controller
     /**
      * @Route("/jobs/{jobId}/", methods="DELETE", name="messageQueue.deleteJob")
      * @param Request $request
-     * @param $jobId
+     * @param string $jobId
      * @return bool
      */
     public function deleteJob(Request $request, $jobId)
     {
         unset($request);
 
-        $this->gateway->deleteEvent($jobId);
-
-        return true;
+        return $this->gateway->deleteEvent($jobId);
     }
 }

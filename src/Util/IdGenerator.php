@@ -12,19 +12,19 @@ use BrainExe\Core\Traits\RedisTrait;
 class IdGenerator
 {
 
-    const ID_LENGTH = 10;
-    const LAST_ID   = 'idgenerator:lastid';
+    const ID_LENGTH    = 10;
+    const KEY          = 'idgenerator:%s';
+    const DEFAULT_TYPE = 'lastid';
 
     use RedisTrait;
 
     /**
+     * @param string $type
      * @return string
      */
-    public function generateUniqueId()
+    public function generateUniqueId($type = self::DEFAULT_TYPE)
     {
-        $newId = $this->getRedis()->INCR(self::LAST_ID);
-
-        return $newId;
+        return $this->getRedis()->INCR(sprintf(self::KEY, $type));
     }
 
     /**

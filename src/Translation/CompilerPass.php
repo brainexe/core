@@ -40,7 +40,9 @@ class CompilerPass implements CompilerPassInterface
 
             if ($reflection->implementsInterface(TranslationProvider::class)) {
                 /** @var TranslationProvider $class */
-                $tokens = array_merge($tokens, $class::getTokens());
+                foreach ($class::getTokens() as $token) {
+                    $tokens[] = $token;
+                }
             }
         }
 

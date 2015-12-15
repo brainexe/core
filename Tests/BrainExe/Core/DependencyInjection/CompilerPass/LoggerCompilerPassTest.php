@@ -52,15 +52,13 @@ class LoggerCompilerPassTest extends TestCase
         $this->container
             ->expects($this->at(1))
             ->method('getParameter')
-            ->with('core_standalone')
-            ->willReturn(true);
-
+            ->with('debug')
+            ->willReturn(false);
         $this->container
             ->expects($this->at(2))
             ->method('getParameter')
-            ->with('debug')
-            ->willReturn(false);
-
+            ->with('hipchat.api_token')
+            ->willReturn('hipchat_token');
         $this->container
             ->expects($this->at(3))
             ->method('getParameter')
@@ -69,37 +67,27 @@ class LoggerCompilerPassTest extends TestCase
         $this->container
             ->expects($this->at(4))
             ->method('getParameter')
-            ->with('hipchat.api_token')
-            ->willReturn('hipchat_token');
-        $this->container
-            ->expects($this->at(5))
-            ->method('getParameter')
             ->with('hipchat.room')
             ->willReturn('hipchat_room');
         $this->container
-            ->expects($this->at(6))
+            ->expects($this->at(5))
             ->method('getParameter')
             ->with('hipchat.name')
             ->willReturn('hipchat_name');
         $this->container
-            ->expects($this->at(7))
+            ->expects($this->at(6))
             ->method('getParameter')
             ->with('hipchat.logLevel')
             ->willReturn('hipchat_loglevel');
 
         $this->container
-            ->expects($this->at(8))
-            ->method('getParameter')
-            ->with('core_standalone')
-            ->willReturn(false);
-        $this->container
-            ->expects($this->at(9))
+            ->expects($this->at(7))
             ->method('getParameter')
             ->with('logger.channels')
             ->willReturn([]);
 
         $this->logger
-            ->expects($this->at(3))
+            ->expects($this->at(0))
             ->method('addMethodCall')
             ->with('pushHandler', [new Definition(HipChatHandler::class, [
                 'hipchat_token', 'hipchat_room', 'hipchat_name', false, 'hipchat_loglevel'
@@ -119,22 +107,11 @@ class LoggerCompilerPassTest extends TestCase
         $this->container
             ->expects($this->at(1))
             ->method('getParameter')
-            ->with('core_standalone')
-            ->willReturn(false);
-
-        $this->container
-            ->expects($this->at(2))
-            ->method('getParameter')
             ->with('debug')
             ->willReturn(true);
 
         $this->container
-            ->expects($this->at(4))
-            ->method('getParameter')
-            ->with('core_standalone')
-            ->willReturn(false);
-        $this->container
-            ->expects($this->at(5))
+            ->expects($this->at(3))
             ->method('getParameter')
             ->with('logger.channels')
             ->willReturn([]);

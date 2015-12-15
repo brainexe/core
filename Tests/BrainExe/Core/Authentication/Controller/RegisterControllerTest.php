@@ -57,7 +57,7 @@ class RegisterControllerTest extends TestCase
             ->method('registerUser')
             ->with($userVo, $session, $token);
 
-        $actualResult = $this->subject->doRegister($request);
+        $actualResult = $this->subject->register($request);
 
         $this->assertEquals($userVo, $actualResult);
     }

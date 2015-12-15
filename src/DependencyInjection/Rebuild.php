@@ -62,11 +62,7 @@ class Rebuild
 
         foreach ($appFinder as $dir) {
             /** @var SplFileInfo $dir */
-
             $dirName = $dir->getPathname();
-            if ($dirName === CORE_ROOT) {
-                continue;
-            }
             $annotationLoader->load($dirName);
         }
     }
@@ -87,5 +83,14 @@ class Rebuild
         file_put_contents('cache/dic.php', $containerContent);
         file_put_contents('cache/dic.txt', $className);
         @chmod($containerFile, 0777);
+
+        $debug = $container->getParameter('debug');
+        file_put_contents(
+            ROOT . 'cache/config.json',
+            json_encode(
+                $container->getParameterBag()->all(),
+                $debug ? JSON_PRETTY_PRINT : null
+            )
+        );
     }
 }

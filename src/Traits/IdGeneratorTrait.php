@@ -25,11 +25,12 @@ trait IdGeneratorTrait
     }
 
     /**
-     * @return integer
+     * @param string $type
+     * @return int
      */
-    protected function generateUniqueId()
+    protected function generateUniqueId($type = IdGenerator::DEFAULT_TYPE)
     {
-        return $this->idGenerator->generateUniqueId();
+        return $this->idGenerator->generateUniqueId($type);
     }
 
     /**

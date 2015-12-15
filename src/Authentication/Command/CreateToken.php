@@ -51,6 +51,13 @@ class CreateToken extends Command
         $roles  = (string)$input->getArgument('roles');
 
         $token = $this->token->addToken($userId, explode(',', $roles));
-        $output->writeln(sprintf('Created token %s for user %d with roles: %s', $token, $userId, $roles));
+        $output->writeln(
+            sprintf(
+                'Created token %s for user %d with roles: %s',
+                $token,
+                $userId,
+                $roles
+            )
+        );
     }
 }

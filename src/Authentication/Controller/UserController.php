@@ -41,6 +41,8 @@ class UserController
     }
 
     /**
+     * Receives a list all all registered users. indexed by user-id
+     *
      * @return string[]
      * @Route("/user/list/", name="authenticate.list_user", methods="GET")
      */

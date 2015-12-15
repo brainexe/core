@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Session\Session as SessionModel;
 use Symfony\Component\Routing\Route;
 
 /**
- * @Middleware("Middleware.Session", priority=10)
+ * @Middleware("Middleware.Session")
  */
 class Session extends AbstractMiddleware
 {
@@ -22,11 +22,11 @@ class Session extends AbstractMiddleware
 
     /**
      * @Inject({"@RedisSession"})
-     * @param SessionModel $redisSession
+     * @param SessionModel $session
      */
-    public function __construct(SessionModel $redisSession)
+    public function __construct(SessionModel $session)
     {
-        $this->session = $redisSession;
+        $this->session = $session;
     }
 
     /**

@@ -19,24 +19,17 @@ class EventDispatcher extends ContainerAwareEventDispatcher
 {
 
     /**
-     * @var bool
-     */
-    private $enabled = true;
-
-    /**
      * @var EventDispatcherInterface[]
      */
     private $catchall = [];
 
     /**
-     * @Inject({"@service_container", "%message_queue.enabled%"})
+     * @Inject({"@service_container"})
      * @param ContainerInterface $container
-     * @param bool $backgroundEnabled
      */
-    public function __construct(ContainerInterface $container, $backgroundEnabled)
+    public function __construct(ContainerInterface $container)
     {
         parent::__construct($container);
-        $this->enabled = $backgroundEnabled;
     }
 
     /**
@@ -93,11 +86,6 @@ class EventDispatcher extends ContainerAwareEventDispatcher
      */
     public function dispatchInBackground(AbstractEvent $event, $timestamp = 0)
     {
-        if (!$this->enabled) {
-            $this->dispatchEvent($event);
-            return;
-        }
-
         if ($timestamp) {
             $wrapper = new DelayedEvent($event, $timestamp);
         } else {

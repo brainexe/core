@@ -55,7 +55,8 @@ class ControllerTest extends TestCase
         $this->messageQueue
             ->expects($this->once())
             ->method('deleteEvent')
-            ->willReturn($jobId);
+            ->with($jobId)
+            ->willReturn(true);
 
         $actual = $this->subject->deleteJob($request, $jobId);
 

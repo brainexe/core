@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @Controller
+ * @Controller("Authentication.LoginController")
  */
 class LoginController
 {
@@ -39,11 +39,11 @@ class LoginController
      * @Route("/login/", name="authenticate.doLogin", methods="POST")
      * @Guest
      */
-    public function doLogin(Request $request)
+    public function login(Request $request)
     {
-        $username       = $request->request->get('username');
-        $plainPassword  = $request->request->get('password');
-        $oneTimeToken   = $request->request->getAlnum('one_time_token');
+        $username      = $request->request->get('username');
+        $plainPassword = $request->request->get('password');
+        $oneTimeToken  = $request->request->getAlnum('one_time_token');
 
         $user = $this->login->tryLogin(
             $username,
