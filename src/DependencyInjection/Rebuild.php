@@ -6,12 +6,10 @@ use BrainExe\Annotations\Annotations\Service;
 use BrainExe\Annotations\Loader;
 use BrainExe\Core\Core;
 use BrainExe\Core\DependencyInjection\CompilerPass\GlobalCompilerPass;
-
 use Symfony\Bridge\ProxyManager\LazyProxy\PhpDumper\ProxyDumper;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
-
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -33,7 +31,6 @@ class Rebuild
 
         $containerBuilder->addCompilerPass(new GlobalCompilerPass());
         $containerBuilder->compile();
-
         $this->dumpContainer($containerBuilder);
 
         if ($boot) {
@@ -53,12 +50,11 @@ class Rebuild
         $appFinder = new Finder();
 
         $appFinder->directories()
-            ->in([ROOT, CORE_ROOT, BRAINEXE_VENDOR_ROOT])
+            ->in([ROOT . 'vendor/brainexe/'])
             ->depth("<=1")
             ->name('src');
 
         $annotationLoader->load('src/');
-        $annotationLoader->load(CORE_ROOT);
 
         foreach ($appFinder as $dir) {
             /** @var SplFileInfo $dir */

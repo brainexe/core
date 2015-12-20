@@ -47,26 +47,22 @@ class GlobalCompilerPassTest extends TestCase
 
         $this->container
             ->expects($this->at(1))
-            ->method('setParameter');
-
-        $this->container
-            ->expects($this->at(2))
             ->method('findTaggedServiceIds')
             ->with(GlobalCompilerPass::TAG)
             ->willReturn([$serviceId => [['priority' => 10]]]);
 
         $this->container
-            ->expects($this->at(3))
+            ->expects($this->at(2))
             ->method('get')
             ->with($serviceId)
             ->willReturn($compiler);
 
         $this->container
-            ->expects($this->at(4))
+            ->expects($this->at(3))
             ->method('reset');
 
         $this->container
-            ->expects($this->at(5))
+            ->expects($this->at(4))
             ->method('get')
             ->with('logger')
             ->willReturn($logger);

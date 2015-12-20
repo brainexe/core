@@ -51,7 +51,6 @@ class DatabaseUserProvider
     /**
      * @param string $username
      * @return UserVO
-     * @deprecated use LoadUser
      * @throws UsernameNotFoundException
      */
     public function loadUserByUsername($username)

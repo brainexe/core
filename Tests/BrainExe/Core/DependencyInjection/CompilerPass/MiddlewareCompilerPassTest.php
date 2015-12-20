@@ -4,7 +4,7 @@ namespace Tests\BrainExe\Core\DependencyInjection\CompilerPass\MiddlewareCompile
 
 use BrainExe\Core\DependencyInjection\CompilerPass\MiddlewareCompilerPass;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase;
+use PHPUnit_Framework_TestCase as TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
@@ -12,7 +12,7 @@ use Symfony\Component\DependencyInjection\Reference;
 /**
  * @covers BrainExe\Core\DependencyInjection\CompilerPass\MiddlewareCompilerPass
  */
-class MiddlewareCompilerPassTest extends PHPUnit_Framework_TestCase
+class MiddlewareCompilerPassTest extends TestCase
 {
 
     /**
@@ -33,7 +33,6 @@ class MiddlewareCompilerPassTest extends PHPUnit_Framework_TestCase
             'getParameter',
         ]);
         $this->subject = new MiddlewareCompilerPass();
-
     }
 
     public function testProcess()

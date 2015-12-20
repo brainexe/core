@@ -17,7 +17,6 @@ class GlobalCompilerPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         $container->setParameter('application.root', ROOT);
-        $container->setParameter('application.vendor_root', BRAINEXE_VENDOR_ROOT);
 
         $serviceIds = $container->findTaggedServiceIds(self::TAG);
         $servicePriorities = [];

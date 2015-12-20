@@ -5,18 +5,6 @@ namespace BrainExe\Core;
 use BrainExe\Core\DependencyInjection\Rebuild;
 use Symfony\Component\DependencyInjection\Container;
 
-if (!defined('CORE_ROOT')) {
-    define('CORE_ROOT', __DIR__);
-}
-
-if (!defined('ROOT')) {
-    define('ROOT', realpath(CORE_ROOT . '/../') . '/');
-}
-
-if (!defined('BRAINEXE_VENDOR_ROOT')) {
-    define('BRAINEXE_VENDOR_ROOT', ROOT . 'vendor/brainexe/');
-}
-
 /**
  * @api
  */

@@ -94,7 +94,7 @@ class TestCreateCommand extends Command
             $methodProcessor->processMethod($methodCall, $testData);
         }
 
-        $template = file_get_contents(CORE_ROOT . '/../scripts/phpunit_template.php.tpl');
+        $template = file_get_contents(__DIR__ . '/../../scripts/phpunit_template.php.tpl');
         $template = str_replace(
             '%test_namespace%',
             $this->getTestNamespace($serviceReflection->getNamespaceName()),

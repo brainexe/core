@@ -14,7 +14,6 @@ use BrainExe\Core\Annotations\Command as CommandAnnotation;
 use Symfony\Component\Yaml\Dumper;
 
 /**
- * @todo
  * @CommandAnnotation
  * @codeCoverageIgnore
  */
