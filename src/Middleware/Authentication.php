@@ -6,10 +6,10 @@ use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Core\Annotations\Middleware;
 use BrainExe\Core\Application\UserException;
 use BrainExe\Core\Authentication\AnonymusUserVO;
-use BrainExe\Core\Authentication\DatabaseUserProvider;
+
 use BrainExe\Core\Authentication\LoadUser;
 use BrainExe\Core\Authentication\UserVO;
-use Homie\Sensors\Formatter\Load;
+
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

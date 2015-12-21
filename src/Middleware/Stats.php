@@ -3,7 +3,7 @@
 namespace BrainExe\Core\Middleware;
 
 use BrainExe\Core\Annotations\Middleware;
-use BrainExe\Core\Stats\Event;
+
 use BrainExe\Core\Stats\MultiEvent;
 use BrainExe\Core\Traits\EventDispatcherTrait;
 use Exception;

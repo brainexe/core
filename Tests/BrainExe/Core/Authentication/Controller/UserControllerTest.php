@@ -2,6 +2,7 @@
 
 namespace Tests\BrainExe\Core\Authentication\Controller;
 
+use BrainExe\Core\Application\UserException;
 use BrainExe\Core\Authentication\Controller\UserController;
 use BrainExe\Core\Authentication\DatabaseUserProvider;
 use BrainExe\Core\Authentication\UserVO;
@@ -53,5 +54,38 @@ class UserControllerTest extends TestCase
 
         $actual = $this->subject->getList();
         $this->assertEquals([42 => 'user'], $actual);
+    }
+
+    public function testGetAvatars()
+    {
+        $actual = $this->subject->getAvatars();
+        $this->assertEquals(UserVO::AVATARS, $actual);
+    }
+
+    /**
+     * @expectedException \BrainExe\Core\Application\UserException
+     * @expectedExceptionMessage Invalid avatar: new avatar
+     */
+    public function testSetInvalidAvatars()
+    {
+        $user = new UserVO();
+        $user->avatar = $avatar = 'new avatar';
+
+        $request = new Request();
+        $request->attributes->set('user', $user);
+
+        $this->subject->setAvatars($request, $avatar);
+    }
+
+    public function testSetAvatars()
+    {
+        $user = new UserVO();
+        $user->avatar = $avatar = UserVO::AVATAR_1;
+
+        $request = new Request();
+        $request->attributes->set('user', $user);
+
+        $actual = $this->subject->setAvatars($request, $avatar);
+        $this->assertEquals($user, $actual);
     }
 }

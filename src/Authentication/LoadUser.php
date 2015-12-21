@@ -62,7 +62,7 @@ class LoadUser
         $user->password_hash   = $redisUser['password'];
         $user->one_time_secret = isset($redisUser['one_time_secret']) ? $redisUser['one_time_secret'] : null;
         $user->roles           = array_filter(explode(',', $redisUser['roles']));
-        $user->avatar          = isset($redisUser['avatar']) ? $redisUser['avatar'] : '';
+        $user->avatar          = isset($redisUser['avatar']) ? $redisUser['avatar'] : UserVO::AVATAR_5;
 
         return $user;
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\BrainExe\Core\Authentication\Controller\LoginController;
+namespace Tests\BrainExe\Core\Authentication\Controller;
 
 use BrainExe\Core\Authentication\Controller\LoginController;
 use BrainExe\Core\Authentication\Login;

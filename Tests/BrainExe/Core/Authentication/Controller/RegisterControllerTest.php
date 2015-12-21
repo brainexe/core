@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\BrainExe\Core\Authentication\Controller\RegisterController;
+namespace Tests\BrainExe\Core\Authentication\Controller;
 
 use BrainExe\Core\Authentication\Controller\RegisterController;
 use BrainExe\Core\Authentication\Register;

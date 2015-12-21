@@ -7,7 +7,7 @@ use BrainExe\Core\Logger\ChannelStreamHandler;
 use Monolog\Handler\ChromePHPHandler;
 use Monolog\Handler\HipChatHandler;
 use Monolog\Handler\StreamHandler;
-use Monolog\Handler\TestHandler;
+
 use Monolog\Logger;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

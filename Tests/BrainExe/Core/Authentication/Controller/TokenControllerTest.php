@@ -19,6 +19,7 @@ class TokenControllerTest extends TestCase
      * @var TokenController
      */
     private $subject;
+
     /**
      * @var Token|MockObject
      */

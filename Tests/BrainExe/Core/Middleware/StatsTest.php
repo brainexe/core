@@ -4,7 +4,7 @@ namespace Tests\BrainExe\Core\Middleware\GentimeMiddleware;
 
 use BrainExe\Core\EventDispatcher\EventDispatcher;
 use BrainExe\Core\Middleware\Stats;
-use BrainExe\Core\Stats\Event;
+
 use BrainExe\Core\Stats\MultiEvent;
 use Exception;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;

@@ -62,7 +62,7 @@ class LoadUserTest extends TestCase
             'email' => $email = 'email@example.com',
             'password' => $password = 'password',
             'one_time_secret' => $oneTimeSecret = 'one_time_secret',
-        'roles' => 'role_1,role_2'
+            'roles' => 'role_1,role_2'
         ];
 
         $this->redis
@@ -84,6 +84,7 @@ class LoadUserTest extends TestCase
         $expectedUser->username        = $username;
         $expectedUser->email           = $email;
         $expectedUser->password_hash   = $password;
+        $expectedUser->avatar          = UserVO::AVATAR_5;
         $expectedUser->one_time_secret = $oneTimeSecret;
         $expectedUser->roles           = ['role_1', 'role_2'];
 

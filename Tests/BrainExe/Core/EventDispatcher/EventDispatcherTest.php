@@ -42,10 +42,6 @@ class EventDispatcherTest extends TestCase
         $this->subject   = $this->getMock(EventDispatcher::class, ['dispatch'], [$this->container, true], '');
     }
 
-    private function setEnabled()
-    {
-    }
-
     public function testDispatchEvent()
     {
         $event = new TestEvent(TestEvent::TYPE);

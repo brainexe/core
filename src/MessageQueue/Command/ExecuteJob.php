@@ -19,6 +19,11 @@ class ExecuteJob extends Command
 {
 
     /**
+     * @var Worker
+     */
+    private $worker;
+
+    /**
      * @Inject("@MessageQueue.Worker")
      * @param Worker $worker
      */

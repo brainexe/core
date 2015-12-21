@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\BrainExe\Core\Authentication\Controller\PasswordController;
+namespace Tests\BrainExe\Core\Authentication\Controller;
 
 use BrainExe\Core\Authentication\Controller\PasswordController;
 use BrainExe\Core\Authentication\DatabaseUserProvider;
@@ -23,13 +23,13 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase
     /**
      * @var DatabaseUserProvider|MockObject
      */
-    private $mockDatabaseUserProvider;
+    private $userProvider;
 
     public function setUp()
     {
-        $this->mockDatabaseUserProvider = $this->getMock(DatabaseUserProvider::class, [], [], '', false);
+        $this->userProvider = $this->getMock(DatabaseUserProvider::class, [], [], '', false);
 
-        $this->subject = new PasswordController($this->mockDatabaseUserProvider);
+        $this->subject = new PasswordController($this->userProvider);
     }
 
     public function testChangePassword()
@@ -41,12 +41,12 @@ class PasswordControllerTest extends PHPUnit_Framework_TestCase
         $request->request->set('password', $password);
         $request->attributes->set('user', $user);
 
-        $this->mockDatabaseUserProvider
+        $this->userProvider
             ->expects($this->once())
             ->method('changePassword')
             ->with($user, $password);
 
-        $actualResult = $this->subject->changePassword($request);
-        $this->assertTrue($actualResult);
+        $actual = $this->subject->changePassword($request);
+        $this->assertTrue($actual);
     }
 }

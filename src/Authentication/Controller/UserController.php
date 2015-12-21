@@ -6,6 +6,7 @@ use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Core\Annotations\Controller;
 use BrainExe\Core\Annotations\Guest;
 use BrainExe\Core\Annotations\Route;
+use BrainExe\Core\Application\UserException;
 use BrainExe\Core\Authentication\DatabaseUserProvider;
 use BrainExe\Core\Authentication\UserVO;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,6 +39,37 @@ class UserController
     public function getCurrentUser(Request $request)
     {
         return $request->attributes->get('user');
+    }
+
+    /**
+     * @return string[]
+     * @Route("/user/avatar/", name="authenticate.avatars", methods="GET")
+     * @Guest
+     */
+    public function getAvatars()
+    {
+        return UserVO::AVATARS;
+    }
+
+    /**
+     * @param Request $request
+     * @param string $avatar
+     * @return UserVO
+     * @throws UserException
+     * @Route("/user/avatar/{avatar}/", name="authenticate.setAvatar", methods="POST")
+     * @Guest
+     */
+    public function setAvatars(Request $request, $avatar)
+    {
+        if (!in_array($avatar, UserVO::AVATARS)) {
+            throw new UserException(sprintf(_('Invalid avatar: %s'), $avatar));
+        }
+        /** @var UserVO $user */
+        $user = $request->attributes->get('user');
+        $user->avatar = $avatar;
+        $this->userProvider->setUserProperty($user, UserVO::PROPERTY_AVATAR);
+
+        return $user;
     }
 
     /**

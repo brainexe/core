@@ -10,12 +10,28 @@ use JsonSerializable;
 class UserVO implements JsonSerializable
 {
 
+    const PROPERTY_AVATAR = 'avatar';
+
     const ROLE_ADMIN = 'admin';
     const ROLE_USER  = 'user';
+
+    const AVATAR_1 = 'avatar1.png';
+    const AVATAR_2 = 'avatar2.png';
+    const AVATAR_3 = 'avatar3.png';
+    const AVATAR_4 = 'avatar4.png';
+    const AVATAR_5 = 'avatar5.png';
 
     const ROLES = [
         self::ROLE_ADMIN,
         self::ROLE_USER
+    ];
+
+    const AVATARS = [
+        self::AVATAR_1,
+        self::AVATAR_2,
+        self::AVATAR_3,
+        self::AVATAR_4,
+        self::AVATAR_5,
     ];
 
     /**

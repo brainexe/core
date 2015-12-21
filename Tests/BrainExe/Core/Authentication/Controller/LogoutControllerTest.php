@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\BrainExe\Core\Authentication\Controller\LogoutController;
+namespace Tests\BrainExe\Core\Authentication\Controller;
 
 use BrainExe\Core\Authentication\AnonymusUserVO;
 use BrainExe\Core\Authentication\Controller\LogoutController;
