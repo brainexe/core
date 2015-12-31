@@ -3,12 +3,12 @@
 namespace Tests\BrainExe\Core\Util\Time;
 
 use BrainExe\Core\Util\Time;
-use PHPUnit_Framework_TestCase;
+use PHPUnit_Framework_TestCase as TestCase;
 
 /**
  * @covers BrainExe\Core\Util\Time
  */
-class TimeTest extends PHPUnit_Framework_TestCase
+class TimeTest extends TestCase
 {
 
     /**
@@ -23,32 +23,32 @@ class TimeTest extends PHPUnit_Framework_TestCase
 
     public function testNow()
     {
-        $actualResult = $this->subject->now();
+        $actual = $this->subject->now();
 
-        $this->assertEquals(time(), $actualResult, "current time", 1);
+        $this->assertEquals(time(), $actual, "current time", 1);
     }
 
     public function testDate()
     {
-        $actualResult = $this->subject->date('y');
-        $expectedResult = date('y');
+        $actual = $this->subject->date('y');
+        $expected = date('y');
 
-        $this->assertEquals($expectedResult, $actualResult);
+        $this->assertEquals($expected, $actual);
     }
 
     public function testMicrotime()
     {
-        $actualResult = $this->subject->microtime();
-        $this->assertEquals(microtime(true), $actualResult, "microtime", 100);
+        $actual = $this->subject->microtime();
+        $this->assertEquals(microtime(true), $actual, "microtime", 100);
     }
 
     public function testStrtotime()
     {
         $string = 'tomorrow';
 
-        $actualResult = $this->subject->strtotime($string);
+        $actual = $this->subject->strtotime($string);
 
-        $this->assertInternalType('integer', $actualResult);
+        $this->assertInternalType('integer', $actual);
 
     }
 }

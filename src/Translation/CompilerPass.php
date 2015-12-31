@@ -6,7 +6,6 @@ use BrainExe\Core\Annotations\CompilerPass as CompilerPassAnnotation;
 use BrainExe\Core\Traits\FileCacheTrait;
 use Exception;
 use ReflectionClass;
-
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 

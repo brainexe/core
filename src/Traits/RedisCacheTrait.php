@@ -14,7 +14,7 @@ trait RedisCacheTrait
     /**
      * @param string $key
      * @param callable $callback
-     * @param integer $ttl
+     * @param int $ttl
      * @return mixed
      */
     public function wrapCache($key, callable $callback, $ttl = 3600)

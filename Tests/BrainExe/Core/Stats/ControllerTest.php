@@ -52,17 +52,12 @@ class ControllerTest extends TestCase
     public function testIndex()
     {
         $eventsByType     = ['events'];
-        $messageQueueJobs = 10;
 
         $this->messageQueue
             ->expects($this->once())
             ->method('getEventsByType')
             ->willReturn($eventsByType);
 
-        $this->messageQueue
-            ->expects($this->once())
-            ->method('countAllJobs')
-            ->willReturn($messageQueueJobs);
         $this->stats
             ->expects($this->once())
             ->method('getAll')
@@ -76,19 +71,18 @@ class ControllerTest extends TestCase
             ->method('info')
             ->willReturn(['info']);
 
-        $actualResult = $this->subject->index();
+        $actual = $this->subject->index();
 
-        $expectedResult = [
+        $expected = [
             'jobs' => $eventsByType,
             'stats' => [
                 'foo'  => 'bar',
                 'foo1' => 'bar1',
-                'message_queue:queued' => $messageQueueJobs
             ],
             'redis' => ['info']
         ];
 
-        $this->assertEquals($expectedResult, $actualResult);
+        $this->assertEquals($expected, $actual);
     }
 
     public function testResetStats()

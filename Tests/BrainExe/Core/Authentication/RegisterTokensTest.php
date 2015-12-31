@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\BrainExe\Core\Authentication\RegisterTokens;
+namespace Tests\BrainExe\Core\Authentication;
 
 use BrainExe\Core\Authentication\RegisterTokens;
 use BrainExe\Core\Util\IdGenerator;

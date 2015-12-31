@@ -7,7 +7,7 @@ use BrainExe\Core\MessageQueue\Event\MessageQueueEvent;
 /**
  * @api
  */
-class CronEvent extends MessageQueueEvent
+class CronEvent extends MessageQueueEvent implements PushViaWebsocket
 {
 
     const CRON = 'message_queue.cron';

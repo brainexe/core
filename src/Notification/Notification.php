@@ -3,12 +3,13 @@
 namespace BrainExe\Core\Notification;
 
 use BrainExe\Core\EventDispatcher\AbstractEvent;
+use BrainExe\Core\EventDispatcher\PushViaWebsocket;
 use Monolog\Logger;
 
 /**
  * @api
  */
-class Notification extends AbstractEvent
+class Notification extends AbstractEvent implements PushViaWebsocket
 {
 
     const NOTIFY = 'notification:notify';

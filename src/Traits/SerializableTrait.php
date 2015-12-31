@@ -2,14 +2,15 @@
 
 namespace BrainExe\Core\Traits;
 
-
-
 /**
  * @api
  */
 trait SerializableTrait
 {
-    function jsonSerialize()
+    /**
+     * @return array
+     */
+    public function jsonSerialize()
     {
         $data = [];
 

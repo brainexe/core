@@ -1,14 +1,14 @@
 <?php
 
-namespace Tests\BrainExe\Core\Authentication\PasswordHasher;
+namespace Tests\BrainExe\Core\Authentication;
 
 use BrainExe\Core\Authentication\PasswordHasher;
-use PHPUnit_Framework_TestCase;
+use PHPUnit_Framework_TestCase as TestCase;
 
 /**
  * @covers BrainExe\Core\Authentication\PasswordHasher
  */
-class PasswordHasherTest extends PHPUnit_Framework_TestCase
+class PasswordHasherTest extends TestCase
 {
 
     /**

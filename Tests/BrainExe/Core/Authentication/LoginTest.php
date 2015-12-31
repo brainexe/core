@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\BrainExe\Core\Authentication\Login;
+namespace Tests\BrainExe\Core\Authentication;
 
 use BrainExe\Core\Authentication\AuthenticationDataVO;
 use BrainExe\Core\Authentication\Event\AuthenticateUserEvent;

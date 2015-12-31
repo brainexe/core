@@ -45,10 +45,6 @@ class Controller
     {
         $stats = $this->stats->getAll();
 
-        $stats = array_merge($stats, [
-            'message_queue:queued' => $this->messageQueue->countAllJobs(),
-        ]);
-
         try {
             $redisStats = $this->getRedis()->info();
         } catch (PredisException $e) {

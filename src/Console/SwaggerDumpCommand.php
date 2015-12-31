@@ -75,8 +75,8 @@ class SwaggerDumpCommand extends Command
                 'version'     =>  '1.0.0'
             ],
             'produces' => 'application/json',
-            'host'     => 'localhost',
-            'schemes'  => 'http',
+            'host'     => 'localhost', // todo fetch from config
+            'schemes'  => 'http', // todo fetch from config
             'paths'    => $resources
         ];
 

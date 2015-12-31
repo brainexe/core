@@ -3,11 +3,11 @@
 namespace BrainExe\Tests\Core;
 
 use BrainExe\Core\DependencyInjection\Rebuild;
-use PHPUnit_Framework_TestCase;
+use PHPUnit_Framework_TestCase as TestCase;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class RebuildTest extends PHPUnit_Framework_TestCase
+class RebuildTest extends TestCase
 {
 
     public function testRebuildContainer()

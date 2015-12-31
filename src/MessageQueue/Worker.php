@@ -6,6 +6,7 @@ use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Annotations\Annotations\Service;
 use BrainExe\Core\EventDispatcher\AbstractEvent;
 use BrainExe\Core\EventDispatcher\CronEvent;
+use BrainExe\Core\EventDispatcher\JobEvent;
 use BrainExe\Core\Stats\Event;
 use BrainExe\Core\Traits\EventDispatcherTrait;
 use BrainExe\Core\Traits\LoggerTrait;
@@ -78,6 +79,9 @@ class Worker
             sprintf('message_queue:handled:%s', $event->eventName)
         );
         $this->dispatchEvent($event);
+
+        $handledEvent = new JobEvent(JobEvent::HANDLED, $job);
+        $this->dispatcher->dispatchEvent($handledEvent);
     }
 
     /**

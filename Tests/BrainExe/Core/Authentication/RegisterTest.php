@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\BrainExe\Core\Authentication\Register;
+namespace Tests\BrainExe\Core\Authentication;
 
 use BrainExe\Core\Authentication\DatabaseUserProvider;
 use BrainExe\Core\Authentication\Exception\UsernameNotFoundException;
@@ -8,14 +8,14 @@ use BrainExe\Core\Authentication\Register;
 use BrainExe\Core\Authentication\RegisterTokens;
 use BrainExe\Core\Authentication\UserVO;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase;
+use PHPUnit_Framework_TestCase as TestCase;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 /**
  * @covers BrainExe\Core\Authentication\Register
  */
-class RegisterTest extends PHPUnit_Framework_TestCase
+class RegisterTest extends TestCase
 {
 
     /**
