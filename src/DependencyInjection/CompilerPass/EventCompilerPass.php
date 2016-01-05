@@ -49,9 +49,14 @@ class EventCompilerPass implements CompilerPassInterface
                     );
                 }
 
+                $parameters = [];
+                foreach ($reflection->getConstructor()->getParameters() as $parameter) {
+                    $parameters[] = $parameter->getName();
+                }
+
                 $events[$constant] = [
                     'class'      => $class,
-                    'parameters' => $reflection->getConstructor()->getNumberOfParameters()
+                    'parameters' => $parameters
                 ];
             };
         }

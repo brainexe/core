@@ -44,7 +44,6 @@ class UserController
     /**
      * @return string[]
      * @Route("/user/avatar/", name="authenticate.avatars", methods="GET")
-     * @Guest
      */
     public function getAvatars()
     {
@@ -57,7 +56,6 @@ class UserController
      * @return UserVO
      * @throws UserException
      * @Route("/user/avatar/{avatar}/", name="authenticate.setAvatar", methods="POST")
-     * @Guest
      */
     public function setAvatars(Request $request, $avatar)
     {
@@ -73,7 +71,24 @@ class UserController
     }
 
     /**
-     * Receives a list all all registered users. indexed by user-id
+     * @param Request $request
+     * @return UserVO
+     * @throws UserException
+     * @Route("/user/change_email/", name="authenticate.setEmail", methods="POST")
+     * @Guest
+     */
+    public function setEmail(Request $request)
+    {
+        /** @var UserVO $user */
+        $user = $request->attributes->get('user');
+        $user->email = $request->request->get('email');
+        $this->userProvider->setUserProperty($user, UserVO::PROPERTY_EMAIL);
+
+        return $user;
+    }
+
+    /**
+     * Receives a list of all registered user names. indexed by user-id
      *
      * @return string[]
      * @Route("/user/list/", name="authenticate.list_user", methods="GET")

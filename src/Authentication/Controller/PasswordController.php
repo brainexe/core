@@ -36,10 +36,14 @@ class PasswordController
      */
     public function changePassword(Request $request)
     {
-        $password = $request->request->get('password');
+        $oldPassword = $request->request->get('oldPassword');
+
+        // todo verify old password
+
+        $newPassword = $request->request->get('newPassword');
         /** @var UserVO $user */
         $user = $request->attributes->get('user');
-        $this->user->changePassword($user, $password);
+        $this->user->changePassword($user, $newPassword);
 
         return true;
     }

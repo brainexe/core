@@ -38,7 +38,7 @@ class Csrf extends AbstractMiddleware
     {
         $givenToken = $request->headers->get(self::HEADER);
 
-        if ($request->isMethod('GET') && !$route->hasOption(self::CSRF)) {
+        if ($request->isMethod('GET') && (!$route->hasOption(self::CSRF)) || $route->hasDefault('_guest')) {
             if (empty($givenToken)) {
                 $this->renewCsrfToken();
             }

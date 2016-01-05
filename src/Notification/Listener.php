@@ -2,6 +2,7 @@
 
 namespace BrainExe\Core\Notification;
 
+use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Core\Annotations\EventListener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -16,6 +17,7 @@ class Listener implements EventSubscriberInterface
     private $notifier;
 
     /**
+     * @Inject("@Core.Notification.Notifier")
      * @param Notifier $notifier
      */
     public function __construct(Notifier $notifier)

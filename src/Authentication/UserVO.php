@@ -11,6 +11,7 @@ class UserVO implements JsonSerializable
 {
 
     const PROPERTY_AVATAR = 'avatar';
+    const PROPERTY_EMAIL  = 'email';
 
     const ROLE_ADMIN = 'admin';
     const ROLE_USER  = 'user';
@@ -26,7 +27,7 @@ class UserVO implements JsonSerializable
         self::ROLE_USER
     ];
 
-    const AVATARS = [
+    const AVATARS        = [
         self::AVATAR_1,
         self::AVATAR_2,
         self::AVATAR_3,
