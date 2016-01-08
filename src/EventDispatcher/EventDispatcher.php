@@ -63,7 +63,11 @@ class EventDispatcher extends ContainerAwareEventDispatcher
      */
     public function dispatchEvent(AbstractEvent $event)
     {
-        $this->dispatch($event->eventName, $event);
+        if ($event instanceof BackgroundOnlyEvent) {
+            $this->dispatchInBackground($event);
+        } else {
+            $this->dispatch($event->eventName, $event);
+        }
         if ($event instanceof PushViaWebsocket) {
             /** @var AbstractEvent $event */
             $this->dispatchAsWebsocketEvent($event);
