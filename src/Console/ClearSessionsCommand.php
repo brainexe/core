@@ -32,7 +32,7 @@ class ClearSessionsCommand extends Command
     {
         $redis = $this->getRedis();
 
-        $sessionIds = $redis->keys('session:*');
+        $sessionIds = $redis->keys('sessions:*');
 
         foreach ($sessionIds as $sessionId) {
             $redis->del($sessionId);

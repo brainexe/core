@@ -90,7 +90,7 @@
 						<argument key="name">sid_%application.name%</argument>
 					</argument>
 					<argument type="service">
-						<service class="Predis\Session\Handler">
+						<service class="BrainExe\Core\Application\SessionHandler">
 							<argument type="service" id="redis"/>
 							<argument type="collection">
 								<argument key="gc_maxlifetime">%session.lifetime%</argument>

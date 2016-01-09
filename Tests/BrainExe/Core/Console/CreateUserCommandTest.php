@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\BrainExe\Core\Console\CreateUserCommand;
+namespace Tests\BrainExe\Core\Console;
 
 use BrainExe\Core\Authentication\Register;
 use BrainExe\Core\Authentication\UserVO;

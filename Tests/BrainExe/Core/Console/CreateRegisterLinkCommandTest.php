@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\BrainExe\Core\Console\CreateRegisterLinkCommand;
+namespace Tests\BrainExe\Core\Console;
 
 use BrainExe\Core\Authentication\RegisterTokens;
 use BrainExe\Core\Console\CreateRegisterLinkCommand;

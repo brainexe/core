@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\BrainExe\Core\Middleware\AuthenticationMiddleware;
+namespace Tests\BrainExe\Core\Middleware;
 
 use BrainExe\Core\Authentication\AnonymusUserVO;
 use BrainExe\Core\Authentication\LoadUser;

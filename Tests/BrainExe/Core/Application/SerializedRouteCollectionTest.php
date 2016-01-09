@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\BrainExe\Core\Application\Locale;
+namespace Tests\BrainExe\Core\Application;
 
 use BrainExe\Core\Application\SerializedRouteCollection;
 use PHPUnit_Framework_TestCase as TestCase;

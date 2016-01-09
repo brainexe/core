@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\BrainExe\Core\Middleware\SessionMiddleware;
+namespace Tests\BrainExe\Core\Middleware;
 
 use BrainExe\Core\Middleware\Session;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;

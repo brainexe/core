@@ -1,12 +1,12 @@
 <?php
 
-namespace BrainExe\Tests\Core;
+namespace BrainExe\Tests;
 
 use BrainExe\Core\Core;
-use PHPUnit_Framework_TestCase;
+use PHPUnit_Framework_TestCase as TestCase;
 use Symfony\Component\DependencyInjection\Container;
 
-class CoreTest extends PHPUnit_Framework_TestCase
+class CoreTest extends TestCase
 {
 
     public function testBoot()

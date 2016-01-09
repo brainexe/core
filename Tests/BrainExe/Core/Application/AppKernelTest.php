@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\BrainExe\Core\Application\AppKernel;
+namespace Tests\BrainExe\Core\Application;
 
 use BrainExe\Core\Application\AppKernel;
 use BrainExe\Core\Application\ControllerResolver;

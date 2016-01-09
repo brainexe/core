@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\BrainExe\Core\Util\Time;
+namespace Tests\BrainExe\Core\Util;
 
 use BrainExe\Core\Util\Time;
 use PHPUnit_Framework_TestCase as TestCase;

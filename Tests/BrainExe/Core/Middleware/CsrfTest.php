@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\BrainExe\Core\Middleware\CsrfMiddleware;
+namespace Tests\BrainExe\Core\Middleware;
 
 use BrainExe\Core\Middleware\Csrf;
 use BrainExe\Core\Util\IdGenerator;

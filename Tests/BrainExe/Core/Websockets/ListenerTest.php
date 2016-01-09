@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\BrainExe\Core\Websockets\WebsocketListener;
+namespace Tests\BrainExe\Core\Websockets;
 
 use BrainExe\Core\EventDispatcher\AbstractEvent;
 use BrainExe\Core\Redis\Predis;

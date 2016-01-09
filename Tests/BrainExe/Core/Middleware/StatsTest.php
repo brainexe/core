@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\BrainExe\Core\Middleware\GentimeMiddleware;
+namespace Tests\BrainExe\Core\Middleware;
 
 use BrainExe\Core\EventDispatcher\EventDispatcher;
 use BrainExe\Core\Middleware\Stats;

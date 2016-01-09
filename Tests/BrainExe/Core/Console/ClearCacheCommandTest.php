@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\BrainExe\Core\Console\ClearCacheCommand;
+namespace Tests\BrainExe\Core\Console;
 
 use BrainExe\Core\Console\ClearCacheCommand;
 use BrainExe\Core\DependencyInjection\Rebuild;

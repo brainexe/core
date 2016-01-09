@@ -1,14 +1,14 @@
 <?php
 
-namespace Tests\BrainExe\Core\Util\FileSystem;
+namespace Tests\BrainExe\Core\Util;
 
 use BrainExe\Core\Util\FileSystem;
-use PHPUnit_Framework_TestCase;
+use PHPUnit_Framework_TestCase as TestCase;
 
 /**
  * @covers BrainExe\Core\Util\FileSystem
  */
-class FileSystemTest extends PHPUnit_Framework_TestCase
+class FileSystemTest extends TestCase
 {
 
     /**

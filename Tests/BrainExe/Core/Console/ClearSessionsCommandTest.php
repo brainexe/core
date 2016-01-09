@@ -48,7 +48,7 @@ class ClearSessionsCommandTest extends TestCase
         $this->redis
             ->expects($this->once())
             ->method('keys')
-            ->with('session:*')
+            ->with('sessions:*')
             ->willReturn([$session]);
 
         $this->redis

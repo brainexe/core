@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\BrainExe\Core\Middleware\GentimeMiddleware;
+namespace Tests\BrainExe\Core\Middleware;
 
 use BrainExe\Core\Middleware\Parameter;
 use PHPUnit_Framework_TestCase as TestCase;

@@ -1,17 +1,17 @@
 <?php
 
-namespace Tests\BrainExe\Core\Application\ControllerResolver;
+namespace Tests\BrainExe\Core\Application;
 
 use BrainExe\Core\Application\ControllerResolver;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase;
+use PHPUnit_Framework_TestCase as TestCase;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @covers BrainExe\Core\Application\ControllerResolver
  */
-class ControllerResolverTest extends PHPUnit_Framework_TestCase
+class ControllerResolverTest extends TestCase
 {
 
     /**

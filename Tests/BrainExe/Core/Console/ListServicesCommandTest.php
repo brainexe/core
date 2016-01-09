@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\BrainExe\Core\Console\ListServicesCommand;
+namespace Tests\BrainExe\Core\Console;
 
 use BrainExe\Core\Console\ListServicesCommand;
 use BrainExe\Core\DependencyInjection\Rebuild;

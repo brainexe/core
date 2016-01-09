@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\BrainExe\Core\Middleware\LocaleMiddleware;
+namespace Tests\BrainExe\Core\Middleware;
 
 use BrainExe\Core\Application\Locale as LocaleModel;
 use BrainExe\Core\Middleware\Locale;

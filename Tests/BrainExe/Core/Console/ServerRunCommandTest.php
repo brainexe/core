@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\BrainExe\Core\Console\ServerRunCommand;
+namespace Tests\BrainExe\Core\Console;
 
 use BrainExe\Core\Console\ServerRunCommand;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;

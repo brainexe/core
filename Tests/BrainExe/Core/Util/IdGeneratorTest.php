@@ -1,17 +1,17 @@
 <?php
 
-namespace Tests\BrainExe\Core\Util\IdGenerator;
+namespace Tests\BrainExe\Core\Util;
 
 use BrainExe\Core\Util\IdGenerator;
 use BrainExe\Tests\RedisMockTrait;
-use PHPUnit_Framework_TestCase;
+use PHPUnit_Framework_TestCase as TestCase;
 use BrainExe\Core\Redis\Predis;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 
 /**
  * @covers BrainExe\Core\Util\IdGenerator
  */
-class IdGeneratorTest extends PHPUnit_Framework_TestCase
+class IdGeneratorTest extends TestCase
 {
 
     use RedisMockTrait;

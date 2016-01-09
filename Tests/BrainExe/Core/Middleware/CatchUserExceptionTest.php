@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\BrainExe\Core\Middleware\UserExceptionMiddleware;
+namespace Tests\BrainExe\Core\Middleware;
 
 use BrainExe\Core\Application\UserException;
 use BrainExe\Core\Middleware\CatchUserException;

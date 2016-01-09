@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\BrainExe\Core\Application\RedisLock;
+namespace Tests\BrainExe\Core\Application;
 
 use BrainExe\Core\Application\RedisLock;
 use BrainExe\Tests\RedisMockTrait;

@@ -4,9 +4,9 @@ namespace BrainExe\Tests\Core\Util;
 
 use BrainExe\Core\Application\UserException;
 use BrainExe\Core\Util\TimeParser;
-use PHPUnit_Framework_TestCase;
+use PHPUnit_Framework_TestCase as TestCase;
 
-class TimeParserTest extends PHPUnit_Framework_TestCase
+class TimeParserTest extends TestCase
 {
 
     /**

@@ -1,15 +1,15 @@
 <?php
 
-namespace Tests\BrainExe\Core\Application\UrlMatcher;
+namespace Tests\BrainExe\Core\Application;
 
 use BrainExe\Core\Application\UrlMatcher;
-use PHPUnit_Framework_TestCase;
+use PHPUnit_Framework_TestCase as TestCase;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @covers BrainExe\Core\Application\UrlMatcher
  */
-class UrlMatcherTest extends PHPUnit_Framework_TestCase
+class UrlMatcherTest extends TestCase
 {
 
     /**

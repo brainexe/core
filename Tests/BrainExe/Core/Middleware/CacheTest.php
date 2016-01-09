@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\BrainExe\Core\Middleware\CacheMiddleware;
+namespace Tests\BrainExe\Core\Middleware;
 
 use BrainExe\Core\Middleware\Cache;
 use Doctrine\Common\Cache\CacheProvider;
