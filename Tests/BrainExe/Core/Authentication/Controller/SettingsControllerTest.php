@@ -58,11 +58,12 @@ class SettingsControllerTest extends TestCase
 
     public function testSet()
     {
-        $request = new Request();
-        $request->attributes->set('user_id', $userId = 42);
-
         $key   = 'myKey';
         $value = 'myValue';
+
+        $request = new Request();
+        $request->attributes->set('user_id', $userId = 42);
+        $request->request->set('value', $value);
 
         $this->settings
             ->expects($this->once())

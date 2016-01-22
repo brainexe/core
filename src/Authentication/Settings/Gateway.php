@@ -21,7 +21,7 @@ class Gateway
      */
     public function getAll($userId)
     {
-        return $this->getRedis()->hgetall($this->getKey($userId));
+        return array_map('json_decode', $this->getRedis()->hgetall($this->getKey($userId)));
     }
 
     /**
@@ -31,7 +31,7 @@ class Gateway
      */
     public function get($userId, $setting)
     {
-        return $this->getRedis()->hget($this->getKey($userId), $setting);
+        return json_decode($this->getRedis()->hget($this->getKey($userId), $setting));
     }
 
     /**
@@ -41,7 +41,7 @@ class Gateway
      */
     public function set($userId, $setting, $value)
     {
-        $this->getRedis()->hset($this->getKey($userId), $setting, $value);
+        $this->getRedis()->hset($this->getKey($userId), $setting, json_encode($value));
     }
 
 

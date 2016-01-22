@@ -43,7 +43,7 @@ class GatewayTest extends TestCase
             ->expects($this->once())
             ->method('hgetall')
             ->with('user:settings:42')
-            ->willReturn($expected);
+            ->willReturn(['"mockValue"']);
 
         $actual = $this->subject->getAll($userId);
 
@@ -60,7 +60,7 @@ class GatewayTest extends TestCase
             ->expects($this->once())
             ->method('hget')
             ->with('user:settings:42', $setting)
-            ->willReturn($expected);
+            ->willReturn("\"$expected\"");
 
         $actual = $this->subject->get($userId, $setting);
 
@@ -76,7 +76,7 @@ class GatewayTest extends TestCase
         $this->redis
             ->expects($this->once())
             ->method('hset')
-            ->with('user:settings:42', $setting, $value);
+            ->with('user:settings:42', $setting, '"mockValue"');
 
         $this->subject->set($userId, $setting, $value);
     }

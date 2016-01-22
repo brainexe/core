@@ -40,13 +40,13 @@ class SettingsController
     /**
      * @param Request $request
      * @param string $key
-     * @param string $value
      * @return bool
-     * @Route("/settings/{key}/{value}/", name="settings.set", methods="POST")
+     * @Route("/settings/{key}/", name="settings.set", methods="POST")
      */
-    public function set(Request $request, $key, $value)
+    public function set(Request $request, $key)
     {
         $userId = $request->attributes->get('user_id');
+        $value = $request->request->get('value');
 
         $this->settings->set($userId, $key, $value);
 
