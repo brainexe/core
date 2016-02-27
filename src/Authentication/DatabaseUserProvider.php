@@ -138,7 +138,7 @@ class DatabaseUserProvider
             'avatar'   => $user->avatar
         ];
 
-        $newUserId = $this->generateUniqueId();
+        $newUserId = $this->generateUniqueId('userid');
 
         $redis->HSET(self::REDIS_USER_NAMES, strtolower($user->getUsername()), $newUserId);
         $redis->HMSET($this->getKey($newUserId), $userArray);

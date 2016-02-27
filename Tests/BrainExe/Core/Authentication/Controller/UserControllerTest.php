@@ -2,7 +2,6 @@
 
 namespace Tests\BrainExe\Core\Authentication\Controller;
 
-use BrainExe\Core\Application\UserException;
 use BrainExe\Core\Authentication\Controller\UserController;
 use BrainExe\Core\Authentication\DatabaseUserProvider;
 use BrainExe\Core\Authentication\UserVO;

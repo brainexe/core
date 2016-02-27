@@ -48,7 +48,7 @@ class RegisterTokensTest extends TestCase
 
         $this->idGenerator
             ->expects($this->once())
-            ->method('generateUniqueId')
+            ->method('generateRandomId')
             ->willReturn($tokenId);
 
         $this->redis

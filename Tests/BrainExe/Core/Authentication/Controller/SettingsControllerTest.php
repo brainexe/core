@@ -2,16 +2,11 @@
 
 namespace Tests\BrainExe\Core\Authentication\Controller;
 
-use BrainExe\Core\Authentication\Controller\RegisterController;
 use BrainExe\Core\Authentication\Controller\SettingsController;
-use BrainExe\Core\Authentication\Register;
 use BrainExe\Core\Authentication\Settings\Settings;
-use BrainExe\Core\Authentication\UserVO;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase as TestCase;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 /**
  * @covers BrainExe\Core\Authentication\Controller\SettingsController

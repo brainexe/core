@@ -106,7 +106,7 @@ class AppKernel implements HttpKernelInterface
         $callable  = $this->resolver->getController($request);
         $arguments = $this->resolver->getArguments($request, $callable);
 
-        return call_user_func_array($callable, $arguments);
+        return $callable(...$arguments);
     }
 
     /**

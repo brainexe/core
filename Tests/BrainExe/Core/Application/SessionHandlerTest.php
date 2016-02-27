@@ -2,7 +2,6 @@
 
 namespace Tests\BrainExe\Core\Application;
 
-use BrainExe\Core\Application\RedisLock;
 use BrainExe\Core\Application\SessionHandler;
 use BrainExe\Tests\RedisMockTrait;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
