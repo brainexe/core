@@ -17,7 +17,6 @@ class Core
     public function boot()
     {
         chdir(ROOT);
-        umask(0);
 
         $fileName = 'cache/dic.php';
         /** @var Container $dic */

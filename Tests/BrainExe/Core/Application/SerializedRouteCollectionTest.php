@@ -46,12 +46,12 @@ class SerializedRouteCollectionTest extends TestCase
         $this->subject->remove('foo');
     }
 
-    /**
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage RoutCollection::add is not implemented
-     */
     public function testAdd()
     {
-        $this->subject->add('foo', new Route('/'));
+        $route = new Route('/');
+
+        $this->subject->add('foo', $route);
+
+        $this->assertEquals($route, $this->subject->get('foo'));
     }
 }

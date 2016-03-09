@@ -49,14 +49,9 @@ class SerializedRouteCollection extends RouteCollection
         return $this->cache[$name] = unserialize($this->serializedRoutes[$name]);
     }
 
-    private function init()
-    {
-        return array_map([$this, 'get'], array_keys($this->serializedRoutes));
-    }
-
     public function all()
     {
-        $this->init();
+        $this->initAll();
 
         return $this->cache;
     }
@@ -87,15 +82,26 @@ class SerializedRouteCollection extends RouteCollection
         return count($this->serializedRoutes);
     }
 
+    /**
+     * @param string $name
+     * @param Route $route
+     */
     public function add($name, Route $route)
     {
-        unset($name, $route);
-        throw new RuntimeException('RoutCollection::add is not implemented');
+        $this->cache[$name] = $route;
     }
 
+    /**
+     * @param array|string $name
+     */
     public function remove($name)
     {
         unset($name);
         throw new RuntimeException('RoutCollection::remove is not implemented');
+    }
+
+    private function initAll()
+    {
+        return array_map([$this, 'get'], array_keys($this->serializedRoutes));
     }
 }

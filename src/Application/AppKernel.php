@@ -89,7 +89,7 @@ class AppKernel implements HttpKernelInterface
     {
         $attributes = $this->urlMatcher->match($request);
 
-        $request->attributes->add($attributes);
+        $request->attributes->replace($attributes);
 
         $routeName = $attributes['_route'];
         $route     = $this->routes->get($routeName);

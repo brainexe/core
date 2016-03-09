@@ -17,7 +17,7 @@ class Listener implements EventSubscriberInterface
     use RedisTrait;
 
     /**
-     * @{inheritdoc}
+     * {@inheritdoc}
      */
     public static function getSubscribedEvents()
     {

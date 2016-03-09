@@ -75,7 +75,11 @@ class Rebuild
         $dumper = new PhpDumper($container);
         $dumper->setProxyDumper(new ProxyDumper());
 
-        $containerContent = $dumper->dump(['class' => $className]);
+        $containerContent = $dumper->dump([
+            'class' => $className,
+            'debug' => $container->getParameter('debug')
+        ]);
+
         file_put_contents('cache/dic.php', $containerContent);
         file_put_contents('cache/dic.txt', $className);
         @chmod($containerFile, 0777);
