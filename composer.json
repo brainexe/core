@@ -28,6 +28,7 @@
     "symfony/routing": "~3.0",
     "symfony/proxy-manager-bridge": "~3.0",
     "zendframework/zend-stdlib": "~2.7|~3.0",
+    "ocramius/proxy-manager": "~1.0",
     "brainexe/annotations": "~1.1",
     "monolog/monolog": "~1.17",
     "doctrine/cache": "~1.6",
