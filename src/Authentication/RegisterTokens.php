@@ -23,7 +23,7 @@ class RegisterTokens
     {
         $token = $this->generateRandomId();
 
-        $this->getRedis()->sAdd(self::TOKEN_KEY, [$token]);
+        $this->getRedis()->sadd(self::TOKEN_KEY, [$token]);
 
         return $token;
     }
@@ -34,6 +34,6 @@ class RegisterTokens
      */
     public function fetchToken($token)
     {
-        return (bool)$this->getRedis()->sRem(self::TOKEN_KEY, $token);
+        return (bool)$this->getRedis()->srem(self::TOKEN_KEY, $token);
     }
 }

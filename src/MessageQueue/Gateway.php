@@ -37,9 +37,9 @@ class Gateway
         }
 
         $redis = $this->getRedis();
-        $delayed = $redis->ZREM(self::QUEUE_DELAYED, $eventId);
+        $delayed = $redis->zrem(self::QUEUE_DELAYED, $eventId);
         if ($delayed) {
-            $redis->HDEL(self::META_DATA, $eventId);
+            $redis->hdel(self::META_DATA, [$eventId]);
             return true;
         }
 
@@ -80,11 +80,11 @@ class Gateway
         $pipeline = $this->getRedis()->pipeline(['fire-and-forget' => true]);
         if (empty($job->timestamp)) {
             // immediate execution in background
-            $pipeline->LPUSH(self::QUEUE_IMMEDIATE, $job->jobId . '#' . $serialized);
+            $pipeline->lpush(self::QUEUE_IMMEDIATE, $job->jobId . '#' . $serialized);
         } else {
             // delayed execution
-            $pipeline->HSET(self::META_DATA, $job->jobId, $serialized);
-            $pipeline->ZADD(self::QUEUE_DELAYED, (int)$job->timestamp, $job->jobId);
+            $pipeline->hset(self::META_DATA, $job->jobId, $serialized);
+            $pipeline->zadd(self::QUEUE_DELAYED, (int)$job->timestamp, $job->jobId);
         }
 
         $pipeline->execute();
@@ -109,28 +109,26 @@ class Gateway
     {
         $redis = $this->getRedis();
 
-        $resultRaw = $redis->ZRANGEBYSCORE(
+        $resultRaw = $redis->zrangebyscore(
             self::QUEUE_DELAYED,
             $since,
             '+inf',
             ['withscores' => true]
         );
 
-        if (!empty($resultRaw)) {
-            $keys = [];
-            foreach ($resultRaw as $jobId => $timestamp) {
-                if (empty($eventType) || strpos($jobId, "$eventType:") === 0) {
-                    $keys[$jobId] = $timestamp;
-                }
+        $keys = [];
+        foreach ($resultRaw as $jobId => $timestamp) {
+            if (empty($eventType) || strpos($jobId, "$eventType:") === 0) {
+                $keys[$jobId] = $timestamp;
             }
+        }
 
-            if (!empty($keys)) {
-                $events = $redis->hmget(self::META_DATA, array_keys($keys));
-                foreach ($events as $jobId => $rawJob) {
-                    /** @var Job $job */
-                    $job = unserialize(base64_decode($rawJob));
-                    yield $job->jobId => $job;
-                }
+        if (!empty($keys)) {
+            $events = $redis->hmget(self::META_DATA, array_keys($keys));
+            foreach ($events as $jobId => $rawJob) {
+               /** @var Job $job */
+                $job = unserialize(base64_decode($rawJob));
+                yield $job->jobId => $job;
             }
         }
 
@@ -162,8 +160,8 @@ class Gateway
      */
     public function countAllJobs()
     {
-        $delayed   = $this->getRedis()->ZCARD(self::QUEUE_DELAYED);
-        $immediate = $this->getRedis()->LLEN(self::QUEUE_IMMEDIATE);
+        $delayed   = $this->getRedis()->zcard(self::QUEUE_DELAYED);
+        $immediate = $this->getRedis()->llen(self::QUEUE_IMMEDIATE);
 
         return $delayed + $immediate;
     }

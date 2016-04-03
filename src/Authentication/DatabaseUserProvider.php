@@ -72,7 +72,7 @@ class DatabaseUserProvider
      */
     public function getAllUserNames()
     {
-        return $this->getRedis()->hGetAll(self::REDIS_USER_NAMES);
+        return $this->getRedis()->hgetall(self::REDIS_USER_NAMES);
     }
 
     /**
@@ -118,7 +118,7 @@ class DatabaseUserProvider
         if (is_array($value)) {
             $value = implode(',', $value);
         }
-        $redis->HSET($this->getKey($userVo->id), $property, $value);
+        $redis->hset($this->getKey($userVo->id), $property, $value);
     }
 
     /**
@@ -140,8 +140,8 @@ class DatabaseUserProvider
 
         $newUserId = $this->generateUniqueId('userid');
 
-        $redis->HSET(self::REDIS_USER_NAMES, strtolower($user->getUsername()), $newUserId);
-        $redis->HMSET($this->getKey($newUserId), $userArray);
+        $redis->hset(self::REDIS_USER_NAMES, strtolower($user->getUsername()), $newUserId);
+        $redis->hmset($this->getKey($newUserId), $userArray);
 
         $redis->execute();
 

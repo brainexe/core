@@ -40,7 +40,7 @@ class RedisLockTest extends TestCase
 
         $this->mockRedis
             ->expects($this->once())
-            ->method('SET')
+            ->method('set')
             ->with("lock:$name", "1", 'EX', $lockTime, 'NX');
 
         $this->subject->lock($name, $lockTime);

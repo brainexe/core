@@ -19,14 +19,14 @@ trait RedisCacheTrait
      */
     public function wrapCache($key, callable $callback, $ttl = 3600)
     {
-        $cachedValue = $this->redis->GET($key);
+        $cachedValue = $this->redis->get($key);
         if ($cachedValue) {
             return unserialize($cachedValue);
         }
 
         $value = $callback();
 
-        $this->redis->SETEX($key, $ttl, serialize($value));
+        $this->redis->setex($key, $ttl, serialize($value));
 
         return $value;
     }
@@ -36,6 +36,6 @@ trait RedisCacheTrait
      */
     public function invalidate($key)
     {
-        $this->redis->DEL($key);
+        $this->redis->del($key);
     }
 }

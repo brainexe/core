@@ -38,7 +38,7 @@ class SessionHandlerTest extends TestCase
 
         $this->redis
             ->expects($this->once())
-            ->method('DEL')
+            ->method('del')
             ->with("sessions:$sessionId");
 
         $this->subject->destroy($sessionId);
@@ -50,7 +50,7 @@ class SessionHandlerTest extends TestCase
 
         $this->redis
             ->expects($this->once())
-            ->method('GET')
+            ->method('get')
             ->with("sessions:$sessionId")
             ->willReturn(null);
 
@@ -65,7 +65,7 @@ class SessionHandlerTest extends TestCase
 
         $this->redis
             ->expects($this->once())
-            ->method('GET')
+            ->method('get')
             ->with("sessions:$sessionId")
             ->willReturn('foo');
 
@@ -81,7 +81,7 @@ class SessionHandlerTest extends TestCase
 
         $this->redis
             ->expects($this->once())
-            ->method('SETEX')
+            ->method('setex')
             ->with("sessions:$sessionId", 1440, $data);
 
         $this->subject->write($sessionId, $data);

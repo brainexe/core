@@ -26,6 +26,15 @@ class EventCompilerPass implements CompilerPassInterface
             return;
         }
 
+        $this->dumpVariableToCache('events', $this->getEvents());
+    }
+
+    /**
+     * @return array
+     * @throws Exception
+     */
+    private function getEvents()
+    {
         $events = [];
         foreach (get_declared_classes() as $class) {
             $reflection = new ReflectionClass($class);
@@ -61,6 +70,6 @@ class EventCompilerPass implements CompilerPassInterface
             };
         }
 
-        $this->dumpVariableToCache('events', $events);
+        return $events;
     }
 }

@@ -104,7 +104,7 @@ class DatabaseUserProviderTest extends TestCase
 
         $this->redis
             ->expects($this->once())
-            ->method('hGetAll')
+            ->method('hgetall')
             ->with(DatabaseUserProvider::REDIS_USER_NAMES)
             ->willReturn($userNames);
 
@@ -161,7 +161,7 @@ class DatabaseUserProviderTest extends TestCase
 
         $this->redis
             ->expects($this->once())
-            ->method('hSet')
+            ->method('hset')
             ->with("user:$userId", 'password', $hash);
 
         $this->subject->changePassword($user, $newPassword);
@@ -175,7 +175,7 @@ class DatabaseUserProviderTest extends TestCase
 
         $this->redis
             ->expects($this->once())
-            ->method('hSet')
+            ->method('hset')
             ->with("user:$userId", 'username', $username);
 
         $this->subject->setUserProperty($user, 'username');
@@ -188,7 +188,7 @@ class DatabaseUserProviderTest extends TestCase
         $user->roles = ['foo', 'bar'];
         $this->redis
             ->expects($this->once())
-            ->method('hSet')
+            ->method('hset')
             ->with("user:$userId", 'roles', 'foo,bar');
 
         $this->subject->setUserProperty($user, 'roles');
@@ -255,13 +255,13 @@ class DatabaseUserProviderTest extends TestCase
 
         $this->redis
             ->expects($this->once())
-            ->method('HSET')
+            ->method('hset')
             ->with(DatabaseUserProvider::REDIS_USER_NAMES, $username, $userId)
             ->willReturn($this->redis);
 
         $this->redis
             ->expects($this->once())
-            ->method('HMSET')
+            ->method('hmset')
             ->with("user:$userId", $this->isType('array'))
             ->willReturn($this->redis);
 

@@ -24,7 +24,7 @@ class RedisLock
     {
         $redis = $this->getRedis();
 
-        return $redis->SET(self::REDIS_PREFIX . $name, '1', 'EX', $lockTime, 'NX');
+        return $redis->set(self::REDIS_PREFIX . $name, '1', 'EX', $lockTime, 'NX');
     }
 
     /**
@@ -32,6 +32,6 @@ class RedisLock
      */
     public function unlock($name)
     {
-        $this->getRedis()->DEL(self::REDIS_PREFIX . $name);
+        $this->getRedis()->del(self::REDIS_PREFIX . $name);
     }
 }

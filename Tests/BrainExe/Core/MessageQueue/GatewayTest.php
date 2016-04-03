@@ -66,14 +66,14 @@ class GatewayTest extends TestCase
 
         $this->redis
             ->expects($this->once())
-            ->method('ZREM')
+            ->method('zrem')
             ->with(Gateway::QUEUE_DELAYED, "event:10")
             ->willReturn(1);
 
         $this->redis
             ->expects($this->once())
-            ->method('HDEL')
-            ->with(Gateway::META_DATA, "event:10");
+            ->method('hdel')
+            ->with(Gateway::META_DATA, ["event:10"]);
 
         $actual = $this->subject->deleteEvent($eventId, $eventType);
         $this->assertTrue($actual);
@@ -86,7 +86,7 @@ class GatewayTest extends TestCase
 
         $this->redis
             ->expects($this->once())
-            ->method('ZREM')
+            ->method('zrem')
             ->with(Gateway::QUEUE_DELAYED, "event:10")
             ->willReturn(0);
 
@@ -116,7 +116,7 @@ class GatewayTest extends TestCase
 
         $this->redis
             ->expects($this->once())
-            ->method('ZREM')
+            ->method('zrem')
             ->with(Gateway::QUEUE_DELAYED, "event:10")
             ->willReturn(0);
 
@@ -149,7 +149,7 @@ class GatewayTest extends TestCase
             ->willReturnSelf();
         $this->redis
             ->expects($this->at(1))
-            ->method('LPUSH')
+            ->method('lpush')
             ->with(Gateway::QUEUE_IMMEDIATE);
         $this->redis
             ->expects($this->at(2))
@@ -177,14 +177,14 @@ class GatewayTest extends TestCase
             ->willReturnSelf();
         $this->redis
             ->expects($this->at(1))
-            ->method('HSET')
+            ->method('hset')
             ->with(
                 Gateway::META_DATA,
                 "type:$eventId"
             );
         $this->redis
             ->expects($this->at(2))
-            ->method('ZADD')
+            ->method('zadd')
             ->with(
                 Gateway::QUEUE_DELAYED,
                 $timestamp,
@@ -206,7 +206,7 @@ class GatewayTest extends TestCase
 
         $this->redis
             ->expects($this->once())
-            ->method('ZRANGEBYSCORE')
+            ->method('zrangebyscore')
             ->with(
                 Gateway::QUEUE_DELAYED,
                 $since,
@@ -238,7 +238,7 @@ class GatewayTest extends TestCase
 
         $this->redis
             ->expects($this->once())
-            ->method('ZRANGEBYSCORE')
+            ->method('zrangebyscore')
             ->with(
                 Gateway::QUEUE_DELAYED,
                 $since,
@@ -249,7 +249,7 @@ class GatewayTest extends TestCase
 
         $this->redis
             ->expects($this->once())
-            ->method('HMGET')
+            ->method('hmget')
             ->with(Gateway::META_DATA, [$eventId])
             ->willReturn([$eventId => self::DUMMY_EVENT]);
 
@@ -277,7 +277,7 @@ class GatewayTest extends TestCase
 
         $this->redis
             ->expects($this->once())
-            ->method('ZRANGEBYSCORE')
+            ->method('zrangebyscore')
             ->with(
                 Gateway::QUEUE_DELAYED,
                 $since,
@@ -288,7 +288,7 @@ class GatewayTest extends TestCase
 
         $this->redis
             ->expects($this->once())
-            ->method('HMGET')
+            ->method('hmget')
             ->with(Gateway::META_DATA, [$eventId])
             ->willReturn([$eventId => $eventRaw]);
 
@@ -321,12 +321,12 @@ class GatewayTest extends TestCase
 
         $this->redis
             ->expects($this->once())
-            ->method('HSET')
+            ->method('hset')
             ->with(Gateway::META_DATA, 'event:100');
 
         $this->redis
             ->expects($this->once())
-            ->method('ZADD')
+            ->method('zadd')
             ->with(Gateway::QUEUE_DELAYED, 1000 + Gateway::RETRY_TIME, 'event:100');
 
         $event = new TestEvent('test');
@@ -339,13 +339,13 @@ class GatewayTest extends TestCase
     {
         $this->redis
             ->expects($this->once())
-            ->method('ZCARD')
+            ->method('zcard')
             ->with(Gateway::QUEUE_DELAYED)
             ->will($this->returnValue(12));
 
         $this->redis
             ->expects($this->once())
-            ->method('LLEN')
+            ->method('llen')
             ->with(Gateway::QUEUE_IMMEDIATE)
             ->will($this->returnValue(3));
 

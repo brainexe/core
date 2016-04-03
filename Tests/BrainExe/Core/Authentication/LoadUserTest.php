@@ -45,7 +45,7 @@ class LoadUserTest extends TestCase
 
         $this->redis
             ->expects($this->once())
-            ->method('HGET')
+            ->method('hget')
             ->with(DatabaseUserProvider::REDIS_USER_NAMES, 'username')
             ->willReturn(null);
 
@@ -67,13 +67,13 @@ class LoadUserTest extends TestCase
 
         $this->redis
             ->expects($this->once())
-            ->method('HGET')
+            ->method('hget')
             ->with(DatabaseUserProvider::REDIS_USER_NAMES, 'username')
             ->willReturn($userId);
 
         $this->redis
             ->expects($this->once())
-            ->method('HGETALL')
+            ->method('hgetall')
             ->with("user:$userId")
             ->willReturn($userRaw);
 

@@ -59,16 +59,7 @@ class ConsoleCompilerPass implements CompilerPassInterface
         $arguments = [];
 
         foreach ($definition->getArguments() as $argument) {
-            $mode = 0;
-            if ($argument->isRequired()) {
-                $mode |= InputArgument::REQUIRED;
-            }
-            if ($argument->isArray()) {
-                $mode |= InputArgument::IS_ARRAY;
-            }
-            if (!$argument->isRequired()) {
-                $mode |= InputArgument::OPTIONAL;
-            }
+            $mode = $this->getArgumentMode($argument);
 
             $arguments[] = new Definition(
                 InputArgument::class,
@@ -76,19 +67,7 @@ class ConsoleCompilerPass implements CompilerPassInterface
             );
         }
         foreach ($definition->getOptions() as $option) {
-            $mode = 0;
-            if ($option->isArray()) {
-                $mode |= InputOption::VALUE_IS_ARRAY;
-            }
-            if ($option->isValueOptional()) {
-                $mode |= InputOption::VALUE_OPTIONAL;
-            }
-            if ($option->isValueRequired()) {
-                $mode |= InputOption::VALUE_REQUIRED;
-            }
-            if (!$mode) {
-                $mode = InputOption::VALUE_NONE;
-            }
+            $mode = $this->getOptionMode($option);
 
             $arguments[] = new Definition(
                 InputOption::class,
@@ -103,5 +82,48 @@ class ConsoleCompilerPass implements CompilerPassInterface
         }
 
         return $arguments;
+    }
+
+    /**
+     * @param InputArgument $argument
+     * @return int
+     */
+    private function getArgumentMode(InputArgument $argument)
+    {
+        $mode = 0;
+        if ($argument->isRequired()) {
+            $mode |= InputArgument::REQUIRED;
+        }
+        if ($argument->isArray()) {
+            $mode |= InputArgument::IS_ARRAY;
+        }
+        if (!$argument->isRequired()) {
+            $mode |= InputArgument::OPTIONAL;
+        }
+
+        return $mode;
+    }
+
+    /**
+     * @param InputOption $option
+     * @return int
+     */
+    private function getOptionMode(InputOption $option)
+    {
+        $mode = 0;
+        if ($option->isArray()) {
+            $mode |= InputOption::VALUE_IS_ARRAY;
+        }
+        if ($option->isValueOptional()) {
+            $mode |= InputOption::VALUE_OPTIONAL;
+        }
+        if ($option->isValueRequired()) {
+            $mode |= InputOption::VALUE_REQUIRED;
+        }
+        if (!$mode) {
+            $mode = InputOption::VALUE_NONE;
+        }
+
+        return $mode;
     }
 }

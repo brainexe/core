@@ -6,11 +6,14 @@ use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Core\Application\SerializedRouteCollection;
 
 use BrainExe\Core\Traits\ConfigTrait;
+use Generator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 use BrainExe\Core\Annotations\Command as CommandAnnotation;
+use Symfony\Component\Routing\CompiledRoute;
+use Symfony\Component\Routing\Route;
 use Symfony\Component\Yaml\Dumper;
 
 /**
@@ -52,7 +55,6 @@ class SwaggerDumpCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-
         $applicationName = $this->getParameter('application.name');
 
         $routes = $this->routes->all();
@@ -61,11 +63,25 @@ class SwaggerDumpCommand extends Command
 
         $resources = [];
         foreach ($routes as $name => $route) {
-            $resources[$route->getPath()][strtolower(implode(',', $route->getMethods()) ?: 'get')] = [
-                'summary' => $name,
-                'responses' => []
+            $parameters = iterator_to_array($this->getParameters($route));
+
+            $data = [
+                'summary'    => $name,
+                'responses'  => [
+                    200 => [
+                        'description' => 'OK'
+                    ]
+                ]
             ];
+
+            if ($parameters) {
+                $data['parameters'] = $parameters;
+            }
+
+            $resources[$route->getPath()][strtolower(implode(',', $route->getMethods()) ?: 'get')] = $data;
         }
+
+        $url = parse_url($this->getParameter('application.url'));
 
         $formatted = [
             'swagger' => '2.0',
@@ -74,12 +90,46 @@ class SwaggerDumpCommand extends Command
                 'description' => sprintf('%s API', $applicationName),
                 'version'     =>  '1.0.0'
             ],
-            'produces' => 'application/json',
-            'host'     => 'localhost', // todo fetch from config
-            'schemes'  => 'http', // todo fetch from config
-            'paths'    => $resources
+            'consumes' => ['application/json'],
+            'produces' => ['application/json', 'text/html'],
+            'host'     => $url['host'],
+            'schemes'  => [$url['scheme']],
+            'securityDefinitions' => [
+                'token' => [
+                    'type'        => 'apiKey',
+                    'description' => 'Given API Token',
+                    'name'        => 'Token',
+                    'in'          => 'Header'
+                ]
+            ],
+            'security' => [
+                'token' => [
+                    'all'
+                ]
+            ],
+            'paths' => $resources,
         ];
 
-        echo $dumper->dump($formatted);
+        echo $dumper->dump($formatted, 4);
+        echo PHP_EOL;
+    }
+
+    /**
+     * @param Route $route
+     * @return Generator
+     */
+    private function getParameters(Route $route)
+    {
+        /** @var CompiledRoute $compiled */
+        $compiled = $route->compile();
+
+        foreach ($compiled->getVariables() as $name) {
+            yield [
+                'name'     => $name,
+                'type'     => 'string',
+                'required' => true,
+                'in'       => 'path'
+            ];
+        }
     }
 }

@@ -14,12 +14,12 @@ trait RedisMockTrait
     protected function getRedisMock()
     {
         return $this->getMock(Predis::class, [
-            'sadd', 'smembers', 'srem', 'get', 'setex', 'script', 'getLastError',
-            'multi', 'exec', 'execute', 'exists', 'pipeline', 'hmget', 'incr',
-            'hgetall', 'hmset', 'hset', 'hdel', 'hget', 'hincrby', 'set',
+            'sadd', 'smembers', 'srem', 'get', 'setex', 'script', 'getlastError',
+            'multi', 'exec', 'execute', 'exists', 'pipeline', 'incr',
+            'hgetall', 'hmset', 'hmget', 'hset', 'hdel', 'hget', 'hincrby', 'set',
             'evalsha', 'load', 'publish', 'subscribe', 'info', 'hincrbyfloat', 'lrem',
-            'del', 'add', 'keys', 'brPop', 'lpush', 'runmessagequeue', 'LLEN', 'lrange',
-            'zrangebyscore', 'zcard', 'zRevRangeByScore', 'zadd', 'zincrby', 'zDeleteRangeByScore', 'zrem'
+            'del', 'add', 'keys', 'brPop', 'lpush', 'runmessagequeue', 'llen', 'lrange',
+            'zrangebyscore', 'zcard', 'zrevrangebyscore', 'zadd', 'zincrby', 'zdeleterangebyscore', 'zrem'
         ], [], '', false);
     }
 }

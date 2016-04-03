@@ -49,7 +49,7 @@ class Csrf extends AbstractMiddleware
         $expectedToken = $session->get(self::CSRF);
 
         if (empty($givenToken) || $givenToken !== $expectedToken) {
-            throw new MethodNotAllowedException(['POST'], "invalid CSRF token");
+            throw new MethodNotAllowedException(['POST'], 'invalid CSRF token');
         }
 
         // generate new token when lifetime is over
