@@ -4,7 +4,7 @@ namespace Tests\BrainExe\Core\Mail;
 
 use BrainExe\Core\Mail\Listener;
 use BrainExe\Core\Mail\SendMailEvent;
-use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase as TestCase;
 

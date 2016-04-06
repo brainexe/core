@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "525386019a0289a636431bd7d1f84ce0",
-    "content-hash": "bd9ac13f410b46552549eeca3ef2a2a7",
+    "hash": "7b7f424ddf5f438c83b006cb9444eff9",
+    "content-hash": "b66a00ab85db336876416574140ca843",
     "packages": [
         {
             "name": "brainexe/annotations",
