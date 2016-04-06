@@ -23,12 +23,13 @@ class MiddlewareCompilerPass implements CompilerPassInterface
     {
         $appKernel   = $container->getDefinition('AppKernel');
         $middlewares = $container->getParameter('application.middlewares');
-        $references  = [];
 
+        $references  = [];
         foreach ($middlewares as $serviceId) {
             $references[] = new Reference($serviceId);
         }
-        $appKernel->addMethodCall('setMiddlewares', [$references]);
+
+        $appKernel->replaceArgument(3, $references);
         $container->setParameter('application.middlewares', []);
     }
 }

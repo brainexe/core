@@ -16,9 +16,7 @@ class SerializedRouteCollectionTest extends TestCase
 
     public function setUp()
     {
-        $this->subject = new SerializedRouteCollection([
-            'foo' => 'C:31:"Symfony\\Component\\Routing\\Route":348:{a:9:{s:4:"path";s:8:"/espeak/";s:4:"host";s:0:"";s:8:"defaults";a:1:{s:11:"_controller";a:2:{i:0;s:29:"__Controller.EspeakController";i:1;s:5:"index";}}s:12:"requirements";a:0:{}s:7:"options";a:1:{s:14:"compiler_class";s:39:"Symfony\\Component\\Routing\\RouteCompiler";}s:7:"schemes";a:0:{}s:7:"methods";a:0:{}s:9:"condition";s:0:"";s:8:"compiled";N;}}',
-        ]);
+        $this->subject = new SerializedRouteCollection();
     }
 
     /**
@@ -34,7 +32,7 @@ class SerializedRouteCollectionTest extends TestCase
     {
         $actual = $this->subject->count();
 
-        $this->assertEquals(1, $actual);
+        $this->assertGreaterThan(0, $actual);
     }
 
     /**

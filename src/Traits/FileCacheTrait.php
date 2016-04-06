@@ -2,8 +2,6 @@
 
 namespace BrainExe\Core\Traits;
 
-
-
 /**
  * @api
  */
@@ -20,6 +18,7 @@ trait FileCacheTrait
         if (!is_file($filename)) {
             return null;
         }
+
         return include $filename;
     }
 

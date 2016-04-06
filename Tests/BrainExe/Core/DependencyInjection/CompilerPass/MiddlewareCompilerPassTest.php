@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\BrainExe\Core\DependencyInjection\CompilerPass\MiddlewareCompilerPass;
+namespace Tests\BrainExe\Core\DependencyInjection\CompilerPass;
 
 use BrainExe\Core\DependencyInjection\CompilerPass\MiddlewareCompilerPass;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
@@ -31,6 +31,7 @@ class MiddlewareCompilerPassTest extends TestCase
             'getDefinition',
             'setParameter',
             'getParameter',
+            'addArgument'
         ]);
         $this->subject = new MiddlewareCompilerPass();
     }
@@ -55,8 +56,8 @@ class MiddlewareCompilerPassTest extends TestCase
 
         $appKernel
             ->expects($this->once())
-            ->method('addMethodCall')
-            ->with('setMiddlewares', [[new Reference($serviceId1)]]);
+            ->method('replaceArgument')
+            ->with(3, [new Reference($serviceId1)]);
 
         $this->container
             ->expects($this->once())

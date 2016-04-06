@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\BrainExe\Core\DependencyInjection\CompilerPass\RedisScriptCompilerPass;
+namespace Tests\BrainExe\Core\DependencyInjection\CompilerPass;
 
 use BrainExe\Core\DependencyInjection\CompilerPass\RedisScriptCompilerPass;
 use BrainExe\Core\Redis\RedisScript;

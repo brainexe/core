@@ -33,7 +33,7 @@ class CreateController
     /**
      * @param Request $request
      * @return UserVO
-     * @Route("/admin/", name="authenticate.doRegister", methods="POST")
+     * @Route("/admin/", name="admin.doRegister", methods="POST")
      * @Guest
      */
     public function register(Request $request)

@@ -30,6 +30,7 @@ class ConsoleCompilerPass implements CompilerPassInterface
         $console->addMethodCall('setAutoExit', [false]);
 
         $taggedServices = $container->findTaggedServiceIds(self::TAG);
+
         $commands = [];
         foreach (array_keys($taggedServices) as $serviceId) {
             /** @var Command $command */
@@ -66,6 +67,7 @@ class ConsoleCompilerPass implements CompilerPassInterface
                 [$argument->getName(), $mode, $argument->getDescription(), $argument->getDefault()]
             );
         }
+
         foreach ($definition->getOptions() as $option) {
             $mode = $this->getOptionMode($option);
 

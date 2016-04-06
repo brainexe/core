@@ -54,6 +54,10 @@ class ChannelStreamHandler extends StreamHandler
      */
     public function isHandling(array $record)
     {
+        if (count($record) == 1) {
+            return parent::isHandling($record);
+        }
+
         if (!parent::isHandling($record)) {
             return false;
         }
@@ -67,8 +71,6 @@ class ChannelStreamHandler extends StreamHandler
         }
 
         $supported = $this->channel === $record['context']['channel'];
-
-        unset($record['context']['channel']);
 
         return $supported;
     }

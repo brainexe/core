@@ -43,9 +43,12 @@ class GlobalCompilerPass implements CompilerPassInterface
         $container->reset();
         /** @var Logger $logger */
         $logger = $container->get('logger');
+        $logger->debug('DIC: start', ['channel' => 'dic']);
+
         foreach ($loggerStore as $log) {
-            $logger->debug($log);
+            $logger->debug($log, ['channel' => 'dic']);
         }
-        $logger->debug(sprintf("DIC: %0.2fms total time", $totalTime * 1000), ['context' => 'dic']);
+
+        $logger->debug(sprintf('DIC: %0.2fms total time', $totalTime * 1000), ['channel' => 'dic']);
     }
 }

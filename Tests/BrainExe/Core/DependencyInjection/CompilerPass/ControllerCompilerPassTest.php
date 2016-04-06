@@ -5,11 +5,11 @@ namespace BrainExe\Tests\Core\DependencyInjection\CompilerPass;
 use BrainExe\Core\Annotations\Route;
 use BrainExe\Core\DependencyInjection\CompilerPass\ControllerCompilerPass;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase;
+use PHPUnit_Framework_TestCase as TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
-class ControllerCompilerPassTest extends PHPUnit_Framework_TestCase
+class ControllerCompilerPassTest extends TestCase
 {
 
     /**
@@ -54,18 +54,12 @@ class ControllerCompilerPassTest extends PHPUnit_Framework_TestCase
 
         $this->container
             ->expects($this->at(0))
-            ->method('getDefinition')
-            ->with('Core.RouteCollection')
-            ->willReturn($this->routerDefinition);
-
-        $this->container
-            ->expects($this->at(1))
             ->method('findTaggedServiceIds')
             ->with(ControllerCompilerPass::ROUTE_TAG)
             ->willReturn($serviceIds);
 
         $this->container
-            ->expects($this->at(2))
+            ->expects($this->at(1))
             ->method('getDefinition')
             ->with($serviceId)
             ->willReturn($service);

@@ -5,6 +5,7 @@ namespace BrainExe\Core\DependencyInjection\CompilerPass;
 use BrainExe\Core\Annotations\CompilerPass;
 use BrainExe\Core\Annotations\Route as RouteAnnotation;
 use BrainExe\Core\Application\SerializedRouteCollection;
+use BrainExe\Core\Traits\FileCacheTrait;
 use Exception;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -17,6 +18,8 @@ use Symfony\Component\Routing\Route;
  */
 class ControllerCompilerPass implements CompilerPassInterface
 {
+    use FileCacheTrait;
+
     const CONTROLLER_TAG = 'controller';
     const ROUTE_TAG      = 'route';
 
@@ -25,8 +28,7 @@ class ControllerCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $coreCollector = $container->getDefinition('Core.RouteCollection');
-        $controllers   = $container->findTaggedServiceIds(self::ROUTE_TAG);
+        $controllers = $container->findTaggedServiceIds(self::ROUTE_TAG);
 
         $serialized = [];
         foreach ($controllers as $controllerId => $tag) {
@@ -35,11 +37,12 @@ class ControllerCompilerPass implements CompilerPassInterface
                 $route = $routeRaw[0];
 
                 $name = $route->getName();
-                if (!$name) {
+                if (empty($name)) {
                     throw new Exception(sprintf('"name" is missing for @Route(%s)', $controllerId));
                 }
-                if ($route->isCsrf()) {
-                    $route->setOptions(['csrf' => true]);
+
+                if (isset($serialized[$name])) {
+                    throw new Exception(sprintf('Route name %s does already exits in %s', $name, $controllerId));
                 }
 
                 $serialized[$name] = serialize($this->createRoute($route));
@@ -49,9 +52,9 @@ class ControllerCompilerPass implements CompilerPassInterface
             $controller->clearTag(self::ROUTE_TAG);
         }
 
-        $coreCollector->addArgument($serialized);
+        ksort($serialized);
 
-        $this->dumpMatcher($container);
+        $this->dumpMatcher($container, $serialized);
     }
 
     /**
@@ -78,14 +81,11 @@ class ControllerCompilerPass implements CompilerPassInterface
 
     /**
      * @param ContainerBuilder $container
+     * @param array $routes
      * @codeCoverageIgnore
      */
-    protected function dumpMatcher(ContainerBuilder $container)
+    protected function dumpMatcher(ContainerBuilder $container, array $routes)
     {
-        if (!is_dir(ROOT . 'cache')) {
-            return;
-        }
-
         /** @var SerializedRouteCollection $routerCollection */
         $routerCollection = $container->get('Core.RouteCollection');
 
@@ -98,5 +98,7 @@ class ControllerCompilerPass implements CompilerPassInterface
         $routeDumper = new PhpGeneratorDumper($routerCollection);
         $content     = $routeDumper->dump();
         file_put_contents($routerFile, $content);
+
+        $this->dumpVariableToCache(SerializedRouteCollection::CACHE_FILE, $routes);
     }
 }

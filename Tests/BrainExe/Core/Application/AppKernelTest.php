@@ -56,10 +56,9 @@ class AppKernelTest extends TestCase
         $this->subject = new AppKernel(
             $this->controllerResolver,
             $this->routeCollection,
-            $this->urlMatcher
+            $this->urlMatcher,
+            [$this->middleWare]
         );
-
-        $this->subject->setMiddlewares([$this->middleWare]);
     }
 
     public function testHandle()

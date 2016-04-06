@@ -38,26 +38,26 @@ class AppKernel implements HttpKernelInterface
     private $urlMatcher;
 
     /**
-     * @Inject({"@ControllerResolver", "@Core.RouteCollection", "@UrlMatcher"})
+     * @Inject({
+     *     "@ControllerResolver",
+     *     "@Core.RouteCollection",
+     *     "@UrlMatcher",
+     *     null
+     * })
      * @param ControllerResolver $resolver
      * @param SerializedRouteCollection $routes
      * @param UrlMatcher $urlMatcher
+     * @param MiddlewareInterface[] $middlewares
      */
     public function __construct(
         ControllerResolver $resolver,
         SerializedRouteCollection $routes,
-        UrlMatcher $urlMatcher
+        UrlMatcher $urlMatcher,
+        array $middlewares
     ) {
-        $this->resolver   = $resolver;
-        $this->routes     = $routes;
-        $this->urlMatcher = $urlMatcher;
-    }
-
-    /**
-     * @param MiddlewareInterface[] $middlewares
-     */
-    public function setMiddlewares(array $middlewares)
-    {
+        $this->resolver    = $resolver;
+        $this->routes      = $routes;
+        $this->urlMatcher  = $urlMatcher;
         $this->middlewares = $middlewares;
     }
 
@@ -83,12 +83,12 @@ class AppKernel implements HttpKernelInterface
 
     /**
      * @param Request $request
-     * @return Response
+     * @return Response|mixed
      */
     private function handleRequest(Request $request)
     {
+        // match route and set attributes in request object
         $attributes = $this->urlMatcher->match($request);
-
         $request->attributes->replace($attributes);
 
         $routeName = $attributes['_route'];

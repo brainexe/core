@@ -10,7 +10,7 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
- * @CompilerPassAnnotation
+ * @CompilerPassAnnotation("Core.Translation.CompilerPass")
  */
 class CompilerPass implements CompilerPassInterface
 {

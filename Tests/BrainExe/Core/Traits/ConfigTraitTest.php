@@ -4,8 +4,9 @@ namespace BrainExe\Tests\Core\Traits;
 
 use BrainExe\Core\Traits\ConfigTrait;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase;
+use PHPUnit_Framework_TestCase as TestCase;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 
 class ConfigTest
 {
@@ -17,7 +18,7 @@ class ConfigTest
     }
 }
 
-class ConfigTraitTest extends PHPUnit_Framework_TestCase
+class ConfigTraitTest extends TestCase
 {
 
     /**
@@ -28,14 +29,12 @@ class ConfigTraitTest extends PHPUnit_Framework_TestCase
     /**
      * @var Container|MockObject
      */
-    private $mockContainer;
+    private $container;
 
     public function setUp()
     {
-        $this->mockContainer = $this->getMock(Container::class);
-
-        $this->subject = new ConfigTest();
-        $this->subject->setContainer($this->mockContainer);
+        $this->container = $this->getMock(Container::class);
+        $this->subject   = new ConfigTest();
     }
 
     public function testGetConfig()
@@ -43,14 +42,21 @@ class ConfigTraitTest extends PHPUnit_Framework_TestCase
         $key   = 'key';
         $value = 'value';
 
-        $this->mockContainer
+        $parameterBag = $this->getMock(ParameterBag::class);
+        $this->container
             ->expects($this->once())
-            ->method('getParameter')
+            ->method('getParameterBag')
+            ->willReturn($parameterBag);
+
+        $parameterBag
+            ->expects($this->once())
+            ->method('get')
             ->with($key)
             ->willReturn($value);
 
-        $actualResult = $this->subject->testGetParameter($key);
+        $this->subject->setContainer($this->container);
+        $actual = $this->subject->testGetParameter($key);
 
-        $this->assertEquals($value, $actualResult);
+        $this->assertEquals($value, $actual);
     }
 }

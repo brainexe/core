@@ -7,7 +7,6 @@ use BrainExe\Core\Annotations\EventListener;
 use BrainExe\Core\Annotations\Listen;
 use BrainExe\Core\DependencyInjection\CompilerPass\Cron;
 use BrainExe\Core\EventDispatcher\CronEvent;
-use BrainExe\Core\EventDispatcher\Events\ClearCacheEvent;
 use BrainExe\Core\EventDispatcher\Events\TimingEvent;
 use BrainExe\Core\Traits\EventDispatcherTrait;
 use BrainExe\Core\Traits\FileCacheTrait;
@@ -39,7 +38,7 @@ class CacheListener
     }
 
     /**
-     * @Listen(ClearCacheEvent::NAME)
+     * @todo matze wtf?
      */
     public function handleRebuildCache()
     {

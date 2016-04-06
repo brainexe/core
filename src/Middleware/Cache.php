@@ -6,6 +6,7 @@ use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Core\Annotations\Middleware;
 use BrainExe\Core\Traits\CacheTrait;
 use BrainExe\Core\Traits\LoggerTrait;
+use DateTime;
 use Doctrine\Common\Cache\CacheProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,15 +33,15 @@ class Cache extends AbstractMiddleware
     /**
      * @var boolean
      */
-    private $cacheEnabled;
+    private $enabled;
 
     /**
      * @Inject("%cache.enabled%")
-     * @param boolean $cacheEnabled
+     * @param bool $cacheEnabled
      */
     public function __construct($cacheEnabled)
     {
-        $this->cacheEnabled = $cacheEnabled;
+        $this->enabled = $cacheEnabled;
     }
 
     /**
@@ -48,7 +49,7 @@ class Cache extends AbstractMiddleware
      */
     public function processRequest(Request $request, Route $route)
     {
-        if (!$this->cacheEnabled || !$route->getOption('cache') || !$request->isMethod('GET')) {
+        if (!$this->enabled || !$route->getOption('cache') || !$request->isMethod('GET')) {
             return null;
         }
 
@@ -80,7 +81,7 @@ class Cache extends AbstractMiddleware
 
         $this->debug(sprintf('save into cache: %s', $this->cacheKey));
 
-        $cache->save($this->cacheKey, $response, self::DEFAULT_TTL);
+        $cache->save($this->cacheKey, $response, $this->getTTL());
         $this->cacheKey = null;
     }
 
@@ -97,7 +98,7 @@ class Cache extends AbstractMiddleware
      * @param CacheProvider$cache
      * @return Response
      */
-    protected function handleCached(CacheProvider $cache)
+    private function handleCached(CacheProvider $cache)
     {
         $this->debug(sprintf('fetch from cache: %s', $this->cacheKey));
 
@@ -105,8 +106,20 @@ class Cache extends AbstractMiddleware
         $response       = $cache->fetch($this->cacheKey);
         $this->cacheKey = null;
 
+        $ttl = $this->getTTL();
+
         $response->headers->set('X-Cache', 'hit');
+        $response->setMaxAge($ttl);
+        $response->setExpires(new DateTime(sprintf('+%d seconds', $ttl)));
 
         return $response;
+    }
+
+    /**
+     * @return int
+     */
+    private function getTTL()
+    {
+        return self::DEFAULT_TTL;
     }
 }

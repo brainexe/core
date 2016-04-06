@@ -17,7 +17,7 @@ class CompilerPass extends Service
     /**
      * @var integer
      */
-    public $priority = 1;
+    public $priority = 3;
 
     /**
      * {@inheritdoc}

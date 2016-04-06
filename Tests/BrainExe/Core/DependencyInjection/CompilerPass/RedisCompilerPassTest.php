@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\BrainExe\Core\DependencyInjection\CompilerPass\RedisCompilerPass;
+namespace Tests\BrainExe\Core\DependencyInjection\CompilerPass;
 
 use BrainExe\Core\DependencyInjection\CompilerPass\RedisCompilerPass;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;

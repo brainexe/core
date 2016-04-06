@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
- * @CompilerPass
+ * @CompilerPass(priority=1)
  */
 class SetDefinitionFileCompilerPass implements CompilerPassInterface
 {

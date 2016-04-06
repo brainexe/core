@@ -51,6 +51,7 @@ class Locale extends AbstractMiddleware
 
         if ($locale) {
             $this->locale->setLocale($locale);
+            $request->attributes->set('locale', $locale);
         }
     }
 }

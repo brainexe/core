@@ -4,6 +4,7 @@ namespace BrainExe\Core\Traits;
 
 use BrainExe\Annotations\Annotations\Inject;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 
 /**
  * @api
@@ -11,9 +12,9 @@ use Symfony\Component\DependencyInjection\Container;
 trait ConfigTrait
 {
     /**
-     * @var Container
+     * @var ParameterBag
      */
-    private $container;
+    private $parameterBag;
 
     /**
      * @Inject("@Service_container")
@@ -21,7 +22,7 @@ trait ConfigTrait
      */
     public function setContainer(Container $container)
     {
-        $this->container = $container;
+        $this->parameterBag = $container->getParameterBag();
     }
 
     /**
@@ -30,6 +31,6 @@ trait ConfigTrait
      */
     protected function getParameter($parameterId)
     {
-        return $this->container->getParameter($parameterId);
+        return $this->parameterBag->get($parameterId);
     }
 }

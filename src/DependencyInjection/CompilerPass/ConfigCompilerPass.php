@@ -22,7 +22,7 @@ class ConfigCompilerPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         $loader     = new XmlFileLoader($container, new FileLocator('config'));
-        $filesystem = new FileSystem();
+        $filesystem = new Filesystem();
 
         if ($filesystem->exists(ROOT . 'app/container.xml')) {
             $loader->load(ROOT . 'app/container.xml');

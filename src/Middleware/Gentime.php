@@ -34,7 +34,7 @@ class Gentime extends AbstractMiddleware
         $diff = microtime(true) - $startTime;
         $this->info(
             sprintf(
-                '%0.2fms (route: %s, user:%s)',
+                '%0.2fms (route: %s, user: %s)',
                 $diff * 1000,
                 $request->getRequestUri(),
                 $username

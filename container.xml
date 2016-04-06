@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 	<parameters>
-		<parameter key="debug">false</parameter>
 		<parameter key="cache.enabled">true</parameter>
 		<parameter key="server.address">localhost:8080</parameter>
 
@@ -28,6 +27,8 @@
 		<parameter key="application.name" on-invalid="exception"/>
 		<parameter key="application.guests_allowed">false</parameter>
 		<parameter key="application.registration_enabled">true</parameter>
+
+		<parameter key="environment" on-invalid="exception"/>
 
 		<parameter key="logger.channels" type="collection">
 			<parameter type="collection">
@@ -104,7 +105,7 @@
 		<service id="service_container" class="Symfony\Component\DependencyInjection\Container" public="false"/>
 
 		<service id="ProcessBuilder" class="Symfony\Component\Process\ProcessBuilder" public="false"/>
-		<service id="Filesystem" class="BrainExe\Core\Util\Filesystem" public="false"/>
+		<service id="FileSystem" class="BrainExe\Core\Util\FileSystem" public="false"/>
 		<service id="Finder" class="Symfony\Component\Finder\Finder" public="false"/>
 
 		<service id="Cache" class="Doctrine\Common\Cache\PredisCache" public="false">

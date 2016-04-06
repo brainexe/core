@@ -4,20 +4,25 @@ namespace BrainExe\Core\Application;
 
 use ArrayIterator;
 use BrainExe\Annotations\Annotations\Service;
+use BrainExe\Core\Traits\FileCacheTrait;
 use Psr\Log\InvalidArgumentException;
 use RuntimeException;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
 /**
- * @Service("Core.RouteCollection", public=false)
+ * @Service("Core.RouteCollection", public=false, shared=false)
  */
 class SerializedRouteCollection extends RouteCollection
 {
+    use FileCacheTrait;
+
+    const CACHE_FILE = 'routes';
+
     /**
      * @var string[]
      */
-    private $serializedRoutes;
+    private $serializedRoutes = null;
 
     /**
      * @var Route[]
@@ -25,19 +30,13 @@ class SerializedRouteCollection extends RouteCollection
     private $cache = [];
 
     /**
-     * @param string[] $routes
-     */
-    public function __construct(array $routes = [])
-    {
-        $this->serializedRoutes = $routes;
-    }
-
-    /**
      * @param string $name
      * @return Route
      */
     public function get($name)
     {
+        $this->loadFromCache();
+
         if (isset($this->cache[$name])) {
             return $this->cache[$name];
         }
@@ -79,6 +78,8 @@ class SerializedRouteCollection extends RouteCollection
      */
     public function count()
     {
+        $this->loadFromCache();
+
         return count($this->serializedRoutes);
     }
 
@@ -102,6 +103,15 @@ class SerializedRouteCollection extends RouteCollection
 
     private function initAll()
     {
+        $this->loadFromCache();
+
         return array_map([$this, 'get'], array_keys($this->serializedRoutes));
+    }
+
+    private function loadFromCache()
+    {
+        if ($this->serializedRoutes == null) {
+            $this->serializedRoutes = $this->includeFile(self::CACHE_FILE);
+        }
     }
 }

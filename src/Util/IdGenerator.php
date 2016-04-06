@@ -24,7 +24,7 @@ class IdGenerator
      */
     public function generateUniqueId($type = self::DEFAULT_TYPE)
     {
-        return $this->getRedis()->INCR(sprintf(self::KEY, $type));
+        return $this->getRedis()->incr(sprintf(self::KEY, $type));
     }
 
     /**
