@@ -86,6 +86,8 @@ class ControllerCompilerPass implements CompilerPassInterface
      */
     protected function dumpMatcher(ContainerBuilder $container, array $routes)
     {
+        $this->dumpVariableToCache(SerializedRouteCollection::CACHE_FILE, $routes);
+
         /** @var SerializedRouteCollection $routerCollection */
         $routerCollection = $container->get('Core.RouteCollection');
 
@@ -98,7 +100,5 @@ class ControllerCompilerPass implements CompilerPassInterface
         $routeDumper = new PhpGeneratorDumper($routerCollection);
         $content     = $routeDumper->dump();
         file_put_contents($routerFile, $content);
-
-        $this->dumpVariableToCache(SerializedRouteCollection::CACHE_FILE, $routes);
     }
 }
