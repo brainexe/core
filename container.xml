@@ -16,10 +16,7 @@
 
 		<parameter key="timezone">Europe/Berlin</parameter>
 
-		<parameter key="redis.host">127.0.0.1</parameter>
-		<parameter key="redis.password"/>
-		<parameter key="redis.port"/>
-		<parameter key="redis.database">0</parameter>
+		<parameter key="redis.connection">redis://127.0.0.1/</parameter>
 
 		<parameter key="cache.dir">%application.root%cache/</parameter>
 		<parameter key="logger.dir">%application.root%logs/</parameter>
@@ -28,7 +25,10 @@
 		<parameter key="application.guests_allowed">false</parameter>
 		<parameter key="application.registration_enabled">true</parameter>
 
-		<parameter key="environment" on-invalid="exception"/>
+		<parameter key="environment">development</parameter>
+		<parameter key="config.public" type="collection">
+			<parameter key="debug">%debug%</parameter>
+		</parameter>
 
 		<parameter key="logger.channels" type="collection">
 			<parameter type="collection">
@@ -65,7 +65,7 @@
 			</parameter>
 		</parameter>
 
-		<parameter key="application.middlewares" type="collection"></parameter>
+		<parameter key="application.middlewares" type="collection"/>
 	</parameters>
 
     <services>
@@ -90,12 +90,11 @@
 						<argument key="cookie_lifetime">%session.lifetime%</argument>
 						<argument key="name">sid_%application.name%</argument>
 					</argument>
+					<argument type="service" id="Core.Application.SessionHandler"/>
 					<argument type="service">
-						<service class="BrainExe\Core\Application\SessionHandler">
-							<argument type="service" id="redis"/>
-							<argument type="collection">
-								<argument key="gc_maxlifetime">%session.lifetime%</argument>
-							</argument>
+						<service class="Symfony\Component\HttpFoundation\Session\Storage\MetadataBag">
+							<argument>_sf2_meta</argument>
+							<argument>120</argument>
 						</service>
 					</argument>
 				</service>
@@ -113,12 +112,6 @@
 			<call method="setNamespace">cache</call>
 		</service>
 
-		<service id="UrlGenerator" class="Symfony\Component\Routing\Generator\UrlGenerator" public="false">
-			<argument type="service" id="Core.RouteCollection"/>
-			<argument type="service">
-				<service class="Symfony\Component\Routing\RequestContext"/>
-			</argument>
-		</service>
 		<service id="Mailer" class="PHPMailer\PHPMailer\PHPMailer" public="false"/>
 	</services>
 </container>

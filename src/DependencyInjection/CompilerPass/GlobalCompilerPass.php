@@ -25,8 +25,7 @@ class GlobalCompilerPass implements CompilerPassInterface
             $servicePriorities[$serviceId] = $tag[0]['priority'];
         }
 
-        asort($servicePriorities);
-        $servicePriorities = array_reverse($servicePriorities);
+        arsort($servicePriorities);
 
         /** @var Logger $logger */
         $totalTime = 0;
@@ -41,6 +40,7 @@ class GlobalCompilerPass implements CompilerPassInterface
         }
 
         $container->reset();
+
         /** @var Logger $logger */
         $logger = $container->get('logger');
         $logger->debug('DIC: start', ['channel' => 'dic']);

@@ -12,7 +12,7 @@ trait FileCacheTrait
      * @param string $name
      * @return mixed
      */
-    protected function includeFile($name)
+    protected function includeFile(string $name)
     {
         $filename = $this->getCacheFileName($name);
         if (!is_file($filename)) {
@@ -26,7 +26,7 @@ trait FileCacheTrait
      * @param string $name
      * @param string $content
      */
-    protected function dumpCacheFile($name, $content)
+    protected function dumpCacheFile(string $name, string $content)
     {
         $fileName = $this->getCacheFileName($name);
 
@@ -38,7 +38,7 @@ trait FileCacheTrait
      * @param string $name
      * @param mixed $variable
      */
-    protected function dumpVariableToCache($name, $variable)
+    protected function dumpVariableToCache(string $name, $variable)
     {
         $this->dumpCacheFile($name, 'return ' . var_export($variable, true) . ';');
     }

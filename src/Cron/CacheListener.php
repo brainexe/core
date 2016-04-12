@@ -12,6 +12,7 @@ use BrainExe\Core\Traits\EventDispatcherTrait;
 use BrainExe\Core\Traits\FileCacheTrait;
 use BrainExe\Core\Traits\LoggerTrait;
 use BrainExe\Core\MessageQueue\Gateway;
+use BrainExe\Core\EventDispatcher\Events\ClearCacheEvent;
 
 /**
  * @EventListener("Crons.CacheListener")
@@ -38,7 +39,7 @@ class CacheListener
     }
 
     /**
-     * @todo matze wtf?
+     * @Listen(ClearCacheEvent::NAME)
      */
     public function handleRebuildCache()
     {

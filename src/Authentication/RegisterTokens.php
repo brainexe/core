@@ -19,7 +19,7 @@ class RegisterTokens
     /**
      * @return string
      */
-    public function addToken()
+    public function addToken() : string
     {
         $token = $this->generateRandomId();
 
@@ -30,9 +30,9 @@ class RegisterTokens
 
     /**
      * @param string $token
-     * @return boolean
+     * @return bool
      */
-    public function fetchToken($token)
+    public function fetchToken(string $token) : bool
     {
         return (bool)$this->getRedis()->srem(self::TOKEN_KEY, $token);
     }

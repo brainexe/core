@@ -35,7 +35,7 @@ class Job
      * @param string $jobId
      * @param integer $timestamp
      */
-    public function __construct(AbstractEvent $event, $jobId, $timestamp)
+    public function __construct(AbstractEvent $event, string $jobId, int $timestamp)
     {
         $this->event     = $event;
         $this->jobId     = $jobId;

@@ -38,15 +38,14 @@ class Csrf extends AbstractMiddleware
     {
         $givenToken = $request->headers->get(self::HEADER);
 
+        $session = $request->getSession();
+        $expectedToken = $session->get(self::CSRF);
         if ($request->isMethod('GET') && (!$route->hasOption(self::CSRF)) || $route->hasDefault('_guest')) {
-            if (empty($givenToken)) {
+            if (empty($expectedToken)) {
                 $this->renewCsrfToken();
             }
             return;
         }
-
-        $session = $request->getSession();
-        $expectedToken = $session->get(self::CSRF);
 
         if (empty($givenToken) || $givenToken !== $expectedToken) {
             throw new MethodNotAllowedException(['POST'], 'invalid CSRF token');

@@ -14,15 +14,15 @@ class Core
     /**
      * @return Container
      */
-    public function boot()
+    public function boot() : Container
     {
         chdir(ROOT);
-        umask(0);
+        umask(0); // todo try to remove
 
-        $fileName = 'cache/dic.php';
+        $fileName = ROOT . 'cache/dic.php';
         /** @var Container $dic */
         if (is_file($fileName)) {
-            $className = file_get_contents('cache/dic.txt');
+            $className = file_get_contents(ROOT . 'cache/dic.txt');
             if (!class_exists($className, false)) {
                 include $fileName;
             }
@@ -31,8 +31,6 @@ class Core
             $rebuild = new Rebuild();
             $dic = $rebuild->rebuildDIC(true);
         }
-
-        date_default_timezone_set($dic->getParameter('timezone'));
 
         $dic->get('monolog.ErrorHandler');
 

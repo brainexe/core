@@ -77,9 +77,9 @@ class UserVO implements JsonSerializable
 
     /**
      * @param string $role
-     * @return boolean
+     * @return bool
      */
-    public function hasRole($role)
+    public function hasRole(string $role) : bool
     {
         return in_array($role, $this->roles);
     }
@@ -87,7 +87,7 @@ class UserVO implements JsonSerializable
     /**
      * @return string[]
      */
-    public function getRoles()
+    public function getRoles() : array
     {
         return $this->roles;
     }
@@ -95,7 +95,7 @@ class UserVO implements JsonSerializable
     /**
      * {@inheritdoc}
      */
-    public function getPassword()
+    public function getPassword() :string
     {
         return $this->password_hash;
     }

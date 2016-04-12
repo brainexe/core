@@ -7,7 +7,7 @@ use BrainExe\Core\Annotations\Controller;
 use BrainExe\Core\Annotations\Guest;
 use BrainExe\Core\Annotations\Route;
 use BrainExe\Core\Application\UserException;
-use BrainExe\Core\Authentication\DatabaseUserProvider;
+use BrainExe\Core\Authentication\UserProvider;
 use BrainExe\Core\Authentication\UserVO;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -17,15 +17,15 @@ use Symfony\Component\HttpFoundation\Request;
 class UserController
 {
     /**
-     * @var DatabaseUserProvider
+     * @var UserProvider
      */
     private $userProvider;
 
     /**
-     * @Inject("@DatabaseUserProvider")
-     * @param DatabaseUserProvider $userProvider
+     * @Inject("@Core.Authentication.UserProvider")
+     * @param UserProvider $userProvider
      */
-    public function __construct(DatabaseUserProvider $userProvider)
+    public function __construct(UserProvider $userProvider)
     {
         $this->userProvider = $userProvider;
     }

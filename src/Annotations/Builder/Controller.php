@@ -7,6 +7,7 @@ use BrainExe\Core\Annotations\Guest;
 use BrainExe\Core\Annotations\Role;
 use BrainExe\Core\Annotations\Route;
 use BrainExe\Core\DependencyInjection\CompilerPass\ControllerCompilerPass;
+use BrainExe\Core\Annotations\Controller as ControllerAnnotation;
 use ReflectionClass;
 use ReflectionMethod;
 use Symfony\Component\DependencyInjection\Definition;
@@ -15,33 +16,28 @@ class Controller extends ServiceDefinition
 {
 
     /**
+     * @todo private!
+     * @var string
+     */
+    protected $serviceId;
+
+    /**
      * {@inheritdoc}
      */
     public function build(ReflectionClass $reflectionClass, $annotation)
     {
         /** @var Definition $definition */
-        list(, $definition) = parent::build(
+        list($serviceId, $definition) = parent::build(
             $reflectionClass,
             $annotation
         );
+        $this->serviceId = $serviceId = sprintf('__controller.%s', $serviceId);
 
         $definition->addTag(ControllerCompilerPass::CONTROLLER_TAG);
+        $definition->setPublic(true);
+        $definition->setShared(false);
 
-        return [
-            $this->getServiceId(),
-            $definition
-        ];
-    }
-
-    /**
-     * @param ReflectionMethod[] $methods
-     * @param Definition $definition
-     */
-    protected function processMethods($methods, Definition $definition)
-    {
-        parent::processMethods($methods, $definition);
-
-        foreach ($methods as $method) {
+        foreach ($reflectionClass->getMethods() as $method) {
             /** @var Route $routeAnnotation */
             $routeAnnotation = $this->reader->getMethodAnnotation($method, Route::class);
 
@@ -55,6 +51,7 @@ class Controller extends ServiceDefinition
                 $this->setDefaults(
                     $routeAnnotation,
                     $method,
+                    $annotation,
                     $guestAnnotation,
                     $roleAnnotation
                 );
@@ -62,34 +59,28 @@ class Controller extends ServiceDefinition
                 $definition->addTag(ControllerCompilerPass::ROUTE_TAG, [$routeAnnotation]);
             }
         }
+
+        return [$serviceId, $definition];
     }
 
-    /**
-     * @return string
-     */
-    private function getServiceId()
-    {
-        return sprintf(
-            '__Controller.%s',
-            $this->serviceId
-        );
-    }
 
     /**
      * @param Route $routeAnnotation
      * @param ReflectionMethod $method
+     * @param ControllerAnnotation $controller
      * @param Guest $guestAnnotation
      * @param Role $roleAnnotation
      */
     protected function setDefaults(
         Route $routeAnnotation,
         ReflectionMethod $method,
+        ControllerAnnotation $controller,
         Guest $guestAnnotation = null,
         Role $roleAnnotation = null
     ) {
         $defaults = $routeAnnotation->getDefaults();
         $defaults['_controller'] = [
-            $this->getServiceId(),
+            $this->serviceId,
             $method->getName()
         ];
         if ($guestAnnotation) {
@@ -100,6 +91,12 @@ class Controller extends ServiceDefinition
             $defaults['_role'] = $roleAnnotation->role;
         }
 
+
+        if ($controller->requirements) {
+            $routeAnnotation->setRequirements(
+                array_merge($routeAnnotation->getRequirements(), $controller->requirements)
+            );
+        }
         $routeAnnotation->setDefaults($defaults);
     }
 }

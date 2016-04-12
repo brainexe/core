@@ -6,6 +6,7 @@ use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Annotations\Annotations\Service;
 use BrainExe\Core\Middleware\MiddlewareInterface;
 use Exception;
+use Generator;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,24 +19,24 @@ class AppKernel implements HttpKernelInterface
 {
 
     /**
-     * @var SerializedRouteCollection
-     */
-    private $routes;
-
-    /**
      * @var ControllerResolver
      */
     private $resolver;
 
     /**
-     * @var MiddlewareInterface[]
+     * @var SerializedRouteCollection
      */
-    private $middlewares;
+    private $routes;
 
     /**
      * @var UrlMatcher
      */
     private $urlMatcher;
+
+    /**
+     * @var MiddlewareInterface[]
+     */
+    private $middlewares;
 
     /**
      * @Inject({
@@ -113,8 +114,12 @@ class AppKernel implements HttpKernelInterface
      * @param Response|mixed $response
      * @return Response
      */
-    private function prepareResponse($response)
+    private function prepareResponse($response) : Response
     {
+        if ($response instanceof Generator) {
+            $response = iterator_to_array($response);
+        }
+
         if (!$response instanceof Response) {
             return new JsonResponse($response);
         }

@@ -29,7 +29,7 @@ trait ConfigTrait
      * @param string $parameterId
      * @return mixed
      */
-    protected function getParameter($parameterId)
+    protected function getParameter(string $parameterId)
     {
         return $this->parameterBag->get($parameterId);
     }

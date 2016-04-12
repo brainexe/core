@@ -2,7 +2,7 @@
 
 namespace Tests\BrainExe\Core\Authentication;
 
-use BrainExe\Core\Authentication\DatabaseUserProvider;
+use BrainExe\Core\Authentication\UserProvider;
 use BrainExe\Core\Authentication\Exception\UsernameNotFoundException;
 use BrainExe\Core\Authentication\Register;
 use BrainExe\Core\Authentication\RegisterTokens;
@@ -24,7 +24,7 @@ class RegisterTest extends TestCase
     private $subject;
 
     /**
-     * @var DatabaseUserProvider|MockObject
+     * @var UserProvider|MockObject
      */
     private $userProvider;
 
@@ -35,7 +35,7 @@ class RegisterTest extends TestCase
 
     public function setUp()
     {
-        $this->userProvider   = $this->getMock(DatabaseUserProvider::class, [], [], '', false);
+        $this->userProvider   = $this->getMock(UserProvider::class, [], [], '', false);
         $this->registerTokens = $this->getMock(RegisterTokens::class, [], [], '', false);
 
         $this->subject = new Register($this->userProvider, $this->registerTokens, false);

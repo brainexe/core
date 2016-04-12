@@ -28,7 +28,7 @@ trait RedisTrait
     /**
      * @return Predis
      */
-    protected function getRedis()
+    protected function getRedis() : Predis
     {
         return $this->redis;
     }

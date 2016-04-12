@@ -34,7 +34,7 @@ class LoadUser
      */
     public function loadUserByUsername($username)
     {
-        $userId = $this->redis->hget(DatabaseUserProvider::REDIS_USER_NAMES, strtolower($username));
+        $userId = $this->redis->hget(UserProvider::REDIS_USER_NAMES, strtolower($username));
 
         if (empty($userId)) {
             throw new UsernameNotFoundException(sprintf('Username "%s" does not exist.', $username));
@@ -73,6 +73,6 @@ class LoadUser
      */
     private function getKey($userId)
     {
-        return sprintf(DatabaseUserProvider::REDIS_USER, $userId);
+        return sprintf(UserProvider::REDIS_USER, $userId);
     }
 }

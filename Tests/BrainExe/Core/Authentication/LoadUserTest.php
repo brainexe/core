@@ -2,7 +2,7 @@
 
 namespace Tests\BrainExe\Core\Authentication;
 
-use BrainExe\Core\Authentication\DatabaseUserProvider;
+use BrainExe\Core\Authentication\UserProvider;
 use BrainExe\Core\Authentication\LoadUser;
 use BrainExe\Core\Authentication\UserVO;
 use BrainExe\Core\Redis\Predis;
@@ -46,7 +46,7 @@ class LoadUserTest extends TestCase
         $this->redis
             ->expects($this->once())
             ->method('hget')
-            ->with(DatabaseUserProvider::REDIS_USER_NAMES, 'username')
+            ->with(UserProvider::REDIS_USER_NAMES, 'username')
             ->willReturn(null);
 
         $this->subject->loadUserByUsername($username);
@@ -68,7 +68,7 @@ class LoadUserTest extends TestCase
         $this->redis
             ->expects($this->once())
             ->method('hget')
-            ->with(DatabaseUserProvider::REDIS_USER_NAMES, 'username')
+            ->with(UserProvider::REDIS_USER_NAMES, 'username')
             ->willReturn($userId);
 
         $this->redis

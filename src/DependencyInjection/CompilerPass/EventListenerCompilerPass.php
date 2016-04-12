@@ -7,6 +7,7 @@ use Exception;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * @CompilerPass
@@ -32,6 +33,7 @@ class EventListenerCompilerPass implements CompilerPassInterface
 
         $services = $container->findTaggedServiceIds(self::TAG);
         foreach (array_keys($services) as $serviceId) {
+            /** @var EventSubscriberInterface $class */
             $class = $container->getDefinition($serviceId)->getClass();
             if (method_exists($class, 'getSubscribedEvents')) {
                 foreach ($class::getSubscribedEvents() as $eventName => $params) {

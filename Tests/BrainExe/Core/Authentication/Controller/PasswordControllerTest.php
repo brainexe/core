@@ -3,7 +3,7 @@
 namespace Tests\BrainExe\Core\Authentication\Controller;
 
 use BrainExe\Core\Authentication\Controller\PasswordController;
-use BrainExe\Core\Authentication\DatabaseUserProvider;
+use BrainExe\Core\Authentication\UserProvider;
 use BrainExe\Core\Authentication\UserVO;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase as TestCase;
@@ -21,13 +21,13 @@ class PasswordControllerTest extends TestCase
     private $subject;
 
     /**
-     * @var DatabaseUserProvider|MockObject
+     * @var UserProvider|MockObject
      */
     private $userProvider;
 
     public function setUp()
     {
-        $this->userProvider = $this->getMock(DatabaseUserProvider::class, [], [], '', false);
+        $this->userProvider = $this->getMock(UserProvider::class, [], [], '', false);
 
         $this->subject = new PasswordController($this->userProvider);
     }

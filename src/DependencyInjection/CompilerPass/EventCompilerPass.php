@@ -22,10 +22,6 @@ class EventCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!is_dir(ROOT . 'cache')) {
-            return;
-        }
-
         $this->dumpVariableToCache('events', $this->getEvents());
     }
 

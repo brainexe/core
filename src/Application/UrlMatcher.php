@@ -17,7 +17,7 @@ class UrlMatcher
      * @param Request $request
      * @return array
      */
-    public function match(Request $request)
+    public function match(Request $request) : array
     {
         $context = new RequestContext();
         $context->fromRequest($request);

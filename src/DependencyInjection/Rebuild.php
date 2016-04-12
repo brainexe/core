@@ -14,7 +14,7 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
 /**
- * @Service("Core.Rebuild", public=false)
+ * @Service("Core.Rebuild", public=false, shared=false)
  */
 class Rebuild
 {
@@ -47,19 +47,18 @@ class Rebuild
     protected function readAnnotations(ContainerBuilder $container)
     {
         $annotationLoader = new Loader($container);
-        $appFinder = new Finder();
 
+        $appFinder = new Finder();
         $appFinder->directories()
             ->in([ROOT . 'vendor/brainexe/'])
             ->depth("<=1")
             ->name('src');
 
-        $annotationLoader->load('src/');
+        $annotationLoader->load(ROOT . 'src/');
 
         foreach ($appFinder as $dir) {
             /** @var SplFileInfo $dir */
-            $dirName = $dir->getPathname();
-            $annotationLoader->load($dirName);
+            $annotationLoader->load($dir->getPathname());
         }
     }
 
@@ -68,23 +67,23 @@ class Rebuild
      */
     protected function dumpContainer(ContainerBuilder $container)
     {
+        $debug         = $container->getParameter('debug');
         $randomId      = mt_rand();
         $className     = sprintf('dic_%d', $randomId);
-        $containerFile = 'cache/dic.php';
+        $containerFile = ROOT . 'cache/dic.php';
 
         $dumper = new PhpDumper($container);
         $dumper->setProxyDumper(new ProxyDumper());
 
         $containerContent = $dumper->dump([
             'class' => $className,
-            'debug' => $container->getParameter('debug')
+            'debug' => $debug
         ]);
 
-        file_put_contents('cache/dic.php', $containerContent);
-        file_put_contents('cache/dic.txt', $className);
+        file_put_contents(ROOT . 'cache/dic.php', $containerContent);
+        file_put_contents(ROOT . 'cache/dic.txt', $className);
         @chmod($containerFile, 0777);
 
-        $debug = $container->getParameter('debug');
         file_put_contents(
             ROOT . 'cache/config.json',
             json_encode(

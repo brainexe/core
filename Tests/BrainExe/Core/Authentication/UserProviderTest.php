@@ -3,7 +3,7 @@
 namespace Tests\BrainExe\Core\Authentication;
 
 use BrainExe\Core\Authentication\AnonymusUserVO;
-use BrainExe\Core\Authentication\DatabaseUserProvider;
+use BrainExe\Core\Authentication\UserProvider;
 use BrainExe\Core\Authentication\LoadUser;
 use BrainExe\Core\Authentication\PasswordHasher;
 use BrainExe\Core\Authentication\UserVO;
@@ -15,15 +15,15 @@ use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase as TestCase;
 
 /**
- * @covers BrainExe\Core\Authentication\DatabaseUserProvider
+ * @covers BrainExe\Core\Authentication\UserProvider
  */
-class DatabaseUserProviderTest extends TestCase
+class UserProviderTest extends TestCase
 {
 
     use RedisMockTrait;
 
     /**
-     * @var DatabaseUserProvider
+     * @var UserProvider
      */
     private $subject;
 
@@ -60,7 +60,7 @@ class DatabaseUserProviderTest extends TestCase
         $this->hasher         = $this->getMock(PasswordHasher::class, [], [], '', false);
         $this->dispatcher     = $this->getMock(EventDispatcher::class, [], [], '', false);
 
-        $this->subject = new DatabaseUserProvider($this->hasher, $this->loadUser);
+        $this->subject = new UserProvider($this->hasher, $this->loadUser);
         $this->subject->setRedis($this->redis);
         $this->subject->setIdGenerator($this->idGenerator);
         $this->subject->setEventDispatcher($this->dispatcher);
@@ -105,7 +105,7 @@ class DatabaseUserProviderTest extends TestCase
         $this->redis
             ->expects($this->once())
             ->method('hgetall')
-            ->with(DatabaseUserProvider::REDIS_USER_NAMES)
+            ->with(UserProvider::REDIS_USER_NAMES)
             ->willReturn($userNames);
 
         $actualResult = $this->subject->getAllUserNames();
@@ -211,7 +211,7 @@ class DatabaseUserProviderTest extends TestCase
         $this->redis
             ->expects($this->once())
             ->method('hdel')
-            ->with(DatabaseUserProvider::REDIS_USER_NAMES, 'username');
+            ->with(UserProvider::REDIS_USER_NAMES, 'username');
 
         $this->redis
             ->expects($this->once())
@@ -242,6 +242,9 @@ class DatabaseUserProviderTest extends TestCase
 
         $user = new UserVO();
         $user->username = $username = 'username';
+        $user->password = 'password';
+
+        $hash = 'mySecretHash';
 
         $this->idGenerator
             ->expects($this->once())
@@ -253,10 +256,16 @@ class DatabaseUserProviderTest extends TestCase
             ->method('pipeline')
             ->willReturn($this->redis);
 
+        $this->hasher
+            ->expects($this->once())
+            ->method('generateHash')
+            ->with($user->password)
+            ->willReturn($hash);
+
         $this->redis
             ->expects($this->once())
             ->method('hset')
-            ->with(DatabaseUserProvider::REDIS_USER_NAMES, $username, $userId)
+            ->with(UserProvider::REDIS_USER_NAMES, $username, $userId)
             ->willReturn($this->redis);
 
         $this->redis

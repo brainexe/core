@@ -46,7 +46,7 @@ class Stats
     /**
      * @return int[]
      */
-    public function getAll()
+    public function getAll() : array
     {
         return $this->gateway->getAll();
     }
@@ -55,7 +55,7 @@ class Stats
      * @param string $key
      * @return int
      */
-    public function get($key)
+    public function get(string $key) : int
     {
         return $this->gateway->get($key);
     }

@@ -28,7 +28,7 @@ class Event extends AbstractEvent
      * @param string $key
      * @param int $value
      */
-    public function __construct($eventName, $key, $value = 1)
+    public function __construct(string $eventName, string $key, int $value = 1)
     {
         parent::__construct($eventName);
 
@@ -39,7 +39,7 @@ class Event extends AbstractEvent
     /**
      * @return int
      */
-    public function getValue()
+    public function getValue() : int
     {
         return $this->value;
     }
@@ -47,7 +47,7 @@ class Event extends AbstractEvent
     /**
      * @return string
      */
-    public function getKey()
+    public function getKey() : string
     {
         return $this->key;
     }

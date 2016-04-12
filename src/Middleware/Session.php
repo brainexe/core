@@ -42,6 +42,8 @@ class Session extends AbstractMiddleware
      */
     public function processResponse(Request $request, Response $response)
     {
-        $this->session->save();
+        if ($this->session->isStarted()) {
+            $this->session->save();
+        }
     }
 }

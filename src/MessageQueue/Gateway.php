@@ -26,11 +26,11 @@ class Gateway
     const RETRY_TIME      = 3600; // try again after 1 hour
 
     /**
-     * @param integer $eventId
-     * @param null $eventType
+     * @param string $eventId
+     * @param string $eventType
      * @return bool success
      */
-    public function deleteEvent($eventId, $eventType = null)
+    public function deleteEvent(string $eventId, string $eventType = null) : bool
     {
         if ($eventType) {
             $eventId = sprintf('%s:%s', $eventType, $eventId);
@@ -60,7 +60,7 @@ class Gateway
      * @param integer $timestamp
      * @return string
      */
-    public function addEvent(AbstractEvent $event, $timestamp = 0)
+    public function addEvent(AbstractEvent $event, int $timestamp = 0)
     {
         $randomId = $this->generateUniqueId('jobid');
         $jobId    = sprintf('%s:%s', $event->eventName, $randomId);
@@ -95,17 +95,18 @@ class Gateway
      * @param int $since
      * @return Job[]
      */
-    public function getEventsByType($eventType = null, $since = 0)
+    public function getEventsByType(string $eventType = null, int $since = 0) : array
     {
         return iterator_to_array($this->getEventsByTypeGenerator($eventType, $since));
     }
 
     /**
+     * @todo generator delegation
      * @param string $eventType
      * @param integer $since
      * @return Generator|Job[]
      */
-    public function getEventsByTypeGenerator($eventType = null, $since = 0)
+    public function getEventsByTypeGenerator(string $eventType = null, int $since = 0)
     {
         $redis = $this->getRedis();
 
@@ -158,7 +159,7 @@ class Gateway
     /**
      * @return integer
      */
-    public function countAllJobs()
+    public function countAllJobs() : int
     {
         $delayed   = $this->getRedis()->zcard(self::QUEUE_DELAYED);
         $immediate = $this->getRedis()->llen(self::QUEUE_IMMEDIATE);

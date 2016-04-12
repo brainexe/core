@@ -120,7 +120,7 @@ class GatewayTest extends TestCase
     public function testGet()
     {
         $key   = 'mockKey';
-        $value = 'mockValue';
+        $value = 22;
 
         $this->redis
             ->expects($this->once())

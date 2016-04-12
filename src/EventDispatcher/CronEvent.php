@@ -19,9 +19,9 @@ class CronEvent extends MessageQueueEvent implements PushViaWebsocket
 
     /**
      * @param AbstractEvent $event
-     * @param int $expression
+     * @param string $expression
      */
-    public function __construct(AbstractEvent $event, $expression)
+    public function __construct(AbstractEvent $event, string $expression)
     {
         parent::__construct(self::CRON);
         $this->event      = $event;

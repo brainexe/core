@@ -16,7 +16,7 @@ class TimingEvent extends AbstractEvent
     /**
      * @param string $timingId
      */
-    public function __construct($timingId)
+    public function __construct(string $timingId)
     {
         parent::__construct(self::TIMING_EVENT);
 

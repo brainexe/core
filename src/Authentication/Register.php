@@ -16,7 +16,7 @@ class Register
 {
 
     /**
-     * @var DatabaseUserProvider
+     * @var UserProvider
      */
     private $userProvider;
 
@@ -31,15 +31,15 @@ class Register
     private $registrationEnabled;
 
     /**
-     * @Inject({"@DatabaseUserProvider", "@RegisterTokens", "%application.registration_enabled%"})
-     * @param DatabaseUserProvider $userProvider
+     * @Inject({"@Core.Authentication.UserProvider", "@RegisterTokens", "%application.registration_enabled%"})
+     * @param UserProvider $userProvider
      * @param RegisterTokens $tokens
-     * @param $registrationEnabled
+     * @param bool $registrationEnabled
      */
     public function __construct(
-        DatabaseUserProvider $userProvider,
+        UserProvider $userProvider,
         RegisterTokens $tokens,
-        $registrationEnabled
+        bool $registrationEnabled
     ) {
         $this->userProvider        = $userProvider;
         $this->registerTokens      = $tokens;
@@ -51,9 +51,9 @@ class Register
      * @param Session|SessionInterface $session
      * @param string $token
      * @throws UserException
-     * @return integer
+     * @return int
      */
-    public function registerUser(UserVO $user, Session $session, $token = null)
+    public function registerUser(UserVO $user, Session $session, $token = null) : int
     {
         $this->checkInput($user);
 

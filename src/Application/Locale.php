@@ -11,6 +11,8 @@ use BrainExe\Annotations\Annotations\Service;
 class Locale
 {
 
+    const DOMAIN = 'messages';
+
     /**
      * @var string[]
      */
@@ -28,7 +30,7 @@ class Locale
     /**
      * @return string[]
      */
-    public function getLocales()
+    public function getLocales() : array
     {
         return $this->locales;
     }
@@ -37,14 +39,13 @@ class Locale
      * @param string $locale
      * @codeCoverageIgnore
      */
-    public function setLocale($locale)
+    public function setLocale(string $locale)
     {
         putenv(sprintf('LANG=%s.UTF-8', $locale));
         setlocale(LC_MESSAGES, sprintf('%s.UTF-8', $locale));
 
-        $domain = 'messages';
-        bindtextdomain($domain, ROOT . '/lang/');
-        bind_textdomain_codeset($domain, 'UTF-8');
-        textdomain($domain);
+        bindtextdomain(self::DOMAIN, ROOT . '/lang/');
+        bind_textdomain_codeset(self::DOMAIN, 'UTF-8');
+        textdomain(self::DOMAIN);
     }
 }

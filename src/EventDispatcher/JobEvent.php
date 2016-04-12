@@ -22,7 +22,7 @@ class JobEvent extends AbstractEvent implements PushViaWebsocket
      * @param string $type
      * @param Job $job
      */
-    public function __construct($type, Job $job)
+    public function __construct(string $type, Job $job)
     {
         parent::__construct($type);
         $this->job  = $job;

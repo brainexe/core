@@ -22,7 +22,7 @@ class MultiEvent extends AbstractEvent
      * @param string $eventName self::*
      * @param array $values
      */
-    public function __construct($eventName, array $values)
+    public function __construct(string $eventName, array $values)
     {
         parent::__construct($eventName);
 
@@ -32,7 +32,7 @@ class MultiEvent extends AbstractEvent
     /**
      * @return array
      */
-    public function getValues()
+    public function getValues() : array
     {
         return $this->values;
     }

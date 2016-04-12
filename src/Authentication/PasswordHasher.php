@@ -15,7 +15,7 @@ class PasswordHasher
      * @param string $password
      * @return string $hash
      */
-    public function generateHash($password)
+    public function generateHash(string $password) : string
     {
         return password_hash($password, PASSWORD_BCRYPT, [
             'cost' => self::COST
@@ -25,9 +25,9 @@ class PasswordHasher
     /**
      * @param string $password
      * @param string $hash
-     * @return boolean
+     * @return bool
      */
-    public function verifyHash($password, $hash)
+    public function verifyHash(string $password, string $hash) : bool
     {
         return password_verify($password, $hash);
     }

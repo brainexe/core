@@ -2,12 +2,33 @@
 
 namespace BrainExe\Core\Application;
 
+use BrainExe\Annotations\Annotations\Inject;
+use BrainExe\Annotations\Annotations\Service;
+use Predis\ClientInterface;
 use Predis\Session\Handler;
 
+/**
+ * @Service("Core.Application.SessionHandler", public=false)
+ */
 class SessionHandler extends Handler
 {
 
     const KEY = 'sessions:';
+
+    /**
+     * @Inject({
+     *     "@redis",
+     *     "%session.lifetime%"
+     * })
+     * @param ClientInterface $client
+     * @param int $lifetime
+     */
+    public function __construct(ClientInterface $client, $lifetime)
+    {
+        parent::__construct($client, [
+            'gc_maxlifetime' => $lifetime
+        ]);
+    }
 
     /**
      * {@inheritdoc}

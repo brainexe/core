@@ -41,7 +41,7 @@ class Controller
     /**
      * @Route("/stats/", name="status.index")
      */
-    public function index()
+    public function index() : array
     {
         $stats = $this->stats->getAll();
 
@@ -63,7 +63,7 @@ class Controller
      * @param Request $request
      * @return bool
      */
-    public function resetStats(Request $request)
+    public function resetStats(Request $request) : bool
     {
         $key = $request->request->get('key');
         $this->stats->set([$key => 0]);

@@ -95,10 +95,5 @@ class ControllerCompilerPass implements CompilerPassInterface
         $routeDumper = new PhpMatcherDumper($routerCollection);
         $content     = $routeDumper->dump();
         file_put_contents($routerFile, $content);
-
-        $routerFile  = sprintf('%scache/router_generator.php', ROOT);
-        $routeDumper = new PhpGeneratorDumper($routerCollection);
-        $content     = $routeDumper->dump();
-        file_put_contents($routerFile, $content);
     }
 }

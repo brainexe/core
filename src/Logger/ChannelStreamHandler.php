@@ -44,7 +44,7 @@ class ChannelStreamHandler extends StreamHandler
     /**
      * @param string $channel
      */
-    public function setChannel($channel)
+    public function setChannel(string $channel)
     {
         $this->channel = $channel;
     }

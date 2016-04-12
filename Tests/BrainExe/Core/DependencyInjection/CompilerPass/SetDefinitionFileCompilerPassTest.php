@@ -35,30 +35,11 @@ class SetDefinitionFileCompilerPassTest extends TestCase
     {
         $this->subject    = new SetDefinitionFileCompilerPass();
         $this->container  = $this->getMock(ContainerBuilder::class, [
-            'getServiceIds',
-            'getDefinition',
-            'hasDefinition'
+            'getDefinitions',
         ]);
         $this->definition = $this->getMock(Definition::class);
     }
 
-    public function testProcessCompilerWithInvalidDefinition()
-    {
-        $serviceId = 'FooService';
-
-        $this->container
-            ->expects($this->once())
-            ->method('getServiceIds')
-            ->willReturn([$serviceId]);
-
-        $this->container
-            ->expects($this->once())
-            ->method('hasDefinition')
-            ->with($serviceId)
-            ->willReturn(false);
-
-        $this->subject->process($this->container);
-    }
 
     public function testProcessCompiler()
     {
@@ -66,14 +47,8 @@ class SetDefinitionFileCompilerPassTest extends TestCase
 
         $this->container
             ->expects($this->once())
-            ->method('getServiceIds')
-            ->willReturn([$serviceId]);
-
-        $this->container
-            ->expects($this->once())
-            ->method('hasDefinition')
-            ->with($serviceId)
-            ->willReturn(true);
+            ->method('getDefinitions')
+            ->willReturn([$serviceId => $this->definition]);
 
         $this->definition
             ->expects($this->once())
@@ -85,12 +60,6 @@ class SetDefinitionFileCompilerPassTest extends TestCase
             ->method('setFile')
             ->with(__FILE__);
 
-        $this->container
-            ->expects($this->once())
-            ->method('getDefinition')
-            ->with($serviceId)
-            ->willReturn($this->definition);
-
         $this->subject->process($this->container);
     }
 
@@ -100,14 +69,8 @@ class SetDefinitionFileCompilerPassTest extends TestCase
 
         $this->container
             ->expects($this->once())
-            ->method('getServiceIds')
-            ->willReturn([$serviceId]);
-
-        $this->container
-            ->expects($this->once())
-            ->method('hasDefinition')
-            ->with($serviceId)
-            ->willReturn(true);
+            ->method('getDefinitions')
+            ->willReturn([$serviceId => $this->definition]);
 
         $this->definition
             ->expects($this->once())
@@ -117,12 +80,6 @@ class SetDefinitionFileCompilerPassTest extends TestCase
         $this->definition
             ->expects($this->never())
             ->method('setFile');
-
-        $this->container
-            ->expects($this->once())
-            ->method('getDefinition')
-            ->with($serviceId)
-            ->willReturn($this->definition);
 
         $this->subject->process($this->container);
     }

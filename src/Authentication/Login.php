@@ -61,8 +61,12 @@ class Login
      * @throws UserException
      * @return UserVO
      */
-    public function tryLogin($username, $password, $oneTimeToken, SessionInterface $session)
-    {
+    public function tryLogin(
+        string $username,
+        string $password,
+        string $oneTimeToken,
+        SessionInterface $session
+    ) : UserVO {
         $userVo = $this->loadUser->loadUserByUsername($username);
         if (empty($userVo)) {
             throw new UserException('Invalid Username');
@@ -85,7 +89,7 @@ class Login
      * @return UserVO
      * @throws UserException
      */
-    public function loginWithToken($token, SessionInterface $session)
+    public function loginWithToken(string $token, SessionInterface $session) : UserVO
     {
         $tokenData = $this->token->getToken($token);
 
@@ -106,7 +110,7 @@ class Login
      * @param string $username
      * @return bool
      */
-    public function needsOneTimeToken($username)
+    public function needsOneTimeToken(string $username) : bool
     {
         try {
             $user = $this->loadUser->loadUserByUsername($username);
@@ -123,8 +127,11 @@ class Login
      * @param UserVO $userVo
      * @return AuthenticateUserEvent
      */
-    private function handleSuccessfulLogin(SessionInterface $session, $authenticationVo, $userVo)
-    {
+    private function handleSuccessfulLogin(
+        SessionInterface $session,
+        AuthenticationDataVO $authenticationVo,
+        UserVO $userVo
+    ) {
         $event = new AuthenticateUserEvent($authenticationVo, AuthenticateUserEvent::CHECK);
         $this->dispatchEvent($event);
 

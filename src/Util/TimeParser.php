@@ -7,7 +7,7 @@ use BrainExe\Core\Application\UserException;
 
 /**
  * Parse user input into an unix timestamp
- * @Service(public=false)
+ * @Service(public=false, shared=false)
  * @api
  */
 class TimeParser

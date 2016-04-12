@@ -36,10 +36,7 @@ class RedisCompilerPassTest extends TestCase
 
     public function testProcess()
     {
-        $password = 'testetst';
-        $database = 12;
-        $host     = 'localhost';
-        $port     = 212;
+        $uri = 'redis://localhost';
 
         $redis = $this->getMock(Definition::class);
 
@@ -51,39 +48,19 @@ class RedisCompilerPassTest extends TestCase
         $this->container
             ->expects($this->at(1))
             ->method('getParameter')
-            ->with('redis.password')
-            ->willReturn($password);
+            ->with('redis.connection')
+            ->willReturn($uri);
         $this->container
             ->expects($this->at(2))
             ->method('getParameter')
-            ->with('redis.database')
-            ->willReturn($database);
-        $this->container
-            ->expects($this->at(3))
-            ->method('getParameter')
-            ->with('redis.host')
-            ->willReturn($host);
-        $this->container
-            ->expects($this->at(4))
-            ->method('getParameter')
-            ->with('redis.port')
-            ->willReturn($port);
-        $this->container
-            ->expects($this->at(5))
-            ->method('getParameter')
-            ->with('redis.slave.password')
+            ->with('redis.slave.connection')
             ->willThrowException(new ParameterNotFoundException('foo'));
 
         $redis
             ->expects($this->at(0))
             ->method('setArguments')
             ->with([
-                0 => [
-                    'password' => $password,
-                    'host' => $host,
-                    'database' => $database,
-                    'port' => $port
-                ]
+                0 => $uri
             ]);
 
         $this->subject->process($this->container);

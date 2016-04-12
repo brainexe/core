@@ -52,8 +52,8 @@ class LoggerCompilerPassTest extends TestCase
         $this->container
             ->expects($this->at(1))
             ->method('getParameter')
-            ->with('debug')
-            ->willReturn(false);
+            ->with('hipchat.api_token')
+            ->willReturn('hipchat_token');
         $this->container
             ->expects($this->at(2))
             ->method('getParameter')
@@ -62,26 +62,21 @@ class LoggerCompilerPassTest extends TestCase
         $this->container
             ->expects($this->at(3))
             ->method('getParameter')
-            ->with('hipchat.api_token')
-            ->willReturn('hipchat_token');
-        $this->container
-            ->expects($this->at(4))
-            ->method('getParameter')
             ->with('hipchat.room')
             ->willReturn('hipchat_room');
         $this->container
-            ->expects($this->at(5))
+            ->expects($this->at(4))
             ->method('getParameter')
             ->with('hipchat.name')
             ->willReturn('hipchat_name');
         $this->container
-            ->expects($this->at(6))
+            ->expects($this->at(5))
             ->method('getParameter')
             ->with('hipchat.logLevel')
             ->willReturn('hipchat_loglevel');
 
         $this->container
-            ->expects($this->at(7))
+            ->expects($this->at(6))
             ->method('getParameter')
             ->with('logger.channels')
             ->willReturn([]);
@@ -92,39 +87,6 @@ class LoggerCompilerPassTest extends TestCase
             ->with('pushHandler', [new Definition(HipChatHandler::class, [
                 'hipchat_token', 'hipchat_room', 'hipchat_name', false, 'hipchat_loglevel'
             ])]);
-
-        $this->subject->process($this->container);
-    }
-
-    public function testProcessCompilerWitDebug()
-    {
-        $this->container
-            ->expects($this->at(0))
-            ->method('getDefinition')
-            ->with('logger')
-            ->willReturn($this->logger);
-
-        $this->container
-            ->expects($this->at(1))
-            ->method('getParameter')
-            ->with('debug')
-            ->willReturn(true);
-
-        $this->container
-            ->expects($this->at(3))
-            ->method('getParameter')
-            ->with('logger.channels')
-            ->willReturn([]);
-
-        $this->logger
-            ->expects($this->at(0))
-            ->method('addMethodCall')
-            ->with('pushHandler', [new Definition(ChromePHPHandler::class)]);
-
-        $this->logger
-            ->expects($this->at(1))
-            ->method('addMethodCall')
-            ->with('pushHandler', [new Definition(StreamHandler::class, ['php://stdout', Logger::INFO])]);
 
         $this->subject->process($this->container);
     }

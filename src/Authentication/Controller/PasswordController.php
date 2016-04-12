@@ -5,7 +5,7 @@ namespace BrainExe\Core\Authentication\Controller;
 use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Core\Annotations\Controller;
 use BrainExe\Core\Annotations\Route;
-use BrainExe\Core\Authentication\DatabaseUserProvider;
+use BrainExe\Core\Authentication\UserProvider;
 use BrainExe\Core\Authentication\UserVO;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -16,15 +16,15 @@ class PasswordController
 {
 
     /**
-     * @var DatabaseUserProvider
+     * @var UserProvider
      */
     private $user;
 
     /**
-     * @Inject("@DatabaseUserProvider")
-     * @param DatabaseUserProvider $userProvider
+     * @Inject("@Core.Authentication.UserProvider")
+     * @param UserProvider $userProvider
      */
-    public function __construct(DatabaseUserProvider $userProvider)
+    public function __construct(UserProvider $userProvider)
     {
         $this->user = $userProvider;
     }

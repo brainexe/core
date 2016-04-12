@@ -20,8 +20,8 @@ class Middleware extends ServiceDefinition
         /** @var Definition $definition */
         list($serviceId, $definition) = parent::build($reflectionClass, $annotation);
 
-        $definition->setPublic(false);
         $definition->addTag(MiddlewareCompilerPass::TAG);
+        $definition->setPublic(false);
 
         return [$serviceId, $definition];
     }

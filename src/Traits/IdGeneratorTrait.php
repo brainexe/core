@@ -28,16 +28,16 @@ trait IdGeneratorTrait
      * @param string $type
      * @return int
      */
-    protected function generateUniqueId($type = IdGenerator::DEFAULT_TYPE)
+    protected function generateUniqueId(string $type = IdGenerator::DEFAULT_TYPE) : int
     {
         return $this->idGenerator->generateUniqueId($type);
     }
 
     /**
-     * @param integer $length
+     * @param int $length
      * @return string
      */
-    protected function generateRandomId($length = IdGenerator::ID_LENGTH)
+    protected function generateRandomId(int $length = IdGenerator::ID_LENGTH) : string
     {
         return $this->idGenerator->generateRandomId($length);
     }

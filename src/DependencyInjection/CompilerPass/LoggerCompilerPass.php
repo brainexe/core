@@ -7,7 +7,6 @@ use BrainExe\Core\Logger\ChannelStreamHandler;
 use Monolog\Handler\ChromePHPHandler;
 use Monolog\Handler\HipChatHandler;
 use Monolog\Handler\StreamHandler;
-
 use Monolog\Logger;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -27,13 +26,6 @@ class LoggerCompilerPass implements CompilerPassInterface
     {
         $logger = $container->getDefinition('logger');
 
-        if ($container->getParameter('debug')) {
-            $logger->addMethodCall('pushHandler', [new Definition(ChromePHPHandler::class)]);
-            $logger->addMethodCall('pushHandler', [
-                new Definition(StreamHandler::class, ['php://stdout', Logger::INFO])
-            ]);
-        }
-
         if ($container->getParameter('hipchat.api_token')) {
             $logger->addMethodCall('pushHandler', [new Definition(HipChatHandler::class, [
                 $container->getParameter('hipchat.api_token'),
@@ -45,7 +37,9 @@ class LoggerCompilerPass implements CompilerPassInterface
         }
 
         foreach ($container->getParameter('logger.channels') as $config) {
-            $logger->addMethodCall('pushHandler', [new Definition(ChannelStreamHandler::class, $config)]);
+            $logger->addMethodCall('pushHandler', [
+                new Definition(ChannelStreamHandler::class, $config)
+            ]);
         }
 
         /** @var ParameterBag $parameterBag */

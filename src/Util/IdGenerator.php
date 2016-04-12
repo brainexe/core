@@ -20,18 +20,18 @@ class IdGenerator
 
     /**
      * @param string $type
-     * @return string
+     * @return int
      */
-    public function generateUniqueId($type = self::DEFAULT_TYPE)
+    public function generateUniqueId($type = self::DEFAULT_TYPE) : int
     {
-        return $this->getRedis()->incr(sprintf(self::KEY, $type));
+        return (int)$this->getRedis()->incr(sprintf(self::KEY, $type));
     }
 
     /**
      * @param int $length
      * @return string
      */
-    public function generateRandomId($length = self::ID_LENGTH)
+    public function generateRandomId($length = self::ID_LENGTH) : string
     {
         $randomId = md5(microtime() . mt_rand()) . mt_rand();
 

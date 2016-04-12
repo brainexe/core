@@ -38,7 +38,7 @@ class Controller
      * @param string $type
      * @return Job[]
      */
-    public function getJobs(Request $request, $type)
+    public function getJobs(Request $request, string $type) : array
     {
         $since = 0;
 
@@ -55,7 +55,7 @@ class Controller
      * @param string $jobId
      * @return bool
      */
-    public function deleteJob(Request $request, $jobId)
+    public function deleteJob(Request $request, string $jobId) : bool
     {
         unset($request);
 

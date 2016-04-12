@@ -26,17 +26,19 @@ trait TimeTrait
     }
 
     /**
+     * @todo private/protected
      * @return Time
      */
-    public function getTime()
+    public function getTime() : Time
     {
         return $this->time;
     }
 
     /**
+     * @todo private/protected
      * @return int
      */
-    public function now()
+    public function now() : int
     {
         return $this->time->now();
     }

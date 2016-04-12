@@ -28,7 +28,7 @@ trait CacheTrait
     /**
      * @return CacheProvider
      */
-    protected function getCache()
+    protected function getCache() : CacheProvider
     {
         return $this->cache;
     }

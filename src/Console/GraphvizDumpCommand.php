@@ -52,7 +52,7 @@ class GraphvizDumpCommand extends Command
         $dumper  = new GraphvizDumper($dic);
         $content = $dumper->dump();
 
-        file_put_contents('cache/dic.gv', $content);
+        file_put_contents(ROOT . 'cache/dic.gv', $content);
         exec('dot -Tpng cache/dic.gv -o cache/graph.png; rm cache/dic.gv');
 
         $output->writeln('PNG: <info>cache/graph.png</info>');

@@ -45,7 +45,7 @@ class Gateway
     /**
      * @return int[]
      */
-    public function getAll()
+    public function getAll() : array
     {
         return $this->getRedis()->zrevrangebyscore(self::KEY, '+inf', 0, ['withscores' => true]);
     }
@@ -56,6 +56,6 @@ class Gateway
      */
     public function get($key)
     {
-        return $this->getRedis()->hget(self::KEY, $key);
+        return (int)$this->getRedis()->hget(self::KEY, $key);
     }
 }

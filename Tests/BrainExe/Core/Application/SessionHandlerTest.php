@@ -29,7 +29,7 @@ class SessionHandlerTest extends TestCase
     {
         $this->redis = $this->getRedisMock();
 
-        $this->subject = new SessionHandler($this->redis);
+        $this->subject = new SessionHandler($this->redis, 100);
     }
 
     public function testDestroy()
@@ -82,7 +82,7 @@ class SessionHandlerTest extends TestCase
         $this->redis
             ->expects($this->once())
             ->method('setex')
-            ->with("sessions:$sessionId", 1440, $data);
+            ->with("sessions:$sessionId", 100, $data);
 
         $this->subject->write($sessionId, $data);
     }

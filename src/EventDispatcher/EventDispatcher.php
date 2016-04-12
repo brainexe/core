@@ -84,7 +84,7 @@ class EventDispatcher extends ContainerAwareEventDispatcher
      * @param AbstractEvent $event
      * @param integer|null $timestamp
      */
-    public function dispatchInBackground(AbstractEvent $event, $timestamp = 0)
+    public function dispatchInBackground(AbstractEvent $event, int $timestamp = 0)
     {
         if ($timestamp) {
             $wrapper = new DelayedEvent($event, $timestamp);

@@ -11,6 +11,7 @@ abstract class AbstractEvent extends Event
 {
 
     /**
+     * @todo private
      * @var string
      */
     public $eventName;
@@ -21,5 +22,13 @@ abstract class AbstractEvent extends Event
     public function __construct($eventName)
     {
         $this->eventName = $eventName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEventName()
+    {
+        return $this->eventName;
     }
 }

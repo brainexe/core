@@ -5,16 +5,16 @@ namespace BrainExe\Core\Util;
 use BrainExe\Annotations\Annotations\Service;
 
 /**
- * @Service(public=false)
+ * @Service(public=false, shared=false)
  * @api
  */
 class Time
 {
 
     /**
-     * @return integer
+     * @return int
      */
-    public function now()
+    public function now() : int
     {
         return time();
     }
@@ -23,24 +23,24 @@ class Time
      * @param string $format
      * @return string
      */
-    public function date($format)
+    public function date($format) : string
     {
         return date($format);
     }
 
     /**
-     * @return integer
+     * @return int
      */
-    public function microtime()
+    public function microtime() : int
     {
         return microtime(true);
     }
 
     /**
      * @param string $string
-     * @return integer
+     * @return int
      */
-    public function strtotime($string)
+    public function strtotime(string $string)
     {
         return strtotime($string);
     }

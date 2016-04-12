@@ -12,9 +12,9 @@ use BrainExe\Core\Traits\RedisTrait;
 
 /**
  * @api
- * @Service(public=false)
+ * @Service("Core.Authentication.UserProvider", public=false)
  */
-class DatabaseUserProvider
+class UserProvider
 {
 
     use RedisTrait;
@@ -53,16 +53,17 @@ class DatabaseUserProvider
      * @return UserVO
      * @throws UsernameNotFoundException
      */
-    public function loadUserByUsername($username)
+    public function loadUserByUsername(string $username) : UserVO
     {
         return $this->loadUser->loadUserByUsername($username);
     }
 
     /**
-     * @param integer $userId
+     * @param int $userId
      * @return UserVO
+     * @throws UsernameNotFoundException
      */
-    public function loadUserById($userId)
+    public function loadUserById(int $userId) : UserVO
     {
         return $this->loadUser->loadUserById($userId);
     }
@@ -70,7 +71,7 @@ class DatabaseUserProvider
     /**
      * @return string[]
      */
-    public function getAllUserNames()
+    public function getAllUserNames() : array
     {
         return $this->getRedis()->hgetall(self::REDIS_USER_NAMES);
     }
@@ -79,7 +80,7 @@ class DatabaseUserProvider
      * @param string $password
      * @return string $hash
      */
-    public function generateHash($password)
+    public function generateHash(string $password) : string
     {
         return $this->hasher->generateHash($password);
     }
@@ -87,9 +88,9 @@ class DatabaseUserProvider
     /**
      * @param string $password
      * @param string $hash
-     * @return boolean
+     * @return bool
      */
-    public function verifyHash($password, $hash)
+    public function verifyHash(string $password, string $hash) : bool
     {
         return $this->hasher->verifyHash($password, $hash);
     }
@@ -98,7 +99,7 @@ class DatabaseUserProvider
      * @param UserVO $user
      * @param string $newPassword
      */
-    public function changePassword(UserVO $user, $newPassword)
+    public function changePassword(UserVO $user, string $newPassword)
     {
         $hash           = $this->generateHash($newPassword);
         $user->password = $hash;
@@ -110,7 +111,7 @@ class DatabaseUserProvider
      * @param UserVO $userVo
      * @param string $property
      */
-    public function setUserProperty(UserVO $userVo, $property)
+    public function setUserProperty(UserVO $userVo, string $property)
     {
         $redis = $this->getRedis();
         $value = $userVo->$property;
@@ -123,9 +124,9 @@ class DatabaseUserProvider
 
     /**
      * @param UserVO $user
-     * @return integer $user_id
+     * @return int $user_id
      */
-    public function register(UserVO $user)
+    public function register(UserVO $user) : int
     {
         $redis        = $this->getRedis()->pipeline();
         $passwordHash = $this->generateHash($user->password);
@@ -151,9 +152,9 @@ class DatabaseUserProvider
     }
 
     /**
-     * @param integer $userId
+     * @param int $userId
      */
-    public function deleteUser($userId)
+    public function deleteUser(int $userId)
     {
         $user = $this->loadUser->loadUserById($userId);
 
@@ -170,10 +171,10 @@ class DatabaseUserProvider
     }
 
     /**
-     * @param integer $userId
+     * @param int $userId
      * @return string
      */
-    private function getKey($userId)
+    private function getKey(int $userId) : string
     {
         return sprintf(self::REDIS_USER, $userId);
     }

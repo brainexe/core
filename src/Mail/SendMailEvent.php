@@ -32,7 +32,7 @@ class SendMailEvent extends AbstractEvent
      * @param string $subject
      * @param string $body
      */
-    public function __construct($recipient, $subject, $body)
+    public function __construct(string $recipient, string $subject, string $body)
     {
         parent::__construct(self::TYPE);
 
@@ -44,7 +44,7 @@ class SendMailEvent extends AbstractEvent
     /**
      * @return string
      */
-    public function getRecipient()
+    public function getRecipient() : string
     {
         return $this->recipient;
     }
@@ -52,7 +52,7 @@ class SendMailEvent extends AbstractEvent
     /**
      * @return string
      */
-    public function getSubject()
+    public function getSubject() : string
     {
         return $this->subject;
     }
@@ -60,7 +60,7 @@ class SendMailEvent extends AbstractEvent
     /**
      * @return string
      */
-    public function getBody()
+    public function getBody() : string
     {
         return $this->body;
     }

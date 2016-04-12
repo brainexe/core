@@ -13,6 +13,11 @@ use Doctrine\Common\Annotations\Reader;
  */
 class Controller extends Service
 {
+    /**
+     * Global Requirements which are applied to all matching @Routes
+     * @var array
+     */
+    public $requirements = array();
 
     /**
      * {@inheritdoc}

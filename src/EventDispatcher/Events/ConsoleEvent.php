@@ -20,11 +20,10 @@ class ConsoleEvent extends AbstractEvent
     public $arguments;
 
     /**
-     * ConsoleCacheEvent constructor.
      * @param string $command
      * @param string $arguments
      */
-    public function __construct($command, $arguments = '')
+    public function __construct(string $command, string $arguments = '')
     {
         parent::__construct(self::NAME);
 
