@@ -44,24 +44,19 @@
 				<parameter type="constant">Monolog\Logger::DEBUG</parameter>
 			</parameter>
 			<parameter type="collection">
-				<parameter>%logger.dir%message_queue.log</parameter>
-				<parameter type="constant">Monolog\Logger::INFO</parameter>
-				<parameter>message_queue</parameter>
-			</parameter>
-			<parameter type="collection">
 				<parameter>%logger.dir%gentime.log</parameter>
 				<parameter type="constant">Monolog\Logger::INFO</parameter>
 				<parameter>gentime</parameter>
 			</parameter>
 			<parameter type="collection">
-				<parameter>%logger.dir%redis.log</parameter>
-				<parameter type="constant">Monolog\Logger::DEBUG</parameter>
-				<parameter>redis</parameter>
-			</parameter>
-			<parameter type="collection">
 				<parameter>%logger.dir%dic.log</parameter>
 				<parameter type="constant">Monolog\Logger::DEBUG</parameter>
 				<parameter>dic</parameter>
+			</parameter>
+			<parameter type="collection">
+				<parameter>%logger.dir%frontend_error.log</parameter>
+				<parameter type="constant">Monolog\Logger::INFO</parameter>
+				<parameter>frontend_error</parameter>
 			</parameter>
 		</parameter>
 

@@ -12,12 +12,4 @@ use Predis\Client;
 class Predis extends Client
 {
 
-    /**
-     * @param string $name
-     * @param string $command
-     */
-    public function defineCommand($name, $command)
-    {
-        $this->getProfile()->defineCommand($name, $command);
-    }
 }

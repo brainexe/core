@@ -5,6 +5,7 @@ namespace BrainExe\Core\Application;
 use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Annotations\Annotations\Service;
 use BrainExe\Core\Middleware\MiddlewareInterface;
+use Throwable;
 use Exception;
 use Generator;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -71,7 +72,7 @@ class AppKernel implements HttpKernelInterface
 
         try {
             $response = $this->handleRequest($request);
-        } catch (Exception $exception) {
+        } catch (Throwable $exception) {
             $response = $this->applyExceptionMiddleware($request, $exception);
         }
 

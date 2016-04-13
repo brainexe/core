@@ -133,10 +133,9 @@ class GatewayTest extends TestCase
     public function testAddEvent()
     {
         /** @var MockObject|AbstractEvent $event */
-        $event            = $this->getMock(AbstractEvent::class, [], [], '', false);
-        $event->eventName = 'type';
-        $timestamp        = 0;
-        $eventId          = 100;
+        $event     = $this->getMock(AbstractEvent::class, [], ['type']);
+        $timestamp = 0;
+        $eventId   = 100;
 
         $this->idGenerator
             ->expects($this->once())
@@ -161,10 +160,9 @@ class GatewayTest extends TestCase
     public function testAddEventDelayed()
     {
         /** @var MockObject|AbstractEvent $event */
-        $event            = $this->getMock(AbstractEvent::class, [], [], '', false);
-        $event->eventName = 'type';
-        $timestamp        = 120000;
-        $eventId          = 100;
+        $event     = $this->getMock(AbstractEvent::class, [], ['type']);
+        $timestamp = 120000;
+        $eventId   = 100;
 
         $this->idGenerator
             ->expects($this->once())

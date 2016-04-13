@@ -65,6 +65,6 @@ class Listener implements EventSubscriberInterface
      */
     public function onBackgroundEvent(BackgroundEvent $event)
     {
-        $this->gateway->addEvent($event->event, 0);
+        $this->gateway->addEvent($event->getEvent(), 0);
     }
 }

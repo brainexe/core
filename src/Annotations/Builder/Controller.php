@@ -2,6 +2,7 @@
 
 namespace BrainExe\Core\Annotations\Builder;
 
+use BrainExe\Annotations\Annotations\Service;
 use BrainExe\Annotations\Builder\ServiceDefinition;
 use BrainExe\Core\Annotations\Guest;
 use BrainExe\Core\Annotations\Role;
@@ -16,22 +17,18 @@ class Controller extends ServiceDefinition
 {
 
     /**
-     * @todo private!
-     * @var string
-     */
-    protected $serviceId;
-
-    /**
-     * {@inheritdoc}
+     * @param ReflectionClass $reflectionClass
+     * @param ControllerAnnotation|Service $annotation
+     * @return array
      */
     public function build(ReflectionClass $reflectionClass, $annotation)
     {
         /** @var Definition $definition */
-        list($serviceId, $definition) = parent::build(
+        list ($serviceId, $definition) = parent::build(
             $reflectionClass,
             $annotation
         );
-        $this->serviceId = $serviceId = sprintf('__controller.%s', $serviceId);
+        $serviceId = sprintf('__controller.%s', $serviceId);
 
         $definition->addTag(ControllerCompilerPass::CONTROLLER_TAG);
         $definition->setPublic(true);
@@ -42,21 +39,13 @@ class Controller extends ServiceDefinition
             $routeAnnotation = $this->reader->getMethodAnnotation($method, Route::class);
 
             if ($routeAnnotation) {
-                /** @var Guest $guestAnnotation */
-                $guestAnnotation = $this->reader->getMethodAnnotation($method, Guest::class);
-
-                /** @var Role $roleAnnotation */
-                $roleAnnotation = $this->reader->getMethodAnnotation($method, Role::class);
-
-                $this->setDefaults(
-                    $routeAnnotation,
-                    $method,
+                $this->handleRouteAnnotation(
                     $annotation,
-                    $guestAnnotation,
-                    $roleAnnotation
+                    $method,
+                    $routeAnnotation,
+                    $serviceId,
+                    $definition
                 );
-
-                $definition->addTag(ControllerCompilerPass::ROUTE_TAG, [$routeAnnotation]);
             }
         }
 
@@ -67,22 +56,23 @@ class Controller extends ServiceDefinition
     /**
      * @param Route $routeAnnotation
      * @param ReflectionMethod $method
-     * @param ControllerAnnotation $controller
+     * @param string $serviceId
      * @param Guest $guestAnnotation
      * @param Role $roleAnnotation
      */
     protected function setDefaults(
         Route $routeAnnotation,
         ReflectionMethod $method,
-        ControllerAnnotation $controller,
+        string $serviceId,
         Guest $guestAnnotation = null,
         Role $roleAnnotation = null
     ) {
         $defaults = $routeAnnotation->getDefaults();
         $defaults['_controller'] = [
-            $this->serviceId,
+            $serviceId,
             $method->getName()
         ];
+
         if ($guestAnnotation) {
             $defaults['_guest'] = true;
         }
@@ -91,12 +81,40 @@ class Controller extends ServiceDefinition
             $defaults['_role'] = $roleAnnotation->role;
         }
 
+        $routeAnnotation->setDefaults($defaults);
+    }
 
-        if ($controller->requirements) {
+    /**
+     * @param ControllerAnnotation $annotation
+     * @param ReflectionMethod $method
+     * @param Route $routeAnnotation
+     * @param string $serviceId
+     * @param Definition $definition
+     */
+    private function handleRouteAnnotation(
+        ControllerAnnotation $annotation,
+        ReflectionMethod$method,
+        Route $routeAnnotation,
+        string $serviceId,
+        Definition $definition
+    ) {
+        /** @var Guest $guestAnnotation */
+        $guestAnnotation = $this->reader->getMethodAnnotation($method, Guest::class);
+
+        /** @var Role $roleAnnotation */
+        $roleAnnotation = $this->reader->getMethodAnnotation($method, Role::class);
+
+        $this->setDefaults($routeAnnotation, $method, $serviceId, $guestAnnotation, $roleAnnotation);
+
+        if ($annotation->requirements) {
             $routeAnnotation->setRequirements(
-                array_merge($routeAnnotation->getRequirements(), $controller->requirements)
+                array_merge(
+                    $routeAnnotation->getRequirements(),
+                    $annotation->requirements
+                )
             );
         }
-        $routeAnnotation->setDefaults($defaults);
+
+        $definition->addTag(ControllerCompilerPass::ROUTE_TAG, [$routeAnnotation]);
     }
 }

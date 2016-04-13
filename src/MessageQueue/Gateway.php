@@ -32,7 +32,7 @@ class Gateway
      */
     public function deleteEvent(string $eventId, string $eventType = null) : bool
     {
-        if ($eventType) {
+        if (!empty($eventType)) {
             $eventId = sprintf('%s:%s', $eventType, $eventId);
         }
 
@@ -47,8 +47,7 @@ class Gateway
         foreach ($immediate as $rawJob) {
             list($jobId) = explode('#', $rawJob, 2);
             if (strpos($jobId, "$eventId") === 0) {
-                $result = $this->redis->lrem(self::QUEUE_IMMEDIATE, 1, $rawJob);
-                return (bool)$result;
+                return (bool)$this->redis->lrem(self::QUEUE_IMMEDIATE, 1, $rawJob);
             }
         }
 
@@ -57,7 +56,7 @@ class Gateway
 
     /**
      * @param AbstractEvent $event
-     * @param integer $timestamp
+     * @param int $timestamp
      * @return string
      */
     public function addEvent(AbstractEvent $event, int $timestamp = 0)
@@ -101,12 +100,11 @@ class Gateway
     }
 
     /**
-     * @todo generator delegation
      * @param string $eventType
-     * @param integer $since
+     * @param int $since
      * @return Generator|Job[]
      */
-    public function getEventsByTypeGenerator(string $eventType = null, int $since = 0)
+    public function getEventsByTypeGenerator(string $eventType = null, int $since = 0) : Generator
     {
         $redis = $this->getRedis();
 
@@ -119,29 +117,13 @@ class Gateway
 
         $keys = [];
         foreach ($resultRaw as $jobId => $timestamp) {
-            if (empty($eventType) || strpos($jobId, "$eventType:") === 0) {
+            if (empty($eventType) || strpos($jobId, $eventType . ":") === 0) {
                 $keys[$jobId] = $timestamp;
             }
         }
 
-        if (!empty($keys)) {
-            $events = $redis->hmget(self::META_DATA, array_keys($keys));
-            foreach ($events as $jobId => $rawJob) {
-               /** @var Job $job */
-                $job = unserialize(base64_decode($rawJob));
-                yield $job->jobId => $job;
-            }
-        }
-
-        $immediate = $redis->lrange(self::QUEUE_IMMEDIATE, 0, 100);
-        foreach ($immediate as $rawJob) {
-            list($jobId, $rawJob) = explode('#', $rawJob, 2);
-            if (empty($eventType) || strpos($jobId, "$eventType:") === 0) {
-                /** @var Job $job */
-                $job = unserialize(base64_decode($rawJob));
-                yield $job->jobId => $job;
-            }
-        }
+        yield from $this->getFromTimesQueue($keys);
+        yield from $this->getFromImmediateQueue();
     }
 
     /**
@@ -157,7 +139,7 @@ class Gateway
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function countAllJobs() : int
     {
@@ -165,5 +147,37 @@ class Gateway
         $immediate = $this->getRedis()->llen(self::QUEUE_IMMEDIATE);
 
         return $delayed + $immediate;
+    }
+
+    /**
+     * @param array $keys
+     * @return Generator
+     */
+    private function getFromTimesQueue(array $keys) : Generator
+    {
+        if (!empty($keys)) {
+            $events = $this->getRedis()->hmget(self::META_DATA, array_keys($keys));
+            foreach ($events as $jobId => $rawJob) {
+                /** @var Job $job */
+                $job = unserialize(base64_decode($rawJob));
+                yield $job->jobId => $job;
+            }
+        }
+    }
+
+    /**
+     * @return Generator
+     */
+    private function getFromImmediateQueue() : Generator
+    {
+        $immediate = $this->getRedis()->lrange(self::QUEUE_IMMEDIATE, 0, 100);
+        foreach ($immediate as $rawJob) {
+            list($jobId, $rawJob) = explode('#', $rawJob, 2);
+            if (empty($eventType) || strpos($jobId, $evenotType . ":") === 0) {
+                /** @var Job $job */
+                $job = unserialize(base64_decode($rawJob));
+                yield $job->jobId => $job;
+            }
+        }
     }
 }
