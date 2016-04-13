@@ -61,25 +61,7 @@ class SwaggerDumpCommand extends Command
 
         $dumper = new Dumper();
 
-        $resources = [];
-        foreach ($routes as $name => $route) {
-            $parameters = iterator_to_array($this->getParameters($route));
-
-            $data = [
-                'summary'    => $name,
-                'responses'  => [
-                    200 => [
-                        'description' => 'OK'
-                    ]
-                ]
-            ];
-
-            if ($parameters) {
-                $data['parameters'] = $parameters;
-            }
-
-            $resources[$route->getPath()][strtolower(implode(',', $route->getMethods()) ?: 'get')] = $data;
-        }
+        $resources = $this->getResources($routes);
 
         $url = parse_url($this->getParameter('application.url'));
 
@@ -131,5 +113,33 @@ class SwaggerDumpCommand extends Command
                 'in'       => 'path'
             ];
         }
+    }
+
+    /**
+     * @param array $routes
+     * @return array
+     */
+    protected function getResources(array $routes) : array
+    {
+        $resources = [];
+        foreach ($routes as $name => $route) {
+            $parameters = iterator_to_array($this->getParameters($route));
+
+            $data = [
+                'summary' => $name,
+                'responses' => [
+                    200 => [
+                        'description' => 'OK'
+                    ]
+                ]
+            ];
+
+            if ($parameters) {
+                $data['parameters'] = $parameters;
+            }
+
+            $resources[$route->getPath()][strtolower(implode(',', $route->getMethods()) ?: 'get')] = $data;
+        }
+        return $resources;
     }
 }

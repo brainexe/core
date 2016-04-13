@@ -88,7 +88,7 @@ class Rebuild
             ROOT . 'cache/config.json',
             json_encode(
                 $container->getParameterBag()->all(),
-                $debug ? JSON_PRETTY_PRINT : null
+                JSON_PRETTY_PRINT
             )
         );
     }

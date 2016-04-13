@@ -11,7 +11,7 @@ abstract class AbstractEvent extends Event
 {
 
     /**
-     * @todo private
+     * @todo private?
      * @var string
      */
     public $eventName;
@@ -19,7 +19,7 @@ abstract class AbstractEvent extends Event
     /**
      * @param string $eventName
      */
-    public function __construct($eventName)
+    public function __construct(string $eventName)
     {
         $this->eventName = $eventName;
     }
@@ -27,7 +27,7 @@ abstract class AbstractEvent extends Event
     /**
      * @return string
      */
-    public function getEventName()
+    public function getEventName() : string
     {
         return $this->eventName;
     }

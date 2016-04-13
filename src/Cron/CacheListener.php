@@ -44,7 +44,7 @@ class CacheListener
     public function handleRebuildCache()
     {
         $crons = $this->includeFile(Cron::CACHE_FILE);
-        if (!$crons) {
+        if (empty($crons)) {
             return;
         }
 
