@@ -19,10 +19,6 @@ class LocaleCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!is_dir(ROOT . 'lang')) {
-            return;
-        }
-
         /** @var Glob $glob */
         $glob = $container->get('Glob');
 

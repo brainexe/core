@@ -44,12 +44,14 @@ class CacheListener
     public function handleRebuildCache()
     {
         $crons = $this->includeFile(Cron::CACHE_FILE);
-        if (!$crons) {
+        if (empty($crons)) {
             return;
         }
 
         foreach ($this->gateway->getEventsByType(CronEvent::CRON) as $id => $job) {
-            $name = $job->event->event->timingId;
+            /** @var CronEvent $event */
+            $event = $job->event;
+            $name = $event->getEvent()->timingId;
             if (isset($crons[$name])) {
                 unset($crons[$name]);
             }

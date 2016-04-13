@@ -8,18 +8,15 @@ use BrainExe\Core\Console\TestGenerator\MethodCodeGenerator;
 use BrainExe\Core\Console\TestGenerator\ProcessMethod;
 use BrainExe\Core\Console\TestGenerator\TestData;
 use BrainExe\Core\DependencyInjection\Rebuild;
-
 use PHPUnit_Framework_MockObject_MockObject;
 use PHPUnit_Framework_TestCase;
 use ReflectionClass;
 use ReflectionMethod;
 use Symfony\Component\Console\Command\Command;
-
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;

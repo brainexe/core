@@ -2,7 +2,7 @@
 
 namespace BrainExe\Core\Middleware;
 
-use Exception;
+use Throwable;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Route;
@@ -30,7 +30,7 @@ abstract class AbstractMiddleware implements MiddlewareInterface
     /**
      * {@inheritdoc}
      */
-    public function processException(Request $request, Exception $exception)
+    public function processException(Request $request, Throwable $exception)
     {
     }
 }

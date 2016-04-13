@@ -11,7 +11,7 @@ use BrainExe\Core\Stats\Event;
 use BrainExe\Core\Traits\EventDispatcherTrait;
 use BrainExe\Core\Traits\LoggerTrait;
 use Cron\CronExpression;
-use Exception;
+use Throwable;
 
 /**
  * @Service("MessageQueue.Worker", public=false)
@@ -43,7 +43,7 @@ class Worker
     {
         try {
             $this->execute($job);
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             $this->error($e->getMessage(), ['exception' => $e]);
             $this->gateway->restoreJob($job);
         }
@@ -76,7 +76,7 @@ class Worker
 
         $event = new Event(
             Event::INCREASE,
-            sprintf('message_queue:handled:%s', $event->eventName)
+            sprintf('message_queue:handled:%s', $event->getEventName())
         );
         $this->dispatchEvent($event);
 
@@ -89,10 +89,10 @@ class Worker
      * @param CronEvent $event
      * @return AbstractEvent
      */
-    private function handleCronEvent(Job $job, CronEvent $event)
+    private function handleCronEvent(Job $job, CronEvent $event) : AbstractEvent
     {
         if (!$event->isPropagationStopped()) {
-            $cron = CronExpression::factory($event->expression);
+            $cron = CronExpression::factory($event->getExpression());
             $nextRun = $cron->getNextRunDate()->getTimestamp();
 
             $job->timestamp = $nextRun;

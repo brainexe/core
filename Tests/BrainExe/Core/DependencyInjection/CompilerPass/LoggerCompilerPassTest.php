@@ -3,10 +3,6 @@
 namespace BrainExe\Tests\Core\DependencyInjection\CompilerPass;
 
 use BrainExe\Core\DependencyInjection\CompilerPass\LoggerCompilerPass;
-use Monolog\Handler\ChromePHPHandler;
-use Monolog\Handler\HipChatHandler;
-use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase as TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -36,57 +32,23 @@ class LoggerCompilerPassTest extends TestCase
         $this->container  = $this->getMock(ContainerBuilder::class, [
             'getDefinition',
             'getParameter',
-            'findTaggedServiceIds'
         ]);
-        $this->logger    = $this->getMock(Definition::class);
+        $this->logger = $this->getMock(Definition::class);
     }
 
-    public function testProcessCompilerWithCoreStandaloneAndHipchat()
+    public function testProcessCompiler()
     {
         $this->container
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('getDefinition')
             ->with('logger')
             ->willReturn($this->logger);
 
         $this->container
-            ->expects($this->at(1))
-            ->method('getParameter')
-            ->with('hipchat.api_token')
-            ->willReturn('hipchat_token');
-        $this->container
-            ->expects($this->at(2))
-            ->method('getParameter')
-            ->with('hipchat.api_token')
-            ->willReturn('hipchat_token');
-        $this->container
-            ->expects($this->at(3))
-            ->method('getParameter')
-            ->with('hipchat.room')
-            ->willReturn('hipchat_room');
-        $this->container
-            ->expects($this->at(4))
-            ->method('getParameter')
-            ->with('hipchat.name')
-            ->willReturn('hipchat_name');
-        $this->container
-            ->expects($this->at(5))
-            ->method('getParameter')
-            ->with('hipchat.logLevel')
-            ->willReturn('hipchat_loglevel');
-
-        $this->container
-            ->expects($this->at(6))
+            ->expects($this->once())
             ->method('getParameter')
             ->with('logger.channels')
             ->willReturn([]);
-
-        $this->logger
-            ->expects($this->at(0))
-            ->method('addMethodCall')
-            ->with('pushHandler', [new Definition(HipChatHandler::class, [
-                'hipchat_token', 'hipchat_room', 'hipchat_name', false, 'hipchat_loglevel'
-            ])]);
 
         $this->subject->process($this->container);
     }

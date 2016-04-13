@@ -56,7 +56,6 @@ class ProcessMethod
             $formattedParameter = var_export($parameterValue, true);
 
             $testData->setterCalls[] = sprintf("\t\t\$this->subject->%s(%s);", $setterName, $formattedParameter);
-
         } else {
             // add setter for model mock
             $referenceService = $this->command->getServiceDefinition($referenceServiceId);

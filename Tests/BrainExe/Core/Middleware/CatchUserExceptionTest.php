@@ -6,12 +6,14 @@ use BrainExe\Core\Application\UserException;
 use BrainExe\Core\Middleware\CatchUserException;
 use Exception;
 use Monolog\Logger;
+use ParseError;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase as TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Route;
+use TypeError;
 
 /**
  * @covers BrainExe\Core\Middleware\CatchUserException
@@ -72,9 +74,7 @@ class CatchUserExceptionTest extends TestCase
         $route      = $this->getMock(Route::class, [], [], '', false);
         $request    = new Request();
 
-        $actualResult = $this->subject->processRequest($request, $route);
-
-        $this->assertNull($actualResult);
+        $this->subject->processRequest($request, $route);
     }
 
     public function provideExceptionsForAjax()
@@ -82,8 +82,10 @@ class CatchUserExceptionTest extends TestCase
         return [
             [new ResourceNotFoundException(), 404],
             [new MethodNotAllowedException(['POST']), 405],
-            [new UserException('test'), 500],
+            [new UserException('test'), 200],
             [new Exception('test'), 500],
+            [new TypeError('test'), 500],
+            [new ParseError('test'), 500],
         ];
     }
 }

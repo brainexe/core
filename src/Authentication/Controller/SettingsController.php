@@ -46,7 +46,7 @@ class SettingsController
     public function set(Request $request, $key)
     {
         $userId = $request->attributes->get('user_id');
-        $value = $request->request->get('value');
+        $value  = $request->request->get('value');
 
         $this->settings->set($userId, $key, $value);
 

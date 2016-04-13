@@ -21,6 +21,6 @@ class AuthenticateUserEventTest extends TestCase
         $subject = new AuthenticateUserEvent($auth, $eventName);
 
         $this->assertEquals($auth, $subject->getAuthenticationData());
-        $this->assertEquals($eventName, $subject->eventName);
+        $this->assertEquals($eventName, $subject->getEventName());
     }
 }

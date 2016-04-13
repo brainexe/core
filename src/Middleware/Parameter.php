@@ -21,7 +21,7 @@ class Parameter extends AbstractMiddleware
             $parameters = json_decode($request->getContent(), true);
 
             if (is_array($parameters)) {
-                $request->request->add($parameters);
+                $request->request->replace($parameters);
             }
         }
     }

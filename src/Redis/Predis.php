@@ -7,17 +7,10 @@ use Predis\Client;
 
 /**
  * @api
+ * @deprecated use Predis\Client directly
  * @Service("redis", public=false)
  */
 class Predis extends Client
 {
 
-    /**
-     * @param string $name
-     * @param string $command
-     */
-    public function defineCommand($name, $command)
-    {
-        $this->getProfile()->defineCommand($name, $command);
-    }
 }

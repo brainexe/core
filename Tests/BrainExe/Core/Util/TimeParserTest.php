@@ -27,7 +27,7 @@ class TimeParserTest extends TestCase
     public function testParse($inputString, $expectedEta)
     {
         if (false === $expectedEta) {
-            $this->setExpectedException(UserException::class);
+            $this->expectException(UserException::class);
         }
 
         $now = time();

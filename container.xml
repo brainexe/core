@@ -9,11 +9,6 @@
 
 		<parameter key="session.lifetime">30758400</parameter>
 
-		<parameter key="hipchat.api_token"/>
-		<parameter key="hipchat.room"/>
-		<parameter key="hipchat.name">%application.name%</parameter>
-		<parameter key="hipchat.logLevel" type="collection">Monolog\Logger::ERROR</parameter>
-
 		<parameter key="timezone">Europe/Berlin</parameter>
 
 		<parameter key="redis.connection">redis://127.0.0.1/</parameter>
@@ -44,24 +39,19 @@
 				<parameter type="constant">Monolog\Logger::DEBUG</parameter>
 			</parameter>
 			<parameter type="collection">
-				<parameter>%logger.dir%message_queue.log</parameter>
-				<parameter type="constant">Monolog\Logger::INFO</parameter>
-				<parameter>message_queue</parameter>
-			</parameter>
-			<parameter type="collection">
 				<parameter>%logger.dir%gentime.log</parameter>
 				<parameter type="constant">Monolog\Logger::INFO</parameter>
 				<parameter>gentime</parameter>
 			</parameter>
 			<parameter type="collection">
-				<parameter>%logger.dir%redis.log</parameter>
-				<parameter type="constant">Monolog\Logger::DEBUG</parameter>
-				<parameter>redis</parameter>
-			</parameter>
-			<parameter type="collection">
 				<parameter>%logger.dir%dic.log</parameter>
 				<parameter type="constant">Monolog\Logger::DEBUG</parameter>
 				<parameter>dic</parameter>
+			</parameter>
+			<parameter type="collection">
+				<parameter>%logger.dir%frontend_error.log</parameter>
+				<parameter type="constant">Monolog\Logger::INFO</parameter>
+				<parameter>frontend_error</parameter>
 			</parameter>
 		</parameter>
 
@@ -79,6 +69,24 @@
         <service id="logger" class="Monolog\Logger" public="false">
             <argument>%application.name%</argument>
         </service>
+
+		<!--
+		Example how to register additionally log handlers
+        <service synthetic="true">
+			<tag name="merge_definition" parent="logger"/>
+            <call method="pushHandler">
+				<argument type="service">
+					<service class="Monolog\Handler\HipChatHandler">
+						<argument>myToken</argument>
+						<argument>myRoom</argument>
+						<argument>myName</argument>
+						<argument>false</argument>
+						<argument>myLogLevel</argument>
+					</service>
+				</argument>
+			</call>
+        </service>
+        -->
 
 		<service id="Console" class="Symfony\Component\Console\Application"/>
 

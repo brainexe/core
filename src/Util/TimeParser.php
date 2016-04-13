@@ -30,7 +30,7 @@ class TimeParser
      * @throws UserException
      * @return int
      */
-    public function parseString($string)
+    public function parseString(string $string)
     {
         $now = time();
 

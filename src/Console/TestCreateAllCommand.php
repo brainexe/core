@@ -118,7 +118,6 @@ class TestCreateAllCommand extends Command
 
             $input = new ArrayInput(['command' => 'test:create', 'service' => $serviceId]);
             $this->getApplication()->run($input, $output);
-
         }
     }
 

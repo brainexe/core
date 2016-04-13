@@ -65,7 +65,7 @@ class SettingsControllerTest extends TestCase
             ->method('set')
             ->with($userId, $key, $value);
 
-        $actual = $this->subject->set($request, $key, $value);
+        $actual = $this->subject->set($request, $key);
 
         $this->assertTrue($actual);
     }

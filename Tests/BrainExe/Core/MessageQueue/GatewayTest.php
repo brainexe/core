@@ -133,10 +133,9 @@ class GatewayTest extends TestCase
     public function testAddEvent()
     {
         /** @var MockObject|AbstractEvent $event */
-        $event            = $this->getMock(AbstractEvent::class, [], [], '', false);
-        $event->eventName = 'type';
-        $timestamp        = 0;
-        $eventId          = 100;
+        $event     = $this->getMock(AbstractEvent::class, [], ['type']);
+        $timestamp = 0;
+        $eventId   = 100;
 
         $this->idGenerator
             ->expects($this->once())
@@ -161,10 +160,9 @@ class GatewayTest extends TestCase
     public function testAddEventDelayed()
     {
         /** @var MockObject|AbstractEvent $event */
-        $event            = $this->getMock(AbstractEvent::class, [], [], '', false);
-        $event->eventName = 'type';
-        $timestamp        = 120000;
-        $eventId          = 100;
+        $event     = $this->getMock(AbstractEvent::class, [], ['type']);
+        $timestamp = 120000;
+        $eventId   = 100;
 
         $this->idGenerator
             ->expects($this->once())
@@ -187,8 +185,7 @@ class GatewayTest extends TestCase
             ->method('zadd')
             ->with(
                 Gateway::QUEUE_DELAYED,
-                $timestamp,
-                "type:$eventId"
+                [$timestamp => "type:$eventId"]
             );
         $this->redis
             ->expects($this->at(3))
@@ -327,7 +324,9 @@ class GatewayTest extends TestCase
         $this->redis
             ->expects($this->once())
             ->method('zadd')
-            ->with(Gateway::QUEUE_DELAYED, 1000 + Gateway::RETRY_TIME, 'event:100');
+            ->with(Gateway::QUEUE_DELAYED, [
+                1000 + Gateway::RETRY_TIME => 'event:100'
+            ]);
 
         $event = new TestEvent('test');
         $job = new Job($event, 'event:100', 100);

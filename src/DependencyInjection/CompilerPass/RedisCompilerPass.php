@@ -39,7 +39,7 @@ class RedisCompilerPass implements CompilerPassInterface
      * @param string $prefix
      * @return string
      */
-    protected function getArguments(ContainerBuilder $container, $prefix)
+    protected function getArguments(ContainerBuilder $container, string $prefix) : string
     {
         return $container->getParameter("redis$prefix.connection");
     }

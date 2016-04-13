@@ -6,9 +6,9 @@ use BrainExe\Core\Annotations\Middleware;
 
 use BrainExe\Core\Stats\MultiEvent;
 use BrainExe\Core\Traits\EventDispatcherTrait;
-use Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Throwable;
 
 /**
  * @Middleware("Middleware.Stats")
@@ -34,7 +34,7 @@ class Stats extends AbstractMiddleware
     /**
      * {@inheritdoc}
      */
-    public function processException(Request $request, Exception $exception)
+    public function processException(Request $request, Throwable $exception)
     {
         $event = new MultiEvent(MultiEvent::INCREASE, [
             sprintf('exception:%s', get_class($exception)) => 1,

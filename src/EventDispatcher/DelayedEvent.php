@@ -13,7 +13,7 @@ class DelayedEvent extends MessageQueueEvent
     const DELAYED = 'message_queue.delayed';
 
     /**
-     * @var integer
+     * @var int
      */
     public $timestamp;
 
@@ -26,5 +26,13 @@ class DelayedEvent extends MessageQueueEvent
         parent::__construct(self::DELAYED);
         $this->event      = $event;
         $this->timestamp  = $timestamp;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTimestamp()
+    {
+        return $this->timestamp;
     }
 }

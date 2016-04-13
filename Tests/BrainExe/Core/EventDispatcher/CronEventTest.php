@@ -18,6 +18,8 @@ class CronEventTest extends TestCase
         $event = new CronEvent($wrapped, $cron);
 
         $this->assertEquals($wrapped, $event->event);
+        $this->assertEquals($wrapped, $event->getEvent());
         $this->assertEquals($cron, $event->expression);
+        $this->assertEquals($cron, $event->getExpression());
     }
 }

@@ -2,10 +2,10 @@
 
 namespace BrainExe\Core\Middleware;
 
-use Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Route;
+use Throwable;
 
 interface MiddlewareInterface
 {
@@ -25,8 +25,8 @@ interface MiddlewareInterface
 
     /**
      * @param Request $request
-     * @param Exception $exception
+     * @param Throwable $exception
      * @return Response|void
      */
-    public function processException(Request $request, Exception $exception);
+    public function processException(Request $request, Throwable $exception);
 }

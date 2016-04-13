@@ -27,4 +27,12 @@ class CronEvent extends MessageQueueEvent implements PushViaWebsocket
         $this->event      = $event;
         $this->expression = $expression;
     }
+
+    /**
+     * @return string
+     */
+    public function getExpression() : string
+    {
+        return $this->expression;
+    }
 }

@@ -8,6 +8,7 @@ use BrainExe\Core\Traits\TimeTrait;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Route;
 
@@ -51,12 +52,7 @@ class Csrf extends AbstractMiddleware
             throw new MethodNotAllowedException(['POST'], 'invalid CSRF token');
         }
 
-        // generate new token when lifetime is over
-        $now = $this->now();
-        $lastUpdate = $session->get('csrf_timestamp');
-        if ($lastUpdate + self::LIFETIME < $now) {
-            $this->renewCsrfToken();
-        }
+        $this->generateNewTokenWhenNeeded($session);
     }
 
     /**
@@ -79,5 +75,17 @@ class Csrf extends AbstractMiddleware
     private function renewCsrfToken()
     {
         $this->newToken = $this->generateRandomId();
+    }
+
+    /**
+     * @param SessionInterface $session
+     */
+    private function generateNewTokenWhenNeeded(SessionInterface $session)
+    {
+        $now        = $this->now();
+        $lastUpdate = $session->get('csrf_timestamp');
+        if ($lastUpdate + self::LIFETIME < $now) {
+            $this->renewCsrfToken();
+        }
     }
 }

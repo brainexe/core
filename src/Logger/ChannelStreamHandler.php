@@ -15,9 +15,9 @@ class ChannelStreamHandler extends StreamHandler
 
     /**
      * @param string $stream
-     * @param boolean|integer $level
+     * @param bool|int $level
      * @param string|null $channel
-     * @param boolean $bubble
+     * @param bool $bubble
      */
     public function __construct(
         $stream,

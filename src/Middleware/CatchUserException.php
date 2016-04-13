@@ -5,6 +5,7 @@ namespace BrainExe\Core\Middleware;
 use BrainExe\Core\Annotations\Middleware;
 use BrainExe\Core\Application\UserException;
 use BrainExe\Core\Traits\LoggerTrait;
+use Throwable;
 use Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,7 +23,7 @@ class CatchUserException extends AbstractMiddleware
     /**
      * {@inheritdoc}
      */
-    public function processException(Request $request, Exception $exception)
+    public function processException(Request $request, Throwable $exception)
     {
         if ($exception instanceof ResourceNotFoundException) {
             $exception = new UserException(sprintf('Page not found: %s', $request->getRequestUri()), 0, $exception);
@@ -39,7 +40,7 @@ class CatchUserException extends AbstractMiddleware
             $response = new Response('', 405);
         } elseif ($exception instanceof UserException) {
             // just pass a UserException to Frontend
-            $response  = new Response('', 500);
+            $response  = new Response('', 200);
         } else {
             $exception = new UserException($exception->getMessage(), 0, $exception);
             $response  = new Response('', 500);
