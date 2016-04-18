@@ -164,6 +164,7 @@ class AuthenticationTest extends TestCase
 
     /**
      * @expectedException \Symfony\Component\Routing\Exception\MethodNotAllowedException
+     * @expectedExceptionMessage Need role admin
      */
     public function testProcessRequestWithoutRole()
     {

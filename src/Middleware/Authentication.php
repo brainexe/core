@@ -58,7 +58,7 @@ class Authentication extends AbstractMiddleware
     public function processRequest(Request $request, Route $route)
     {
         $session = $request->getSession();
-        $userId  = $session->get('user_id');
+        $userId  = (int)$session->get('user_id');
 
         $user = $this->loadUser($userId);
 
@@ -91,7 +91,7 @@ class Authentication extends AbstractMiddleware
         if ($route->hasDefault('_role')) {
             $role = $route->getDefault('_role');
             if (!in_array($role, $user->roles)) {
-                throw new MethodNotAllowedException([]);
+                throw new MethodNotAllowedException([], sprintf('Need role %s', $role));
             }
         }
     }
@@ -100,7 +100,7 @@ class Authentication extends AbstractMiddleware
      * @param int $userId
      * @return AnonymusUserVO|UserVO
      */
-    private function loadUser($userId)
+    private function loadUser($userId) : UserVO
     {
         if ($userId > 0) {
             return $this->loadUser->loadUserById($userId);

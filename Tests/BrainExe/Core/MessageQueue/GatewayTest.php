@@ -185,7 +185,7 @@ class GatewayTest extends TestCase
             ->method('zadd')
             ->with(
                 Gateway::QUEUE_DELAYED,
-                [$timestamp => "type:$eventId"]
+                ["type:$eventId" => $timestamp]
             );
         $this->redis
             ->expects($this->at(3))
@@ -325,7 +325,7 @@ class GatewayTest extends TestCase
             ->expects($this->once())
             ->method('zadd')
             ->with(Gateway::QUEUE_DELAYED, [
-                1000 + Gateway::RETRY_TIME => 'event:100'
+                'event:100' => 1000 + Gateway::RETRY_TIME
             ]);
 
         $event = new TestEvent('test');

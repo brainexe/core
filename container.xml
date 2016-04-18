@@ -25,36 +25,6 @@
 			<parameter key="debug">%debug%</parameter>
 		</parameter>
 
-		<parameter key="logger.channels" type="collection">
-			<parameter type="collection">
-				<parameter>%logger.dir%error.log</parameter>
-				<parameter type="constant">Monolog\Logger::ERROR</parameter>
-			</parameter>
-			<parameter type="collection">
-				<parameter>%logger.dir%info.log</parameter>
-				<parameter type="constant">Monolog\Logger::INFO</parameter>
-			</parameter>
-			<parameter type="collection">
-				<parameter>%logger.dir%debug.log</parameter>
-				<parameter type="constant">Monolog\Logger::DEBUG</parameter>
-			</parameter>
-			<parameter type="collection">
-				<parameter>%logger.dir%gentime.log</parameter>
-				<parameter type="constant">Monolog\Logger::INFO</parameter>
-				<parameter>gentime</parameter>
-			</parameter>
-			<parameter type="collection">
-				<parameter>%logger.dir%dic.log</parameter>
-				<parameter type="constant">Monolog\Logger::DEBUG</parameter>
-				<parameter>dic</parameter>
-			</parameter>
-			<parameter type="collection">
-				<parameter>%logger.dir%frontend_error.log</parameter>
-				<parameter type="constant">Monolog\Logger::INFO</parameter>
-				<parameter>frontend_error</parameter>
-			</parameter>
-		</parameter>
-
 		<parameter key="application.middlewares" type="collection"/>
 	</parameters>
 
@@ -68,25 +38,60 @@
 
         <service id="logger" class="Monolog\Logger" public="false">
             <argument>%application.name%</argument>
-        </service>
 
-		<!--
-		Example how to register additionally log handlers
-        <service synthetic="true">
-			<tag name="merge_definition" parent="logger"/>
-            <call method="pushHandler">
+			<call method="pushHandler">
 				<argument type="service">
-					<service class="Monolog\Handler\HipChatHandler">
-						<argument>myToken</argument>
-						<argument>myRoom</argument>
-						<argument>myName</argument>
-						<argument>false</argument>
-						<argument>myLogLevel</argument>
+					<service class="Monolog\Handler\StreamHandler">
+						<argument>%logger.dir%error.log</argument>
+						<argument type="constant">Monolog\Logger::ERROR</argument>
+					</service>
+				</argument>
+			</call>
+			<call method="pushHandler">
+				<argument type="service">
+					<service class="Monolog\Handler\StreamHandler">
+						<argument>%logger.dir%info.log</argument>
+						<argument type="constant">Monolog\Logger::INFO</argument>
+					</service>
+				</argument>
+			</call>
+			<call method="pushHandler">
+				<argument type="service">
+					<service class="Monolog\Handler\StreamHandler">
+						<argument>%logger.dir%debug.log</argument>
+						<argument type="constant">Monolog\Logger::DEBUG</argument>
+					</service>
+				</argument>
+			</call>
+			<call method="pushHandler">
+				<argument type="service">
+					<service class="BrainExe\Core\Logger\ChannelStreamHandler">
+						<argument>%logger.dir%gentime.log</argument>
+						<argument type="constant">Monolog\Logger::DEBUG</argument>
+						<argument>gentime</argument>
+						<call method="pushProcessor">
+							<argument type="service">
+								<service class="Monolog\Processor\WebProcessor"/>
+							</argument>
+						</call>
+						<call method="pushProcessor">
+							<argument type="service">
+								<service class="Monolog\Processor\MemoryUsageProcessor"/>
+							</argument>
+						</call>
+					</service>
+				</argument>
+			</call>
+			<call method="pushHandler">
+				<argument type="service">
+					<service class="BrainExe\Core\Logger\ChannelStreamHandler">
+						<argument>%logger.dir%frontend_error.log</argument>
+						<argument type="constant">Monolog\Logger::INFO</argument>
+						<argument>frontend_error</argument>
 					</service>
 				</argument>
 			</call>
         </service>
-        -->
 
 		<service id="Console" class="Symfony\Component\Console\Application"/>
 

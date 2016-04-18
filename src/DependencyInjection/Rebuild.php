@@ -23,7 +23,7 @@ class Rebuild
      * @param bool $boot
      * @return Container|ContainerBuilder
      */
-    public function rebuildDIC($boot = true)
+    public function rebuildDIC($boot = true) : Container
     {
         $containerBuilder = new ContainerBuilder();
 
@@ -71,6 +71,7 @@ class Rebuild
         $randomId      = mt_rand();
         $className     = sprintf('dic_%d', $randomId);
         $containerFile = ROOT . 'cache/dic.php';
+        $versionFile   = ROOT . 'cache/dic.txt';
 
         $dumper = new PhpDumper($container);
         $dumper->setProxyDumper(new ProxyDumper());
@@ -80,9 +81,10 @@ class Rebuild
             'debug' => $debug
         ]);
 
-        file_put_contents(ROOT . 'cache/dic.php', $containerContent);
-        file_put_contents(ROOT . 'cache/dic.txt', $className);
+        file_put_contents($containerFile, $containerContent);
+        file_put_contents($versionFile, $className);
         @chmod($containerFile, 0777);
+        @chmod($versionFile, 0777);
 
         file_put_contents(
             ROOT . 'cache/config.json',

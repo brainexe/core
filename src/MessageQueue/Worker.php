@@ -99,6 +99,6 @@ class Worker
             $this->gateway->addJob($job);
         }
 
-        return $event->event;
+        return $event->getEvent();
     }
 }

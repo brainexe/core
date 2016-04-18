@@ -84,7 +84,7 @@ class Gateway
             // delayed execution
             $pipeline->hset(self::META_DATA, $job->jobId, $serialized);
             $pipeline->zadd(self::QUEUE_DELAYED, [
-                (int)$job->timestamp => $job->jobId
+                $job->jobId => (int)$job->timestamp
             ]);
         }
 

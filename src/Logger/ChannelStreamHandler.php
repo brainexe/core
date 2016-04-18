@@ -28,7 +28,7 @@ class ChannelStreamHandler extends StreamHandler
         parent::__construct($stream, $level, $bubble);
 
         $formatter = new Formatter(
-            "[%datetime%] %level_name%: %message% %context% %extra%\n",
+            null,
             null,
             false,
             true
@@ -52,7 +52,7 @@ class ChannelStreamHandler extends StreamHandler
     /**
      * {@inheritdoc}
      */
-    public function isHandling(array $record)
+    public function isHandling(array $record) : bool
     {
         if (count($record) == 1) {
             return parent::isHandling($record);

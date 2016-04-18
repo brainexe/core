@@ -42,7 +42,7 @@ class GentimeTest extends TestCase
         $this->logger
             ->expects($this->once())
             ->method('log')
-            ->with('info', $this->isType('string'), ['channel' => 'gentime']);
+            ->with('info', $this->isType('string'), $this->isType('array'));
 
         $this->subject->processResponse($request, $response);
     }
@@ -58,7 +58,7 @@ class GentimeTest extends TestCase
         $this->logger
             ->expects($this->once())
             ->method('log')
-            ->with('info', $this->isType('string'), ['channel' => 'gentime']);
+            ->with('info', $this->isType('string'), $this->isType('array'));
 
         $this->subject->processResponse($request, $response);
     }
