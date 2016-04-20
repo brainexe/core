@@ -28,7 +28,7 @@ class ServerRunCommand extends Command
     private $processBuilder;
 
     /**
-     * @Inject({"@ProcessBuilder", "%server.address%"})
+     * @Inject({"@ProcessBuilder", "%server.host%"})
      * @param ProcessBuilder $processBuilder
      * @param string $address
      */

@@ -54,7 +54,7 @@ class Worker
      */
     private function execute(Job $job)
     {
-        $event = $job->event;
+        $event = $job->getEvent();
         if ($event instanceof CronEvent) {
             $event = $this->handleCronEvent($job, $event);
         }
@@ -71,7 +71,13 @@ class Worker
                 $event->eventName,
                 $neededTime * 1000
             ),
-            ['channel' => 'message_queue']
+            [
+                'channel'   => 'message_queue',
+                'time'      => round($neededTime * 1000, 2),
+                'eventName' => $event->eventName,
+                'jobId'     => $job->getJobId(),
+                'event'     => json_encode($event)
+            ]
         );
 
         $event = new Event(
@@ -95,7 +101,7 @@ class Worker
             $cron = CronExpression::factory($event->getExpression());
             $nextRun = $cron->getNextRunDate()->getTimestamp();
 
-            $job->timestamp = $nextRun;
+            $job->setTimestamp($nextRun);
             $this->gateway->addJob($job);
         }
 

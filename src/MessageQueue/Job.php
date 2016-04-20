@@ -41,4 +41,36 @@ class Job
         $this->jobId     = $jobId;
         $this->timestamp = $timestamp;
     }
+
+    /**
+     * @return string
+     */
+    public function getJobId() : string
+    {
+        return $this->jobId;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTimestamp() : int
+    {
+        return $this->timestamp;
+    }
+
+    /**
+     * @return AbstractEvent
+     */
+    public function getEvent() : AbstractEvent
+    {
+        return $this->event;
+    }
+
+    /**
+     * @param int $timestamp
+     */
+    public function setTimestamp(int $timestamp)
+    {
+        $this->timestamp = $timestamp;
+    }
 }
