@@ -20,6 +20,7 @@
 		<parameter key="application.name" on-invalid="exception"/>
 		<parameter key="application.guests_allowed">false</parameter>
 		<parameter key="application.registration_enabled">true</parameter>
+		<parameter key="application.url">http://%server.host%</parameter>
 
 		<parameter key="environment">development</parameter>
 		<parameter key="config.public" type="collection">
@@ -126,6 +127,6 @@
 			<call method="setNamespace">cache</call>
 		</service>
 
-		<service id="Mailer" class="PHPMailer\PHPMailer\PHPMailer" public="false"/>
+		<service id="Mailer" class="PHPMailer" public="false"/>
 	</services>
 </container>

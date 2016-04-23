@@ -6,7 +6,6 @@ use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Annotations\Annotations\Service;
 use BrainExe\Core\Middleware\MiddlewareInterface;
 use Throwable;
-use Exception;
 use Generator;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -143,10 +142,10 @@ class AppKernel implements HttpKernelInterface
 
     /**
      * @param Request $request
-     * @param Exception $exception
+     * @param Throwable $exception
      * @return Response|null
      */
-    protected function applyExceptionMiddleware(Request $request, Exception $exception)
+    protected function applyExceptionMiddleware(Request $request, Throwable $exception)
     {
         foreach ($this->middlewares as $middleware) {
             $response = $middleware->processException($request, $exception);
