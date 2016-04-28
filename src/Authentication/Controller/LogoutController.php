@@ -20,7 +20,7 @@ class LogoutController
      * @Route("/logout/", name="user.logout", methods="POST")
      * @Guest
      */
-    public function logout(Request $request)
+    public function logout(Request $request) : AnonymusUserVO
     {
         $request->getSession()->clear();
 

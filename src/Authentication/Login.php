@@ -6,7 +6,7 @@ use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Annotations\Annotations\Service;
 use BrainExe\Core\Application\UserException;
 use BrainExe\Core\Authentication\Event\AuthenticateUserEvent;
-use BrainExe\Core\Authentication\Exception\UsernameNotFoundException;
+use BrainExe\Core\Authentication\Exception\UserNotFoundException;
 use BrainExe\Core\Traits\EventDispatcherTrait;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -28,6 +28,7 @@ class Login
      * @var Token
      */
     private $token;
+
     /**
      * @var PasswordHasher
      */
@@ -35,9 +36,9 @@ class Login
 
     /**
      * @Inject({
-     *     "@Authentication.LoadUser",
-     *     "@Authentication.Token",
-     *     "@PasswordHasher"
+     *     "@Core.Authentication.LoadUser",
+     *     "@Core.Authentication.Token",
+     *     "@Core.Authentication.PasswordHasher"
      * })
      * @param LoadUser $userProvider
      * @param Token $token
@@ -68,9 +69,6 @@ class Login
         SessionInterface $session
     ) : UserVO {
         $userVo = $this->loadUser->loadUserByUsername($username);
-        if (empty($userVo)) {
-            throw new UserException('Invalid Username');
-        }
 
         if (!$this->passwordHasher->verifyHash($password, $userVo->getPassword())) {
             throw new UserException('Invalid Password');
@@ -78,7 +76,7 @@ class Login
 
         $authenticationVo = new AuthenticationDataVO($userVo, $password, $oneTimeToken);
 
-        $this->handleSuccessfulLogin($session, $authenticationVo, $userVo);
+        $this->handleLogin($session, $authenticationVo, $userVo);
 
         return $userVo;
     }
@@ -101,7 +99,7 @@ class Login
 
         $authenticationVo = new AuthenticationDataVO($userVo, null, null);
 
-        $this->handleSuccessfulLogin($session, $authenticationVo, $userVo);
+        $this->handleLogin($session, $authenticationVo, $userVo);
 
         return $userVo;
     }
@@ -114,7 +112,7 @@ class Login
     {
         try {
             $user = $this->loadUser->loadUserByUsername($username);
-        } catch (UsernameNotFoundException $e) {
+        } catch (UserNotFoundException $e) {
             return false;
         }
 
@@ -127,7 +125,7 @@ class Login
      * @param UserVO $userVo
      * @return AuthenticateUserEvent
      */
-    private function handleSuccessfulLogin(
+    private function handleLogin(
         SessionInterface $session,
         AuthenticationDataVO $authenticationVo,
         UserVO $userVo

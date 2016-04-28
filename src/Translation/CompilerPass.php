@@ -57,5 +57,6 @@ class CompilerPass implements CompilerPassInterface
 
         $this->dumpCacheFile(self::CACHE_FILE, $contentPhp);
         file_put_contents(self::CACHE_FILE . '.html', $contentHtml);
+        chmod(self::CACHE_FILE . '.html', 0777);
     }
 }

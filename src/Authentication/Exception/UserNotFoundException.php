@@ -7,7 +7,7 @@ use BrainExe\Core\Application\UserException;
 /**
  * @api
  */
-class UsernameNotFoundException extends UserException
+class UserNotFoundException extends UserException
 {
 
 }

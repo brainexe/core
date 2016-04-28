@@ -5,7 +5,7 @@ namespace BrainExe\Core\Authentication;
 use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Annotations\Annotations\Service;
 use BrainExe\Core\Application\UserException;
-use BrainExe\Core\Authentication\Exception\UsernameNotFoundException;
+use BrainExe\Core\Authentication\Exception\UserNotFoundException;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -89,7 +89,7 @@ class Register
             $this->userProvider->loadUserByUsername($user->getUsername());
 
             throw new UserException(sprintf('User %s already exists', $user->getUsername()));
-        } catch (UsernameNotFoundException $e) {
+        } catch (UserNotFoundException $e) {
             // all fine
         }
     }

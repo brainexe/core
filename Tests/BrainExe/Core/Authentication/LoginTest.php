@@ -4,7 +4,7 @@ namespace Tests\BrainExe\Core\Authentication;
 
 use BrainExe\Core\Authentication\AuthenticationDataVO;
 use BrainExe\Core\Authentication\Event\AuthenticateUserEvent;
-use BrainExe\Core\Authentication\Exception\UsernameNotFoundException;
+use BrainExe\Core\Authentication\Exception\UserNotFoundException;
 use BrainExe\Core\Authentication\LoadUser;
 use BrainExe\Core\Authentication\Login;
 use BrainExe\Core\Authentication\PasswordHasher;
@@ -59,7 +59,7 @@ class LoginTest extends TestCase
     }
 
     /**
-     * @expectedException \BrainExe\Core\Application\UserException
+     * @expectedException \BrainExe\Core\Authentication\Exception\UserNotFoundException
      * @expectedExceptionMessage Invalid Username
      */
     public function testTryLoginWithInvalidUsername()
@@ -73,7 +73,7 @@ class LoginTest extends TestCase
             ->expects($this->once())
             ->method('loadUserByUsername')
             ->with($username)
-            ->willReturn(null);
+            ->willThrowException(new UserNotFoundException('Invalid Username'));
 
         $this->subject->tryLogin($username, $password, $oneTimeToken, $session);
     }
@@ -217,7 +217,7 @@ class LoginTest extends TestCase
             ->expects($this->once())
             ->method('loadUserByUsername')
             ->with($username)
-            ->willThrowException(new UsernameNotFoundException());
+            ->willThrowException(new UserNotFoundException());
 
         $actual = $this->subject->needsOneTimeToken($username);
 

@@ -20,7 +20,7 @@ class TokenController
     private $token;
 
     /**
-     * @Inject("@Authentication.Token")
+     * @Inject("@Core.Authentication.Token")
      * @param Token $token
      */
     public function __construct(Token $token)
@@ -33,9 +33,9 @@ class TokenController
      * @Route("/user/tokens/", name="authenticate.tokens.get", methods="GET")
      * @return array
      */
-    public function getTokens(Request $request)
+    public function getTokens(Request $request) : array
     {
-        $userId = $request->attributes->get('user_id');
+        $userId = $request->attributes->getInt('user_id');
 
         return iterator_to_array($this->token->getTokensForUser($userId));
     }
@@ -47,7 +47,7 @@ class TokenController
      */
     public function addToken(Request $request)
     {
-        $userId = $request->attributes->get('user_id');
+        $userId = $request->attributes->getInt('user_id');
         $roles  = (array)$request->request->get('roles');
 
         return $this->token->addToken($userId, $roles);
@@ -59,7 +59,7 @@ class TokenController
      * @param string $token
      * @return bool
      */
-    public function revoke(Request $request, $token)
+    public function revoke(Request $request, string $token) : bool
     {
         unset($request);
 

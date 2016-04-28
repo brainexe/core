@@ -27,7 +27,7 @@ class UserVO implements JsonSerializable
         self::ROLE_USER
     ];
 
-    const AVATARS        = [
+    const AVATARS = [
         self::AVATAR_1,
         self::AVATAR_2,
         self::AVATAR_3,

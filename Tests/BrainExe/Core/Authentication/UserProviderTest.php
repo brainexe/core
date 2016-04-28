@@ -2,7 +2,7 @@
 
 namespace Tests\BrainExe\Core\Authentication;
 
-use BrainExe\Core\Authentication\AnonymusUserVO;
+use BrainExe\Core\Authentication\Exception\UserNotFoundException;
 use BrainExe\Core\Authentication\UserProvider;
 use BrainExe\Core\Authentication\LoadUser;
 use BrainExe\Core\Authentication\PasswordHasher;
@@ -218,22 +218,24 @@ class UserProviderTest extends TestCase
             ->method('del')
             ->with('user:42');
 
-        $this->subject->deleteUser($userId);
+        $actual = $this->subject->deleteUser($userId);
+
+        $this->assertTrue($actual);
     }
 
     public function testDeleteNotExisting()
     {
         $userId = 42;
 
-        $user = new AnonymusUserVO();
-
         $this->loadUser
             ->expects($this->once())
             ->method('loadUserById')
             ->with($userId)
-            ->willReturn($user);
+            ->willThrowException(new UserNotFoundException());
 
-        $this->subject->deleteUser($userId);
+        $actual = $this->subject->deleteUser($userId);
+
+        $this->assertFalse($actual);
     }
 
     public function testRegister()

@@ -22,7 +22,7 @@ class DeleteUserEvent extends AbstractEvent
      * @param UserVO $authentication
      * @param string $eventName
      */
-    public function __construct(UserVO $authentication, $eventName)
+    public function __construct(UserVO $authentication, string $eventName)
     {
         parent::__construct($eventName);
 
@@ -32,7 +32,7 @@ class DeleteUserEvent extends AbstractEvent
     /**
      * @return UserVO
      */
-    public function getUserVO()
+    public function getUserVO() : UserVO
     {
         return $this->userVo;
     }

@@ -6,7 +6,6 @@ use BrainExe\Core\Annotations\Middleware;
 use BrainExe\Core\Application\UserException;
 use BrainExe\Core\Traits\LoggerTrait;
 use Throwable;
-use Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
@@ -55,10 +54,10 @@ class CatchUserException extends AbstractMiddleware
     }
 
     /**
-     * @param Exception $exception
+     * @param Throwable $exception
      * @param Response $response
      */
-    protected function setMessage(Exception $exception, Response $response)
+    protected function setMessage(Throwable $exception, Response $response)
     {
         $message = $exception->getMessage() ?: _('An error occurred');
         $response->headers->set('X-Flash-Type', 'danger');

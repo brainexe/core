@@ -18,7 +18,7 @@ class PasswordHasherTest extends TestCase
 
     public function setUp()
     {
-        $this->subject = new PasswordHasher();
+        $this->subject = new PasswordHasher(5);
     }
 
     public function testGenerateHash()

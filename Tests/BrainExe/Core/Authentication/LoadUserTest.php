@@ -36,7 +36,7 @@ class LoadUserTest extends TestCase
     }
 
     /**
-     * @expectedException \BrainExe\Core\Authentication\Exception\UsernameNotFoundException
+     * @expectedException \BrainExe\Core\Authentication\Exception\UserNotFoundException
      * @expectedExceptionMessage Username "UserName" does not exist.
      */
     public function testLoadUserByUsernameWithInvalidUser()

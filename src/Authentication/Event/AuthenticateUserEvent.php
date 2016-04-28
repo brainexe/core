@@ -24,7 +24,7 @@ class AuthenticateUserEvent extends AbstractEvent
      * @param AuthenticationDataVO $authentication
      * @param string $eventName
      */
-    public function __construct(AuthenticationDataVO $authentication, $eventName)
+    public function __construct(AuthenticationDataVO $authentication, string $eventName)
     {
         parent::__construct($eventName);
 
@@ -34,7 +34,7 @@ class AuthenticateUserEvent extends AbstractEvent
     /**
      * @return AuthenticationDataVO
      */
-    public function getAuthenticationData()
+    public function getAuthenticationData() : AuthenticationDataVO
     {
         return $this->authenticationData;
     }

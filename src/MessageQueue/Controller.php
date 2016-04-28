@@ -42,7 +42,7 @@ class Controller
     {
         $since = 0;
 
-        if ($request->query->get('futureOnly')) {
+        if ($request->query->getInt('futureOnly')) {
             $since = $this->now();
         }
 

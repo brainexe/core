@@ -15,7 +15,7 @@ class DelayedEvent extends MessageQueueEvent
     /**
      * @var int
      */
-    public $timestamp;
+    protected $timestamp;
 
     /**
      * @param AbstractEvent $event
@@ -31,7 +31,7 @@ class DelayedEvent extends MessageQueueEvent
     /**
      * @return int
      */
-    public function getTimestamp()
+    public function getTimestamp() : int
     {
         return $this->timestamp;
     }

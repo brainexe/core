@@ -16,9 +16,6 @@ class Core
      */
     public function boot() : Container
     {
-        chdir(ROOT);
-        umask(0); // todo try to remove
-
         $fileName = ROOT . 'cache/dic.php';
         /** @var Container $dic */
         if (is_file($fileName)) {

@@ -72,6 +72,7 @@ class Rebuild
         $className     = sprintf('dic_%d', $randomId);
         $containerFile = ROOT . 'cache/dic.php';
         $versionFile   = ROOT . 'cache/dic.txt';
+        $configFile    = ROOT . 'cache/config.json';
 
         $dumper = new PhpDumper($container);
         $dumper->setProxyDumper(new ProxyDumper());
@@ -83,15 +84,16 @@ class Rebuild
 
         file_put_contents($containerFile, $containerContent);
         file_put_contents($versionFile, $className);
-        @chmod($containerFile, 0777);
-        @chmod($versionFile, 0777);
-
         file_put_contents(
-            ROOT . 'cache/config.json',
+            $configFile,
             json_encode(
                 $container->getParameterBag()->all(),
                 JSON_PRETTY_PRINT
             )
         );
+
+        @chmod($containerFile, 0777);
+        @chmod($versionFile, 0777);
+        @chmod($configFile, 0777);
     }
 }

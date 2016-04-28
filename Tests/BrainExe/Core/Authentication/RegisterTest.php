@@ -3,7 +3,7 @@
 namespace Tests\BrainExe\Core\Authentication;
 
 use BrainExe\Core\Authentication\UserProvider;
-use BrainExe\Core\Authentication\Exception\UsernameNotFoundException;
+use BrainExe\Core\Authentication\Exception\UserNotFoundException;
 use BrainExe\Core\Authentication\Register;
 use BrainExe\Core\Authentication\RegisterTokens;
 use BrainExe\Core\Authentication\UserVO;
@@ -112,7 +112,7 @@ class RegisterTest extends TestCase
             ->expects($this->once())
             ->method('loadUserByUsername')
             ->with($username)
-            ->will($this->throwException(new UsernameNotFoundException()));
+            ->will($this->throwException(new UserNotFoundException()));
 
         $this->registerTokens
             ->expects($this->once())
@@ -129,7 +129,7 @@ class RegisterTest extends TestCase
         $user->username = $username = 'user name';
         $user->password = 'password';
 
-        $userId = 42;
+        $userId  = 42;
         $session = new Session(new MockArraySessionStorage());
         $token   = 100;
 
@@ -137,7 +137,7 @@ class RegisterTest extends TestCase
             ->expects($this->once())
             ->method('loadUserByUsername')
             ->with($username)
-            ->will($this->throwException(new UsernameNotFoundException()));
+            ->will($this->throwException(new UserNotFoundException()));
 
         $this->registerTokens
             ->expects($this->once())

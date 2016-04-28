@@ -8,7 +8,7 @@ use BrainExe\Core\Traits\RedisTrait;
 use Generator;
 
 /**
- * @Service("Authentication.Token", public=false)
+ * @Service("Core.Authentication.Token", public=false)
  */
 class Token
 {
@@ -24,7 +24,7 @@ class Token
      * @param string[] $roles
      * @return string
      */
-    public function addToken($userId, array $roles = [])
+    public function addToken(int $userId, array $roles = []) : string
     {
         $token = $this->generateRandomId(32);
 
@@ -40,9 +40,9 @@ class Token
 
     /**
      * @param string $token
-     * @return array
+     * @return array|
      */
-    public function getToken($token)
+    public function getToken(string $token)
     {
         return json_decode($this->getRedis()->hget(self::TOKEN_KEY, $token), true);
     }
@@ -51,7 +51,7 @@ class Token
      * @param int $userId
      * @return array[]|Generator
      */
-    public function getTokensForUser($userId)
+    public function getTokensForUser(int $userId)
     {
         $redis     = $this->getRedis();
         $tokensIds = $redis->smembers(sprintf(self::USER_KEY, $userId));
@@ -68,9 +68,9 @@ class Token
     /**
      * @param string $token
      * @param string|null $role
-     * @return int
+     * @return int|null
      */
-    public function hasUserForRole($token, $role = null)
+    public function hasUserForRole(string $token, string $role = null)
     {
         $tokenData = $this->getToken($token);
         if (empty($tokenData)) {
@@ -87,7 +87,7 @@ class Token
     /**
      * @param string $token
      */
-    public function revoke($token)
+    public function revoke(string $token)
     {
         $tokenData = $this->getToken($token);
         if (!$tokenData) {

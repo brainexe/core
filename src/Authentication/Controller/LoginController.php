@@ -35,11 +35,11 @@ class LoginController
 
     /**
      * @param Request $request
-     * @return JsonResponse
+     * @return UserVO
      * @Route("/login/", name="authenticate.doLogin", methods="POST")
      * @Guest
      */
-    public function login(Request $request)
+    public function login(Request $request) : UserVO
     {
         $username      = $request->request->get('username');
         $plainPassword = $request->request->get('password');
@@ -61,7 +61,7 @@ class LoginController
      * @return bool
      * @Guest
      */
-    public function needsOneTimeToken(Request $request)
+    public function needsOneTimeToken(Request $request) : bool
     {
         $username = $request->query->get('username');
 
@@ -76,7 +76,7 @@ class LoginController
      * @throws UserException
      * @Guest
      */
-    public function loginWithToken(Request $request, $token)
+    public function loginWithToken(Request $request, string $token)
     {
         $result = $this->login->loginWithToken($token, $request->getSession());
 

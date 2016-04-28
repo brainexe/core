@@ -7,12 +7,12 @@ class AuthenticationDataVO
     /**
      * @var UserVO
      */
-    public $userVo;
+    private $userVo;
 
     /**
      * @var string
      */
-    public $password;
+    private $password;
 
     /**
      * @var string
@@ -29,5 +29,29 @@ class AuthenticationDataVO
         $this->userVo       = $userVo;
         $this->password     = $password;
         $this->oneTimeToken = $oneTimeToken;
+    }
+
+    /**
+     * @return UserVO
+     */
+    public function getUser() : UserVO
+    {
+        return $this->userVo;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOneTimeToken()
+    {
+        return $this->oneTimeToken;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPassword()
+    {
+        return $this->password;
     }
 }

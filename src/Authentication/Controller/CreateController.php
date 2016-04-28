@@ -31,12 +31,13 @@ class CreateController
     }
 
     /**
+     * @todo wrong route name?! token from cookie?!
      * @param Request $request
      * @return UserVO
      * @Route("/admin/", name="admin.doRegister", methods="POST")
      * @Guest
      */
-    public function register(Request $request)
+    public function register(Request $request) : UserVO
     {
         $username       = $request->request->get('username');
         $plainPassword  = $request->request->get('password');

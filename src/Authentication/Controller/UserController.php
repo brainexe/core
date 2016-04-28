@@ -36,7 +36,7 @@ class UserController
      * @Route("/user/", name="authenticate.current_user", methods="GET")
      * @Guest
      */
-    public function getCurrentUser(Request $request)
+    public function getCurrentUser(Request $request) : UserVO
     {
         return $request->attributes->get('user');
     }
@@ -45,7 +45,7 @@ class UserController
      * @return string[]
      * @Route("/user/avatar/", name="authenticate.avatars", methods="GET")
      */
-    public function getAvatars()
+    public function getAvatars() : array
     {
         return UserVO::AVATARS;
     }
@@ -57,11 +57,12 @@ class UserController
      * @throws UserException
      * @Route("/user/avatar/{avatar}/", name="authenticate.setAvatar", methods="POST")
      */
-    public function setAvatars(Request $request, $avatar)
+    public function setAvatars(Request $request, $avatar) : UserVO
     {
         if (!in_array($avatar, UserVO::AVATARS)) {
             throw new UserException(sprintf(_('Invalid avatar: %s'), $avatar));
         }
+
         /** @var UserVO $user */
         $user = $request->attributes->get('user');
         $user->avatar = $avatar;
@@ -77,7 +78,7 @@ class UserController
      * @Route("/user/change_email/", name="authenticate.setEmail", methods="POST")
      * @Guest
      */
-    public function setEmail(Request $request)
+    public function setEmail(Request $request) : UserVO
     {
         /** @var UserVO $user */
         $user = $request->attributes->get('user');
@@ -93,7 +94,7 @@ class UserController
      * @return string[]
      * @Route("/user/list/", name="authenticate.list_user", methods="GET")
      */
-    public function getList()
+    public function getList() : array
     {
         return array_flip($this->userProvider->getAllUserNames());
     }

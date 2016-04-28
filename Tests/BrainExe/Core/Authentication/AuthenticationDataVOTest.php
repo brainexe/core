@@ -16,8 +16,9 @@ class AuthenticationDataVOTest extends TestCase
         $oneTimeToken = 'token';
 
         $subject = new AuthenticationDataVO($userVo, $password, $oneTimeToken);
-        $this->assertEquals($userVo, $subject->userVo);
-        $this->assertEquals($password, $subject->password);
-        $this->assertEquals($oneTimeToken, $subject->oneTimeToken);
+
+        $this->assertEquals($userVo, $subject->getUser());
+        $this->assertEquals($password, $subject->getPassword());
+        $this->assertEquals($oneTimeToken, $subject->getOneTimeToken());
     }
 }

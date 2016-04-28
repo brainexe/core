@@ -5,7 +5,7 @@ namespace BrainExe\Core\Authentication;
 use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Annotations\Annotations\Service;
 use BrainExe\Core\Authentication\Event\DeleteUserEvent;
-use BrainExe\Core\Authentication\Exception\UsernameNotFoundException;
+use BrainExe\Core\Authentication\Exception\UserNotFoundException;
 use BrainExe\Core\Traits\EventDispatcherTrait;
 use BrainExe\Core\Traits\IdGeneratorTrait;
 use BrainExe\Core\Traits\RedisTrait;
@@ -36,8 +36,8 @@ class UserProvider
 
     /**
      * @Inject({
-        "@PasswordHasher",
-        "@Authentication.LoadUser",
+        "@Core.Authentication.PasswordHasher",
+        "@Core.Authentication.LoadUser",
      * })
      * @param PasswordHasher $passwordHasher
      * @param LoadUser $loadUser
@@ -51,7 +51,7 @@ class UserProvider
     /**
      * @param string $username
      * @return UserVO
-     * @throws UsernameNotFoundException
+     * @throws UserNotFoundException
      */
     public function loadUserByUsername(string $username) : UserVO
     {
@@ -61,7 +61,7 @@ class UserProvider
     /**
      * @param int $userId
      * @return UserVO
-     * @throws UsernameNotFoundException
+     * @throws UserNotFoundException
      */
     public function loadUserById(int $userId) : UserVO
     {
@@ -101,7 +101,7 @@ class UserProvider
      */
     public function changePassword(UserVO $user, string $newPassword)
     {
-        $hash           = $this->generateHash($newPassword);
+        $hash = $this->generateHash($newPassword);
         $user->password = $hash;
 
         $this->setUserProperty($user, 'password');
@@ -124,7 +124,7 @@ class UserProvider
 
     /**
      * @param UserVO $user
-     * @return int $user_id
+     * @return int $userId
      */
     public function register(UserVO $user) : int
     {
@@ -153,13 +153,14 @@ class UserProvider
 
     /**
      * @param int $userId
+     * @return bool
      */
-    public function deleteUser(int $userId)
+    public function deleteUser(int $userId) : bool
     {
-        $user = $this->loadUser->loadUserById($userId);
-
-        if ($user instanceof AnonymusUserVO) {
-            return;
+        try {
+            $user = $this->loadUser->loadUserById($userId);
+        } catch (UserNotFoundException $e) {
+            return false;
         }
 
         $event = new DeleteUserEvent($user, DeleteUserEvent::DELETE);
@@ -168,6 +169,8 @@ class UserProvider
         $redis = $this->getRedis();
         $redis->hdel(self::REDIS_USER_NAMES, strtolower($user->getUsername()));
         $redis->del($this->getKey($userId));
+        
+        return true;
     }
 
     /**

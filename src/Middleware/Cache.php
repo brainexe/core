@@ -31,7 +31,7 @@ class Cache extends AbstractMiddleware
     private $cacheKey;
 
     /**
-     * @var boolean
+     * @var bool
      */
     private $enabled;
 
@@ -39,7 +39,7 @@ class Cache extends AbstractMiddleware
      * @Inject("%cache.enabled%")
      * @param bool $cacheEnabled
      */
-    public function __construct($cacheEnabled)
+    public function __construct(bool $cacheEnabled)
     {
         $this->enabled = $cacheEnabled;
     }
@@ -70,7 +70,7 @@ class Cache extends AbstractMiddleware
     public function processResponse(Request $request, Response $response)
     {
         if (!$this->cacheKey) {
-            return null;
+            return;
         }
 
         if (!$response->isOk()) {
@@ -89,7 +89,7 @@ class Cache extends AbstractMiddleware
      * @param Request $request
      * @return string
      */
-    private function generateCacheKey(Request $request)
+    private function generateCacheKey(Request $request) : string
     {
         return self::PREFIX . $request->getRequestUri();
     }
@@ -98,7 +98,7 @@ class Cache extends AbstractMiddleware
      * @param CacheProvider$cache
      * @return Response
      */
-    private function handleCached(CacheProvider $cache)
+    private function handleCached(CacheProvider $cache) : Response
     {
         $this->debug(sprintf('fetch from cache: %s', $this->cacheKey));
 
@@ -118,7 +118,7 @@ class Cache extends AbstractMiddleware
     /**
      * @return int
      */
-    private function getTTL()
+    private function getTTL() : int
     {
         return self::DEFAULT_TTL;
     }

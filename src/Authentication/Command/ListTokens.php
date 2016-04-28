@@ -32,7 +32,7 @@ class ListTokens extends Command
     }
 
     /**
-     * @Inject({"@Authentication.Token"})
+     * @Inject({"@Core.Authentication.Token"})
      * @param TokenModel $token
      */
     public function __construct(TokenModel $token)

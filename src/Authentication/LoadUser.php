@@ -4,12 +4,12 @@ namespace BrainExe\Core\Authentication;
 
 use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Annotations\Annotations\Service;
-use BrainExe\Core\Authentication\Exception\UsernameNotFoundException;
+use BrainExe\Core\Authentication\Exception\UserNotFoundException;
 use Predis\Client;
 
 /**
  * @api
- * @Service("Authentication.LoadUser", public=false)
+ * @Service("Core.Authentication.LoadUser", public=false)
  */
 class LoadUser
 {
@@ -30,48 +30,49 @@ class LoadUser
     /**
      * @param string $username
      * @return UserVO
-     * @throws UsernameNotFoundException
+     * @throws UserNotFoundException
      */
-    public function loadUserByUsername($username)
+    public function loadUserByUsername(string $username) : UserVO
     {
         $userId = $this->redis->hget(UserProvider::REDIS_USER_NAMES, strtolower($username));
 
         if (empty($userId)) {
-            throw new UsernameNotFoundException(sprintf('Username "%s" does not exist.', $username));
+            throw new UserNotFoundException(sprintf('Username "%s" does not exist.', $username));
         }
 
         return $this->loadUserById($userId);
     }
 
     /**
-     * @param integer $userId
+     * @param int $userId
      * @return UserVO
+     * @throws UserNotFoundException
      */
-    public function loadUserById($userId)
+    public function loadUserById(int $userId) : UserVO
     {
         $redisUser = $this->redis->hgetall($this->getKey($userId));
 
         if (empty($redisUser)) {
-            return new AnonymusUserVO();
+            throw new UserNotFoundException(sprintf('User "%d" does not exist.', $userId));
         }
 
         $user                  = new UserVO();
         $user->id              = $userId;
         $user->username        = $redisUser['username'];
-        $user->email           = isset($redisUser['email']) ? $redisUser['email'] : '';
+        $user->email           = $redisUser['email'] ?? '';
         $user->password_hash   = $redisUser['password'];
-        $user->one_time_secret = isset($redisUser['one_time_secret']) ? $redisUser['one_time_secret'] : null;
+        $user->one_time_secret = $redisUser['one_time_secret'] ?? null;
         $user->roles           = array_filter(explode(',', $redisUser['roles']));
-        $user->avatar          = isset($redisUser['avatar']) ? $redisUser['avatar'] : UserVO::AVATAR_5;
+        $user->avatar          = $redisUser['avatar'] ?? UserVO::AVATAR_5;
 
         return $user;
     }
 
     /**
-     * @param integer $userId
+     * @param int $userId
      * @return string
      */
-    private function getKey($userId)
+    private function getKey(int $userId) : string
     {
         return sprintf(UserProvider::REDIS_USER, $userId);
     }

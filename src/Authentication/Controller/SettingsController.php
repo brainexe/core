@@ -34,7 +34,9 @@ class SettingsController
      */
     public function all(Request $request)
     {
-        return $this->settings->getAll($request->attributes->get('user_id'));
+        $userId = $request->attributes->getInt('user_id');
+
+        return $this->settings->getAll($userId);
     }
 
     /**
@@ -43,9 +45,9 @@ class SettingsController
      * @return bool
      * @Route("/settings/{key}/", name="settings.set", methods="POST")
      */
-    public function set(Request $request, $key)
+    public function set(Request $request, string $key) : bool
     {
-        $userId = $request->attributes->get('user_id');
+        $userId = $request->attributes->getInt('user_id');
         $value  = $request->request->get('value');
 
         $this->settings->set($userId, $key, $value);
