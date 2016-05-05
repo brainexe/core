@@ -15,7 +15,7 @@ class WebSocketEvent extends AbstractEvent
     /**
      * @var AbstractEvent
      */
-    public $payload;
+    private $payload;
 
     /**
      * @param AbstractEvent $payload
@@ -25,5 +25,13 @@ class WebSocketEvent extends AbstractEvent
         parent::__construct(self::PUSH);
 
         $this->payload = $payload;
+    }
+
+    /**
+     * @return AbstractEvent
+     */
+    public function getPayload() : AbstractEvent
+    {
+        return $this->payload;
     }
 }

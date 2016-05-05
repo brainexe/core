@@ -32,6 +32,6 @@ class Listener implements EventSubscriberInterface
     public function handlePushEvent(WebSocketEvent $event)
     {
         $redis = $this->getRedis();
-        $redis->publish(self::CHANNEL, json_encode($event->payload));
+        $redis->publish(self::CHANNEL, json_encode($event->getPayload()));
     }
 }
