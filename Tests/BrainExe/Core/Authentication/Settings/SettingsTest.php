@@ -25,13 +25,13 @@ class SettingsTest extends TestCase
 
     public function setUp()
     {
-        $this->gateway = $this->getMock(Gateway::class);
+        $this->gateway = $this->getMock(Gateway::class, [], [], '', false);
         $this->subject = new Settings($this->gateway);
     }
 
     public function testGet()
     {
-        $userId   = 'mockUser';
+        $userId   = 12;
         $setting  = 'mockSetting';
         $expected = 'expected';
 
@@ -48,7 +48,7 @@ class SettingsTest extends TestCase
 
     public function testGetAll()
     {
-        $userId   = 'mockUser';
+        $userId   = 12;
         $expected = ['expected'];
 
         $this->gateway
@@ -70,7 +70,7 @@ class SettingsTest extends TestCase
 
     public function testSet()
     {
-        $userId  = 'mockUser';
+        $userId  = 12;
         $setting = 'mockSetting';
         $value   = 'mockValue';
 

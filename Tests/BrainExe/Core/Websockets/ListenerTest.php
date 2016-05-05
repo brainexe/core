@@ -51,7 +51,7 @@ class ListenerTest extends TestCase
         $this->redis
             ->expects($this->once())
             ->method('publish')
-            ->with(Listener::CHANNEL, json_encode($event->payload));
+            ->with(Listener::CHANNEL, json_encode($event->getPayload()));
 
         $this->subject->handlePushEvent($event);
     }

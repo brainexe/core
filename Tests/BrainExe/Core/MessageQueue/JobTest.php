@@ -26,7 +26,7 @@ class JobTest extends TestCase
 
     public function testEvent()
     {
-
         $this->assertEquals('type:111', $this->subject->jobId);
+        $this->assertEquals('type:111', $this->subject->getJobId());
     }
 }

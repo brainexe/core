@@ -30,7 +30,7 @@ class ControllerCompilerPassTest extends TestCase
     public function setUp()
     {
         $this->subject   = $this->getMock(ControllerCompilerPass::class, ['dumpMatcher']);
-        $this->container  = $this->getMock(ContainerBuilder::class, [
+        $this->container = $this->getMock(ContainerBuilder::class, [
             'findTaggedServiceIds',
             'getDefinition',
         ]);

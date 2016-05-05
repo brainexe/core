@@ -56,6 +56,10 @@ class Authentication extends AbstractMiddleware
      */
     public function processRequest(Request $request, Route $route)
     {
+        if ($request->attributes->has('user')) {
+            return null;
+        }
+
         $session = $request->getSession();
         $userId  = (int)$session->get('user_id');
 

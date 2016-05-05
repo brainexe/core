@@ -16,7 +16,7 @@ class Glob
      * @param int $flags
      * @return array
      */
-    public function execGlob($pattern, $flags = null) : array
+    public function execGlob(string $pattern, $flags = null) : array
     {
         return glob($pattern, $flags);
     }

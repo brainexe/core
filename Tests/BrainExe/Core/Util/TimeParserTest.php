@@ -55,6 +55,7 @@ class TimeParserTest extends TestCase
             ['10S', 10],
             ['5t', false],
             ['7m', 7 * 60],
+            ['1d', 86400],
             ['now', 0]
         ];
     }

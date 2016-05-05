@@ -6,7 +6,6 @@ use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Core\Annotations\Controller as ControllerAnnotation;
 use BrainExe\Core\Annotations\Route;
 use BrainExe\Core\MessageQueue\Gateway as MessageQueueGateway;
-use BrainExe\Core\Traits\EventDispatcherTrait;
 use BrainExe\Core\Traits\TimeTrait;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -15,7 +14,6 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class Controller
 {
-    use EventDispatcherTrait;
     use TimeTrait;
 
     /**

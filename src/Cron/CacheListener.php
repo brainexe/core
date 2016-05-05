@@ -43,19 +43,8 @@ class CacheListener
      */
     public function handleRebuildCache()
     {
-        $crons = $this->includeFile(Cron::CACHE_FILE);
-        if (empty($crons)) {
-            return;
-        }
+        $crons = $this->getCrons();
 
-        foreach ($this->gateway->getEventsByType(CronEvent::CRON) as $id => $job) {
-            /** @var CronEvent $event */
-            $event = $job->event;
-            $name = $event->getEvent()->timingId;
-            if (isset($crons[$name])) {
-                unset($crons[$name]);
-            }
-        }
         foreach ($crons as $timingId => $expression) {
             $event = new CronEvent(
                 new TimingEvent($timingId),
@@ -65,5 +54,27 @@ class CacheListener
             $this->dispatchEvent($event);
             $this->debug(sprintf('Registered cron "%s" with expression: "%s"', $timingId, $expression));
         }
+    }
+
+    /**
+     * @return array
+     */
+    protected function getCrons(): array
+    {
+        $crons = $this->includeFile(Cron::CACHE_FILE);
+        if (empty($crons)) {
+            return [];
+        }
+
+        foreach ($this->gateway->getEventsByType(CronEvent::CRON) as $id => $job) {
+            /** @var CronEvent $event */
+            $event = $job->event;
+            $name  = $event->getEvent()->timingId;
+            if (isset($crons[$name])) {
+                unset($crons[$name]);
+            }
+        }
+
+        return $crons;
     }
 }

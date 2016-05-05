@@ -38,9 +38,7 @@ class ControllerCompilerPass implements CompilerPassInterface
                 $name = $route->getName();
                 if (empty($name)) {
                     throw new Exception(sprintf('"name" is missing for @Route(%s)', $controllerId));
-                }
-
-                if (isset($serialized[$name])) {
+                } elseif (isset($serialized[$name])) {
                     throw new Exception(sprintf('Route name %s does already exits in %s', $name, $controllerId));
                 }
 
@@ -50,8 +48,6 @@ class ControllerCompilerPass implements CompilerPassInterface
             $controller = $container->getDefinition($controllerId);
             $controller->clearTag(self::ROUTE_TAG);
         }
-
-        ksort($serialized);
 
         $this->dumpMatcher($container, $serialized);
     }
@@ -85,6 +81,8 @@ class ControllerCompilerPass implements CompilerPassInterface
      */
     protected function dumpMatcher(ContainerBuilder $container, array $routes)
     {
+        ksort($routes);
+
         $this->dumpVariableToCache(SerializedRouteCollection::CACHE_FILE, $routes);
 
         /** @var SerializedRouteCollection $routerCollection */

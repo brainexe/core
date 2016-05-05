@@ -30,8 +30,7 @@ class GatewayTest extends TestCase
     {
         $this->redis = $this->getRedisMock();
 
-        $this->subject = new Gateway();
-        $this->subject->setRedis($this->redis);
+        $this->subject = new Gateway($this->redis);
     }
 
     public function testGetAll()

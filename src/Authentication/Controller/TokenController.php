@@ -43,9 +43,9 @@ class TokenController
     /**
      * @param Request $request
      * @Route("/user/tokens/", name="authenticate.tokens.new", methods="POST")
-     * @return array
+     * @return string
      */
-    public function addToken(Request $request)
+    public function addToken(Request $request) : string
     {
         $userId = $request->attributes->getInt('user_id');
         $roles  = (array)$request->request->get('roles');

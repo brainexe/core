@@ -73,10 +73,9 @@ class ListServicesCommand extends Command
         $visibility = $input->getArgument('visibility');
 
         foreach ($ids as $id) {
-            if (!$this->container->hasDefinition($id)) {
-                continue;
+            if ($this->container->hasDefinition($id)) {
+                $this->addDefinition($id, $table, $visibility);
             }
-            $this->addDefinition($id, $table, $visibility);
         }
 
         $table->render();
