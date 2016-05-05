@@ -41,9 +41,9 @@ class LoginController
      */
     public function login(Request $request) : UserVO
     {
-        $username      = $request->request->get('username');
-        $plainPassword = $request->request->get('password');
-        $oneTimeToken  = $request->request->getAlnum('one_time_token');
+        $username      = (string)$request->request->get('username');
+        $plainPassword = (string)$request->request->get('password');
+        $oneTimeToken  = (string)$request->request->getAlnum('one_time_token');
 
         $user = $this->login->tryLogin(
             $username,

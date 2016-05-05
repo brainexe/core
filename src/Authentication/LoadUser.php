@@ -56,6 +56,25 @@ class LoadUser
             throw new UserNotFoundException(sprintf('User "%d" does not exist.', $userId));
         }
 
+        return $this->buildUserVO($userId, $redisUser);
+    }
+
+    /**
+     * @param int $userId
+     * @return string
+     */
+    private function getKey(int $userId) : string
+    {
+        return sprintf(UserProvider::REDIS_USER, $userId);
+    }
+
+    /**
+     * @param int $userId
+     * @param $redisUser
+     * @return UserVO
+     */
+    private function buildUserVO(int $userId, array $redisUser) : UserVO
+    {
         $user                  = new UserVO();
         $user->id              = $userId;
         $user->username        = $redisUser['username'];
@@ -66,14 +85,5 @@ class LoadUser
         $user->avatar          = $redisUser['avatar'] ?? UserVO::AVATAR_5;
 
         return $user;
-    }
-
-    /**
-     * @param int $userId
-     * @return string
-     */
-    private function getKey(int $userId) : string
-    {
-        return sprintf(UserProvider::REDIS_USER, $userId);
     }
 }

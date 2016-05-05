@@ -92,8 +92,7 @@ class SwaggerDumpCommand extends Command
             'paths' => $resources,
         ];
 
-        echo $dumper->dump($formatted, 4);
-        echo PHP_EOL;
+        $output->writeln($dumper->dump($formatted, 4));
     }
 
     /**

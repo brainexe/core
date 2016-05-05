@@ -45,6 +45,14 @@ class CompilerPass implements CompilerPassInterface
             }
         }
 
+        $this->dumpTranslations($tokens);
+    }
+
+    /**
+     * @param array $tokens
+     */
+    protected function dumpTranslations(array $tokens)
+    {
         sort($tokens);
 
         $contentPhp = sprintf("return [\n    %s\n];\n", implode(",\n    ", array_map(function ($token) {

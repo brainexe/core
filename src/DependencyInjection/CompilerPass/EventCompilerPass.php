@@ -11,7 +11,6 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
- * @todo add event annotation
  * @CompilerPass
  */
 class EventCompilerPass implements CompilerPassInterface

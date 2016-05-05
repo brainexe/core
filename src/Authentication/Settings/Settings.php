@@ -31,7 +31,7 @@ class Settings
      * @param string $setting
      * @return string
      */
-    public function get($userId, $setting)
+    public function get(int $userId, string $setting)
     {
         $value = $this->gateway->get($userId, $setting);
 
@@ -46,7 +46,7 @@ class Settings
      * @param int $userId
      * @return string[]
      */
-    public function getAll($userId)
+    public function getAll(int $userId) : array
     {
         $values = $this->gateway->getAll($userId);
 
@@ -62,7 +62,7 @@ class Settings
      * @param string $setting
      * @param string $value
      */
-    public function set($userId, $setting, $value)
+    public function set(int $userId, string $setting, $value)
     {
         $this->gateway->set($userId, $setting, $value);
     }

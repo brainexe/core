@@ -2,8 +2,9 @@
 
 namespace BrainExe\Core\Authentication\Settings;
 
+use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Annotations\Annotations\Service;
-use BrainExe\Core\Traits\RedisTrait;
+use BrainExe\Core\Redis\Predis;
 
 /**
  * @Service("User.Settings.Gateway", public=false)
@@ -13,15 +14,27 @@ class Gateway
 
     const REDIS_KEY = 'user:settings:%s';
 
-    use RedisTrait;
+    /**
+     * @var Predis
+     */
+    private $redis;
+
+    /**
+     * @Inject("@Redis")
+     * @param Predis $client
+     */
+    public function __construct(Predis $client)
+    {
+        $this->redis = $client;
+    }
 
     /**
      * @param int $userId
      * @return string[]
      */
-    public function getAll($userId)
+    public function getAll(int $userId) : array
     {
-        return array_map('json_decode', $this->getRedis()->hgetall($this->getKey($userId)));
+        return array_map('json_decode', $this->redis->hgetall($this->getKey($userId)));
     }
 
     /**
@@ -29,9 +42,9 @@ class Gateway
      * @param string $setting
      * @return string
      */
-    public function get($userId, $setting)
+    public function get(int $userId, string $setting)
     {
-        return json_decode($this->getRedis()->hget($this->getKey($userId), $setting));
+        return json_decode($this->redis->hget($this->getKey($userId), $setting));
     }
 
     /**
@@ -39,17 +52,16 @@ class Gateway
      * @param string $setting
      * @param string $value
      */
-    public function set($userId, $setting, $value)
+    public function set(int $userId, string $setting, $value)
     {
-        $this->getRedis()->hset($this->getKey($userId), $setting, json_encode($value));
+        $this->redis->hset($this->getKey($userId), $setting, json_encode($value));
     }
-
 
     /**
      * @param int $userId
      * @return string
      */
-    private function getKey($userId)
+    private function getKey(int $userId) : string
     {
         return sprintf(self::REDIS_KEY, $userId);
     }

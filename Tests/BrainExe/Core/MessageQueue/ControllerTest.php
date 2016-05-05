@@ -2,7 +2,6 @@
 
 namespace BrainExe\Tests\MessageQueue;
 
-use BrainExe\Core\EventDispatcher\EventDispatcher;
 use BrainExe\Core\MessageQueue\Controller;
 use BrainExe\Core\MessageQueue\Gateway as MessageQueueGateway;
 use BrainExe\Core\Util\Time;
@@ -27,11 +26,6 @@ class ControllerTest extends TestCase
     private $messageQueue;
 
     /**
-     * @var EventDispatcher|MockObject
-     */
-    private $dispatcher;
-
-    /**
      * @var Time|MockObject
      */
     private $time;
@@ -39,11 +33,9 @@ class ControllerTest extends TestCase
     public function setUp()
     {
         $this->messageQueue = $this->getMock(MessageQueueGateway::class, [], [], '', false);
-        $this->dispatcher   = $this->getMock(EventDispatcher::class, [], [], '', false);
         $this->time         = $this->getMock(Time::class);
 
         $this->subject = new Controller($this->messageQueue);
-        $this->subject->setEventDispatcher($this->dispatcher);
         $this->subject->setTime($this->time);
     }
 

@@ -36,8 +36,9 @@ class Listener
      */
     public function handleEvent(ConsoleEvent $event)
     {
-        $input = new StringInput($event->command);
+        $input = new StringInput($event->getCommand());
         $this->application->setAutoExit(false);
-        $this->application->run($input);
+
+        $this->application->run($input, $event->getOutput());
     }
 }

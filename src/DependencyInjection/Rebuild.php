@@ -23,7 +23,7 @@ class Rebuild
      * @param bool $boot
      * @return Container|ContainerBuilder
      */
-    public function rebuildDIC($boot = true) : Container
+    public function rebuildDIC(bool $boot = true) : Container
     {
         $containerBuilder = new ContainerBuilder();
 

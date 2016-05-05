@@ -3,6 +3,7 @@
 namespace BrainExe\Core\EventDispatcher\Events;
 
 use BrainExe\Core\EventDispatcher\AbstractEvent;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class ConsoleEvent extends AbstractEvent
 {
@@ -12,22 +13,40 @@ class ConsoleEvent extends AbstractEvent
     /**
      * @var string
      */
-    public $command;
+    private $command;
 
     /**
-     * @var string
+     * @var OutputInterface
      */
-    public $arguments;
+    private $output;
 
     /**
      * @param string $command
-     * @param string $arguments
+     * @param OutputInterface $output
      */
-    public function __construct(string $command, string $arguments = '')
-    {
+    public function __construct(
+        string $command,
+        OutputInterface $output = null
+    ) {
         parent::__construct(self::NAME);
 
-        $this->command   = $command;
-        $this->arguments = $arguments;
+        $this->command = $command;
+        $this->output  = $output;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCommand() : string
+    {
+        return $this->command;
+    }
+
+    /**
+     * @return OutputInterface|null
+     */
+    public function getOutput()
+    {
+        return $this->output;
     }
 }

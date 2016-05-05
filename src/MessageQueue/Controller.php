@@ -6,7 +6,6 @@ use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Core\Annotations\Controller as ControllerAnnotation;
 use BrainExe\Core\Annotations\Route;
 use BrainExe\Core\MessageQueue\Gateway as MessageQueueGateway;
-use BrainExe\Core\Traits\EventDispatcherTrait;
 use BrainExe\Core\Traits\TimeTrait;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -15,7 +14,6 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class Controller
 {
-    use EventDispatcherTrait;
     use TimeTrait;
 
     /**
@@ -33,6 +31,7 @@ class Controller
     }
 
     /**
+     * @todo regexp
      * @Route("/jobs/{type}/", name="status.jobs.type", methods="GET")
      * @param Request $request
      * @param string $type
@@ -50,6 +49,7 @@ class Controller
     }
 
     /**
+     * @todo regexp
      * @Route("/jobs/{jobId}/", methods="DELETE", name="messageQueue.deleteJob")
      * @param Request $request
      * @param string $jobId

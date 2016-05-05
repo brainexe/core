@@ -7,6 +7,7 @@ use Exception;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -42,18 +43,7 @@ class EventListenerCompilerPass implements CompilerPassInterface
             }
         }
 
-        $services = $container->findTaggedServiceIds(self::TAG_METHOD);
-        foreach ($services as $serviceId => $arguments) {
-            foreach ($arguments as $args) {
-                $this->addListener(
-                    $dispatcher,
-                    $args['event'],
-                    $serviceId,
-                    $args['method'],
-                    $args['priority']
-                );
-            }
-        }
+        $this->processMethods($container, $dispatcher);
     }
 
     /**
@@ -105,5 +95,25 @@ class EventListenerCompilerPass implements CompilerPassInterface
         }
 
         $dispatcher->addMethodCall('addListenerService', $parameters);
+    }
+
+    /**
+     * @param ContainerBuilder $container
+     * @param Definition $dispatcher
+     */
+    private function processMethods(ContainerBuilder $container, Definition $dispatcher)
+    {
+        $services = $container->findTaggedServiceIds(self::TAG_METHOD);
+        foreach ($services as $serviceId => $arguments) {
+            foreach ($arguments as $args) {
+                $this->addListener(
+                    $dispatcher,
+                    $args['event'],
+                    $serviceId,
+                    $args['method'],
+                    $args['priority']
+                );
+            }
+        }
     }
 }
