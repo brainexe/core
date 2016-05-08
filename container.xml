@@ -18,10 +18,12 @@
 		<parameter key="logger.dir">%application.root%logs/</parameter>
 
 		<parameter key="application.name" on-invalid="exception"/>
-		<parameter key="application.guests_allowed">false</parameter>
 		<parameter key="application.registration_enabled">true</parameter>
 		<parameter key="application.url">http://%server.host%</parameter>
 		<parameter key="application.passwordhasher.cost">12</parameter>
+		<parameter key="application.defaultLocale">
+
+		</parameter>
 
 		<parameter key="environment">development</parameter>
 		<parameter key="config.public" type="collection">
@@ -125,7 +127,9 @@
 
 		<service id="Cache" class="Doctrine\Common\Cache\PredisCache" public="false">
 			<argument type="service" id="redis"/>
-			<call method="setNamespace">cache</call>
+			<call method="setNamespace">
+				<argument>cache</argument>
+			</call>
 		</service>
 
 		<service id="Mailer" class="PHPMailer" public="false"/>

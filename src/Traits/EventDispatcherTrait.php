@@ -29,7 +29,7 @@ trait EventDispatcherTrait
     /**
      * @return EventDispatcher
      */
-    public function getDispatcher()
+    public function getDispatcher() : EventDispatcher
     {
         return $this->dispatcher;
     }
@@ -46,7 +46,7 @@ trait EventDispatcherTrait
      * @param AbstractEvent $event
      * @param integer|null $timestamp
      */
-    public function dispatchInBackground(AbstractEvent $event, $timestamp = 0)
+    public function dispatchInBackground(AbstractEvent $event, int $timestamp = 0)
     {
         $this->dispatcher->dispatchInBackground($event, $timestamp);
     }

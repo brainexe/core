@@ -160,7 +160,8 @@ class GatewayTest extends TestCase
     public function testAddEventDelayed()
     {
         /** @var MockObject|AbstractEvent $event */
-        $event     = $this->getMock(AbstractEvent::class, [], ['type']);
+        $event     = $this->getMock(AbstractEvent::class, null, ['type']);
+
         $timestamp = 120000;
         $eventId   = 100;
 

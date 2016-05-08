@@ -12,11 +12,12 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class Controller
 {
- 
+
     /**
      * Deliver base HTML layout
+     *
      * @return Response
-     * @Route("/", name="index", methods="GET")
+     * @Route("/", name="index", methods="GET", options={"cache":3600})
      * @Guest
      */
     public function index() : Response

@@ -57,16 +57,7 @@ class ConsoleCompilerPass implements CompilerPassInterface
      */
     private function formatDefinition(InputDefinition $definition)
     {
-        $arguments = [];
-
-        foreach ($definition->getArguments() as $argument) {
-            $mode = $this->getArgumentMode($argument);
-
-            $arguments[] = new Definition(
-                InputArgument::class,
-                [$argument->getName(), $mode, $argument->getDescription(), $argument->getDefault()]
-            );
-        }
+        $arguments = $this->getArguments($definition);
 
         foreach ($definition->getOptions() as $option) {
             $mode = $this->getOptionMode($option);
@@ -127,5 +118,27 @@ class ConsoleCompilerPass implements CompilerPassInterface
         }
 
         return $mode;
+    }
+
+    /**
+     * @param InputDefinition $definition
+     * @return array
+     */
+    private function getArguments(InputDefinition $definition) : array
+    {
+        $arguments = [];
+
+        foreach ($definition->getArguments() as $argument) {
+            $mode = $this->getArgumentMode($argument);
+
+            $arguments[] = new Definition(InputArgument::class, [
+                $argument->getName(),
+                $mode,
+                $argument->getDescription(),
+                $argument->getDefault()
+            ]);
+        }
+
+        return $arguments;
     }
 }

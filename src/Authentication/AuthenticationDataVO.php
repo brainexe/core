@@ -17,7 +17,7 @@ class AuthenticationDataVO
     /**
      * @var string
      */
-    public $oneTimeToken;
+    private $oneTimeToken;
 
     /**
      * @param UserVO $userVo

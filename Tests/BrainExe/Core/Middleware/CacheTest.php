@@ -7,6 +7,7 @@ use Doctrine\Common\Cache\CacheProvider;
 use Monolog\Logger;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase as TestCase;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Route;
@@ -65,7 +66,9 @@ class CacheTest extends TestCase
     public function testProcessNotCachedRequest()
     {
         /** @var MockObject|Request $request */
-        $request     = $this->getMock(Request::class);
+        $request = $this->getMock(Request::class);
+        $request->attributes = new ParameterBag();
+
         $route       = new Route('/path/');
         $requestUri  = 'request';
 
@@ -110,7 +113,9 @@ class CacheTest extends TestCase
     public function testProcessCachedRequest()
     {
         /** @var MockObject|Request $request */
-        $request     = $this->getMock(Request::class);
+        $request = $this->getMock(Request::class);
+        $request->attributes = new ParameterBag();
+
         $response    = new Response();
         $response->headers->set('X-Cache', 'hit');
         $route       = new Route('/path/');

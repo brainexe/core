@@ -1,6 +1,6 @@
 <?php
 
-namespace BrainExe\Core;
+namespace BrainExe\Core\Cron;
 
 use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Core\Annotations\EventListener;
@@ -68,8 +68,10 @@ class CacheListener
 
         foreach ($this->gateway->getEventsByType(CronEvent::CRON) as $id => $job) {
             /** @var CronEvent $event */
-            $event = $job->event;
-            $name  = $event->getEvent()->timingId;
+            $event = $job->getEvent();
+            /** @var TimingEvent $timingEvent */
+            $timingEvent = $event->getEvent();
+            $name  = $timingEvent->getTimingId();
             if (isset($crons[$name])) {
                 unset($crons[$name]);
             }

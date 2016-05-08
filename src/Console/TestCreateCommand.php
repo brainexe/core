@@ -269,7 +269,7 @@ class TestCreateCommand extends Command
 
         if ($constructor && $constructor->getNumberOfParameters()) {
             $mock = sprintf(
-                "\t\t\$this->%s = \$this->getMock(%s::class, [], [], '', false);",
+                "\t\t\$this->%s = \$this->getMockWithoutInvokingTheOriginalConstructor(%s::class);",
                 lcfirst($mockName),
                 $mockName
             );

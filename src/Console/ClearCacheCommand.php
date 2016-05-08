@@ -52,9 +52,10 @@ class ClearCacheCommand extends Command
     {
         $output->write('Rebuild DIC...');
         $this->rebuild->rebuildDIC(true);
-        $output->writeln('<info>done</info>');
 
-        $event = new ClearCacheEvent($this->getApplication(), $input, $output);
+        $event = new ClearCacheEvent($output);
         $this->dispatchEvent($event);
+
+        $output->writeln('<info>done</info>');
     }
 }

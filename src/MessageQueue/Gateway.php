@@ -61,8 +61,8 @@ class Gateway
      */
     public function addEvent(AbstractEvent $event, int $timestamp = 0)
     {
-        $jobId = $this->generateUniqueId('jobid:' . $event->eventName);
-        $jobId = sprintf('%s:%s', $event->eventName, $jobId);
+        $jobId = $this->generateUniqueId('jobid:' . $event->getEventName());
+        $jobId = sprintf('%s:%s', $event->getEventName(), $jobId);
 
         $job = new Job($event, $jobId, $timestamp);
 

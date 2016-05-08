@@ -6,7 +6,7 @@ use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Annotations\Annotations\Service;
 
 /**
- * @Service("Core.Locale", public=false)
+ * @Service("Core.Locale", public=true)
  */
 class Locale
 {
@@ -19,12 +19,17 @@ class Locale
     private $locales;
 
     /**
-     * @Inject("%locales%");
+     * @Inject({"%locales%", "%application.defaultLocale%"});
      * @param string[] $locales
+     * @param string $defaultLocale
      */
-    public function __construct(array $locales)
+    public function __construct(array $locales, string $defaultLocale = '')
     {
         $this->locales = $locales;
+
+        if ($defaultLocale) {
+            $this->setLocale($defaultLocale);
+        }
     }
 
     /**

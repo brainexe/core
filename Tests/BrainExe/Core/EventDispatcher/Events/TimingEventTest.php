@@ -14,6 +14,6 @@ class TimingEventTest extends TestCase
 
         $event = new TimingEvent($timingId);
 
-        $this->assertEquals($timingId, $event->timingId);
+        $this->assertEquals($timingId, $event->getTimingId());
     }
 }

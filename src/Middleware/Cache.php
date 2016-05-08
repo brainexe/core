@@ -13,8 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Route;
 
 /**
- * @todo use X-Cache / X-Validate
- * @todo invalidate
+ * @todo X-Invalidate
  * @Middleware("Middleware.Cache")
  */
 class Cache extends AbstractMiddleware
@@ -24,11 +23,6 @@ class Cache extends AbstractMiddleware
 
     const DEFAULT_TTL = 60;
     const PREFIX = 'cache:';
-
-    /**
-     * @var string
-     */
-    private $cacheKey;
 
     /**
      * @var bool
@@ -49,17 +43,21 @@ class Cache extends AbstractMiddleware
      */
     public function processRequest(Request $request, Route $route)
     {
-        if (!$this->enabled || !$route->getOption('cache') || !$request->isMethod('GET')) {
+        if (!$this->enabled || !$route->hasOption('cache') || !$request->isMethod('GET')) {
             return null;
         }
 
-        $this->cacheKey = $this->generateCacheKey($request);
+        $cacheKey = $this->generateCacheKey($request);
 
+        $ttl   = $route->getOption('cache');
         $cache = $this->getCache();
-
-        if ($cache->contains($this->cacheKey)) {
-            return $this->handleCached($cache);
+        if ($cache->contains($cacheKey)) {
+            return $this->handleCached($cache, $cacheKey, $ttl);
         }
+
+        // enable cache for current request. Store response later in given key
+        $request->attributes->set('_cacheKey', $cacheKey);
+        $request->attributes->set('_cacheTTL', $ttl);
 
         return null;
     }
@@ -69,44 +67,49 @@ class Cache extends AbstractMiddleware
      */
     public function processResponse(Request $request, Response $response)
     {
-        if (!$this->cacheKey) {
+        if (!$response->isOk()) {
             return;
         }
 
-        if (!$response->isOk()) {
+        $cacheKey = $request->attributes->get('_cacheKey');
+        $ttl      = $request->attributes->get('_cacheTTL');
+        if (empty($cacheKey)) {
             return;
         }
 
         $cache = $this->getCache();
 
-        $this->debug(sprintf('save into cache: %s', $this->cacheKey));
+        $this->info(sprintf('miss: save into cache: %s', $cacheKey), [
+            'application' => 'cache',
+            'type'        => 'miss',
+            'cacheKey'    => $cacheKey,
+            'ttl'         => $ttl,
+        ]);
 
-        $cache->save($this->cacheKey, $response, $this->getTTL());
-        $this->cacheKey = null;
+        $cache->save($cacheKey, $response, $ttl);
+
+        $response->headers->set('X-Cache', 'miss');
+        $response->setMaxAge($ttl);
+        $response->setExpires(new DateTime(sprintf('+%d seconds', $ttl)));
     }
 
     /**
-     * @param Request $request
-     * @return string
-     */
-    private function generateCacheKey(Request $request) : string
-    {
-        return self::PREFIX . $request->getRequestUri();
-    }
-
-    /**
-     * @param CacheProvider$cache
+     * @param CacheProvider $cache
+     * @param string $cacheKey
+     * @param int $ttl
      * @return Response
      */
-    private function handleCached(CacheProvider $cache) : Response
+    private function handleCached(CacheProvider $cache, string $cacheKey, int $ttl) : Response
     {
-        $this->debug(sprintf('fetch from cache: %s', $this->cacheKey));
+        $this->info(sprintf('hit: fetch from cache: %s', $cacheKey), [
+            'application' => 'cache',
+            'type'        => 'hit',
+            'cacheKey'    => $cacheKey,
+            'ttl'         => $ttl,
+        ]);
 
         /** @var Response $response */
-        $response       = $cache->fetch($this->cacheKey);
-        $this->cacheKey = null;
-
-        $ttl = $this->getTTL();
+        $response = $cache->fetch($cacheKey);
 
         $response->headers->set('X-Cache', 'hit');
         $response->setMaxAge($ttl);
@@ -116,10 +119,11 @@ class Cache extends AbstractMiddleware
     }
 
     /**
-     * @return int
+     * @param Request $request
+     * @return string
      */
-    private function getTTL() : int
+    private function generateCacheKey(Request $request) : string
     {
-        return self::DEFAULT_TTL;
+        return self::PREFIX . $request->getRequestUri();
     }
 }

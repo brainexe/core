@@ -1,6 +1,6 @@
 <?php
 
-namespace BrainExe\Core;
+namespace BrainExe\Core\Cron;
 
 use BrainExe\Annotations\Annotations\Service;
 use BrainExe\Core\Cron\CronDefinition;

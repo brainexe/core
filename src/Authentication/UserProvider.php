@@ -128,12 +128,11 @@ class UserProvider
      */
     public function register(UserVO $user) : int
     {
-        $redis        = $this->getRedis()->pipeline();
-        $passwordHash = $this->generateHash($user->password);
+        $redis = $this->getRedis()->pipeline();
 
         $userArray = [
             'username' => $user->getUsername(),
-            'password' => $passwordHash,
+            'password' => $this->generateHash($user->password),
             'roles'    => implode(',', $user->roles),
             'one_time_secret' => $user->one_time_secret,
             'avatar'   => $user->avatar
@@ -141,7 +140,7 @@ class UserProvider
 
         $newUserId = $this->generateUniqueId('userid');
 
-        $redis->hset(self::REDIS_USER_NAMES, strtolower($user->getUsername()), $newUserId);
+        $redis->hset(self::REDIS_USER_NAMES, mb_strtolower($user->getUsername()), $newUserId);
         $redis->hmset($this->getKey($newUserId), $userArray);
 
         $redis->execute();
@@ -167,9 +166,9 @@ class UserProvider
         $this->dispatchEvent($event);
 
         $redis = $this->getRedis();
-        $redis->hdel(self::REDIS_USER_NAMES, strtolower($user->getUsername()));
+        $redis->hdel(self::REDIS_USER_NAMES, mb_strtolower($user->getUsername()));
         $redis->del($this->getKey($userId));
-        
+
         return true;
     }
 

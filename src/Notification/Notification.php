@@ -4,6 +4,7 @@ namespace BrainExe\Core\Notification;
 
 use BrainExe\Core\EventDispatcher\AbstractEvent;
 use BrainExe\Core\EventDispatcher\PushViaWebsocket;
+use BrainExe\Core\Traits\JsonSerializableTrait;
 use Monolog\Logger;
 
 /**
@@ -11,6 +12,7 @@ use Monolog\Logger;
  */
 class Notification extends AbstractEvent implements PushViaWebsocket
 {
+    use JsonSerializableTrait;
 
     const NOTIFY = 'notification:notify';
     const RECIPIENT_SYSTEM = 0;

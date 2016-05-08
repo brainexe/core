@@ -22,6 +22,8 @@ class UserVO implements JsonSerializable
     const AVATAR_4 = 'avatar4.png';
     const AVATAR_5 = 'avatar5.png';
 
+    const DEFAULT_AVATAR = self::AVATAR_5;
+
     const ROLES = [
         self::ROLE_ADMIN,
         self::ROLE_USER

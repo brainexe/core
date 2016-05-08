@@ -43,7 +43,7 @@ class UserController
 
     /**
      * @return string[]
-     * @Route("/user/avatar/", name="authenticate.avatars", methods="GET")
+     * @Route("/user/avatar/", name="authenticate.avatars", methods="GET", options={"cache":10800})
      */
     public function getAvatars() : array
     {
@@ -92,7 +92,7 @@ class UserController
      * Receives a list of all registered user names. indexed by user-id
      *
      * @return string[]
-     * @Route("/user/list/", name="authenticate.list_user", methods="GET")
+     * @Route("/user/list/", name="authenticate.list_user", methods="GET", options={"cache":30})
      */
     public function getList() : array
     {

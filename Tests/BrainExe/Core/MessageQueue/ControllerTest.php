@@ -41,16 +41,18 @@ class ControllerTest extends TestCase
 
     public function testDeleteJob()
     {
-        $jobId = 10;
+        $jobId     = 10;
+        $eventType = 'eventType';
+
         $request = new Request();
 
         $this->messageQueue
             ->expects($this->once())
             ->method('deleteEvent')
-            ->with($jobId)
+            ->with($jobId, $eventType)
             ->willReturn(true);
 
-        $actual = $this->subject->deleteJob($request, $jobId);
+        $actual = $this->subject->deleteJob($request, $eventType, $jobId);
 
         $this->assertTrue($actual);
     }

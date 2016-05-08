@@ -68,13 +68,13 @@ class Worker
         $this->info(
             sprintf(
                 '[MQ]: %s. Time: %0.2fms',
-                $event->eventName,
+                $event->getEventName(),
                 $neededTime * 1000
             ),
             [
                 'channel'   => 'message_queue',
                 'time'      => round($neededTime * 1000, 2),
-                'eventName' => $event->eventName,
+                'eventName' => $event->getEventName(),
                 'jobId'     => $job->getJobId(),
                 'event'     => json_encode($event)
             ]
