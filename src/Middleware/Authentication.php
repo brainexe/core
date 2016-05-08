@@ -21,34 +21,19 @@ use Symfony\Component\Routing\Route;
 class Authentication extends AbstractMiddleware
 {
     /**
-     * @var bool
-     */
-    private $guestsAllowed;
-
-    /**
      * @var LoadUser
      */
     private $loadUser;
 
     /**
      * @Inject({
-     *  "%application.guests_allowed%",
      *  "@Core.Authentication.LoadUser",
      * })
-     * @param boolean $guestsAllowed
      * @param LoadUser $loadUser
      */
-    public function __construct($guestsAllowed, LoadUser $loadUser)
+    public function __construct(LoadUser $loadUser)
     {
-        $this->guestsAllowed = $guestsAllowed;
         $this->loadUser      = $loadUser;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function processResponse(Request $request, Response $response)
-    {
     }
 
     /**
@@ -70,7 +55,7 @@ class Authentication extends AbstractMiddleware
 
         $this->checkForRole($route, $user);
 
-        if ($this->guestsAllowed || $route->hasDefault('_guest')) {
+        if ($route->hasDefault('_guest')) {
             return null;
         }
 

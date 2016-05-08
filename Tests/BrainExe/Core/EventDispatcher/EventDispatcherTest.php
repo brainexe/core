@@ -7,6 +7,7 @@ use BrainExe\Core\EventDispatcher\BackgroundEvent;
 use BrainExe\Core\EventDispatcher\DelayedEvent;
 use BrainExe\Core\EventDispatcher\EventDispatcher;
 use BrainExe\Core\EventDispatcher\PushViaWebsocket;
+use BrainExe\Core\Traits\JsonSerializableTrait;
 use BrainExe\Core\Websockets\WebSocketEvent;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase as TestCase;
@@ -20,6 +21,8 @@ class TestEvent extends AbstractEvent
 
 class TestWebsocketEvent extends AbstractEvent implements PushViaWebsocket
 {
+    use JsonSerializableTrait;
+
     const TYPE = 'websocket.test';
 }
 

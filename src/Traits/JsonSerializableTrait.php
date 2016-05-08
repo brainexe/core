@@ -5,7 +5,7 @@ namespace BrainExe\Core\Traits;
 /**
  * @api
  */
-trait SerializableTrait
+trait JsonSerializableTrait
 {
     /**
      * @return array

@@ -15,7 +15,7 @@ class DelayedEvent extends MessageQueueEvent
     /**
      * @var int
      */
-    protected $timestamp;
+    private $timestamp;
 
     /**
      * @param AbstractEvent $event

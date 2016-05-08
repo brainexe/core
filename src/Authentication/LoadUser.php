@@ -34,7 +34,7 @@ class LoadUser
      */
     public function loadUserByUsername(string $username) : UserVO
     {
-        $userId = $this->redis->hget(UserProvider::REDIS_USER_NAMES, strtolower($username));
+        $userId = $this->redis->hget(UserProvider::REDIS_USER_NAMES, mb_strtolower($username));
 
         if (empty($userId)) {
             throw new UserNotFoundException(sprintf('Username "%s" does not exist.', $username));
@@ -82,7 +82,7 @@ class LoadUser
         $user->password_hash   = $redisUser['password'];
         $user->one_time_secret = $redisUser['one_time_secret'] ?? null;
         $user->roles           = array_filter(explode(',', $redisUser['roles']));
-        $user->avatar          = $redisUser['avatar'] ?? UserVO::AVATAR_5;
+        $user->avatar          = $redisUser['avatar'] ?? UserVO::DEFAULT_AVATAR;
 
         return $user;
     }

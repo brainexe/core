@@ -58,9 +58,6 @@ class SwaggerDumpCommand extends Command
         $applicationName = $this->getParameter('application.name');
 
         $routes = $this->routes->all();
-
-        $dumper = new Dumper();
-
         $resources = $this->getResources($routes);
 
         $url = parse_url($this->getParameter('application.url'));
@@ -92,6 +89,7 @@ class SwaggerDumpCommand extends Command
             'paths' => $resources,
         ];
 
+        $dumper = new Dumper();
         $output->writeln($dumper->dump($formatted, 4));
     }
 
@@ -99,7 +97,7 @@ class SwaggerDumpCommand extends Command
      * @param Route $route
      * @return Generator
      */
-    private function getParameters(Route $route)
+    private function getParameters(Route $route) : Generator
     {
         /** @var CompiledRoute $compiled */
         $compiled = $route->compile();
@@ -139,6 +137,7 @@ class SwaggerDumpCommand extends Command
 
             $resources[$route->getPath()][strtolower(implode(',', $route->getMethods()) ?: 'get')] = $data;
         }
+
         return $resources;
     }
 }

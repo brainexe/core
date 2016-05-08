@@ -37,7 +37,6 @@ class AuthenticationTest extends TestCase
         $this->loadUser = $this->getMock(LoadUser::class, [], [], '', false);
 
         $this->subject = new Authentication(
-            false,
             $this->loadUser
         );
     }
@@ -49,35 +48,9 @@ class AuthenticationTest extends TestCase
         $this->subject->processResponse($request, $response);
     }
 
-    public function testProcessRequestWhenApplicationGuestsAllowed()
-    {
-        $this->subject = new Authentication(
-            true,
-            $this->loadUser
-        );
-
-        $userId = 42;
-        $user   = $this->loadUser($userId);
-
-        $session = new Session(new MockArraySessionStorage());
-        $session->set('user_id', $userId);
-
-        $request = new Request();
-        $request->setSession($session);
-
-        $route = new Route('/path/');
-
-        $actualResult = $this->subject->processRequest($request, $route);
-
-        $this->assertNull($actualResult);
-        $this->assertEquals($userId, $request->attributes->get('user_id'));
-        $this->assertEquals($user, $request->attributes->get('user'));
-    }
-
     public function testProcessRequestForGuestRoutes()
     {
         $this->subject = new Authentication(
-            false,
             $this->loadUser
         );
 
@@ -103,7 +76,6 @@ class AuthenticationTest extends TestCase
     public function testProcessRequestWhenNotLoggedIn()
     {
         $this->subject = new Authentication(
-            false,
             $this->loadUser
         );
 
@@ -140,7 +112,6 @@ class AuthenticationTest extends TestCase
     public function testProcessRequest()
     {
         $this->subject = new Authentication(
-            false,
             $this->loadUser
         );
 
@@ -169,7 +140,6 @@ class AuthenticationTest extends TestCase
     public function testProcessRequestWithoutRole()
     {
         $this->subject = new Authentication(
-            false,
             $this->loadUser
         );
 
@@ -192,7 +162,7 @@ class AuthenticationTest extends TestCase
      * @param int $userId
      * @return UserVO
      */
-    private function loadUser($userId)
+    private function loadUser($userId) : UserVO
     {
         $user = new UserVO();
 

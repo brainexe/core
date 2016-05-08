@@ -1,13 +1,11 @@
 <?php
 
-namespace BrainExe\Core\DependencyInjection;
+namespace BrainExe\Core\Cron;
 
 use BrainExe\Annotations\Annotations\Service;
 use BrainExe\Annotations\Loader;
 use BrainExe\Core\Core;
 use BrainExe\Core\DependencyInjection\CompilerPass\GlobalCompilerPass;
-use Doctrine\Common\Cache\ApcuCache;
-use Doctrine\Common\Cache\VoidCache;
 use Symfony\Bridge\ProxyManager\LazyProxy\PhpDumper\ProxyDumper;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -52,11 +50,11 @@ class Rebuild
 
         $appFinder = new Finder();
         $appFinder->directories()
-            ->in([ROOT . 'vendor/brainexe/'])
-            ->depth("<=1")
-            ->name('src');
+                  ->in([ROOT . 'vendor/brainexe/'])
+                  ->depth("<=1")
+                  ->name('src');
 
-        $annotationLoader->load(ROOT . 'src');
+        $annotationLoader->load(ROOT . 'src/');
 
         foreach ($appFinder as $dir) {
             /** @var SplFileInfo $dir */

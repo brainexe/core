@@ -18,7 +18,7 @@ trait RedisMockTrait
             'multi', 'exec', 'execute', 'exists', 'pipeline', 'incr',
             'hgetall', 'hmset', 'hmget', 'hset', 'hdel', 'hget', 'hincrby', 'set',
             'evalsha', 'load', 'publish', 'subscribe', 'info', 'hincrbyfloat', 'lrem',
-            'del', 'add', 'keys', 'brPop', 'lpush', 'runmessagequeue', 'llen', 'lrange',
+            'del', 'add', 'keys', 'brpop', 'lpush', 'runmessagequeue', 'llen', 'lrange',
             'zrangebyscore', 'zcard', 'zrevrangebyscore', 'zadd', 'zincrby', 'zdeleterangebyscore', 'zrem'
         ], [], '', false);
     }

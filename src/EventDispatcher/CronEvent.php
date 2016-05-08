@@ -3,19 +3,21 @@
 namespace BrainExe\Core\EventDispatcher;
 
 use BrainExe\Core\MessageQueue\Event\MessageQueueEvent;
+use BrainExe\Core\Traits\JsonSerializableTrait;
 
 /**
  * @api
  */
 class CronEvent extends MessageQueueEvent implements PushViaWebsocket
 {
+    use JsonSerializableTrait;
 
     const CRON = 'message_queue.cron';
 
     /**
      * @var string
      */
-    public $expression;
+    private $expression;
 
     /**
      * @param AbstractEvent $event

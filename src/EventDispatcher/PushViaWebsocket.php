@@ -2,9 +2,11 @@
 
 namespace BrainExe\Core\EventDispatcher;
 
+use JsonSerializable;
+
 /**
  * @api
  */
-interface PushViaWebsocket
+interface PushViaWebsocket extends JsonSerializable
 {
 }
