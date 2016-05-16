@@ -92,6 +92,6 @@ class ControllerCompilerPass implements CompilerPassInterface
         $routeDumper = new PhpMatcherDumper($routerCollection);
         $content     = $routeDumper->dump();
         file_put_contents($routerFile, $content);
-        chmod($routerFile, 0777);
+        @chmod($routerFile, 0777);
     }
 }

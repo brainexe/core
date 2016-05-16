@@ -4,6 +4,7 @@ namespace BrainExe\Core\Authentication\Controller;
 
 use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Core\Annotations\Controller;
+use BrainExe\Core\Annotations\Guest;
 use BrainExe\Core\Annotations\Route;
 use BrainExe\Core\Authentication\Settings\Settings;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,6 +32,7 @@ class SettingsController
      * @param Request $request
      * @return string[]
      * @Route("/settings/", name="settings.all", methods="GET")
+     * @Guest
      */
     public function all(Request $request)
     {

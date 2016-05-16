@@ -128,7 +128,7 @@
 		<service id="Cache" class="Doctrine\Common\Cache\PredisCache" public="false">
 			<argument type="service" id="redis"/>
 			<call method="setNamespace">
-				<argument>cache</argument>
+				<argument>cache:%dicId%</argument>
 			</call>
 		</service>
 

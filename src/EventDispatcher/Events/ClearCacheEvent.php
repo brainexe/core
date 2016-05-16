@@ -3,33 +3,17 @@
 namespace BrainExe\Core\EventDispatcher\Events;
 
 use BrainExe\Core\EventDispatcher\AbstractEvent;
-use Symfony\Component\Console\Output\OutputInterface;
+use BrainExe\Core\EventDispatcher\PushViaWebsocket;
+use BrainExe\Core\Traits\JsonSerializableTrait;
 
-class ClearCacheEvent extends AbstractEvent
+class ClearCacheEvent extends AbstractEvent implements PushViaWebsocket
 {
+    use JsonSerializableTrait;
 
     const NAME = 'cache.clear';
 
-    /**
-     * @var OutputInterface
-     */
-    public $output;
-
-    /**
-     * @param OutputInterface $output
-     */
-    public function __construct(OutputInterface $output = null)
+    public function __construct()
     {
         parent::__construct(self::NAME);
-
-        $this->output = $output;
-    }
-
-    /**
-     * @return OutputInterface
-     */
-    public function getOutput()
-    {
-        return $this->output;
     }
 }
