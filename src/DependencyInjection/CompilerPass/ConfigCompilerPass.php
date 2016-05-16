@@ -30,6 +30,8 @@ class ConfigCompilerPass implements CompilerPassInterface
             $loader->load(ROOT . '/container.xml');
         }
 
+        $container->setParameter('dicId', uniqid());
+
         if (!$container->hasParameter('debug')) { // todo more into expression language in container.xml ?
             $environment = $container->getParameter('environment');
             $container->setParameter('debug', $environment !== Environment::PRODUCTION);
