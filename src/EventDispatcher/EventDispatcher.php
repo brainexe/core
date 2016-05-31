@@ -72,16 +72,6 @@ class EventDispatcher extends ContainerAwareEventDispatcher
 
     /**
      * @param AbstractEvent $event
-     */
-    public function dispatchAsWebsocketEvent(AbstractEvent $event)
-    {
-        $wrappedEvent = new WebSocketEvent($event);
-
-        $this->dispatch($wrappedEvent->getEventName(), $wrappedEvent);
-    }
-
-    /**
-     * @param AbstractEvent $event
      * @param int|null $timestamp
      */
     public function dispatchInBackground(AbstractEvent $event, int $timestamp = 0)
@@ -93,5 +83,15 @@ class EventDispatcher extends ContainerAwareEventDispatcher
         }
 
         $this->dispatchEvent($wrapper);
+    }
+
+    /**
+     * @param AbstractEvent $event
+     */
+    private function dispatchAsWebsocketEvent(AbstractEvent $event)
+    {
+        $wrappedEvent = new WebSocketEvent($event);
+
+        $this->dispatch($wrappedEvent->getEventName(), $wrappedEvent);
     }
 }

@@ -5,7 +5,6 @@ namespace Tests\BrainExe\Core\MessageQueue;
 use BrainExe\Core\EventDispatcher\AbstractEvent;
 use BrainExe\Core\EventDispatcher\CronEvent;
 use BrainExe\Core\EventDispatcher\EventDispatcher;
-use BrainExe\Core\Stats\Event;
 use BrainExe\Core\MessageQueue\Gateway;
 use BrainExe\Core\MessageQueue\Job;
 use BrainExe\Core\MessageQueue\Worker;
@@ -61,11 +60,6 @@ class WorkerTest extends TestCase
             ->expects($this->at(0))
             ->method('dispatchEvent')
             ->with($event);
-        $statsEvent = new Event(Event::INCREASE, 'message_queue:handled:');
-        $this->dispatcher
-            ->expects($this->at(1))
-            ->method('dispatchEvent')
-            ->with($statsEvent);
 
         $this->subject->executeJob($job);
     }
@@ -85,11 +79,6 @@ class WorkerTest extends TestCase
             ->expects($this->at(0))
             ->method('dispatchEvent')
             ->with($event);
-        $statsEvent = new Event(Event::INCREASE, 'message_queue:handled:');
-        $this->dispatcher
-            ->expects($this->at(1))
-            ->method('dispatchEvent')
-            ->with($statsEvent);
 
         $this->gateway
             ->expects($this->once())

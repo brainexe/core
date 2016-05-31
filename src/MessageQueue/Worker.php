@@ -7,7 +7,6 @@ use BrainExe\Annotations\Annotations\Service;
 use BrainExe\Core\EventDispatcher\AbstractEvent;
 use BrainExe\Core\EventDispatcher\CronEvent;
 use BrainExe\Core\EventDispatcher\JobEvent;
-use BrainExe\Core\Stats\Event;
 use BrainExe\Core\Traits\EventDispatcherTrait;
 use BrainExe\Core\Traits\LoggerTrait;
 use Cron\CronExpression;
@@ -80,12 +79,6 @@ class Worker
             ]
         );
 
-        $event = new Event(
-            Event::INCREASE,
-            sprintf('message_queue:handled:%s', $event->getEventName())
-        );
-        $this->dispatchEvent($event);
-
         $handledEvent = new JobEvent(JobEvent::HANDLED, $job);
         $this->dispatcher->dispatchEvent($handledEvent);
     }
@@ -98,6 +91,7 @@ class Worker
     private function handleCronEvent(Job $job, CronEvent $event) : AbstractEvent
     {
         if (!$event->isPropagationStopped()) {
+            // todo use CronExpression service
             $cron = CronExpression::factory($event->getExpression());
             $nextRun = $cron->getNextRunDate()->getTimestamp();
 
