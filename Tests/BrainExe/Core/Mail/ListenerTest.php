@@ -23,7 +23,7 @@ class ListenerTest extends TestCase
 
     public function setup()
     {
-        $this->mailer  = $this->getMock(PHPMailer::class);
+        $this->mailer  = $this->createMock(PHPMailer::class);
         $this->subject = new Listener($this->mailer);
     }
 

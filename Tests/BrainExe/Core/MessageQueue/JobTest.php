@@ -17,7 +17,7 @@ class JobTest extends TestCase
     public function setup()
     {
         /** @var AbstractEvent $event */
-        $event     = $this->getMock(AbstractEvent::class, [], [], '', false);
+        $event     = $this->createMock(AbstractEvent::class);
         $jobId  = "type:111";
         $timestamp = 1000;
 

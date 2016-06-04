@@ -11,7 +11,7 @@ class DelayedEventTest extends TestCase
     public function testConstructor()
     {
         /** @var AbstractEvent $wrapped */
-        $wrapped   = $this->getMockWithoutInvokingTheOriginalConstructor(AbstractEvent::class);
+        $wrapped   = $this->createMock(AbstractEvent::class);
         $timestamp = 3600;
 
         $event = new DelayedEvent($wrapped, $timestamp);

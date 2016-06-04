@@ -30,7 +30,7 @@ class LocaleTest extends TestCase
 
     public function setUp()
     {
-        $this->locale  = $this->getMock(LocaleModel::class, [], [], '', false);
+        $this->locale  = $this->createMock(LocaleModel::class);
         $this->subject = new Locale($this->locale);
     }
 

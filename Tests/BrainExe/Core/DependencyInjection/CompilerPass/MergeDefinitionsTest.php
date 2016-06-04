@@ -24,12 +24,7 @@ class MergeDefinitionsTest extends TestCase
     public function setUp()
     {
         $this->subject = new MergeDefinitions();
-        $this->container = $this->getMock(ContainerBuilder::class, [
-            'findTaggedServiceIds',
-            'addMethodCall',
-            'getDefinition',
-            'removeDefinition',
-        ]);
+        $this->container = $this->createMock(ContainerBuilder::class);
     }
 
     public function testProcessCompiler()
@@ -44,8 +39,8 @@ class MergeDefinitionsTest extends TestCase
                 ]
             ]);
 
-        $child  = $this->getMock(Definition::class);
-        $parent = $this->getMock(Definition::class);
+        $child  = $this->createMock(Definition::class);
+        $parent = $this->createMock(Definition::class);
 
         $this->container
             ->expects($this->at(1))

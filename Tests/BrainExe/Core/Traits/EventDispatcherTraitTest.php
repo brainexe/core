@@ -27,7 +27,7 @@ class EventDispatcherTraitTest extends TestCase
 
     public function setUp()
     {
-        $this->dispatcher = $this->getMock(EventDispatcher::class, [], [], '', false);
+        $this->dispatcher = $this->createMock(EventDispatcher::class);
 
         $this->subject = $this->getMockForTrait(EventDispatcherTrait::class);
         $this->subject->setEventDispatcher($this->dispatcher);

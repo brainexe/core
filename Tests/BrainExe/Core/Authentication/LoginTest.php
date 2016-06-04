@@ -49,10 +49,10 @@ class LoginTest extends TestCase
 
     public function setUp()
     {
-        $this->loadUser       = $this->getMock(LoadUser::class, [], [], '', false);
-        $this->dispatcher     = $this->getMock(EventDispatcher::class, [], [], '', false);
-        $this->token          = $this->getMock(Token::class, [], [], '', false);
-        $this->passwordHasher = $this->getMock(PasswordHasher::class, [], [], '', false);
+        $this->loadUser       = $this->createMock(LoadUser::class);
+        $this->dispatcher     = $this->createMock(EventDispatcher::class);
+        $this->token          = $this->createMock(Token::class);
+        $this->passwordHasher = $this->createMock(PasswordHasher::class);
 
         $this->subject = new Login($this->loadUser, $this->token, $this->passwordHasher);
         $this->subject->setEventDispatcher($this->dispatcher);

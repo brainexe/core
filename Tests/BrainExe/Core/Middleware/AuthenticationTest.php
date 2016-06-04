@@ -34,7 +34,7 @@ class AuthenticationTest extends TestCase
 
     public function setUp()
     {
-        $this->loadUser = $this->getMock(LoadUser::class, [], [], '', false);
+        $this->loadUser = $this->createMock(LoadUser::class);
 
         $this->subject = new Authentication(
             $this->loadUser

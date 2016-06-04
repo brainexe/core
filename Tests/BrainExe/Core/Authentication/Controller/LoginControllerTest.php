@@ -31,7 +31,7 @@ class LoginControllerTest extends TestCase
 
     public function setUp()
     {
-        $this->login   = $this->getMock(Login::class, [], [], '', false);
+        $this->login   = $this->createMock(Login::class);
         $this->subject = new LoginController($this->login);
     }
 

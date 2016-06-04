@@ -33,8 +33,8 @@ class PasswordControllerTest extends TestCase
 
     public function setUp()
     {
-        $this->userProvider   = $this->getMock(UserProvider::class, [], [], '', false);
-        $this->passwordHasher = $this->getMock(PasswordHasher::class, [], [], '', false);
+        $this->userProvider   = $this->createMock(UserProvider::class);
+        $this->passwordHasher = $this->createMock(PasswordHasher::class);
 
         $this->subject = new PasswordController(
             $this->userProvider,

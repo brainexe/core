@@ -35,8 +35,8 @@ class ListServicesCommandTest extends TestCase
 
     public function setUp()
     {
-        $this->rebuild    = $this->getMock(Rebuild::class, [], [], '', false);
-        $this->dispatcher = $this->getMock(EventDispatcher::class, [], [], '', false);
+        $this->rebuild    = $this->createMock(Rebuild::class);
+        $this->dispatcher = $this->createMock(EventDispatcher::class);
 
         $this->subject = new ListServicesCommand($this->rebuild);
         $this->subject->setEventDispatcher($this->dispatcher);
@@ -100,8 +100,8 @@ class ListServicesCommandTest extends TestCase
             'getDefinition',
             'hasDefinition'
         ]);
-        $definition1      = $this->getMock(Definition::class);
-        $definition2      = $this->getMock(Definition::class);
+        $definition1      = $this->createMock(Definition::class);
+        $definition2      = $this->createMock(Definition::class);
 
         $this->rebuild
             ->expects($this->once())

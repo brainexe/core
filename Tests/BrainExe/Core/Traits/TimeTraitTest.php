@@ -22,7 +22,7 @@ class TimeTraitTest extends TestCase
 
     public function setUp()
     {
-        $this->time = $this->getMock(Time::class);
+        $this->time = $this->createMock(Time::class);
 
         $this->subject = $this->getMockForTrait(TimeTrait::class);
         $this->subject->setTime($this->time);

@@ -41,7 +41,7 @@ class EventDispatcherTest extends TestCase
 
     public function setUp()
     {
-        $this->container = $this->getMock(Container::class, [], [], '', false);
+        $this->container = $this->createMock(Container::class);
         $this->subject   = $this->getMock(EventDispatcher::class, ['dispatch'], [$this->container, true], '');
     }
 
@@ -70,7 +70,7 @@ class EventDispatcherTest extends TestCase
 
     public function testDispatch()
     {
-        $this->subject = $this->getMock(EventDispatcher::class, null, [], '', false);
+        $this->subject = $this->createMock(EventDispatcher::class);
 
         $event = new TestWebsocketEvent(TestWebsocketEvent::TYPE);
 

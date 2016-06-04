@@ -26,7 +26,7 @@ class ControllerResolverTest extends TestCase
 
     public function setUp()
     {
-        $this->container = $this->getMock(Container::class, [], [], '', false);
+        $this->container = $this->createMock(Container::class);
 
         $this->subject = new ControllerResolver($this->container);
     }

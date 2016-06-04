@@ -34,10 +34,8 @@ class SetDefinitionFileCompilerPassTest extends TestCase
     public function setUp()
     {
         $this->subject    = new SetDefinitionFileCompilerPass();
-        $this->container  = $this->getMock(ContainerBuilder::class, [
-            'getDefinitions',
-        ]);
-        $this->definition = $this->getMock(Definition::class);
+        $this->container  = $this->createMock(ContainerBuilder::class);
+        $this->definition = $this->createMock(Definition::class);
     }
 
 

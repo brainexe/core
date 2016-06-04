@@ -48,10 +48,10 @@ class AppKernelTest extends TestCase
 
     public function setUp()
     {
-        $this->controllerResolver = $this->getMock(ControllerResolver::class, [], [], '', false);
-        $this->routeCollection    = $this->getMock(SerializedRouteCollection::class, [], [], '', false);
-        $this->middleWare         = $this->getMock(MiddlewareInterface::class, [], [], '', false);
-        $this->urlMatcher         = $this->getMock(UrlMatcher::class);
+        $this->controllerResolver = $this->createMock(ControllerResolver::class);
+        $this->routeCollection    = $this->createMock(SerializedRouteCollection::class);
+        $this->middleWare         = $this->createMock(MiddlewareInterface::class);
+        $this->urlMatcher         = $this->createMock(UrlMatcher::class);
 
         $this->subject = new AppKernel(
             $this->controllerResolver,
@@ -71,7 +71,7 @@ class AppKernelTest extends TestCase
             '_route' => $routeName = 'route_name'
         ];
 
-        $route = $this->getMock(Route::class, [], [], '', false);
+        $route = $this->createMock(Route::class);
 
         $this->middleWare
             ->expects($this->once())
@@ -131,7 +131,7 @@ class AppKernelTest extends TestCase
             '_route' => $routeName = 'route_name'
         ];
 
-        $route = $this->getMock(Route::class, [], [], '', false);
+        $route = $this->createMock(Route::class);
 
         $this->middleWare
             ->expects($this->once())

@@ -30,7 +30,7 @@ class CreateUserCommandTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->mockRegister = $this->getMock(Register::class, [], [], '', false);
+        $this->mockRegister = $this->createMock(Register::class);
 
         $this->subject = new CreateUserCommand($this->mockRegister);
     }

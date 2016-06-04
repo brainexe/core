@@ -26,7 +26,7 @@ class SettingsControllerTest extends TestCase
 
     public function setUp()
     {
-        $this->settings = $this->getMock(Settings::class, [], [], '', false);
+        $this->settings = $this->createMock(Settings::class);
 
         $this->subject = new SettingsController($this->settings);
     }

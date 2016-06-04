@@ -11,7 +11,7 @@ class BackgroundEventTest extends TestCase
     public function testConstructor()
     {
         /** @var AbstractEvent $wrapped */
-        $wrapped = $this->getMockWithoutInvokingTheOriginalConstructor(AbstractEvent::class);
+        $wrapped = $this->createMock(AbstractEvent::class);
 
         $event = new BackgroundEvent($wrapped);
 

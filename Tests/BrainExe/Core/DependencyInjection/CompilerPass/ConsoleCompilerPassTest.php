@@ -33,12 +33,8 @@ class ConsoleCompilerPassTest extends TestCase
     public function setUp()
     {
         $this->subject = new ConsoleCompilerPass();
-        $this->container  = $this->getMock(ContainerBuilder::class, [
-            'findTaggedServiceIds',
-            'getDefinition',
-            'get'
-        ]);
-        $this->consoleDefinition = $this->getMock(Definition::class);
+        $this->container  = $this->createMock(ContainerBuilder::class);
+        $this->consoleDefinition = $this->createMock(Definition::class);
     }
 
     public function testAddSubscriber()
@@ -47,7 +43,7 @@ class ConsoleCompilerPassTest extends TestCase
 
         $definition = new InputDefinition();
 
-        $command = $this->getMock(Command::class, [], [], '', false);
+        $command = $this->createMock(Command::class);
         $command
             ->expects($this->once())
             ->method('getDefinition')

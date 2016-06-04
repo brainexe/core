@@ -29,12 +29,9 @@ class ControllerCompilerPassTest extends TestCase
 
     public function setUp()
     {
-        $this->subject   = $this->getMock(ControllerCompilerPass::class, ['dumpMatcher']);
-        $this->container = $this->getMock(ContainerBuilder::class, [
-            'findTaggedServiceIds',
-            'getDefinition',
-        ]);
-        $this->routerDefinition = $this->getMock(Definition::class);
+        $this->subject   = $this->createMock(ControllerCompilerPass::class);
+        $this->container = $this->createMock(ContainerBuilder::class);
+        $this->routerDefinition = $this->createMock(Definition::class);
     }
 
     public function testProcess()
@@ -44,7 +41,7 @@ class ControllerCompilerPassTest extends TestCase
 
         $route1->setCsrf(true);
 
-        $service = $this->getMock(Definition::class);
+        $service = $this->createMock(Definition::class);
         $serviceIds = [
             $serviceId = 'service_id' => [
                 [$route1],

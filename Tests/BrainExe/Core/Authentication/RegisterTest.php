@@ -35,8 +35,8 @@ class RegisterTest extends TestCase
 
     public function setUp()
     {
-        $this->userProvider   = $this->getMock(UserProvider::class, [], [], '', false);
-        $this->registerTokens = $this->getMock(RegisterTokens::class, [], [], '', false);
+        $this->userProvider   = $this->createMock(UserProvider::class);
+        $this->registerTokens = $this->createMock(RegisterTokens::class);
 
         $this->subject = new Register($this->userProvider, $this->registerTokens, false);
     }

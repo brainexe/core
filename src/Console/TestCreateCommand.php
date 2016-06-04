@@ -264,22 +264,11 @@ class TestCreateCommand extends Command
         $class = $referenceService->getClass();
         $testData->addUse($class);
 
-        $reflection  = new ReflectionClass($class);
-        $constructor = $reflection->getConstructor();
-
-        if ($constructor && $constructor->getNumberOfParameters()) {
-            $mock = sprintf(
-                "\t\t\$this->%s = \$this->getMockWithoutInvokingTheOriginalConstructor(%s::class);",
-                lcfirst($mockName),
-                $mockName
-            );
-        } else {
-            $mock = sprintf(
-                "\t\t\$this->%s = \$this->getMock(%s::class);",
-                lcfirst($mockName),
-                $mockName
-            );
-        }
+        $mock = sprintf(
+            "\t\t\$this->%s = \$this->createMock(%s::class);",
+            lcfirst($mockName),
+            $mockName
+        );
 
         $testData->localMocks[]     = $mock;
         $testData->mockProperties[] = sprintf(

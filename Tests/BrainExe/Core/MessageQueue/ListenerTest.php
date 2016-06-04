@@ -26,7 +26,7 @@ class ListenerTest extends TestCase
 
     public function setup()
     {
-        $this->gateway = $this->getMock(Gateway::class, [], [], '', false);
+        $this->gateway = $this->createMock(Gateway::class);
 
         $this->subject = new Listener($this->gateway);
     }
@@ -51,7 +51,7 @@ class ListenerTest extends TestCase
     public function testOnDelayedEvent()
     {
         /** @var AbstractEvent $event */
-        $event          = $this->getMock(AbstractEvent::class, [], [], '', false);
+        $event          = $this->createMock(AbstractEvent::class);
         $eventTimestamp = 10000;
         $delayedEvent   = new DelayedEvent($event, $eventTimestamp);
 
@@ -66,7 +66,7 @@ class ListenerTest extends TestCase
     public function testOnBackgroundEvent()
     {
         /** @var AbstractEvent $event */
-        $event          = $this->getMock(AbstractEvent::class, [], [], '', false);
+        $event          = $this->createMock(AbstractEvent::class);
         $delayedEvent   = new BackgroundEvent($event);
 
         $this->gateway
@@ -80,7 +80,7 @@ class ListenerTest extends TestCase
     public function testOnIntervalEvent()
     {
         /** @var AbstractEvent $event */
-        $event          = $this->getMock(AbstractEvent::class, [], [], '', false);
+        $event          = $this->createMock(AbstractEvent::class);
         $intervalEvent  = new CronEvent($event, '@daily');
 
         $this->gateway

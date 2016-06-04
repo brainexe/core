@@ -4,6 +4,8 @@ namespace BrainExe\Core\MessageQueue;
 
 use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Annotations\Annotations\Service;
+use BrainExe\Core\Cron\CronDefinition;
+use BrainExe\Core\Cron\Expression;
 use BrainExe\Core\EventDispatcher\AbstractEvent;
 use BrainExe\Core\EventDispatcher\CronEvent;
 use BrainExe\Core\EventDispatcher\JobEvent;
@@ -27,12 +29,22 @@ class Worker
     private $gateway;
 
     /**
-     * @Inject({"@MessageQueue.Gateway"})
-     * @param Gateway $gateway
+     * @var Expression
      */
-    public function __construct(Gateway $gateway)
+    private $cron;
+
+    /**
+     * @Inject({
+     *     "@MessageQueue.Gateway",
+     *     "@Core.Cron.Expression"
+     * })
+     * @param Gateway $gateway
+     * @param Expression $cron
+     */
+    public function __construct(Gateway $gateway, Expression $cron)
     {
         $this->gateway = $gateway;
+        $this->cron    = $cron;
     }
 
     /**
@@ -91,9 +103,7 @@ class Worker
     private function handleCronEvent(Job $job, CronEvent $event) : AbstractEvent
     {
         if (!$event->isPropagationStopped()) {
-            // todo use CronExpression service
-            $cron = CronExpression::factory($event->getExpression());
-            $nextRun = $cron->getNextRunDate()->getTimestamp();
+            $nextRun = $this->cron->getNextRun($event->getExpression());
 
             $job->setTimestamp($nextRun);
             $this->gateway->addJob($job);

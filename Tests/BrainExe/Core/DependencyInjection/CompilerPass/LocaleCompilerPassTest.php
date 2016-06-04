@@ -25,15 +25,12 @@ class LocaleCompilerPassTest extends TestCase
     {
         $this->subject = new LocaleCompilerPass();
 
-        $this->container  = $this->getMock(ContainerBuilder::class, [
-            'get',
-            'setParameter',
-        ]);
+        $this->container  = $this->createMock(ContainerBuilder::class);
     }
 
     public function testProcess()
     {
-        $glob = $this->getMock(Glob::class);
+        $glob = $this->createMock(Glob::class);
 
         $glob
             ->expects($this->once())

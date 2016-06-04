@@ -28,7 +28,7 @@ class SessionTest extends TestCase
 
     public function setUp()
     {
-        $this->session = $this->getMock(SessionModel::class, [], [], '', false);
+        $this->session = $this->createMock(SessionModel::class);
 
         $this->subject = new Session($this->session);
     }

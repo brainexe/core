@@ -45,7 +45,7 @@ class ListenerTest extends TestCase
     public function testHandle()
     {
         /** @var AbstractEvent|MockObject $wrapped */
-        $wrapped = $this->getMock(AbstractEvent::class, [], [], '', false);
+        $wrapped = $this->createMock(AbstractEvent::class);
         $event = new WebSocketEvent($wrapped);
 
         $this->redis

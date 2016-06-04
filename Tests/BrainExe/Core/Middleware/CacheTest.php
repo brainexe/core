@@ -35,8 +35,8 @@ class CacheTest extends TestCase
 
     public function setUp()
     {
-        $this->cache  = $this->getMock(CacheProvider::class);
-        $this->logger = $this->getMock(Logger::class, [], [], '', false);
+        $this->cache  = $this->createMock(CacheProvider::class);
+        $this->logger = $this->createMock(Logger::class);
 
         $this->subject = new Cache(true);
         $this->subject->setCache($this->cache);
@@ -66,7 +66,7 @@ class CacheTest extends TestCase
     public function testProcessNotCachedRequest()
     {
         /** @var MockObject|Request $request */
-        $request = $this->getMock(Request::class);
+        $request = $this->createMock(Request::class);
         $request->attributes = new ParameterBag();
 
         $route       = new Route('/path/');
@@ -113,7 +113,7 @@ class CacheTest extends TestCase
     public function testProcessCachedRequest()
     {
         /** @var MockObject|Request $request */
-        $request = $this->getMock(Request::class);
+        $request = $this->createMock(Request::class);
         $request->attributes = new ParameterBag();
 
         $response    = new Response();

@@ -24,7 +24,7 @@ class ListenerTest extends TestCase
 
     public function setUp()
     {
-        $this->stats   = $this->getMock(Stats::class, [], [], '', false);
+        $this->stats   = $this->createMock(Stats::class);
         $this->subject = new Listener($this->stats);
     }
 

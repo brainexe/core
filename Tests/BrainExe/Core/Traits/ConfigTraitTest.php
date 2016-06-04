@@ -33,7 +33,7 @@ class ConfigTraitTest extends TestCase
 
     public function setUp()
     {
-        $this->container = $this->getMock(Container::class);
+        $this->container = $this->createMock(Container::class);
         $this->subject   = new ConfigTest();
     }
 
@@ -42,7 +42,7 @@ class ConfigTraitTest extends TestCase
         $key   = 'key';
         $value = 'value';
 
-        $parameterBag = $this->getMock(ParameterBag::class);
+        $parameterBag = $this->createMock(ParameterBag::class);
         $this->container
             ->expects($this->once())
             ->method('getParameterBag')

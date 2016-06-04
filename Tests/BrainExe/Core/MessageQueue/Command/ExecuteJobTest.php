@@ -26,7 +26,7 @@ class ExecuteJobTest extends TestCase
 
     public function setUp()
     {
-        $this->worker = $this->getMock(Worker::class, [], [], '', false);
+        $this->worker = $this->createMock(Worker::class);
 
         $this->subject = new ExecuteJob($this->worker);
     }

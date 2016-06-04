@@ -2,6 +2,7 @@
 
 namespace Tests\BrainExe\Core\MessageQueue;
 
+use BrainExe\Core\Cron\Expression;
 use BrainExe\Core\EventDispatcher\AbstractEvent;
 use BrainExe\Core\EventDispatcher\CronEvent;
 use BrainExe\Core\EventDispatcher\EventDispatcher;
@@ -36,13 +37,19 @@ class WorkerTest extends TestCase
      */
     private $logger;
 
+    /**
+     * @var Exception|MockObject
+     */
+    private $cron;
+
     public function setup()
     {
-        $this->gateway    = $this->getMock(Gateway::class, [], [], '', false);
-        $this->dispatcher = $this->getMock(EventDispatcher::class, [], [], '', false);
-        $this->logger     = $this->getMock(Logger::class, [], [], '', false);
+        $this->gateway    = $this->createMock(Gateway::class);
+        $this->dispatcher = $this->createMock(EventDispatcher::class);
+        $this->logger     = $this->createMock(Logger::class);
+        $this->cron       = $this->createMock(Expression::class);
 
-        $this->subject = new Worker($this->gateway);
+        $this->subject = new Worker($this->gateway, $this->cron);
         $this->subject->setLogger($this->logger);
         $this->subject->setEventDispatcher($this->dispatcher);
     }
@@ -53,7 +60,7 @@ class WorkerTest extends TestCase
         $timestamp = 0;
 
         /** @var AbstractEvent $event */
-        $event = $this->getMock(AbstractEvent::class, [], [], '', false);
+        $event = $this->createMock(AbstractEvent::class);
         $job = new Job($event, $jobId, $timestamp);
 
         $this->dispatcher
@@ -70,7 +77,7 @@ class WorkerTest extends TestCase
         $timestamp = 0;
 
         /** @var AbstractEvent $event */
-        $event = $this->getMock(AbstractEvent::class, [], [], '', false);
+        $event = $this->createMock(AbstractEvent::class);
         $cronEvent = new CronEvent($event, '@daily');
 
         $job = new Job($cronEvent, $jobId, $timestamp);
@@ -94,7 +101,7 @@ class WorkerTest extends TestCase
         $timestamp = 0;
 
         /** @var AbstractEvent $event */
-        $event = $this->getMock(AbstractEvent::class, [], [], '', false);
+        $event = $this->createMock(AbstractEvent::class);
         $job = new Job($event, $jobId, $timestamp);
 
         $this->dispatcher

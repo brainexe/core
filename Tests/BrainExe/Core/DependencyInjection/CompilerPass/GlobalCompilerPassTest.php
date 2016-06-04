@@ -25,21 +25,14 @@ class GlobalCompilerPassTest extends TestCase
     public function setUp()
     {
         $this->subject   = new GlobalCompilerPass();
-        $this->container = $this->getMock(ContainerBuilder::class, [
-            'getDefinition',
-            'getParameter',
-            'setParameter',
-            'get',
-            'findTaggedServiceIds',
-            'reset'
-        ]);
+        $this->container = $this->createMock(ContainerBuilder::class);
     }
 
     public function testProcessCompiler()
     {
         $serviceId = 'FooCompilerPass';
-        $compiler  = $this->getMock(CompilerPassInterface::class);
-        $logger    = $this->getMock(Logger::class, [], [], '', false);
+        $compiler  = $this->createMock(CompilerPassInterface::class);
+        $logger    = $this->createMock(Logger::class);
 
         $this->container
             ->expects($this->at(0))

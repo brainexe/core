@@ -49,11 +49,8 @@ class EventListenerCompilerPassTest extends TestCase
     {
         $this->subject = new EventListenerCompilerPass();
 
-        $this->container  = $this->getMock(ContainerBuilder::class, [
-            'getDefinition',
-            'findTaggedServiceIds'
-        ]);
-        $this->dispatcher = $this->getMock(Definition::class);
+        $this->container  = $this->createMock(ContainerBuilder::class);
+        $this->dispatcher = $this->createMock(Definition::class);
     }
 
     /**
@@ -76,7 +73,7 @@ class EventListenerCompilerPassTest extends TestCase
             ->with(EventListenerCompilerPass::TAG)
             ->willReturn([$serviceId => []]);
 
-        $definition = $this->getMock(Definition::class);
+        $definition = $this->createMock(Definition::class);
         $definition
             ->expects($this->any())
             ->method('getClass')

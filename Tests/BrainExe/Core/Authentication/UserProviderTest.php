@@ -55,10 +55,10 @@ class UserProviderTest extends TestCase
     public function setUp()
     {
         $this->redis          = $this->getRedisMock();
-        $this->idGenerator    = $this->getMock(IdGenerator::class, [], [], '', false);
-        $this->loadUser       = $this->getMock(LoadUser::class, [], [], '', false);
-        $this->hasher         = $this->getMock(PasswordHasher::class, [], [], '', false);
-        $this->dispatcher     = $this->getMock(EventDispatcher::class, [], [], '', false);
+        $this->idGenerator    = $this->createMock(IdGenerator::class);
+        $this->loadUser       = $this->createMock(LoadUser::class);
+        $this->hasher         = $this->createMock(PasswordHasher::class);
+        $this->dispatcher     = $this->createMock(EventDispatcher::class);
 
         $this->subject = new UserProvider($this->hasher, $this->loadUser);
         $this->subject->setRedis($this->redis);

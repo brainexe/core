@@ -49,9 +49,9 @@ class GatewayTest extends TestCase
 
     public function setUp()
     {
-        $this->time         = $this->getMock(Time::class, [], [], '', false);
+        $this->time         = $this->createMock(Time::class);
         $this->redis        = $this->getRedisMock();
-        $this->idGenerator  = $this->getMock(IdGenerator::class, [], [], '', false);
+        $this->idGenerator  = $this->createMock(IdGenerator::class);
 
         $this->subject = new Gateway();
         $this->subject->setTime($this->time);

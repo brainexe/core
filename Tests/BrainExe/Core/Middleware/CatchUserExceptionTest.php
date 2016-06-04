@@ -33,7 +33,7 @@ class CatchUserExceptionTest extends TestCase
 
     public function setUp()
     {
-        $this->logger = $this->getMock(Logger::class, [], [], '', false);
+        $this->logger = $this->createMock(Logger::class);
 
         $this->subject = new CatchUserException();
         $this->subject->setLogger($this->logger);
@@ -47,7 +47,7 @@ class CatchUserExceptionTest extends TestCase
     public function testProcessExceptionWithAjax($exception, $expectedStatusCode)
     {
         /** @var Request|MockObject $request */
-        $request = $this->getMock(Request::class, ['isXmlHttpRequest']);
+        $request = $this->createMock(Request::class);
 
         $actualResult = $this->subject->processException($request, $exception);
 
@@ -58,7 +58,7 @@ class CatchUserExceptionTest extends TestCase
     public function testProcessException()
     {
         /** @var Request|MockObject $request */
-        $request = $this->getMock(Request::class, ['isXmlHttpRequest']);
+        $request = $this->createMock(Request::class);
 
         $exception = new ResourceNotFoundException();
 
@@ -71,7 +71,7 @@ class CatchUserExceptionTest extends TestCase
     public function testProcessRequest()
     {
         /** @var Route|MockObject $route */
-        $route      = $this->getMock(Route::class, [], [], '', false);
+        $route      = $this->createMock(Route::class);
         $request    = new Request();
 
         $this->subject->processRequest($request, $route);

@@ -11,7 +11,7 @@ class JobEventTest extends TestCase
     public function testConstructor()
     {
         /** @var Job $wrapped */
-        $wrapped = $this->getMockWithoutInvokingTheOriginalConstructor(Job::class);
+        $wrapped = $this->createMock(Job::class);
 
         $event = new JobEvent(JobEvent::ADDED, $wrapped);
 

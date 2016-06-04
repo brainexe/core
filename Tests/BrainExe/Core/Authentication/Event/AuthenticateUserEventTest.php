@@ -15,7 +15,7 @@ class AuthenticateUserEventTest extends TestCase
     public function testEvent()
     {
         /** @var AuthenticationDataVO $auth */
-        $auth      = $this->getMock(AuthenticationDataVO::class, [], [], '', false);
+        $auth      = $this->createMock(AuthenticationDataVO::class);
         $eventName = 'eventName';
 
         $subject = new AuthenticateUserEvent($auth, $eventName);

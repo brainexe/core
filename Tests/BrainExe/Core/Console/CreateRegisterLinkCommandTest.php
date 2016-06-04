@@ -27,7 +27,7 @@ class CreateRegisterLinkCommandTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->registerTokens = $this->getMock(RegisterTokens::class, [], [], '', false);
+        $this->registerTokens = $this->createMock(RegisterTokens::class);
 
         $this->subject = new CreateRegisterLinkCommand($this->registerTokens);
     }

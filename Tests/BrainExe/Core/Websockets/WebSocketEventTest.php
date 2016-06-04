@@ -15,7 +15,7 @@ class WebSocketEventTest extends TestCase
     public function testGetSubscribedEvents()
     {
         /** @var AbstractEvent $event */
-        $event = $this->getMockWithoutInvokingTheOriginalConstructor(AbstractEvent::class);
+        $event = $this->createMock(AbstractEvent::class);
 
         $subject = new WebSocketEvent($event);
 

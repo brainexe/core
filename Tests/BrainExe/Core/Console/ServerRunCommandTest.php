@@ -28,7 +28,7 @@ class ServerRunCommandTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->mockProcessBuilder = $this->getMock(ProcessBuilder::class, [], [], '', false);
+        $this->mockProcessBuilder = $this->createMock(ProcessBuilder::class);
 
         $this->subject = new ServerRunCommand($this->mockProcessBuilder, 'localhost:8080');
     }
@@ -41,7 +41,7 @@ class ServerRunCommandTest extends PHPUnit_Framework_TestCase
 
         $commandTester = new CommandTester($this->subject);
 
-        $process = $this->getMock(Process::class, [], [], '', false);
+        $process = $this->createMock(Process::class);
 
         $this->mockProcessBuilder
             ->expects($this->once())

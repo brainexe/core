@@ -29,7 +29,7 @@ class RegisterControllerTest extends TestCase
 
     public function setUp()
     {
-        $this->register = $this->getMock(Register::class, [], [], '', false);
+        $this->register = $this->createMock(Register::class);
 
         $this->subject = new RegisterController($this->register);
     }

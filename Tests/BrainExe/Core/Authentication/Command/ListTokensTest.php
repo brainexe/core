@@ -27,7 +27,7 @@ class ListTokensTest extends TestCase
 
     public function setUp()
     {
-        $this->token = $this->getMock(Token::class, [], [], '', false);
+        $this->token = $this->createMock(Token::class);
 
         $this->subject = new ListTokens($this->token);
     }

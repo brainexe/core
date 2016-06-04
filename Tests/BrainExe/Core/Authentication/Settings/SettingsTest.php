@@ -25,7 +25,7 @@ class SettingsTest extends TestCase
 
     public function setUp()
     {
-        $this->gateway = $this->getMock(Gateway::class, [], [], '', false);
+        $this->gateway = $this->createMock(Gateway::class);
         $this->subject = new Settings($this->gateway);
     }
 

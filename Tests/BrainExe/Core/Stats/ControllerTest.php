@@ -41,8 +41,8 @@ class ControllerTest extends TestCase
 
     public function setUp()
     {
-        $this->messageQueue = $this->getMock(MessageQueueGateway::class, [], [], '', false);
-        $this->stats        = $this->getMock(Stats::class, [], [], '', false);
+        $this->messageQueue = $this->createMock(MessageQueueGateway::class);
+        $this->stats        = $this->createMock(Stats::class);
         $this->redis        = $this->getRedisMock();
 
         $this->subject = new Controller($this->stats, $this->messageQueue);

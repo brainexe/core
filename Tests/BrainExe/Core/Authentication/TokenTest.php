@@ -35,7 +35,7 @@ class TokenTest extends TestCase
     public function setUp()
     {
         $this->predis      = $this->getRedisMock();
-        $this->idGenerator = $this->getMock(IdGenerator::class);
+        $this->idGenerator = $this->createMock(IdGenerator::class);
         $this->subject     = new Token();
         $this->subject->setRedis($this->predis);
         $this->subject->setIdGenerator($this->idGenerator);

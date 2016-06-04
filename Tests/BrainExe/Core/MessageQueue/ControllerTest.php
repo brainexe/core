@@ -32,8 +32,8 @@ class ControllerTest extends TestCase
 
     public function setUp()
     {
-        $this->messageQueue = $this->getMock(MessageQueueGateway::class, [], [], '', false);
-        $this->time         = $this->getMock(Time::class);
+        $this->messageQueue = $this->createMock(MessageQueueGateway::class);
+        $this->time         = $this->createMock(Time::class);
 
         $this->subject = new Controller($this->messageQueue);
         $this->subject->setTime($this->time);

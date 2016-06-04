@@ -27,18 +27,13 @@ class MiddlewareCompilerPassTest extends TestCase
 
     public function setUp()
     {
-        $this->container  = $this->getMock(ContainerBuilder::class, [
-            'getDefinition',
-            'setParameter',
-            'getParameter',
-            'addArgument'
-        ]);
+        $this->container  = $this->createMock(ContainerBuilder::class);
         $this->subject = new MiddlewareCompilerPass();
     }
 
     public function testProcess()
     {
-        $appKernel = $this->getMock(Definition::class);
+        $appKernel = $this->createMock(Definition::class);
 
         $this->container
             ->expects($this->once())

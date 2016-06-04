@@ -13,13 +13,15 @@ trait RedisMockTrait
      */
     protected function getRedisMock()
     {
-        return $this->getMock(Predis::class, [
-            'sadd', 'smembers', 'srem', 'get', 'setex', 'script', 'getlastError',
-            'multi', 'exec', 'execute', 'exists', 'pipeline', 'incr',
-            'hgetall', 'hmset', 'hmget', 'hset', 'hdel', 'hget', 'hincrby', 'set',
-            'evalsha', 'load', 'publish', 'subscribe', 'info', 'hincrbyfloat', 'lrem',
-            'del', 'add', 'keys', 'brpop', 'lpush', 'runmessagequeue', 'llen', 'lrange',
-            'zrangebyscore', 'zcard', 'zrevrangebyscore', 'zadd', 'zincrby', 'zdeleterangebyscore', 'zrem'
-        ], [], '', false);
+        return $this->getMockBuilder(Predis::class)
+            ->setMethods([
+                'sadd', 'smembers', 'srem', 'get', 'setex', 'script', 'getlastError',
+                'multi', 'exec', 'execute', 'exists', 'pipeline', 'incr',
+                'hgetall', 'hmset', 'hmget', 'hset', 'hdel', 'hget', 'hincrby', 'set',
+                'evalsha', 'load', 'publish', 'subscribe', 'info', 'hincrbyfloat', 'lrem',
+                'del', 'add', 'keys', 'brpop', 'lpush', 'runmessagequeue', 'llen', 'lrange',
+                'zrangebyscore', 'zcard', 'zrevrangebyscore', 'zadd', 'zincrby', 'zdeleterangebyscore', 'zrem'
+            ])
+            ->getMock();
     }
 }

@@ -35,7 +35,7 @@ class RegisterTokensTest extends TestCase
     public function setUp()
     {
         $this->redis       = $this->getRedisMock();
-        $this->idGenerator = $this->getMock(IdGenerator::class, [], [], '', false);
+        $this->idGenerator = $this->createMock(IdGenerator::class);
 
         $this->subject = new RegisterTokens();
         $this->subject->setRedis($this->redis);

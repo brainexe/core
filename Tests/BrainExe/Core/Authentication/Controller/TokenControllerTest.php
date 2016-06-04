@@ -27,7 +27,7 @@ class TokenControllerTest extends TestCase
 
     public function setUp()
     {
-        $this->token   = $this->getMock(Token::class);
+        $this->token   = $this->createMock(Token::class);
         $this->subject = new TokenController($this->token);
     }
 

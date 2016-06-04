@@ -33,8 +33,8 @@ class CsrfTest extends TestCase
 
     public function setUp()
     {
-        $this->idGenerator = $this->getMock(IdGenerator::class, [], [], '', false);
-        $this->time        = $this->getMock(Time::class, [], [], '', false);
+        $this->idGenerator = $this->createMock(IdGenerator::class);
+        $this->time        = $this->createMock(Time::class);
 
         $this->subject = new Csrf();
         $this->subject->setIdGenerator($this->idGenerator);
