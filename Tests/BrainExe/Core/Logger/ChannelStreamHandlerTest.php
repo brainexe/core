@@ -41,12 +41,13 @@ class ChannelStreamHandlerTest extends PHPUnit_Framework_TestCase
     public function provideIsHandling()
     {
         return [
-        [['level' => Logger::DEBUG], 'channel', false],
-        [['level' => Logger::INFO, 'context' => ['channel' => true]], '', false],
-        [['level' => Logger::INFO, 'context' => ['channel' => false]], '', true],
-        [['level' => Logger::INFO, 'context' => ['channel' => false]], 'context', false],
-        [['level' => Logger::INFO, 'context' => ['channel' => 'context']], 'context', true],
-        [['level' => Logger::INFO, 'context' => ['channel' => 'wrongcontext']], 'context', false],
+            [['level' => Logger::DEBUG], 'channel', false],
+            [['level' => Logger::DEBUG, 'context' => []], 'channel', false],
+            [['level' => Logger::INFO, 'context' => ['channel' => true]], '', false],
+            [['level' => Logger::INFO, 'context' => ['channel' => false]], '', true],
+            [['level' => Logger::INFO, 'context' => ['channel' => false]], 'context', false],
+            [['level' => Logger::INFO, 'context' => ['channel' => 'context']], 'context', true],
+            [['level' => Logger::INFO, 'context' => ['channel' => 'wrongcontext']], 'context', false],
         ];
     }
 }

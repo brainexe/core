@@ -195,16 +195,14 @@ class TestCreateCommand extends Command
         foreach ($methods as $method) {
             $methodName = $method->getName();
 
-            if (in_array($methodName, $blacklistedMethods)) {
-                continue;
-            }
-
-            if ($method->getDeclaringClass() == $serviceReflection) {
-                $testData->defaultTests[] = $methodCodeGenerator->getDummyTestCode(
-                    $testData,
-                    $method,
-                    $serviceFullClassName
-                );
+            if (!in_array($methodName, $blacklistedMethods)) {
+                if ($method->getDeclaringClass() == $serviceReflection) {
+                    $testData->defaultTests[] = $methodCodeGenerator->getDummyTestCode(
+                        $testData,
+                        $method,
+                        $serviceFullClassName
+                    );
+                }
             }
         }
     }

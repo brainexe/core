@@ -49,12 +49,13 @@ class ListServicesCommandTest extends TestCase
         $commandTester->execute([]);
         $output = $commandTester->getDisplay();
 
-        $this->assertEquals("+------------+------------+
-| service-id | visibility |
-+------------+------------+
-| service_1  | public     |
-| service_2  | private    |
-+------------+------------+\n", $output);
+        $this->assertEquals("+-------------+------------+
+| service-id  | visibility |
++-------------+------------+
+| __service_4 | protected  |
+| service_1   | public     |
+| service_2   | private    |
++-------------+------------+\n", $output);
     }
 
     public function testExecuteFilterPublic()
@@ -98,6 +99,7 @@ class ListServicesCommandTest extends TestCase
         $containerBuilder = $this->createMock(ContainerBuilder::class);
         $definition1      = $this->createMock(Definition::class);
         $definition2      = $this->createMock(Definition::class);
+        $definition4      = $this->createMock(Definition::class);
 
         $this->rebuild
             ->expects($this->once())
@@ -109,34 +111,46 @@ class ListServicesCommandTest extends TestCase
             'service_2',
             'service_1',
             'service_3',
+            '__service_4',
         ];
 
         $containerBuilder
             ->expects($this->at(0))
             ->method('getServiceIds')
             ->willReturn($serviceIds);
+
         $containerBuilder
             ->expects($this->at(1))
             ->method('hasDefinition')
-            ->with('service_1')
+            ->with('__service_4')
             ->willReturn(true);
         $containerBuilder
             ->expects($this->at(2))
             ->method('getDefinition')
-            ->with('service_1')
-            ->willReturn($definition1);
+            ->with('__service_4')
+            ->willReturn($definition4);
         $containerBuilder
             ->expects($this->at(3))
             ->method('hasDefinition')
-            ->with('service_2')
+            ->with('service_1')
             ->willReturn(true);
         $containerBuilder
             ->expects($this->at(4))
             ->method('getDefinition')
+            ->with('service_1')
+            ->willReturn($definition1);
+        $containerBuilder
+            ->expects($this->at(5))
+            ->method('hasDefinition')
+            ->with('service_2')
+            ->willReturn(true);
+        $containerBuilder
+            ->expects($this->at(6))
+            ->method('getDefinition')
             ->with('service_2')
             ->willReturn($definition2);
         $containerBuilder
-            ->expects($this->at(5))
+            ->expects($this->at(7))
             ->method('hasDefinition')
             ->with('service_3')
             ->willReturn(false);
@@ -149,6 +163,10 @@ class ListServicesCommandTest extends TestCase
             ->expects($this->once())
             ->method('isPublic')
             ->willReturn(false);
+        $definition4
+            ->expects($this->once())
+            ->method('isPublic')
+            ->willReturn(true);
 
         return $commandTester;
     }

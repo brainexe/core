@@ -18,14 +18,7 @@ class GlobalCompilerPass implements CompilerPassInterface
     {
         $container->setParameter('application.root', ROOT);
 
-        $serviceIds = $container->findTaggedServiceIds(self::TAG);
-        $servicePriorities = [];
-
-        foreach ($serviceIds as $serviceId => $tag) {
-            $servicePriorities[$serviceId] = $tag[0]['priority'];
-        }
-
-        arsort($servicePriorities);
+        $servicePriorities = $this->loadCompilerPasses($container);
 
         /** @var Logger $logger */
         $totalTime = 0;
@@ -39,6 +32,34 @@ class GlobalCompilerPass implements CompilerPassInterface
             $loggerStore[] = sprintf('DIC: %0.2fms %s', $diff * 1000, $serviceId);
         }
 
+        $this->logResult($container, $loggerStore, $totalTime);
+    }
+
+    /**
+     * @param ContainerBuilder $container
+     * @return array
+     */
+    private function loadCompilerPasses(ContainerBuilder $container)
+    {
+        $serviceIds        = $container->findTaggedServiceIds(self::TAG);
+        $servicePriorities = [];
+
+        foreach ($serviceIds as $serviceId => $tag) {
+            $servicePriorities[$serviceId] = $tag[0]['priority'];
+        }
+
+        arsort($servicePriorities);
+
+        return $servicePriorities;
+    }
+
+    /**
+     * @param ContainerBuilder $container
+     * @param array $loggerStore
+     * @param float $totalTime
+     */
+    private function logResult(ContainerBuilder $container, array $loggerStore, float $totalTime)
+    {
         $container->reset();
 
         /** @var Logger $logger */

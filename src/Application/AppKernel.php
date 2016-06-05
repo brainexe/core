@@ -5,8 +5,8 @@ namespace BrainExe\Core\Application;
 use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Annotations\Annotations\Service;
 use BrainExe\Core\Middleware\MiddlewareInterface;
+use Iterator;
 use Throwable;
-use Generator;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -116,7 +116,7 @@ class AppKernel implements HttpKernelInterface
      */
     private function prepareResponse($response) : Response
     {
-        if ($response instanceof Generator) {
+        if ($response instanceof Iterator) {
             $response = iterator_to_array($response);
         }
 

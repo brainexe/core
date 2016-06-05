@@ -35,13 +35,22 @@ class Import extends SymfonyCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $redis   = $this->getRedis();
         $file    = $input->getArgument('file');
         $content = file_get_contents($file);
 
         if ($input->getOption('flush')) {
-            $redis->flushdb();
+            $this->getRedis()->flushdb();
         }
+
+        $this->handleImport($content);
+    }
+
+    /**
+     * @param string $content
+     */
+    protected function handleImport(string $content)
+    {
+        $redis   = $this->getRedis();
 
         foreach (explode("\n", $content) as $line) {
             preg_match_all('/"(?:\\\\.|[^\\\\"])*"|\S+/', $line, $matches);

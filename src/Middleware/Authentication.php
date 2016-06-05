@@ -59,11 +59,8 @@ class Authentication extends AbstractMiddleware
             return null;
         }
 
-        if (!$userId) {
-            if ($request->isXmlHttpRequest()) {
-                throw new UserException(gettext('Not logged in'));
-            }
-            return new RedirectResponse('#/login');
+        if (empty($userId)) {
+            return $this->handleNotAuthenticatedRequest($request);
         }
 
         return null;
@@ -99,5 +96,18 @@ class Authentication extends AbstractMiddleware
         } else {
             return new AnonymusUserVO();
         }
+    }
+
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     * @throws UserException
+     */
+    private function handleNotAuthenticatedRequest(Request $request)
+    {
+        if ($request->isXmlHttpRequest()) {
+            throw new UserException(gettext('Not logged in'));
+        }
+        return new RedirectResponse('#/login');
     }
 }

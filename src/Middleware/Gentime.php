@@ -3,6 +3,7 @@
 namespace BrainExe\Core\Middleware;
 
 use BrainExe\Core\Annotations\Middleware;
+use BrainExe\Core\Authentication\AnonymusUserVO;
 use BrainExe\Core\Authentication\UserVO;
 use BrainExe\Core\Traits\LoggerTrait;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,13 +24,7 @@ class Gentime extends AbstractMiddleware
     {
         $startTime = $request->server->get('REQUEST_TIME_FLOAT');
         $user      = $request->attributes->get('user');
-
-        if ($user) {
-            /** @var UserVO $user */
-            $username = $user->getUsername();
-        } else {
-            $username = '-anonymous-';
-        }
+        $username  = $this->getUsername($user);
 
         $diff = microtime(true) - $startTime;
         $this->info(
@@ -46,5 +41,19 @@ class Gentime extends AbstractMiddleware
                 'userId'   => $request->attributes->get('user_id')
             ]
         );
+    }
+
+    /**
+     * @param UserVO|null $user
+     * @return string
+     */
+    protected function getUsername($user)
+    {
+        if ($user instanceof UserVO && !$user instanceof AnonymusUserVO) {
+            /** @var UserVO $user */
+            return $user->getUsername();
+        } else {
+            return '-anonymous-';
+        }
     }
 }

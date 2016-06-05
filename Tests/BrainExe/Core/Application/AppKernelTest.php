@@ -2,6 +2,7 @@
 
 namespace Tests\BrainExe\Core\Application;
 
+use ArrayIterator;
 use BrainExe\Core\Application\AppKernel;
 use BrainExe\Core\Application\ControllerResolver;
 use BrainExe\Core\Application\SerializedRouteCollection;
@@ -92,7 +93,7 @@ class AppKernelTest extends TestCase
             ->willReturn(null);
 
         $callable = function ($arguments) {
-            return $arguments;
+            return new ArrayIterator($arguments);
         };
 
         $this->controllerResolver

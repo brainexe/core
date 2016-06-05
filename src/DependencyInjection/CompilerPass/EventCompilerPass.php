@@ -64,15 +64,26 @@ class EventCompilerPass implements CompilerPassInterface
                 ));
             }
 
-            $parameters = [];
-            foreach ($reflection->getConstructor()->getParameters() as $parameter) {
-                $parameters[] = $parameter->getName();
-            }
+            $parameters = $this->getParameters($reflection);
 
             $events[$constant] = [
                 'class'      => $class,
                 'parameters' => $parameters
             ];
         }
+    }
+
+    /**
+     * @param ReflectionClass $reflection
+     * @return array
+     */
+    private function getParameters(ReflectionClass $reflection)
+    {
+        $parameters = [];
+        foreach ($reflection->getConstructor()->getParameters() as $parameter) {
+            $parameters[] = $parameter->getName();
+        }
+
+        return $parameters;
     }
 }

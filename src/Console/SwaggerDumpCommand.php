@@ -135,9 +135,18 @@ class SwaggerDumpCommand extends Command
                 $data['parameters'] = $parameters;
             }
 
-            $resources[$route->getPath()][strtolower(implode(',', $route->getMethods()) ?: 'get')] = $data;
+            $resources[$route->getPath()][$this->getRouteMethods($route)] = $data;
         }
 
         return $resources;
+    }
+
+    /**
+     * @param Route $route
+     * @return string
+     */
+    protected function getRouteMethods(Route $route) : string
+    {
+        return strtolower(implode(',', $route->getMethods()) ?: 'get');
     }
 }

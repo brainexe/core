@@ -39,12 +39,7 @@ class TimeParser
         } elseif (is_numeric($string)) {
             $timestamp = $now + (int)$string;
         } elseif (preg_match('/^(\d+)\s*(\w)$/', trim($string), $matches)) {
-            $modifier = strtolower($matches[2]);
-            if (empty($this->timeModifier[$modifier])) {
-                throw new UserException(sprintf('Invalid time modifier %s', $modifier));
-            }
-
-            $timestamp = $now + $matches[1] * $this->timeModifier[$modifier];
+            $timestamp = $this->withModifier($matches, $now);
         } else {
             $timestamp = strtotime($string);
         }
@@ -54,5 +49,21 @@ class TimeParser
         }
 
         return $timestamp;
+    }
+
+    /**
+     * @param array $matches
+     * @param int $now
+     * @return int
+     * @throws UserException
+     */
+    protected function withModifier(array $matches, int $now)
+    {
+        $modifier = strtolower($matches[2]);
+        if (empty($this->timeModifier[$modifier])) {
+            throw new UserException(sprintf('Invalid time modifier %s', $modifier));
+        }
+
+        return $now + $matches[1] * $this->timeModifier[$modifier];
     }
 }

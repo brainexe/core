@@ -32,9 +32,7 @@ class Gateway
      */
     public function deleteEvent(string $eventId, string $eventType = null) : bool
     {
-        if (!empty($eventType)) {
-            $eventId = sprintf('%s:%s', $eventType, $eventId);
-        }
+        $eventId = sprintf('%s:%s', $eventType, $eventId);
 
         $redis = $this->getRedis();
         $delayed = $redis->zrem(self::QUEUE_DELAYED, $eventId);

@@ -81,6 +81,20 @@ class HandleExistingFile
         $originalTest = file_get_contents($testFileName);
 
         $answerId = array_flip($choices)[$answer];
+
+        return $this->handleQuestion($output, $template, $answerId, $originalTest);
+    }
+
+    /**
+     * @param OutputInterface $output
+     * @param $template
+     * @param $answerId
+     * @param $originalTest
+     * @return bool|string
+     * @throws Exception
+     */
+    private function handleQuestion(OutputInterface $output, string $template, string $answerId, $originalTest)
+    {
         switch ($answerId) {
             case 'replace':
                 break;
