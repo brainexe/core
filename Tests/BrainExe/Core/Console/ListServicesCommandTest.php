@@ -95,11 +95,7 @@ class ListServicesCommandTest extends TestCase
 
         $commandTester = new CommandTester($this->subject);
 
-        $containerBuilder  = $this->getMock(ContainerBuilder::class, [
-            'getServiceIds',
-            'getDefinition',
-            'hasDefinition'
-        ]);
+        $containerBuilder = $this->createMock(ContainerBuilder::class);
         $definition1      = $this->createMock(Definition::class);
         $definition2      = $this->createMock(Definition::class);
 

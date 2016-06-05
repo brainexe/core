@@ -132,8 +132,7 @@ class GatewayTest extends TestCase
 
     public function testAddEvent()
     {
-        /** @var MockObject|AbstractEvent $event */
-        $event     = $this->getMock(AbstractEvent::class, [], ['type']);
+        $event     = $this->getTestEvent('type');
         $timestamp = 0;
         $eventId   = 100;
 
@@ -159,8 +158,7 @@ class GatewayTest extends TestCase
 
     public function testAddEventDelayed()
     {
-        /** @var MockObject|AbstractEvent $event */
-        $event     = $this->getMock(AbstractEvent::class, null, ['type']);
+        $event = $this->getTestEvent('type');
 
         $timestamp = 120000;
         $eventId   = 100;
@@ -329,7 +327,8 @@ class GatewayTest extends TestCase
                 'event:100' => 1000 + Gateway::RETRY_TIME
             ]);
 
-        $event = new TestEvent('test');
+        $event = $this->getTestEvent('test');
+
         $job = new Job($event, 'event:100', 100);
 
         $this->subject->restoreJob($job);
@@ -352,5 +351,14 @@ class GatewayTest extends TestCase
         $actual = $this->subject->countAllJobs();
 
         $this->assertEquals(15, $actual);
+    }
+
+    /**
+     * @param string $type
+     * @return AbstractEvent
+     */
+    private function getTestEvent(string $type)
+    {
+        return new TestEvent($type);
     }
 }

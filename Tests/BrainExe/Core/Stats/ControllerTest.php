@@ -9,6 +9,7 @@ use BrainExe\Tests\RedisMockTrait;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase as TestCase;
 use Predis\Client;
+use Predis\ClientException;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -80,6 +81,34 @@ class ControllerTest extends TestCase
                 'foo1' => 'bar1',
             ],
             'redis' => ['info']
+        ];
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testIndexWithRedisException()
+    {
+        $this->messageQueue
+            ->expects($this->once())
+            ->method('getEventsByType')
+            ->willReturn([]);
+
+        $this->stats
+            ->expects($this->once())
+            ->method('getAll')
+            ->willReturn([]);
+
+        $this->redis
+            ->expects($this->once())
+            ->method('info')
+            ->willThrowException(new ClientException());
+
+        $actual = $this->subject->index();
+
+        $expected = [
+            'jobs'  => [],
+            'stats' => [],
+            'redis' => []
         ];
 
         $this->assertEquals($expected, $actual);

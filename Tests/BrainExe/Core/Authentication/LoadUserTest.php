@@ -52,6 +52,21 @@ class LoadUserTest extends TestCase
         $this->subject->loadUserByUsername($username);
     }
 
+    /**
+     * @expectedException \BrainExe\Core\Authentication\Exception\UserNotFoundException
+     * @expectedExceptionMessage User "42" does not exist.
+     */
+    public function testLoadUserByInvalidUserId()
+    {
+        $this->redis
+            ->expects($this->once())
+            ->method('hgetall')
+            ->with('user:42')
+            ->willReturn(null);
+
+        $this->subject->loadUserById(42);
+    }
+
     public function testLoadUserByUsername()
     {
         $username = 'UserName';

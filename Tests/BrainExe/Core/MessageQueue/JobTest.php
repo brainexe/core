@@ -28,5 +28,6 @@ class JobTest extends TestCase
     {
         $this->assertEquals('type:111', $this->subject->jobId);
         $this->assertEquals('type:111', $this->subject->getJobId());
+        $this->assertEquals(1000, $this->subject->getTimestamp());
     }
 }

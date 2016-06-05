@@ -29,7 +29,9 @@ class ControllerCompilerPassTest extends TestCase
 
     public function setUp()
     {
-        $this->subject   = $this->createMock(ControllerCompilerPass::class);
+        $this->subject   = $this->getMockBuilder(ControllerCompilerPass::class)
+            ->setMethods(['dumpMatcher'])
+            ->getMock();
         $this->container = $this->createMock(ContainerBuilder::class);
         $this->routerDefinition = $this->createMock(Definition::class);
     }

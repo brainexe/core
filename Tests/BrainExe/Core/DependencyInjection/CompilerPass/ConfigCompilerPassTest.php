@@ -23,11 +23,11 @@ class ConfigCompilerPassTest extends TestCase
 
     public function setUp()
     {
-        $this->container  = $this->getMock(ContainerBuilder::class, [
+        $this->container  = $this->getMockBuilder(ContainerBuilder::class)->setMethods([
             'hasParameter',
             'getParameter',
             'setParameter',
-        ]);
+        ])->getMock();
         $this->subject = new ConfigCompilerPass();
     }
 

@@ -46,6 +46,29 @@ class SettingsTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
+    public function testGetGlobalFallback()
+    {
+        $userId   = 12;
+        $setting  = 'mockSetting';
+        $expected = 'expected';
+
+        $this->gateway
+            ->expects($this->at(0))
+            ->method('get')
+            ->with($userId, $setting)
+            ->willReturn(null);
+
+        $this->gateway
+            ->expects($this->at(1))
+            ->method('get')
+            ->with(0, $setting)
+            ->willReturn($expected);
+
+        $actual = $this->subject->get($userId, $setting);
+
+        $this->assertEquals($expected, $actual);
+    }
+
     public function testGetAll()
     {
         $userId   = 12;

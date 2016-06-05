@@ -87,4 +87,20 @@ class UserControllerTest extends TestCase
         $actual = $this->subject->setAvatars($request, $avatar);
         $this->assertEquals($user, $actual);
     }
+
+    public function testSetEmail()
+    {
+        $email = 'em@il';
+
+        $user = new UserVO();
+        $user->email = $email;
+
+        $request = new Request();
+        $request->attributes->set('user', $user);
+        $request->request->set('email', $email);
+
+        $actual = $this->subject->setEmail($request);
+
+        $this->assertEquals($user, $actual);
+    }
 }

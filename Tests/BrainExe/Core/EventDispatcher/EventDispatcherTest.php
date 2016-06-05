@@ -11,7 +11,6 @@ use BrainExe\Core\Traits\JsonSerializableTrait;
 use BrainExe\Core\Websockets\WebSocketEvent;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase as TestCase;
-use RuntimeException;
 use Symfony\Component\DependencyInjection\Container;
 
 class TestEvent extends AbstractEvent
@@ -42,7 +41,11 @@ class EventDispatcherTest extends TestCase
     public function setUp()
     {
         $this->container = $this->createMock(Container::class);
-        $this->subject   = $this->getMock(EventDispatcher::class, ['dispatch'], [$this->container, true], '');
+
+        $this->subject = $this->getMockBuilder(EventDispatcher::class)
+            ->setMethods(['dispatch'])
+            ->setConstructorArgs([$this->container, true])
+            ->getMock();
     }
 
     public function testDispatchEvent()
@@ -58,14 +61,22 @@ class EventDispatcherTest extends TestCase
     }
 
     /**
-     * @expectedException RuntimeException
+     * @expectedException \RuntimeException
      * @expectedExceptionMessage You have to pass an Event into EventDispatcher::dispatch
      */
     public function testDispatchEmpty()
     {
-        $this->subject = $this->getMock(EventDispatcher::class, null, [], '', false);
+        $this->subject = $this->getMockBuilder(EventDispatcher::class)
+            ->setMethods(['dispatchEvent'])
+            ->setConstructorArgs([$this->container, true])
+            ->getMock();
 
         $this->subject->dispatch(TestEvent::TYPE, null);
+    }
+
+    public function testCatchAll()
+    {
+        $this->subject->addCatchall($this->subject);
     }
 
     public function testDispatch()
@@ -98,8 +109,6 @@ class EventDispatcherTest extends TestCase
 
     public function testDispatchInBackground()
     {
-        $this->subject = $this->getMock(EventDispatcher::class, ['dispatch'], [$this->container], '');
-
         $event = new TestEvent(TestEvent::TYPE);
         $timestamp = 0;
 

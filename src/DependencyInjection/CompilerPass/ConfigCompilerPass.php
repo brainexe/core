@@ -21,7 +21,7 @@ class ConfigCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $loader     = new XmlFileLoader($container, new FileLocator('config'));
+        $loader     = new XmlFileLoader($container, new FileLocator());
         $filesystem = new Filesystem();
 
         if ($filesystem->exists(ROOT . 'app/container.xml')) {

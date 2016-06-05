@@ -34,7 +34,9 @@ class ExecuteJobTest extends TestCase
     public function testExecute()
     {
         /** @var Application|MockObject $application */
-        $application = $this->getMock(Application::class, ['run']);
+        $application = $this->getMockBuilder(Application::class)
+            ->setMethods(['run'])
+            ->getMock();
         $this->subject->setApplication($application);
 
         $commandTester = new CommandTester($this->subject);
@@ -57,7 +59,9 @@ class ExecuteJobTest extends TestCase
     public function testExecuteInvalid()
     {
         /** @var Application|MockObject $application */
-        $application = $this->getMock(Application::class, ['run']);
+        $application = $this->getMockBuilder(Application::class)
+            ->setMethods(['run'])
+            ->getMock();
         $this->subject->setApplication($application);
 
         $commandTester = new CommandTester($this->subject);
