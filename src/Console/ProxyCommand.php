@@ -33,8 +33,8 @@ class ProxyCommand extends Command
     public function __construct(
         Container $container,
         Application $application,
-        $serviceId,
-        $name,
+        string $serviceId,
+        string $name,
         $description,
         $alias,
         array $definition

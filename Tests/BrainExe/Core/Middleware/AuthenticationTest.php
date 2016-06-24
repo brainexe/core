@@ -165,6 +165,7 @@ class AuthenticationTest extends TestCase
     private function loadUser($userId) : UserVO
     {
         $user = new UserVO();
+        $user->id = $userId;
 
         $this->loadUser
             ->expects($this->once())

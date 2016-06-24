@@ -4,14 +4,16 @@ namespace BrainExe\Core\Application;
 
 use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Annotations\Annotations\Service;
+use BrainExe\Core\Translation\ServiceTranslationProvider;
 
 /**
  * @Service("Core.Locale", public=true)
  */
-class Locale
+class Locale implements ServiceTranslationProvider
 {
 
-    const DOMAIN = 'messages';
+    const DOMAIN   = 'messages';
+    const LANG_DIR = ROOT . '/cache/lang/';
 
     /**
      * @var string[]
@@ -49,8 +51,18 @@ class Locale
         putenv(sprintf('LANG=%s.UTF-8', $locale));
         setlocale(LC_MESSAGES, sprintf('%s.UTF-8', $locale));
 
-        bindtextdomain(self::DOMAIN, ROOT . '/lang/');
+        bindtextdomain(self::DOMAIN, self::LANG_DIR);
         bind_textdomain_codeset(self::DOMAIN, 'UTF-8');
         textdomain(self::DOMAIN);
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getTokens()
+    {
+        return array_map(function (string $locale) {
+            return 'locale.' . $locale;
+        }, $this->locales);
     }
 }

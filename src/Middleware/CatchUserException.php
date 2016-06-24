@@ -5,6 +5,7 @@ namespace BrainExe\Core\Middleware;
 use BrainExe\Core\Annotations\Middleware;
 use BrainExe\Core\Application\UserException;
 use BrainExe\Core\Traits\LoggerTrait;
+use BrainExe\Core\Translation\TranslationTrait;
 use Throwable;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,6 +19,7 @@ class CatchUserException extends AbstractMiddleware
 {
 
     use LoggerTrait;
+    use TranslationTrait;
 
     /**
      * {@inheritdoc}
@@ -25,11 +27,18 @@ class CatchUserException extends AbstractMiddleware
     public function processException(Request $request, Throwable $exception)
     {
         if ($exception instanceof ResourceNotFoundException) {
-            $exception = new UserException(sprintf('Page not found: %s', $request->getRequestUri()), 0, $exception);
+            $exception = new UserException(
+                $this->translate(
+                    'Page not found: %s',
+                    htmlspecialchars($request->getRequestUri())
+                ),
+                0,
+                $exception
+            );
             $response  = new Response('', 404);
         } elseif ($exception instanceof MethodNotAllowedException) {
             $exception = new UserException(
-                sprintf(
+                $this->translate(
                     'You are not allowed to access the page. Allowed methods: %s',
                     implode(',', $exception->getAllowedMethods())
                 ),
@@ -59,7 +68,7 @@ class CatchUserException extends AbstractMiddleware
      */
     protected function setMessage(Throwable $exception, Response $response)
     {
-        $message = $exception->getMessage() ?: _('An error occurred');
+        $message = $exception->getMessage() ?: $this->translate('An error occurred');
         $response->headers->set('X-Flash-Type', 'danger');
         $response->headers->set('X-Flash-Message', $message);
         $response->setContent($message);

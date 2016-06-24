@@ -9,6 +9,7 @@ use BrainExe\Core\Annotations\Route;
 use BrainExe\Core\Application\UserException;
 use BrainExe\Core\Authentication\UserProvider;
 use BrainExe\Core\Authentication\UserVO;
+use BrainExe\Core\Translation\TranslationTrait;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -16,6 +17,8 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class UserController
 {
+    use TranslationTrait;
+
     /**
      * @var UserProvider
      */
@@ -60,7 +63,7 @@ class UserController
     public function setAvatars(Request $request, $avatar) : UserVO
     {
         if (!in_array($avatar, UserVO::AVATARS)) {
-            throw new UserException(sprintf(_('Invalid avatar: %s'), $avatar));
+            throw new UserException($this->translate('Invalid avatar: %s', $avatar));
         }
 
         /** @var UserVO $user */

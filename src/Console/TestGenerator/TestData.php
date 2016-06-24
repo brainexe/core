@@ -22,7 +22,7 @@ class TestData
      * @param string $class
      * @param string|null $alias
      */
-    public function addUse($class, $alias = null)
+    public function addUse(string $class, string $alias = null)
     {
         if ($alias) {
             $this->useStatements[$alias] = $class;

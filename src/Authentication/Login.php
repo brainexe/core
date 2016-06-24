@@ -135,6 +135,9 @@ class Login
 
         $session->set('user_id', $userVo->id);
 
+        // renew session-id to prevent session fixation
+        $session->migrate();
+
         $event = new AuthenticateUserEvent(
             $authenticationVo,
             AuthenticateUserEvent::AUTHENTICATED

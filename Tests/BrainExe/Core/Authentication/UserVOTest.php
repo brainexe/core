@@ -41,9 +41,11 @@ class UserVOTest extends TestCase
     {
         $this->subject->username = 'username';
         $this->subject->password_hash = 'password';
+        $this->subject->id = 4141;
 
         $this->assertEquals('username', $this->subject->getUsername());
         $this->assertEquals('password', $this->subject->getPassword());
+        $this->assertEquals(4141, $this->subject->getId());
     }
 
     public function testToJson()

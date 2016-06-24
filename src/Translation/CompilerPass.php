@@ -37,6 +37,14 @@ class CompilerPass implements CompilerPassInterface
                 continue;
             }
 
+            if ($reflection->implementsInterface(ServiceTranslationProvider::class)) {
+                /** @var ServiceTranslationProvider $class */
+                $service = $container->get($serviceId);
+
+                foreach ($service->getTokens() as $token) {
+                    $tokens[] = $token;
+                }
+            }
             if ($reflection->implementsInterface(TranslationProvider::class)) {
                 /** @var TranslationProvider $class */
                 foreach ($class::getTokens() as $token) {

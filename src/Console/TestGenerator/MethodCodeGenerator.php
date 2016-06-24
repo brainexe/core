@@ -18,7 +18,7 @@ class MethodCodeGenerator
      * @param string $shortClassName
      * @return string
      */
-    public function getDummyTestCode(TestData $data, ReflectionMethod $method, $shortClassName)
+    public function getDummyTestCode(TestData $data, ReflectionMethod $method, string $shortClassName)
     {
         $methodName = $method->getName();
 
@@ -58,9 +58,9 @@ class MethodCodeGenerator
      */
     private function processMethod(
         TestData $data,
-        $shortClassName,
+        string $shortClassName,
         ReflectionParameter $parameter,
-        $variableName,
+        string $variableName,
         &$variableList
     ) {
         $value = 'null';

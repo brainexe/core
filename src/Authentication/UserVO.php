@@ -38,9 +38,9 @@ class UserVO implements JsonSerializable
     ];
 
     /**
-     * @var integer
+     * @var int
      */
-    public $id;
+    public $id = 0;
 
     /**
      * @var string
@@ -76,6 +76,14 @@ class UserVO implements JsonSerializable
      * @var string
      */
     public $avatar;
+
+    /**
+     * @return int
+     */
+    public function getId() : int
+    {
+        return $this->id;
+    }
 
     /**
      * @param string $role

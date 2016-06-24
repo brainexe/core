@@ -22,7 +22,7 @@ class Csrf extends AbstractMiddleware
     const HEADER = 'X-XSRF-TOKEN';
     const COOKIE = 'XSRF-TOKEN';
 
-    const LIFETIME = 3600; // 1h
+    const LIFETIME = 0;
 
     use IdGeneratorTrait;
     use TimeTrait;
@@ -64,7 +64,9 @@ class Csrf extends AbstractMiddleware
             $session = $request->getSession();
             $session->set(self::CSRF, $this->newToken);
             $session->set('csrf_timestamp', $this->now());
-            $response->headers->setCookie(new Cookie(self::COOKIE, $this->newToken, 0, '/', null, false, false));
+            $response->headers->setCookie(
+                new Cookie(self::COOKIE, $this->newToken, 0, '/', null, false, false)
+            );
             $this->newToken = null;
         }
     }
@@ -74,7 +76,7 @@ class Csrf extends AbstractMiddleware
      */
     private function renewCsrfToken()
     {
-        $this->newToken = $this->generateRandomId();
+        $this->newToken = $this->generateRandomId(20);
     }
 
     /**

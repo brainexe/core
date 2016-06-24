@@ -8,6 +8,7 @@ use BrainExe\Core\Application\UserException;
 use BrainExe\Core\Authentication\AnonymusUserVO;
 use BrainExe\Core\Authentication\Exception\UserNotFoundException;
 use BrainExe\Core\Authentication\LoadUser;
+use BrainExe\Core\Authentication\Token;
 use BrainExe\Core\Authentication\UserVO;
 use BrainExe\Core\Translation\TranslationTrait;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -17,11 +18,10 @@ use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Route;
 
 /**
- * @Middleware("Middleware.Authentication")
+ * @Middleware("Middleware.TokenAuthentication")
  */
-class Authentication extends AbstractMiddleware
+class TokenAuthentication extends AbstractMiddleware
 {
-
     use TranslationTrait;
 
     /**
@@ -30,14 +30,22 @@ class Authentication extends AbstractMiddleware
     private $loadUser;
 
     /**
+     * @var Token
+     */
+    private $token;
+
+    /**
      * @Inject({
      *  "@Core.Authentication.LoadUser",
+     *  "@Core.Authentication.Token",
      * })
      * @param LoadUser $loadUser
+     * @param Token $token
      */
-    public function __construct(LoadUser $loadUser)
+    public function __construct(LoadUser $loadUser, Token $token)
     {
         $this->loadUser = $loadUser;
+        $this->token    = $token;
     }
 
     /**
@@ -45,29 +53,20 @@ class Authentication extends AbstractMiddleware
      */
     public function processRequest(Request $request, Route $route)
     {
-        if ($request->attributes->has('user')) {
-            $user = $request->attributes->get('user');
-        } else {
-            $session = $request->getSession();
-            $userId  = (int)$session->get('user_id');
+        $token = $request->get('accessToken');
 
-            $user = $this->loadUser($userId);
-        }
-
-        $request->attributes->set('user', $user);
-        $request->attributes->set('user_id', $user->getId());
-
-        $this->checkForRole($route, $user);
-
-        if ($route->hasDefault('_guest')) {
+        if (empty($token)) {
             return null;
         }
 
-        if (empty($user->getId())) {
-            return $this->handleNotAuthenticatedRequest($request);
+        $userId = $this->token->hasUserForRole($token);
+        if (empty($userId)) {
+            return null;
         }
 
-        return null;
+        $user = $this->loadUser($userId);
+
+        $request->attributes->set('user', $user);
     }
 
     /**
@@ -95,10 +94,11 @@ class Authentication extends AbstractMiddleware
             try {
                 return $this->loadUser->loadUserById($userId);
             } catch (UserNotFoundException $e) {
+                return new AnonymusUserVO();
             }
+        } else {
+            return new AnonymusUserVO();
         }
-
-        return new AnonymusUserVO();
     }
 
     /**

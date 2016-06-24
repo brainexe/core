@@ -31,18 +31,6 @@ class HandleExistingFile
         return preg_replace('/^.*?}/s', $header, $originalTest);
     }
 
-
-    /**
-     * @param string $originalTest
-     * @param string $newTest
-     * @param OutputInterface $output
-     * @todo finish
-     */
-    private function displayPatch($originalTest, $newTest, OutputInterface $output)
-    {
-        $output->writeln('<info>Diff: Not implemented yet</info>');
-    }
-
     /**
      * @param InputInterface $input
      * @param OutputInterface $output
@@ -101,9 +89,6 @@ class HandleExistingFile
             case 'header':
                 $template = $this->replaceHeaderOnly($originalTest, $template);
                 break;
-            case 'diff':
-                $this->displayPatch($originalTest, $template, $output);
-                return $template;
             case 'stop':
             default:
                 return false;
