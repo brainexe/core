@@ -14,17 +14,24 @@ class Security extends AbstractMiddleware
 {
 
     /**
-     * @var string
+     * @var string[]
      */
-    private $socketUrl;
+    private $allowedUrls;
 
     /**
-     * @Inject("%socket.url%")
-     * @param $socketHost
+     * @var bool
      */
-    public function __construct(string $socketHost)
+    private $forceHttps;
+
+    /**
+     * @Inject({"%application.allowed_urls%", "%application.force_https%"})
+     * @param array $allowedUrls
+     * @param bool $forceHttps
+     */
+    public function __construct(array $allowedUrls, bool $forceHttps)
     {
-        $this->socketUrl = $socketHost;
+        $this->allowedUrls = $allowedUrls;
+        $this->forceHttps  = $forceHttps;
     }
 
     /**
@@ -33,7 +40,7 @@ class Security extends AbstractMiddleware
     public function processResponse(Request $request, Response $response)
     {
         if (!$request->isXmlHttpRequest()) {
-            $response->headers->set('Content-Security-Policy', $this->getContentSecurityPolicy());
+            $response->headers->set('Content-Security-Policy', $this->getContentSecurityPolicy($request));
             $response->headers->set('X-Frame-Options', 'DENY');
 
             if ($request->isSecure()) {
@@ -43,14 +50,30 @@ class Security extends AbstractMiddleware
     }
 
     /**
+     * @param Request $request
      * @return string
      */
-    protected function getContentSecurityPolicy() : string
+    protected function getContentSecurityPolicy(Request $request) : string
     {
+        $allowed = [];
+        $allowed[] = "'self'";
+
+        foreach ($this->allowedUrls as $url) {
+            $port = parse_url($url, PHP_URL_PORT);
+            $host = parse_url($url, PHP_URL_HOST) ?: $request->getHost();
+
+            if ($port) {
+                $host .= ':' . $port;
+            }
+            $allowed[] = 'http://' . $host;
+            $allowed[] = 'https://' . $host;
+            $allowed[] = 'ws://' . $host;
+        }
+
         $parts = [
             'default-src \'self\'',
             'style-src \'self\' \'unsafe-inline\'',
-            sprintf('connect-src \'self\' %s', $this->socketUrl),
+            sprintf('connect-src %s', implode(' ', $allowed)),
         ];
 
         return implode('; ', $parts);

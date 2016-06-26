@@ -28,7 +28,6 @@
     "symfony/process": "~3.1",
     "symfony/routing": "~3.1",
     "symfony/proxy-manager-bridge": "~3.1",
-    "symfony/translation": "~3.1",
     "zendframework/zend-stdlib": "~3.0",
     "ocramius/proxy-manager": "~2.0",
     "brainexe/annotations": "~1.0.4",

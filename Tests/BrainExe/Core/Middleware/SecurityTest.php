@@ -26,11 +26,13 @@ class SecurityTest extends TestCase
 
     public function setUp()
     {
-        $this->subject = new Security('socket.localhost:8080');
+        $this->subject = new Security(['socket.localhost:8080'], false);
     }
 
     public function testProcessResponse()
     {
+        $this->subject = new Security(['socket.localhost:8080'], false);
+
         $request  = new Request();
         $response = new Response();
 
@@ -38,9 +40,26 @@ class SecurityTest extends TestCase
 
         $this->subject->processResponse($request, $response);
 
-        $this->assertTrue($response->headers->has('Content-Security-Policy'));
+        $expectedCSP = "default-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self' http://socket.localhost:8080 https://socket.localhost:8080 ws://socket.localhost:8080";
+        $this->assertEquals($expectedCSP, $response->headers->get('Content-Security-Policy'));
         $this->assertTrue($response->headers->has('X-Frame-Options'));
         $this->assertTrue($response->headers->has('Strict-Transport-Security'));
+    }
+
+    public function testProcessResponseRelativeSocketServer()
+    {
+        $this->subject = new Security(['/socket'], false);
+
+        $request  = new Request();
+        $response = new Response();
+
+        $request->headers->set('HOST', 'my.host.de');
+        $request->server->set('HTTPS', 'on');
+
+        $this->subject->processResponse($request, $response);
+
+        $expectedCSP = "default-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self' http://my.host.de https://my.host.de ws://my.host.de";
+        $this->assertEquals($expectedCSP, $response->headers->get('Content-Security-Policy'));
     }
 
     public function testProcessAjaxResponse()

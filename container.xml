@@ -22,7 +22,8 @@
 		<parameter key="application.url">http://%server.host%</parameter>
 		<parameter key="application.passwordhasher.cost">12</parameter>
 		<parameter key="application.defaultLocale"></parameter>
-		<parameter key="socket.url"></parameter>
+		<parameter key="application.allowed_urls" type="collection"></parameter>
+		<parameter key="application.force_https">false</parameter>
 
 		<parameter key="environment">development</parameter>
 		<parameter key="config.public" type="collection">
