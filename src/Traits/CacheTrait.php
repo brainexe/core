@@ -3,7 +3,7 @@
 namespace BrainExe\Core\Traits;
 
 use BrainExe\Annotations\Annotations\Inject;
-use Doctrine\Common\Cache\CacheProvider;
+use Symfony\Component\Cache\Adapter\AdapterInterface;
 
 /**
  * @api
@@ -12,23 +12,23 @@ trait CacheTrait
 {
 
     /**
-     * @var CacheProvider
+     * @var AdapterInterface
      */
     private $cache;
 
     /**
      * @Inject("@Cache")
-     * @param CacheProvider $cache
+     * @param AdapterInterface $cache
      */
-    public function setCache(CacheProvider $cache)
+    public function setCache(AdapterInterface $cache)
     {
         $this->cache = $cache;
     }
 
     /**
-     * @return CacheProvider
+     * @return AdapterInterface
      */
-    protected function getCache() : CacheProvider
+    protected function getCache() : AdapterInterface
     {
         return $this->cache;
     }

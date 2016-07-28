@@ -22,16 +22,21 @@ class Token
     /**
      * @param int $userId
      * @param string[] $roles
+     * @param string $name
      * @return string
      */
-    public function addToken(int $userId, array $roles = []) : string
+    public function addToken(int $userId, array $roles = [], string $name = '') : string
     {
-        $token = $this->generateRandomId(32);
+        $token = $this->generateRandomId(40);
 
         $redis = $this->getRedis()->pipeline();
 
         $redis->sadd(sprintf(self::USER_KEY, $userId), $token);
-        $redis->hset(self::TOKEN_KEY, $token, json_encode(['userId' => $userId, 'roles' => $roles]));
+        $redis->hset(self::TOKEN_KEY, $token, json_encode([
+            'userId' => $userId,
+            'roles'  => $roles,
+            'name'   => $name
+        ]));
 
         $redis->execute();
 
@@ -40,7 +45,7 @@ class Token
 
     /**
      * @param string $token
-     * @return array|
+     * @return array
      */
     public function getToken(string $token)
     {
@@ -60,7 +65,7 @@ class Token
             $tokens = $redis->hmget(self::TOKEN_KEY, $tokensIds);
 
             foreach ($tokens as $idx => $token) {
-                yield $tokensIds[$idx] => json_decode($token, true)['roles'];
+                yield $tokensIds[$idx] => json_decode($token, true);
             }
         }
     }

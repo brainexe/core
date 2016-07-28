@@ -72,6 +72,7 @@ class Security extends AbstractMiddleware
 
         $parts = [
             'default-src \'self\'',
+            'img-src *',
             'style-src \'self\' \'unsafe-inline\'',
             sprintf('connect-src %s', implode(' ', $allowed)),
         ];

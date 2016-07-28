@@ -20,7 +20,8 @@ trait RedisMockTrait
                 'hgetall', 'hmset', 'hmget', 'hset', 'hdel', 'hget', 'hincrby', 'set',
                 'evalsha', 'load', 'publish', 'subscribe', 'info', 'hincrbyfloat', 'lrem',
                 'del', 'add', 'keys', 'brpop', 'lpush', 'runmessagequeue', 'llen', 'lrange',
-                'zrangebyscore', 'zcard', 'zrevrangebyscore', 'zadd', 'zincrby', 'zdeleterangebyscore', 'zrem'
+                'zrangebyscore', 'zcard', 'zrevrangebyscore', 'zadd', 'zincrby', 'zdeleterangebyscore', 'zrem',
+                'zremrangebyscore'
             ])
             ->getMock();
     }

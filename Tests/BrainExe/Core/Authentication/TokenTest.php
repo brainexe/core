@@ -44,14 +44,14 @@ class TokenTest extends TestCase
     public function testAddToken()
     {
         $userId = 42;
+        $name   = 'myName';
         $roles  = ['role1', 'role2'];
-
-        $token = '0815';
+        $token  = '0815';
 
         $this->idGenerator
             ->expects($this->once())
             ->method('generateRandomId')
-            ->with(32)
+            ->with(40)
             ->willReturn($token);
 
         $this->predis
@@ -67,14 +67,14 @@ class TokenTest extends TestCase
         $this->predis
             ->expects($this->once())
             ->method('hset')
-            ->with('tokens', $token, '{"userId":42,"roles":["role1","role2"]}');
+            ->with('tokens', $token, '{"userId":42,"roles":["role1","role2"],"name":"myName"}');
 
         $this->predis
             ->expects($this->once())
             ->method('execute')
             ->willReturnSelf();
 
-        $actual = $this->subject->addToken($userId, $roles);
+        $actual = $this->subject->addToken($userId, $roles, $name);
 
         $this->assertEquals($token, $actual);
     }
@@ -131,14 +131,14 @@ class TokenTest extends TestCase
             ->with('tokens', ['0815', '0816'])
             ->willReturn([
                 '{"userId":42,"roles":["role1","role2"]}',
-                '{"userId":42,"roles":[]}'
+                '{"userId":42,"roles":[],"name":"myName"}'
             ]);
 
         $actual = $this->subject->getTokensForUser($userId);
 
         $expected = [
-            '0815' => ['role1', 'role2'],
-            '0816' => []
+            '0815' => ['roles' => ['role1', 'role2'], 'userId'=> 42],
+            '0816' => ['roles' => [], 'name' => 'myName', 'userId'=> 42]
         ];
 
         $this->assertEquals($expected, iterator_to_array($actual));
@@ -185,6 +185,7 @@ class TokenTest extends TestCase
 
         $this->assertNull($actual);
     }
+
     public function testHasUserForRoleWithInvalidToken()
     {
         $token  = '0815';

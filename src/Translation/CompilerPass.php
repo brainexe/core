@@ -16,19 +16,29 @@ class CompilerPass implements CompilerPassInterface
 {
 
     const CACHE_FILE = ROOT . 'cache/translation_token';
+    const TAG = 'middleware';
 
     use FileCacheTrait;
-
-    const TAG = 'middleware';
 
     /**
      * {@inheritdoc}
      */
     public function process(ContainerBuilder $container)
     {
-        $serviceIds = $container->getServiceIds();
+        $tokens = $this->getTokens($container);
 
+        $this->dumpTranslations($tokens);
+    }
+
+    /**
+     * @param ContainerBuilder $container
+     * @return string[]
+     */
+    private function getTokens(ContainerBuilder $container) : array
+    {
         $tokens = [];
+
+        $serviceIds = $container->getServiceIds();
         foreach ($serviceIds as $serviceId) {
             try {
                 $class = $container->getDefinition($serviceId)->getClass();
@@ -37,23 +47,38 @@ class CompilerPass implements CompilerPassInterface
                 continue;
             }
 
-            if ($reflection->implementsInterface(ServiceTranslationProvider::class)) {
-                /** @var ServiceTranslationProvider $class */
-                $service = $container->get($serviceId);
-
-                foreach ($service->getTokens() as $token) {
-                    $tokens[] = $token;
-                }
-            }
-            if ($reflection->implementsInterface(TranslationProvider::class)) {
-                /** @var TranslationProvider $class */
-                foreach ($class::getTokens() as $token) {
-                    $tokens[] = $token;
-                }
-            }
+            $this->getTokensForService($tokens, $container, $reflection, $serviceId);
         }
 
-        $this->dumpTranslations($tokens);
+        return $tokens;
+    }
+
+    /**
+     * @param array $tokens
+     * @param ContainerBuilder $container
+     * @param ReflectionClass $reflection
+     * @param string $serviceId
+     */
+    private function getTokensForService(
+        array &$tokens,
+        ContainerBuilder $container,
+        ReflectionClass $reflection,
+        string $serviceId
+    ) {
+        if ($reflection->implementsInterface(ServiceTranslationProvider::class)) {
+            /** @var ServiceTranslationProvider $class */
+            $service = $container->get($serviceId);
+
+            foreach ($service->getTokens() as $token) {
+                $tokens[] = $token;
+            }
+        } elseif ($reflection->implementsInterface(TranslationProvider::class)) {
+            /** @var TranslationProvider $className */
+            $className = $reflection->getName();
+            foreach ($className::getTokens() as $token) {
+                $tokens[] = $token;
+            }
+        }
     }
 
     /**

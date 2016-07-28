@@ -5,6 +5,7 @@ namespace BrainExe\Core\Authentication;
 use JsonSerializable;
 
 /**
+ * @todo it's too project specific...
  * @api
  */
 class UserVO implements JsonSerializable
@@ -27,6 +28,10 @@ class UserVO implements JsonSerializable
     const ROLES = [
         self::ROLE_ADMIN,
         self::ROLE_USER
+    ];
+
+    const ROLE_MAP = [
+        self::ROLE_USER => [self::ROLE_ADMIN]
     ];
 
     const AVATARS = [
@@ -58,6 +63,7 @@ class UserVO implements JsonSerializable
     public $one_time_secret;
 
     /**
+     * @todo needed in VO?
      * @var string
      */
     public $password;
@@ -91,7 +97,19 @@ class UserVO implements JsonSerializable
      */
     public function hasRole(string $role) : bool
     {
-        return in_array($role, $this->roles);
+        if (in_array($role, $this->roles)) {
+            return true;
+        };
+
+        if (!empty(self::ROLE_MAP[$role])) {
+            foreach (self::ROLE_MAP[$role] as $slaveRole) {
+                if ($this->hasRole($slaveRole)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /**

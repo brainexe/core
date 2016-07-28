@@ -112,6 +112,6 @@ class Authentication extends AbstractMiddleware
             throw new UserException($this->translate('Not logged in'));
         }
 
-        return new RedirectResponse('#/login');
+        return new RedirectResponse('/#/login');
     }
 }

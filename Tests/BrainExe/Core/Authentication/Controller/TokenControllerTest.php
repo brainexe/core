@@ -54,16 +54,18 @@ class TokenControllerTest extends TestCase
     {
         $userId = 42;
         $token  = '0815';
+        $name   = 'myToken';
         $roles  = ['roles'];
 
         $request = new Request();
         $request->attributes->set('user_id', $userId);
         $request->request->set('roles', $roles);
+        $request->request->set('name', $name);
 
         $this->token
             ->expects($this->once())
             ->method('addToken')
-            ->with($userId, $roles)
+            ->with($userId, $roles, $name)
             ->willReturn($token);
 
         $actual = $this->subject->addToken($request);

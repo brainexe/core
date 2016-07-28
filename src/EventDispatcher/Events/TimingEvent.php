@@ -10,7 +10,7 @@ class TimingEvent extends AbstractEvent implements JsonSerializable
 {
     use JsonSerializableTrait;
 
-    const TIMING_EVENT = 'timing';
+    const TIMING_EVENT = 'timing.timing';
 
     /**
      * @var string

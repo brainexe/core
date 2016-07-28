@@ -19,6 +19,7 @@
   "type": "library",
   "require": {
     "php": ">=7.0.0",
+    "symfony/cache": "~3.1",
     "symfony/config": "~3.1",
     "symfony/console": "~3.1",
     "symfony/dependency-injection": "~3.1",
@@ -31,8 +32,7 @@
     "zendframework/zend-stdlib": "~3.0",
     "ocramius/proxy-manager": "~2.0",
     "brainexe/annotations": "~1.0.4",
-    "monolog/monolog": "~1.17",
-    "doctrine/cache": "~1.6",
+    "monolog/monolog": "~1.20.0",
     "predis/predis": "~1.0",
     "mtdowling/cron-expression": "1.1.*",
     "phpmailer/phpmailer": "~5.2",

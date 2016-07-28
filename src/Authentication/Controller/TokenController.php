@@ -49,8 +49,9 @@ class TokenController
     {
         $userId = $request->attributes->getInt('user_id');
         $roles  = (array)$request->request->get('roles');
+        $name   = (string)$request->request->get('name');
 
-        return $this->token->addToken($userId, $roles);
+        return $this->token->addToken($userId, $roles, $name);
     }
 
     /**

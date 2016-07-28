@@ -23,8 +23,9 @@ class TestEvent extends AbstractEvent
  */
 class GatewayTest extends TestCase
 {
-    const DUMMY_EVENT  = 'TzozMDoiQnJhaW5FeGVcQ29yZVxNZXNzYWdlUXVldWVcSm9iIjo0OntzOjU6ImV2ZW50IjtPOjM5OiJCcmFpbkV4ZVxDb3JlXEV2ZW50RGlzcGF0Y2hlclxDcm9uRXZlbnQiOjQ6e3M6MTA6ImV4cHJlc3Npb24iO3M6NjoiQGRhaWx5IjtzOjU6ImV2ZW50IjtPOjQ4OiJCcmFpbkV4ZVxDb3JlXEV2ZW50RGlzcGF0Y2hlclxFdmVudHNcVGltaW5nRXZlbnQiOjM6e3M6ODoidGltaW5nSWQiO3M6NToiZGFpbHkiO3M6OToiZXZlbnROYW1lIjtzOjY6InRpbWluZyI7czo1OToiAFN5bWZvbnlcQ29tcG9uZW50XEV2ZW50RGlzcGF0Y2hlclxFdmVudABwcm9wYWdhdGlvblN0b3BwZWQiO2I6MDt9czo5OiJldmVudE5hbWUiO3M6MTg6Im1lc3NhZ2VfcXVldWUuY3JvbiI7czo1OToiAFN5bWZvbnlcQ29tcG9uZW50XEV2ZW50RGlzcGF0Y2hlclxFdmVudABwcm9wYWdhdGlvblN0b3BwZWQiO2I6MDt9czo1OiJqb2JJZCI7czoyMjoibWVzc2FnZV9xdWV1ZS5jcm9uOjMxMCI7czo5OiJ0aW1lc3RhbXAiO2k6MTQ0ODMxOTYwMDtzOjEyOiJlcnJvckNvdW50ZXIiO2k6MDt9';
-    const DUMMY_EVENT2 = 'TzozMDoiQnJhaW5FeGVcQ29yZVxNZXNzYWdlUXVldWVcSm9iIjo0OntzOjU6ImV2ZW50IjtPOjM5OiJCcmFpbkV4ZVxDb3JlXEV2ZW50RGlzcGF0Y2hlclxDcm9uRXZlbnQiOjQ6e3M6MTA6ImV4cHJlc3Npb24iO3M6OToiKiAqICogKiAqIjtzOjU6ImV2ZW50IjtPOjQ4OiJCcmFpbkV4ZVxDb3JlXEV2ZW50RGlzcGF0Y2hlclxFdmVudHNcVGltaW5nRXZlbnQiOjM6e3M6ODoidGltaW5nSWQiO3M6NjoibWludXRlIjtzOjEwOiJldmVudF9uYW1lIjtzOjY6InRpbWluZyI7czo1OToiAFN5bWZvbnlcQ29tcG9uZW50XEV2ZW50RGlzcGF0Y2hlclxFdmVudABwcm9wYWdhdGlvblN0b3BwZWQiO2I6MDt9czoxMDoiZXZlbnRfbmFtZSI7czoxODoibWVzc2FnZV9xdWV1ZS5jcm9uIjtzOjU5OiIAU3ltZm9ueVxDb21wb25lbnRcRXZlbnREaXNwYXRjaGVyXEV2ZW50AHByb3BhZ2F0aW9uU3RvcHBlZCI7YjowO31zOjU6ImpvYklkIjtzOjIyOiJtZXNzYWdlX3F1ZXVlLmNyb246MzA1IjtzOjk6InRpbWVzdGFtcCI7aToxNDQ4MjI3MzgwO3M6MTI6ImVycm9yQ291bnRlciI7aTowO30';
+    const DUMMY_EVENT  = 'O:30:"BrainExe\\Core\\MessageQueue\\Job":4:{s:5:"event";O:39:"BrainExe\\Core\\EventDispatcher\\CronEvent":4:{s:10:"expression";s:6:"@daily";s:5:"event";O:48:"BrainExe\\Core\\EventDispatcher\\Events\\TimingEvent":3:{s:8:"timingId";s:5:"daily";s:9:"eventName";s:13:"timing.timing";s:59:"' . "\0" . 'Symfony\\Component\\EventDispatcher\\Event' . "\0" . 'propagationStopped";b:0;}s:9:"eventName";s:18:"message_queue.cron";s:59:"' . "\0" . 'Symfony\\Component\\EventDispatcher\\Event' . "\0" . 'propagationStopped";b:0;}s:5:"jobId";s:22:"message_queue.cron:310";s:9:"timestamp";i:1448319600;s:12:"errorCounter";i:0;}';
+    const DUMMY_EVENT2 = 'O:30:"BrainExe\\Core\\MessageQueue\\Job":4:{s:5:"event";O:39:"BrainExe\\Core\\EventDispatcher\\CronEvent":4:{s:10:"expression";s:9:"* * * * *";s:5:"event";O:48:"BrainExe\\Core\\EventDispatcher\\Events\\TimingEvent":3:{s:8:"timingId";s:6:"minute";s:10:"event_name";s:13:"timing.timing";s:59:"' . "\0" . 'Symfony\\Component\\EventDispatcher\\Event' . "\0" . 'propagationStopped";b:0;}s:10:"event_name";s:18:"message_queue.cron";s:59:"' . "\0" . 'Symfony\\Component\\EventDispatcher\\Event' . "\0" . 'propagationStopped";b:0;}s:5:"jobId";s:22:"message_queue.cron:305";s:9:"timestamp";i:1448227380;s:12:"errorCounter";i:0;}'.'O:30:"BrainExe\\Core\\MessageQueue\\Job":4:{s:5:"event";O:39:"BrainExe\\Core\\EventDispatcher\\CronEvent":4:{s:10:"expression";s:6:"@daily";s:5:"event";O:48:"BrainExe\\Core\\EventDispatcher\\Events\\TimingEvent":3:{s:8:"timingId";s:5:"daily";s:9:"eventName";s:6:"timing";s:59:"' . "\0" . 'Symfony\\Component\\EventDispatcher\\Event' . "\0" . 'propagationStopped";b:0;}s:9:"eventName";s:18:"message_queue.cron";s:59:"' . "\0" . 'Symfony\\Component\\EventDispatcher\\Event' . "\0" . 'propagationStopped";b:0;}s:5:"jobId";s:22:"message_queue.cron:310";s:9:"timestamp";i:1448319600;s:12:"errorCounter";i:0;}';
+
     use RedisMockTrait;
 
     /**
@@ -95,14 +96,14 @@ class GatewayTest extends TestCase
             ->method('lrange')
             ->with(Gateway::QUEUE_IMMEDIATE)
             ->willReturn([
-                'event:11#' . self::DUMMY_EVENT,
-                'event:10#' . self::DUMMY_EVENT2,
+                'event:11#' . base64_encode(self::DUMMY_EVENT),
+                'event:10#' . base64_encode(self::DUMMY_EVENT2),
             ]);
 
         $this->redis
             ->expects($this->once())
             ->method('lrem')
-            ->with(Gateway::QUEUE_IMMEDIATE, 1, 'event:10#' . self::DUMMY_EVENT2)
+            ->with(Gateway::QUEUE_IMMEDIATE, 1, 'event:10#' . base64_encode(self::DUMMY_EVENT2))
             ->willReturn(1);
 
         $actual = $this->subject->deleteEvent($eventId, $eventType);
@@ -247,13 +248,13 @@ class GatewayTest extends TestCase
             ->expects($this->once())
             ->method('hmget')
             ->with(Gateway::META_DATA, [$eventId])
-            ->willReturn([$eventId => self::DUMMY_EVENT]);
+            ->willReturn([$eventId => base64_encode(self::DUMMY_EVENT)]);
 
         $this->redis
             ->expects($this->once())
             ->method('lrange')
             ->with(Gateway::QUEUE_IMMEDIATE)
-            ->willReturn(['espeak.speak:86#' . self::DUMMY_EVENT2]);
+            ->willReturn(['espeak.speak:86#' . base64_encode(self::DUMMY_EVENT2)]);
 
         $actual = $this->subject->getEventsByType($eventType, $since);
         $this->assertEquals(['message_queue.cron:310', 'message_queue.cron:305'], array_keys($actual));
@@ -269,7 +270,7 @@ class GatewayTest extends TestCase
 
         $event = new CronEvent(new TimingEvent('daily'), '@daily');
 
-        $eventRaw = self::DUMMY_EVENT;
+        $eventRaw = base64_encode(self::DUMMY_EVENT);
 
         $this->redis
             ->expects($this->once())

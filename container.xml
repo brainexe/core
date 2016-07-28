@@ -8,7 +8,7 @@
 		<!-- This value in filled during container build process -->
 		<parameter key="locales" type="collection"/>
 
-		<parameter key="session.lifetime">30758400</parameter>
+		<parameter key="session.lifetime">604800</parameter>
 
 		<parameter key="timezone">Europe/Berlin</parameter>
 
@@ -21,7 +21,7 @@
 		<parameter key="application.registration_enabled">true</parameter>
 		<parameter key="application.url">http://%server.host%</parameter>
 		<parameter key="application.passwordhasher.cost">12</parameter>
-		<parameter key="application.defaultLocale"></parameter>
+		<parameter key="application.defaultLocale">en_US</parameter>
 		<parameter key="application.allowed_urls" type="collection"></parameter>
 		<parameter key="application.force_https">false</parameter>
 
@@ -126,11 +126,15 @@
 		<service id="Finder" class="Symfony\Component\Finder\Finder" public="false"/>
 		<service id="WebserviceClient" class="GuzzleHttp\Client" public="false"/>
 
-		<service id="Cache" class="Doctrine\Common\Cache\PredisCache" public="false">
+		<service id="DoctrineCache" class="Doctrine\Common\Cache\PredisCache" public="false">
 			<argument type="service" id="redis"/>
 			<call method="setNamespace">
 				<argument>cache:%dicId%</argument>
 			</call>
+		</service>
+		<service id="Cache" class="Symfony\Component\Cache\Adapte" public="false">
+			<argument type="service" id="redis"/>
+			<argument>cache</argument>
 		</service>
 
 		<service id="Mailer" class="PHPMailer" public="false"/>

@@ -7,7 +7,7 @@ use BrainExe\Core\Annotations\Middleware;
 use BrainExe\Core\Traits\CacheTrait;
 use BrainExe\Core\Traits\LoggerTrait;
 use DateTime;
-use Doctrine\Common\Cache\CacheProvider;
+use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Route;
@@ -51,7 +51,7 @@ class Cache extends AbstractMiddleware
 
         $ttl   = $route->getOption('cache');
         $cache = $this->getCache();
-        if ($cache->contains($cacheKey)) {
+        if ($cache->hasItem($cacheKey)) {
             return $this->handleCached($cache, $cacheKey, $ttl);
         }
 
@@ -86,7 +86,10 @@ class Cache extends AbstractMiddleware
             'ttl'         => $ttl,
         ]);
 
-        $cache->save($cacheKey, $response, $ttl);
+        $item = $cache->getItem($cacheKey);
+        $item->set($response);
+        $item->expiresAfter($ttl);
+        $cache->save($item);
 
         $response->headers->set('X-Cache', 'miss');
         $response->setMaxAge($ttl);
@@ -94,12 +97,12 @@ class Cache extends AbstractMiddleware
     }
 
     /**
-     * @param CacheProvider $cache
+     * @param AdapterInterface $cache
      * @param string $cacheKey
      * @param int $ttl
      * @return Response
      */
-    private function handleCached(CacheProvider $cache, string $cacheKey, int $ttl) : Response
+    private function handleCached(AdapterInterface $cache, string $cacheKey, int $ttl) : Response
     {
         $this->info(sprintf('hit: fetch from cache: %s', $cacheKey), [
             'application' => 'cache',
@@ -109,7 +112,7 @@ class Cache extends AbstractMiddleware
         ]);
 
         /** @var Response $response */
-        $response = $cache->fetch($cacheKey);
+        $response = $cache->getItem($cacheKey)->get();
 
         $response->headers->set('X-Cache', 'hit');
         $response->setMaxAge($ttl);

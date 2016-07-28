@@ -37,6 +37,28 @@ class UserVOTest extends TestCase
         $this->assertEquals($this->subject->roles, $actualRoles);
     }
 
+    public function testRolesAdmin()
+    {
+        $this->subject->roles = [
+            UserVO::ROLE_ADMIN
+        ];
+
+        $this->assertTrue($this->subject->hasRole(UserVO::ROLE_USER));
+        $this->assertTrue($this->subject->hasRole(UserVO::ROLE_ADMIN));
+        $this->assertFalse($this->subject->hasRole('role_444'));
+    }
+
+    public function testRolesUser()
+    {
+        $this->subject->roles = [
+            UserVO::ROLE_USER
+        ];
+
+        $this->assertTrue($this->subject->hasRole(UserVO::ROLE_USER));
+        $this->assertFalse($this->subject->hasRole(UserVO::ROLE_ADMIN));
+        $this->assertFalse($this->subject->hasRole('role_444'));
+    }
+
     public function testGetProperties()
     {
         $this->subject->username = 'username';

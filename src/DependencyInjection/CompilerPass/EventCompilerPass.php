@@ -52,9 +52,10 @@ class EventCompilerPass implements CompilerPassInterface
     private function handleEvent(ReflectionClass $reflection, array &$events, string $class)
     {
         foreach (array_values($reflection->getConstants()) as $constant) {
-            if (strlen($constant) < 2) {
+            if (strlen($constant) < 3 || strpos($constant, '.') === false) {
                 continue;
             }
+
             if (isset($events[$constant])) {
                 throw new Exception(sprintf(
                     'Event "%s" was already defined in "%s". (%s)',

@@ -3,10 +3,11 @@
 namespace Tests\BrainExe\Core\Middleware;
 
 use BrainExe\Core\Middleware\Cache;
-use Doctrine\Common\Cache\CacheProvider;
 use Monolog\Logger;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase as TestCase;
+use Symfony\Component\Cache\Adapter\AdapterInterface;
+use Symfony\Component\Cache\CacheItem;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,7 +25,7 @@ class CacheTest extends TestCase
     private $subject;
 
     /**
-     * @var CacheProvider|MockObject
+     * @var AdapterInterface|MockObject
      */
     private $cache;
 
@@ -35,7 +36,7 @@ class CacheTest extends TestCase
 
     public function setUp()
     {
-        $this->cache  = $this->createMock(CacheProvider::class);
+        $this->cache  = $this->createMock(AdapterInterface::class);
         $this->logger = $this->createMock(Logger::class);
 
         $this->subject = new Cache(true);
@@ -72,7 +73,7 @@ class CacheTest extends TestCase
         $route       = new Route('/path/');
         $requestUri  = 'request';
 
-        $route->setOption('cache', true);
+        $route->setOption('cache', 100);
 
         $request
             ->expects($this->once())
@@ -85,13 +86,18 @@ class CacheTest extends TestCase
             ->method('getRequestUri')
             ->willReturn($requestUri);
 
+        $actualResponse = $this->subject->processRequest($request, $route);
+
+        $cachedItem = new CacheItem();
+        $cachedItem->set($actualResponse);
+        $cachedItem->expiresAfter(100);
+
         $this->cache
             ->expects($this->once())
-            ->method('contains')
+            ->method('getItem')
             ->with(Cache::PREFIX . $requestUri)
-            ->willReturn(false);
+            ->willReturn($cachedItem);
 
-        $actualResponse = $this->subject->processRequest($request, $route);
         $this->assertNull($actualResponse);
 
         // invalid response
@@ -104,8 +110,7 @@ class CacheTest extends TestCase
         $this->cache
             ->expects($this->once())
             ->method('save')
-            ->with(Cache::PREFIX . $requestUri, $response, Cache::DEFAULT_TTL)
-            ->willReturn(false);
+            ->with($cachedItem);
 
         $this->subject->processResponse($request, $response);
     }
@@ -136,15 +141,18 @@ class CacheTest extends TestCase
 
         $this->cache
             ->expects($this->once())
-            ->method('contains')
+            ->method('hasItem')
             ->with(Cache::PREFIX . $requestUri)
             ->willReturn(true);
 
+        $cachedItem = new CacheItem();
+        $cachedItem->set($response);
+
         $this->cache
             ->expects($this->once())
-            ->method('fetch')
+            ->method('getItem')
             ->with(Cache::PREFIX . $requestUri)
-            ->willReturn($response);
+            ->willReturn($cachedItem);
 
         $actualResponse = $this->subject->processRequest($request, $route);
 

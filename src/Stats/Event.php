@@ -10,8 +10,8 @@ use BrainExe\Core\EventDispatcher\AbstractEvent;
 class Event extends AbstractEvent
 {
 
-    const INCREASE = 'stats:increase';
-    const SET      = 'stats:set';
+    const INCREASE = 'stats.increase';
+    const SET      = 'stats.set';
 
     /**
      * @var string
