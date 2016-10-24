@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Route;
 
 /**
- * @covers BrainExe\Core\Middleware\Cache
+ * @covers \BrainExe\Core\Middleware\Cache
  */
 class CacheTest extends TestCase
 {

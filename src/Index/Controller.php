@@ -17,7 +17,7 @@ class Controller
      * Deliver base HTML layout
      *
      * @return Response
-     * @Route("/", name="index", methods="GET", options={"cache":3600})
+     * @Route("/", name="index", methods="GET")
      * @Guest
      */
     public function index() : Response

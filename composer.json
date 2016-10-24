@@ -31,8 +31,8 @@
     "symfony/proxy-manager-bridge": "~3.1",
     "zendframework/zend-stdlib": "~3.0",
     "ocramius/proxy-manager": "~2.0",
-    "brainexe/annotations": "~1.0.4",
-    "monolog/monolog": "~1.20.0",
+    "brainexe/annotations": "~1.0.9",
+    "monolog/monolog": "~1.21.0",
     "predis/predis": "~1.0",
     "mtdowling/cron-expression": "1.1.*",
     "phpmailer/phpmailer": "~5.2",
@@ -43,7 +43,7 @@
   },
   "suggest": {
     "johnkary/phpunit-speedtrap": "~1.0@dev",
-    "lstrojny/phpunit-clever-and-smart": "0.*"
+    "lstrojny/phpunit-clever-and-smart": "~0.5"
   },
   "bin": [
     "console"

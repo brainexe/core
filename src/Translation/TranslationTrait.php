@@ -9,7 +9,7 @@ trait TranslationTrait
      * @param array ...$params
      * @return string
      */
-    protected function translate(string $string, ...$params) : string
+    public function translate(string $string, ...$params) : string
     {
         return vsprintf(gettext($string), $params);
     }

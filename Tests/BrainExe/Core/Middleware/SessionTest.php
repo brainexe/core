@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Route;
 
 /**
- * @covers BrainExe\Core\Middleware\Session
+ * @covers \BrainExe\Core\Middleware\Session
  */
 class SessionTest extends TestCase
 {

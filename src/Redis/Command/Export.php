@@ -58,7 +58,7 @@ class Export extends SymfonyCommand
      * @return string[]
      * @throws Exception
      */
-    protected function dump($key)
+    protected function dump($key) : array
     {
         $parts = [];
 

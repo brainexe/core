@@ -18,6 +18,7 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 class CatchUserException extends AbstractMiddleware
 {
 
+    const ERROR_NOT_AUTHORIZED = 'NotAuthorized';
     use LoggerTrait;
     use TranslationTrait;
 
@@ -46,6 +47,7 @@ class CatchUserException extends AbstractMiddleware
                 $exception
             );
             $response = new Response('', 405);
+            $response->headers->set('X-Error', self::ERROR_NOT_AUTHORIZED);
         } elseif ($exception instanceof UserException) {
             // just pass a UserException to Frontend
             $response  = new Response('', 200);
@@ -57,20 +59,25 @@ class CatchUserException extends AbstractMiddleware
         $this->error($exception->getMessage());
         $this->error($exception->getTraceAsString());
 
-        $this->setMessage($exception, $response);
+        $this->setMessage($exception, $request, $response);
 
         return $response;
     }
 
     /**
      * @param Throwable $exception
+     * @param Request $request
      * @param Response $response
      */
-    protected function setMessage(Throwable $exception, Response $response)
+    private function setMessage(Throwable $exception, Request $request, Response $response)
     {
         $message = $exception->getMessage() ?: $this->translate('An error occurred');
-        $response->headers->set('X-Flash-Type', 'danger');
-        $response->headers->set('X-Flash-Message', $message);
-        $response->setContent($message);
+
+        if ($request->isXmlHttpRequest()) {
+            $response->headers->set('X-Flash-Type', 'danger');
+            $response->headers->set('X-Flash-Message', $message);
+        } else {
+            $response->setContent($message);
+        }
     }
 }

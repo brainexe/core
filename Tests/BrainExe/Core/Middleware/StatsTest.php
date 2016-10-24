@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Route;
 
 /**
- * @covers BrainExe\Core\Middleware\Stats
+ * @covers \BrainExe\Core\Middleware\Stats
  */
 class StatsTest extends TestCase
 {

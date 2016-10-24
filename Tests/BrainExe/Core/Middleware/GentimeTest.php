@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @covers BrainExe\Core\Middleware\Gentime
+ * @covers \BrainExe\Core\Middleware\Gentime
  */
 class GentimeTest extends TestCase
 {

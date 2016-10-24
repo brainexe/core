@@ -70,6 +70,7 @@ class TokenAuthentication extends AbstractMiddleware
     }
 
     /**
+     * @todo check/implement
      * @param Route $route
      * @param UserVO $user
      * @throws MethodNotAllowedException
@@ -99,19 +100,5 @@ class TokenAuthentication extends AbstractMiddleware
         } else {
             return new AnonymusUserVO();
         }
-    }
-
-    /**
-     * @param Request $request
-     * @return RedirectResponse
-     * @throws UserException
-     */
-    private function handleNotAuthenticatedRequest(Request $request)
-    {
-        if ($request->isXmlHttpRequest()) {
-            throw new UserException($this->translate('Not logged in'));
-        }
-
-        return new RedirectResponse('#/login');
     }
 }

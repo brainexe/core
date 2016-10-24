@@ -109,7 +109,7 @@ class Authentication extends AbstractMiddleware
     private function handleNotAuthenticatedRequest(Request $request)
     {
         if ($request->isXmlHttpRequest()) {
-            throw new UserException($this->translate('Not logged in'));
+            throw new MethodNotAllowedException([]);
         }
 
         return new RedirectResponse('/#/login');

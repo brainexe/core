@@ -21,17 +21,17 @@ class Security extends AbstractMiddleware
     /**
      * @var bool
      */
-    private $forceHttps;
+    private $debug;
 
     /**
-     * @Inject({"%application.allowed_urls%", "%application.force_https%"})
+     * @Inject({"%application.allowed_urls%", "%debug%"})
      * @param array $allowedUrls
-     * @param bool $forceHttps
+     * @param bool $debug
      */
-    public function __construct(array $allowedUrls, bool $forceHttps)
+    public function __construct(array $allowedUrls, bool $debug)
     {
         $this->allowedUrls = $allowedUrls;
-        $this->forceHttps  = $forceHttps;
+        $this->debug = $debug;
     }
 
     /**
@@ -42,6 +42,8 @@ class Security extends AbstractMiddleware
         if (!$request->isXmlHttpRequest()) {
             $response->headers->set('Content-Security-Policy', $this->getContentSecurityPolicy($request));
             $response->headers->set('X-Frame-Options', 'DENY');
+            $response->headers->set('X-Content-Type-Options', 'nosniff');
+            $response->headers->set('X-XSS-Protection', '1');
 
             if ($request->isSecure()) {
                 $response->headers->set('Strict-Transport-Security', 'max-age=31536000 ; includeSubDomains');
@@ -65,17 +67,19 @@ class Security extends AbstractMiddleware
             if ($port) {
                 $host .= ':' . $port;
             }
-            $allowed[] = 'http://' . $host;
-            $allowed[] = 'https://' . $host;
-            $allowed[] = 'ws://' . $host;
+            $allowed[] = $host;
         }
 
         $parts = [
-            'default-src \'self\'',
+            sprintf('default-src \'self\''),
             'img-src *',
             'style-src \'self\' \'unsafe-inline\'',
-            sprintf('connect-src %s', implode(' ', $allowed)),
+            sprintf('connect-src \'self\' %s', implode(' ', $allowed)),
         ];
+
+        if ($this->debug) {
+            $parts[] = 'script * ';
+        }
 
         return implode('; ', $parts);
     }

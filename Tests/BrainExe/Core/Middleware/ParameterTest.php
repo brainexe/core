@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Route;
 
 /**
- * @covers BrainExe\Core\Middleware\Parameter
+ * @covers \BrainExe\Core\Middleware\Parameter
  */
 class ParameterTest extends TestCase
 {

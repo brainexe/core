@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\Routing\Route;
 
 /**
- * @covers BrainExe\Core\Middleware\Locale
+ * @covers \BrainExe\Core\Middleware\Locale
  */
 class LocaleTest extends TestCase
 {
