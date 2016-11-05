@@ -22,6 +22,7 @@ class JobTest extends TestCase
         $timestamp = 1000;
 
         $this->subject = new Job($event, $jobId, $timestamp);
+        $this->subject->startTime = 12;
     }
 
     public function testEvent()
@@ -29,5 +30,6 @@ class JobTest extends TestCase
         $this->assertEquals('type:111', $this->subject->jobId);
         $this->assertEquals('type:111', $this->subject->getJobId());
         $this->assertEquals(1000, $this->subject->getTimestamp());
+        $this->assertEquals(12, $this->subject->getStartTime());
     }
 }

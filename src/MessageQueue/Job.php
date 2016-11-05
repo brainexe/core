@@ -21,9 +21,14 @@ class Job
     public $jobId;
 
     /**
-     * @var integer
+     * @var int
      */
     public $timestamp;
+
+    /**
+     * @var int
+     */
+    public $startTime;
 
     /**
      * @var int
@@ -33,7 +38,7 @@ class Job
     /**
      * @param AbstractEvent $event
      * @param string $jobId
-     * @param integer $timestamp
+     * @param int $timestamp
      */
     public function __construct(AbstractEvent $event, string $jobId, int $timestamp)
     {
@@ -72,5 +77,13 @@ class Job
     public function setTimestamp(int $timestamp)
     {
         $this->timestamp = $timestamp;
+    }
+
+    /**
+     * @return int
+     */
+    public function getStartTime(): int
+    {
+        return $this->startTime;
     }
 }

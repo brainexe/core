@@ -32,9 +32,7 @@ class ConfigCompilerPass implements CompilerPassInterface
 
         $container->setParameter('dicId', uniqid());
 
-        if (!$container->hasParameter('debug')) { // todo more into expression language in container.xml ?
-            $environment = $container->getParameter('environment');
-            $container->setParameter('debug', $environment !== Environment::PRODUCTION);
-        }
+        $environment = $container->getParameter('environment');
+        $container->setParameter('debug', $environment !== Environment::PRODUCTION);
     }
 }

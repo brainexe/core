@@ -31,7 +31,6 @@ class Controller
     }
 
     /**
-     * @todo regexp
      * @Route("/jobs/{type}/", name="status.jobs.type", methods="GET")
      * @param Request $request
      * @param string $type

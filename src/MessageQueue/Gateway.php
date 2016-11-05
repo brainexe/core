@@ -63,6 +63,7 @@ class Gateway
         $jobId = sprintf('%s:%s', $event->getEventName(), $jobId);
 
         $job = new Job($event, $jobId, $timestamp);
+        $job->startTime = $this->now();
 
         $this->addJob($job);
     }

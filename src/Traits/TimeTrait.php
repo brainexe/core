@@ -26,7 +26,6 @@ trait TimeTrait
     }
 
     /**
-     * @todo private/protected
      * @return Time
      */
     public function getTime() : Time
@@ -35,7 +34,6 @@ trait TimeTrait
     }
 
     /**
-     * @todo private/protected
      * @return int
      */
     public function now() : int

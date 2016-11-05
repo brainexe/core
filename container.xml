@@ -43,31 +43,6 @@
 
         <service id="logger" class="Monolog\Logger" public="false">
             <argument>%application.name%</argument>
-
-			<call method="pushHandler">
-				<argument type="service">
-					<service class="Monolog\Handler\StreamHandler">
-						<argument>%logger.dir%error.log</argument>
-						<argument type="constant">Monolog\Logger::ERROR</argument>
-					</service>
-				</argument>
-			</call>
-			<call method="pushHandler">
-				<argument type="service">
-					<service class="Monolog\Handler\StreamHandler">
-						<argument>%logger.dir%info.log</argument>
-						<argument type="constant">Monolog\Logger::INFO</argument>
-					</service>
-				</argument>
-			</call>
-			<call method="pushHandler">
-				<argument type="service">
-					<service class="Monolog\Handler\StreamHandler">
-						<argument>%logger.dir%debug.log</argument>
-						<argument type="constant">Monolog\Logger::DEBUG</argument>
-					</service>
-				</argument>
-			</call>
 			<call method="pushHandler">
 				<argument type="service">
 					<service class="BrainExe\Core\Logger\ChannelStreamHandler">
