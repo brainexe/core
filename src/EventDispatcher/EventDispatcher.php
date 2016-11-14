@@ -4,6 +4,7 @@ namespace BrainExe\Core\EventDispatcher;
 
 use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Annotations\Annotations\Service;
+use BrainExe\Core\MessageQueue\Job;
 use BrainExe\Core\Websockets\WebSocketEvent;
 use RuntimeException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -73,6 +74,7 @@ class EventDispatcher extends ContainerAwareEventDispatcher
     /**
      * @param AbstractEvent $event
      * @param int|null $timestamp
+     * @return Job
      */
     public function dispatchInBackground(AbstractEvent $event, int $timestamp = 0)
     {
@@ -83,6 +85,8 @@ class EventDispatcher extends ContainerAwareEventDispatcher
         }
 
         $this->dispatchEvent($wrapper);
+
+        return $wrapper->getJob();
     }
 
     /**

@@ -154,7 +154,8 @@ class GatewayTest extends TestCase
             ->expects($this->at(2))
             ->method('exec');
 
-        $this->subject->addEvent($event, $timestamp);
+        $actual = $this->subject->addEvent($event, $timestamp);
+        $this->assertInstanceOf(Job::class, $actual);
     }
 
     public function testAddEventDelayed()
@@ -191,7 +192,8 @@ class GatewayTest extends TestCase
             ->expects($this->at(3))
             ->method('exec');
 
-        $this->subject->addEvent($event, $timestamp);
+        $actual = $this->subject->addEvent($event, $timestamp);
+        $this->assertInstanceOf(Job::class, $actual);
     }
 
     public function testGetEventsByTypeWithoutData()

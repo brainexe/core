@@ -5,6 +5,7 @@ namespace BrainExe\Core\Traits;
 use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Core\EventDispatcher\AbstractEvent;
 use BrainExe\Core\EventDispatcher\EventDispatcher;
+use BrainExe\Core\MessageQueue\Job;
 
 /**
  * @api
@@ -44,10 +45,11 @@ trait EventDispatcherTrait
 
     /**
      * @param AbstractEvent $event
-     * @param integer|null $timestamp
+     * @param int|null $timestamp
+     * @return Job
      */
     public function dispatchInBackground(AbstractEvent $event, int $timestamp = 0)
     {
-        $this->dispatcher->dispatchInBackground($event, $timestamp);
+        return $this->dispatcher->dispatchInBackground($event, $timestamp);
     }
 }

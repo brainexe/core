@@ -47,7 +47,8 @@ class Listener implements EventSubscriberInterface
      */
     public function onDelayedEvent(DelayedEvent $event)
     {
-        $this->gateway->addEvent($event->getEvent(), $event->getTimestamp());
+        $job = $this->gateway->addEvent($event->getEvent(), $event->getTimestamp());
+        $event->setJob($job);
     }
 
     /**
@@ -57,7 +58,8 @@ class Listener implements EventSubscriberInterface
     {
         $cron = CronExpression::factory($event->getExpression());
 
-        $this->gateway->addEvent($event, $cron->getNextRunDate()->getTimestamp());
+        $job = $this->gateway->addEvent($event, $cron->getNextRunDate()->getTimestamp());
+        $event->setJob($job);
     }
 
     /**
@@ -65,6 +67,7 @@ class Listener implements EventSubscriberInterface
      */
     public function onBackgroundEvent(BackgroundEvent $event)
     {
-        $this->gateway->addEvent($event->getEvent(), 0);
+        $job = $this->gateway->addEvent($event->getEvent(), 0);
+        $event->setJob($job);
     }
 }

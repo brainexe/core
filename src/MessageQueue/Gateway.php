@@ -55,9 +55,9 @@ class Gateway
     /**
      * @param AbstractEvent $event
      * @param int $timestamp
-     * @return string
+     * @return Job
      */
-    public function addEvent(AbstractEvent $event, int $timestamp = 0)
+    public function addEvent(AbstractEvent $event, int $timestamp = 0) : Job
     {
         $jobId = $this->generateUniqueId('jobid:' . $event->getEventName());
         $jobId = sprintf('%s:%s', $event->getEventName(), $jobId);
@@ -66,6 +66,8 @@ class Gateway
         $job->startTime = $this->now();
 
         $this->addJob($job);
+
+        return $job;
     }
 
     /**
