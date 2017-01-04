@@ -9,6 +9,7 @@ use BrainExe\Core\EventDispatcher\EventDispatcher;
 use BrainExe\Core\MessageQueue\Gateway;
 use BrainExe\Core\MessageQueue\Job;
 use BrainExe\Core\MessageQueue\Worker;
+use BrainExe\Core\Util\Time;
 use Exception;
 use Monolog\Logger;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
@@ -38,9 +39,14 @@ class WorkerTest extends TestCase
     private $logger;
 
     /**
-     * @var Exception|MockObject
+     * @var Expression|MockObject
      */
     private $cron;
+
+    /**
+     * @var Time|MockObject
+     */
+    private $time;
 
     public function setup()
     {
@@ -48,10 +54,12 @@ class WorkerTest extends TestCase
         $this->dispatcher = $this->createMock(EventDispatcher::class);
         $this->logger     = $this->createMock(Logger::class);
         $this->cron       = $this->createMock(Expression::class);
+        $this->time       = $this->createMock(Time::class);
 
         $this->subject = new Worker($this->gateway, $this->cron);
         $this->subject->setLogger($this->logger);
         $this->subject->setEventDispatcher($this->dispatcher);
+        $this->subject->setTime($this->time);
     }
 
     public function testExecute()
@@ -75,12 +83,19 @@ class WorkerTest extends TestCase
     {
         $jobId = 'job:0815';
         $timestamp = 0;
+        $now = 11111;
 
         /** @var AbstractEvent $event */
         $event = $this->createMock(AbstractEvent::class);
         $cronEvent = new CronEvent($event, '@daily');
 
+        $this->time
+            ->expects($this->once())
+            ->method('now')
+            ->willReturn($now);
+
         $job = new Job($cronEvent, $jobId, $timestamp);
+        $job->setStartTime($now);
 
         $this->dispatcher
             ->expects($this->at(0))

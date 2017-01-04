@@ -5,9 +5,11 @@ namespace BrainExe\Core\Translation;
 use BrainExe\Core\Annotations\CompilerPass as CompilerPassAnnotation;
 use BrainExe\Core\Traits\FileCacheTrait;
 use Exception;
+use Generator;
 use ReflectionClass;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Translation\Token;
 
 /**
  * @CompilerPassAnnotation("Core.Translation.CompilerPass")
@@ -25,19 +27,17 @@ class CompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $tokens = $this->getTokens($container);
+        $tokens = iterator_to_array($this->getTokens($container));
 
         $this->dumpTranslations($tokens);
     }
 
     /**
      * @param ContainerBuilder $container
-     * @return string[]
+     * @return Generator|Token[]
      */
-    private function getTokens(ContainerBuilder $container) : array
+    private function getTokens(ContainerBuilder $container) : Generator
     {
-        $tokens = [];
-
         $serviceIds = $container->getServiceIds();
         foreach ($serviceIds as $serviceId) {
             try {
@@ -47,36 +47,41 @@ class CompilerPass implements CompilerPassInterface
                 continue;
             }
 
-            $this->getTokensForService($tokens, $container, $reflection, $serviceId);
+            yield from $this->getTokensForService($container, $reflection, $serviceId);
         }
-
-        return $tokens;
     }
 
     /**
-     * @param array $tokens
      * @param ContainerBuilder $container
      * @param ReflectionClass $reflection
      * @param string $serviceId
+     * @return Generator|Token[]
      */
     private function getTokensForService(
-        array &$tokens,
         ContainerBuilder $container,
         ReflectionClass $reflection,
         string $serviceId
-    ) {
+    ) : Generator {
         if ($reflection->implementsInterface(ServiceTranslationProvider::class)) {
             /** @var ServiceTranslationProvider $class */
             $service = $container->get($serviceId);
 
             foreach ($service->getTokens() as $token) {
-                $tokens[] = $token;
+                if (!$token instanceof Token) {
+                    $token = new Token($token);
+                }
+
+                yield $token->token => $token;
             }
         } elseif ($reflection->implementsInterface(TranslationProvider::class)) {
             /** @var TranslationProvider $className */
             $className = $reflection->getName();
             foreach ($className::getTokens() as $token) {
-                $tokens[] = $token;
+                if (!$token instanceof Token) {
+                    $token = new Token($token);
+                }
+
+                yield $token->token => $token;
             }
         }
     }
@@ -86,14 +91,14 @@ class CompilerPass implements CompilerPassInterface
      */
     protected function dumpTranslations(array $tokens)
     {
-        sort($tokens);
+        ksort($tokens);
 
-        $contentPhp = sprintf("return [\n    %s\n];\n", implode(",\n    ", array_map(function ($token) {
-            return sprintf('_("%s")', addslashes($token));
+        $contentPhp = sprintf("return [\n    %s\n];\n", implode(",\n    ", array_map(function (Token $token) {
+            return sprintf('_("%s")', addslashes($token->token));
         }, $tokens)));
 
-        $contentHtml = sprintf("%s", implode("\n", array_map(function ($token) {
-            return sprintf('<span translate>%s</span>', addslashes($token));
+        $contentHtml = sprintf("%s", implode("\n", array_map(function (Token $token) {
+            return sprintf('<span translate>%s</span>', addslashes($token->token));
         }, $tokens)));
 
         $this->dumpCacheFile(self::CACHE_FILE, $contentPhp);

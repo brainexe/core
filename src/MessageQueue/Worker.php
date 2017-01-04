@@ -11,6 +11,7 @@ use BrainExe\Core\EventDispatcher\CronEvent;
 use BrainExe\Core\EventDispatcher\JobEvent;
 use BrainExe\Core\Traits\EventDispatcherTrait;
 use BrainExe\Core\Traits\LoggerTrait;
+use BrainExe\Core\Traits\TimeTrait;
 use Cron\CronExpression;
 use Throwable;
 
@@ -21,6 +22,7 @@ class Worker
 {
 
     use LoggerTrait;
+    use TimeTrait;
     use EventDispatcherTrait;
 
     /**
@@ -105,6 +107,7 @@ class Worker
         if (!$event->isPropagationStopped()) {
             $nextRun = $this->cron->getNextRun($event->getExpression());
 
+            $job->setStartTime($this->now());
             $job->setTimestamp($nextRun);
             $this->gateway->addJob($job);
         }

@@ -86,4 +86,12 @@ class Job
     {
         return $this->startTime;
     }
+
+    /**
+     * @param int $startTime
+     */
+    public function setStartTime(int $startTime)
+    {
+        $this->startTime = $startTime;
+    }
 }
