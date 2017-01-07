@@ -29,7 +29,7 @@ class MiddlewareCompilerPass implements CompilerPassInterface
             $references[] = new Reference($serviceId);
         }
 
-        $appKernel->replaceArgument(3, $references);
+        $appKernel->addArgument($references);
         $container->setParameter('application.middlewares', []);
     }
 }

@@ -20,7 +20,6 @@ class Locale extends AbstractMiddleware
     private $locale;
 
     /**
-     * @Inject("@Core.Locale")
      * @param LocaleModel $locale
      */
     public function __construct(LocaleModel $locale)

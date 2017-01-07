@@ -30,7 +30,6 @@ class CacheListener
     private $gateway;
 
     /**
-     * @Inject("@MessageQueue.Gateway")
      * @param Gateway $gateway
      */
     public function __construct(Gateway $gateway)

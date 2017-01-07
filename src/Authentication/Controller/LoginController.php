@@ -25,7 +25,6 @@ class LoginController
     private $login;
 
     /**
-     * @Inject("@Login")
      * @param Login $login
      */
     public function __construct(Login $login)

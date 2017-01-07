@@ -28,7 +28,6 @@ class Controller
     private $stats;
 
     /**
-     * @Inject({"@Stats.Stats", "@MessageQueue.Gateway"})
      * @param Stats $stats
      * @param MessageQueueGateway $gateway
      */

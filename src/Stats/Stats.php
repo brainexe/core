@@ -17,7 +17,6 @@ class Stats
     private $gateway;
 
     /**
-     * @Inject("@Stats.Gateway")
      * @param Gateway $gateway
      */
     public function __construct(Gateway $gateway)

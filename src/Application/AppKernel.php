@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
- * @Service(public=true)
+ * @Service("AppKernel", public=true)
  */
 class AppKernel implements HttpKernelInterface
 {
@@ -43,7 +43,7 @@ class AppKernel implements HttpKernelInterface
      *     "@ControllerResolver",
      *     "@Core.RouteCollection",
      *     "@UrlMatcher",
-     *     null
+     *     {}
      * })
      * @param ControllerResolver $resolver
      * @param SerializedRouteCollection $routes

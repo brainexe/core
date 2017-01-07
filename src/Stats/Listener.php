@@ -18,7 +18,6 @@ class Listener
     private $stats;
 
     /**
-     * @Inject({"@Stats.Stats"})
      * @param Stats $stats
      */
     public function __construct(Stats $stats)

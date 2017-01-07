@@ -22,7 +22,6 @@ class RegisterController
     private $register;
 
     /**
-     * @Inject("@Register")
      * @param Register $register
      */
     public function __construct(Register $register)

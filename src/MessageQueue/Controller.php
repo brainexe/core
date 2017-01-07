@@ -22,7 +22,6 @@ class Controller
     private $gateway;
 
     /**
-     * @Inject({"@MessageQueue.Gateway"})
      * @param MessageQueueGateway $gateway
      */
     public function __construct(MessageQueueGateway $gateway)
