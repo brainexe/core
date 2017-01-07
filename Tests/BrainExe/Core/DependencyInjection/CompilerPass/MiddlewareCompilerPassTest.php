@@ -51,8 +51,8 @@ class MiddlewareCompilerPassTest extends TestCase
 
         $appKernel
             ->expects($this->once())
-            ->method('replaceArgument')
-            ->with(3, [new Reference($serviceId1)]);
+            ->method('addArgument')
+            ->with([new Reference($serviceId1)]);
 
         $this->container
             ->expects($this->once())

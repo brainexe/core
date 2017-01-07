@@ -16,7 +16,6 @@ trait IdGeneratorTrait
     private $idGenerator;
 
     /**
-     * @Inject("@IdGenerator")
      * @param IdGenerator $idGenerator
      */
     public function setIdGenerator(IdGenerator $idGenerator)

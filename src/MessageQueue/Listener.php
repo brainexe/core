@@ -22,7 +22,6 @@ class Listener implements EventSubscriberInterface
     private $gateway;
 
     /**
-     * @Inject("@MessageQueue.Gateway")
      * @param Gateway $gateway
      */
     public function __construct(Gateway $gateway)

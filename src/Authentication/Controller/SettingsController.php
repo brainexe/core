@@ -20,7 +20,6 @@ class SettingsController
     private $settings;
 
     /**
-     * @Inject("@User.Settings")
      * @param Settings $settings
      */
     public function __construct(Settings $settings)
