@@ -3,8 +3,8 @@
 namespace BrainExe\Core\Annotations\Builder;
 
 use BrainExe\Annotations\Builder\ServiceDefinition;
-use BrainExe\Core\Annotations\CompilerPass as Annotation;
 use BrainExe\Core\DependencyInjection\CompilerPass\MiddlewareCompilerPass;
+use Doctrine\Common\Annotations\Annotation;
 use ReflectionClass;
 use Symfony\Component\DependencyInjection\Definition;
 
@@ -15,7 +15,7 @@ class Middleware extends ServiceDefinition
      * @param Annotation $annotation
      * @return array
      */
-    public function build(ReflectionClass $reflectionClass, $annotation)
+    public function build(ReflectionClass $reflectionClass, Annotation $annotation)
     {
         /** @var Definition $definition */
         list($serviceId, $definition) = parent::build($reflectionClass, $annotation);

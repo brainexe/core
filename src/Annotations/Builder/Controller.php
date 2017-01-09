@@ -2,13 +2,13 @@
 
 namespace BrainExe\Core\Annotations\Builder;
 
-use BrainExe\Annotations\Annotations\Service;
 use BrainExe\Annotations\Builder\ServiceDefinition;
 use BrainExe\Core\Annotations\Guest;
 use BrainExe\Core\Annotations\Role;
 use BrainExe\Core\Annotations\Route;
 use BrainExe\Core\DependencyInjection\CompilerPass\ControllerCompilerPass;
 use BrainExe\Core\Annotations\Controller as ControllerAnnotation;
+use Doctrine\Common\Annotations\Annotation;
 use ReflectionClass;
 use ReflectionMethod;
 use Symfony\Component\DependencyInjection\Definition;
@@ -18,10 +18,10 @@ class Controller extends ServiceDefinition
 
     /**
      * @param ReflectionClass $reflectionClass
-     * @param ControllerAnnotation|Service $annotation
+     * @param ControllerAnnotation|Annotation $annotation
      * @return array
      */
-    public function build(ReflectionClass $reflectionClass, $annotation)
+    public function build(ReflectionClass $reflectionClass, Annotation $annotation)
     {
         /** @var Definition $definition */
         list ($serviceId, $definition) = parent::build(
@@ -36,7 +36,10 @@ class Controller extends ServiceDefinition
 
         foreach ($reflectionClass->getMethods() as $method) {
             /** @var Route $routeAnnotation */
-            $routeAnnotation = $this->reader->getMethodAnnotation($method, Route::class);
+            $routeAnnotation = $this->reader->getMethodAnnotation(
+                $method,
+                Route::class
+            );
 
             if ($routeAnnotation) {
                 $this->handleRouteAnnotation(

@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "27a35317a6b3d2389c9695a6e7326aab",
-    "content-hash": "aafb23a2a45e206044284bd4a7899956",
+    "hash": "41731da3f676d669c7e22553a71110f8",
+    "content-hash": "e7b629ae906d7b390a4bb02086578d3c",
     "packages": [
         {
             "name": "brainexe/annotations",
-            "version": "1.0.10",
+            "version": "1.0.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/brainexe/annotations.git",
-                "reference": "f7b21a2028eb4ed9f4522a369f613c288eff863e"
+                "reference": "0dab097bb365520a76fbb8cd38ab0c3e746e89f6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/brainexe/annotations/zipball/f7b21a2028eb4ed9f4522a369f613c288eff863e",
-                "reference": "f7b21a2028eb4ed9f4522a369f613c288eff863e",
+                "url": "https://api.github.com/repos/brainexe/annotations/zipball/0dab097bb365520a76fbb8cd38ab0c3e746e89f6",
+                "reference": "0dab097bb365520a76fbb8cd38ab0c3e746e89f6",
                 "shasum": ""
             },
             "require": {
@@ -52,7 +52,7 @@
             ],
             "description": "Simple @annotation library based on doctrine annotations for symfony dependency injection container",
             "homepage": "https://mdoetsch.de",
-            "time": "2017-01-05 22:12:03"
+            "time": "2017-01-09 20:32:57"
         },
         {
             "name": "doctrine/annotations",
@@ -584,16 +584,16 @@
         },
         {
             "name": "phpmailer/phpmailer",
-            "version": "v5.2.21",
+            "version": "v5.2.22",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPMailer/PHPMailer.git",
-                "reference": "1d51856b76c06fc687fcd9180efa7a0bed0d761e"
+                "reference": "b18cb98131bd83103ccb26a888fdfe3177b8a663"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/1d51856b76c06fc687fcd9180efa7a0bed0d761e",
-                "reference": "1d51856b76c06fc687fcd9180efa7a0bed0d761e",
+                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/b18cb98131bd83103ccb26a888fdfe3177b8a663",
+                "reference": "b18cb98131bd83103ccb26a888fdfe3177b8a663",
                 "shasum": ""
             },
             "require": {
@@ -640,7 +640,7 @@
                 }
             ],
             "description": "PHPMailer is a full-featured email creation and transfer class for PHP",
-            "time": "2016-12-28 15:35:48"
+            "time": "2017-01-09 09:33:47"
         },
         {
             "name": "predis/predis",
