@@ -11,7 +11,6 @@ use BrainExe\Core\Traits\JsonSerializableTrait;
 use BrainExe\Core\Websockets\WebSocketEvent;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase as TestCase;
-use Symfony\Component\DependencyInjection\Container;
 
 class TestEvent extends AbstractEvent
 {
@@ -33,18 +32,10 @@ class EventDispatcherTest extends TestCase
      */
     private $subject;
 
-    /**
-     * @var Container|MockObject
-     */
-    private $container;
-
     public function setUp()
     {
-        $this->container = $this->createMock(Container::class);
-
         $this->subject = $this->getMockBuilder(EventDispatcher::class)
             ->setMethods(['dispatch'])
-            ->setConstructorArgs([$this->container, true])
             ->getMock();
     }
 
@@ -68,7 +59,6 @@ class EventDispatcherTest extends TestCase
     {
         $this->subject = $this->getMockBuilder(EventDispatcher::class)
             ->setMethods(['dispatchEvent'])
-            ->setConstructorArgs([$this->container, true])
             ->getMock();
 
         $this->subject->dispatch(TestEvent::TYPE, null);

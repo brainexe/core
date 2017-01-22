@@ -7,7 +7,7 @@ use BrainExe\Core\Traits\IdGeneratorTrait;
 use BrainExe\Core\Traits\RedisTrait;
 
 /**
- * @Service(public=false)
+ * @Service("RegisterTokens", public=false)
  */
 class RegisterTokens
 {

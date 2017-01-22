@@ -17,7 +17,7 @@ trait RedisTrait
     private $redis;
 
     /**
-     * @Inject("@Redis")
+     * @Inject("@redis")
      * @param Predis $client
      */
     public function setRedis(Predis $client)

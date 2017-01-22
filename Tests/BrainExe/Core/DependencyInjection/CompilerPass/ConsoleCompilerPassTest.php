@@ -86,7 +86,7 @@ class ConsoleCompilerPassTest extends TestCase
 
         $expectedDefinition = new Definition(ProxyCommand::class, [
             new Reference('service_container'),
-            new Reference('console'),
+            new Reference('Console'),
             $serviceId,
             'mockName',
             'mockDescription',

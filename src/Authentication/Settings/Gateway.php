@@ -20,7 +20,7 @@ class Gateway
     private $redis;
 
     /**
-     * @Inject("@Redis")
+     * @Inject("@redis")
      * @param Predis $client
      */
     public function __construct(Predis $client)

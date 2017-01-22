@@ -6,8 +6,6 @@ use BrainExe\Annotations\Annotations\Service;
 use BrainExe\Annotations\Loader;
 use BrainExe\Core\Core;
 use BrainExe\Core\DependencyInjection\CompilerPass\GlobalCompilerPass;
-use Doctrine\Common\Cache\ApcuCache;
-use Doctrine\Common\Cache\VoidCache;
 use Symfony\Bridge\ProxyManager\LazyProxy\PhpDumper\ProxyDumper;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

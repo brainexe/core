@@ -8,7 +8,7 @@ use BrainExe\Core\MessageQueue\Job;
 use BrainExe\Core\Websockets\WebSocketEvent;
 use RuntimeException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcher as SymfonyEventDispatcher;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -16,22 +16,13 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @Service("EventDispatcher", public=false)
  * @api
  */
-class EventDispatcher extends ContainerAwareEventDispatcher
+class EventDispatcher extends SymfonyEventDispatcher
 {
 
     /**
      * @var EventDispatcherInterface[]
      */
     private $catchall = [];
-
-    /**
-     * @Inject({"@service_container"})
-     * @param ContainerInterface $container
-     */
-    public function __construct(ContainerInterface $container)
-    {
-        parent::__construct($container);
-    }
 
     /**
      * @param EventDispatcherInterface $dispatcher

@@ -21,11 +21,8 @@ class EventListener extends ServiceDefinition
         /** @var Definition $definition */
         list($serviceId, $definition) = parent::build($reflectionClass, $annotation);
 
-        $serviceId = sprintf('__Listener.%s', $serviceId);
-
         $definition->addTag(EventListenerCompilerPass::TAG);
-        $definition->setShared(false);
-        $definition->setPublic(true);
+        $definition->setPublic(false);
 
         return [$serviceId, $definition];
     }
