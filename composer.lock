@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "fb7751515ba7a92b0398935830975382",
-    "content-hash": "4f7d78ee27b3bdcc67baaf9f187278d3",
+    "hash": "435b702b7778ba06b11dbf27a5099503",
+    "content-hash": "5ba141068967bca30703c6042b9f54a0",
     "packages": [
         {
             "name": "brainexe/annotations",
@@ -526,31 +526,29 @@
         },
         {
             "name": "ocramius/proxy-manager",
-            "version": "2.1.x-dev",
+            "version": "2.0.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Ocramius/ProxyManager.git",
-                "reference": "5a6b35049efb9e2399be2cbe50fd744821e93987"
+                "reference": "a55d08229f4f614bf335759ed0cf63378feeb2e6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Ocramius/ProxyManager/zipball/5a6b35049efb9e2399be2cbe50fd744821e93987",
-                "reference": "5a6b35049efb9e2399be2cbe50fd744821e93987",
+                "url": "https://api.github.com/repos/Ocramius/ProxyManager/zipball/a55d08229f4f614bf335759ed0cf63378feeb2e6",
+                "reference": "a55d08229f4f614bf335759ed0cf63378feeb2e6",
                 "shasum": ""
             },
             "require": {
-                "ocramius/package-versions": "^1.1.1",
-                "php": "^7.1.0",
-                "zendframework/zend-code": "^3.1.0"
+                "ocramius/package-versions": "^1.0",
+                "php": "7.0.0 - 7.0.5 || ^7.0.7",
+                "zendframework/zend-code": "3.0.0 - 3.0.2 || ^3.0.4"
             },
             "require-dev": {
-                "couscous/couscous": "^1.5.2",
+                "couscous/couscous": "^1.4.0",
                 "ext-phar": "*",
-                "humbug/humbug": "dev-master@DEV",
-                "phpbench/phpbench": "^0.12.2",
-                "phpunit/phpunit": "^5.6.4",
-                "phpunit/phpunit-mock-objects": "^3.4.1",
-                "squizlabs/php_codesniffer": "^2.7.0"
+                "phpbench/phpbench": "^0.11.2",
+                "phpunit/phpunit": "^5.4.6",
+                "squizlabs/php_codesniffer": "^2.6.0"
             },
             "suggest": {
                 "ocramius/generated-hydrator": "To have very fast object to array to object conversion for ghost objects",
@@ -589,7 +587,7 @@
                 "proxy pattern",
                 "service proxies"
             ],
-            "time": "2016-12-24 14:57:15"
+            "time": "2016-11-04 15:53:15"
         },
         {
             "name": "phpmailer/phpmailer",
@@ -845,29 +843,79 @@
             "time": "2016-10-10 12:19:37"
         },
         {
+            "name": "psr/simple-cache",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/simple-cache.git",
+                "reference": "753fa598e8f3b9966c886fe13f370baa45ef0e24"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/simple-cache/zipball/753fa598e8f3b9966c886fe13f370baa45ef0e24",
+                "reference": "753fa598e8f3b9966c886fe13f370baa45ef0e24",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\SimpleCache\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "http://www.php-fig.org/"
+                }
+            ],
+            "description": "Common interfaces for simple caching",
+            "keywords": [
+                "cache",
+                "caching",
+                "psr",
+                "psr-16",
+                "simple-cache"
+            ],
+            "time": "2017-01-02 13:31:39"
+        },
+        {
             "name": "symfony/cache",
             "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/cache.git",
-                "reference": "9d3b00e5573368089861136c0e0f835c60c10f8b"
+                "reference": "4e0ef50c1925edff3ab2d0925656fdfeb1930390"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/cache/zipball/9d3b00e5573368089861136c0e0f835c60c10f8b",
-                "reference": "9d3b00e5573368089861136c0e0f835c60c10f8b",
+                "url": "https://api.github.com/repos/symfony/cache/zipball/4e0ef50c1925edff3ab2d0925656fdfeb1930390",
+                "reference": "4e0ef50c1925edff3ab2d0925656fdfeb1930390",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.5.9",
                 "psr/cache": "~1.0",
-                "psr/log": "~1.0"
+                "psr/log": "~1.0",
+                "psr/simple-cache": "^1.0"
             },
             "provide": {
-                "psr/cache-implementation": "1.0"
+                "psr/cache-implementation": "1.0",
+                "psr/simple-cache-implementation": "1.0"
             },
             "require-dev": {
-                "cache/integration-tests": "dev-master",
+                "cache/integration-tests": "^0.15.0",
                 "doctrine/cache": "~1.6",
                 "doctrine/dbal": "~2.4",
                 "predis/predis": "~1.0"
@@ -903,13 +951,13 @@
                     "homepage": "https://symfony.com/contributors"
                 }
             ],
-            "description": "Symfony implementation of PSR-6",
+            "description": "Symfony Cache component with PSR-6, PSR-16, and tags",
             "homepage": "https://symfony.com",
             "keywords": [
                 "caching",
                 "psr6"
             ],
-            "time": "2017-01-21 17:19:16"
+            "time": "2017-01-23 14:02:05"
         },
         {
             "name": "symfony/config",
@@ -1038,12 +1086,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/debug.git",
-                "reference": "ae6304238ddcc3b404a3e27a063630a5f01e2563"
+                "reference": "8dfba97c33692aef9b0f85d9b38a73972bfd7b77"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/debug/zipball/ae6304238ddcc3b404a3e27a063630a5f01e2563",
-                "reference": "ae6304238ddcc3b404a3e27a063630a5f01e2563",
+                "url": "https://api.github.com/repos/symfony/debug/zipball/8dfba97c33692aef9b0f85d9b38a73972bfd7b77",
+                "reference": "8dfba97c33692aef9b0f85d9b38a73972bfd7b77",
                 "shasum": ""
             },
             "require": {
@@ -1086,7 +1134,7 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "https://symfony.com",
-            "time": "2017-01-21 17:19:16"
+            "time": "2017-01-23 08:28:52"
         },
         {
             "name": "symfony/dependency-injection",
@@ -1094,12 +1142,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dependency-injection.git",
-                "reference": "95104756acf0d74d73b6fd4717c8ca2be46b1824"
+                "reference": "3fee94ce5f7932fc0379118671fc08b9f636a6ce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/95104756acf0d74d73b6fd4717c8ca2be46b1824",
-                "reference": "95104756acf0d74d73b6fd4717c8ca2be46b1824",
+                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/3fee94ce5f7932fc0379118671fc08b9f636a6ce",
+                "reference": "3fee94ce5f7932fc0379118671fc08b9f636a6ce",
                 "shasum": ""
             },
             "require": {
@@ -1149,7 +1197,7 @@
             ],
             "description": "Symfony DependencyInjection Component",
             "homepage": "https://symfony.com",
-            "time": "2017-01-21 17:23:25"
+            "time": "2017-01-23 21:43:33"
         },
         {
             "name": "symfony/event-dispatcher",
@@ -1791,51 +1839,6 @@
                 "zf2"
             ],
             "time": "2016-12-19 21:48:17"
-        },
-        {
-            "name": "zendframework/zend-stdlib",
-            "version": "dev-develop",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/zendframework/zend-stdlib.git",
-                "reference": "16818ed8ee2a92a503c43883dcb6263fe6283ee8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-stdlib/zipball/16818ed8ee2a92a503c43883dcb6263fe6283ee8",
-                "reference": "16818ed8ee2a92a503c43883dcb6263fe6283ee8",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^5.6 || ^7.0"
-            },
-            "require-dev": {
-                "athletic/athletic": "~0.1",
-                "phpunit/phpunit": "~4.0",
-                "squizlabs/php_codesniffer": "^2.6.2"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.1-dev",
-                    "dev-develop": "3.2-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Zend\\Stdlib\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "homepage": "https://github.com/zendframework/zend-stdlib",
-            "keywords": [
-                "stdlib",
-                "zf2"
-            ],
-            "time": "2016-09-13 14:40:02"
         }
     ],
     "packages-dev": [
@@ -1845,12 +1848,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/instantiator.git",
-                "reference": "416fb8ad1d095a87f1d21bc40711843cd122fd4a"
+                "reference": "68099b02b60bbf3b088ff5cb67bf506770ef9cac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/instantiator/zipball/416fb8ad1d095a87f1d21bc40711843cd122fd4a",
-                "reference": "416fb8ad1d095a87f1d21bc40711843cd122fd4a",
+                "url": "https://api.github.com/repos/doctrine/instantiator/zipball/68099b02b60bbf3b088ff5cb67bf506770ef9cac",
+                "reference": "68099b02b60bbf3b088ff5cb67bf506770ef9cac",
                 "shasum": ""
             },
             "require": {
@@ -1891,7 +1894,7 @@
                 "constructor",
                 "instantiate"
             ],
-            "time": "2016-03-31 10:24:22"
+            "time": "2017-01-23 09:23:06"
         },
         {
             "name": "myclabs/deep-copy",
@@ -2394,12 +2397,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "84e9ab016ba3ab140020d70953154f9c385b5b09"
+                "reference": "c1551dce910a62316559fc7cd79bce82fb19f46d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/84e9ab016ba3ab140020d70953154f9c385b5b09",
-                "reference": "84e9ab016ba3ab140020d70953154f9c385b5b09",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/c1551dce910a62316559fc7cd79bce82fb19f46d",
+                "reference": "c1551dce910a62316559fc7cd79bce82fb19f46d",
                 "shasum": ""
             },
             "require": {
@@ -2468,7 +2471,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2017-01-22 18:20:04"
+            "time": "2017-01-22 23:52:40"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
