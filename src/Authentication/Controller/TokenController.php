@@ -20,7 +20,7 @@ class TokenController
     private $token;
 
     /**
-     * @Inject("@Core.Authentication.Token")
+     * @Inject
      * @param Token $token
      */
     public function __construct(Token $token)

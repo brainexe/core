@@ -24,7 +24,7 @@ class ExecuteJob extends Command
     private $worker;
 
     /**
-     * @Inject("@MessageQueue.Worker")
+     * @Inject
      * @param Worker $worker
      */
     public function __construct(Worker $worker)

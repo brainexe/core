@@ -2,21 +2,27 @@
 
 namespace BrainExe\Core\DependencyInjection\CompilerPass;
 
+use BrainExe\Core\Annotations\CompilerPass;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
- * @deprecated
+ * @CompilerPass(type="beforeRemoving")
  */
-class GlobalCompilerPass implements CompilerPassInterface
+class RemoveAliases implements CompilerPassInterface
 {
-
-    const TAG = 'compiler_pass';
 
     /**
      * {@inheritdoc}
      */
     public function process(ContainerBuilder $container)
     {
+
+        foreach ($container->getAliases() as $key => $value) {
+            $container->removeAlias($value);
+            $container->removeAlias($key);
+        }
     }
+
+
 }

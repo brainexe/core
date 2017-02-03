@@ -35,7 +35,7 @@ class ClearCacheCommand extends Command
     }
 
     /**
-     * @Inject({"@Core.Rebuild"})
+     * @Inject
      * @param Rebuild $rebuild
      */
     public function __construct(Rebuild $rebuild)
@@ -51,7 +51,7 @@ class ClearCacheCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->write('Rebuild DIC...');
-        $this->rebuild->rebuildDIC(true);
+        $this->rebuild->buildContainer();
 
         $event = new ClearCacheEvent();
         $this->dispatchEvent($event);

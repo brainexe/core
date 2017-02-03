@@ -35,10 +35,7 @@ class TokenAuthentication extends AbstractMiddleware
     private $token;
 
     /**
-     * @Inject({
-     *  "@Core.Authentication.LoadUser",
-     *  "@Core.Authentication.Token",
-     * })
+     * @Inject
      * @param LoadUser $loadUser
      * @param Token $token
      */

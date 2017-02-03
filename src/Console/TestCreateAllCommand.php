@@ -44,7 +44,7 @@ class TestCreateAllCommand extends Command
     }
 
     /**
-     * @Inject("@Core.Rebuild")
+     * @Inject
      * @param Rebuild $rebuild
      */
     public function __construct(Rebuild $rebuild)
@@ -123,6 +123,6 @@ class TestCreateAllCommand extends Command
 
     private function initContainerBuilder()
     {
-        $this->containerBuilder = $this->rebuild->rebuildDIC(false);
+        $this->containerBuilder = $this->rebuild->buildContainer();
     }
 }

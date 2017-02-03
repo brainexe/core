@@ -32,7 +32,6 @@ class GraphvizDumpCommand extends Command
     }
 
     /**
-     * @Inject("@Core.Rebuild")
      * @param Rebuild $rebuild
      */
     public function __construct(Rebuild $rebuild)
@@ -47,7 +46,7 @@ class GraphvizDumpCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $dic = $this->rebuild->rebuildDIC(false);
+        $dic = $this->rebuild->buildContainer();
 
         $dumper  = new GraphvizDumper($dic);
         $content = $dumper->dump();

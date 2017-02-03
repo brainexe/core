@@ -19,7 +19,7 @@ trait EventDispatcherTrait
     private $dispatcher;
 
     /**
-     * @Inject("@EventDispatcher")
+     * @Inject
      * @param EventDispatcher $dispatcher
      */
     public function setEventDispatcher(EventDispatcher $dispatcher)

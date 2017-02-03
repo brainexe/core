@@ -20,10 +20,10 @@ class Gateway
     private $redis;
 
     /**
-     * @Inject("@redis")
+     * @Inject("@Redis")
      * @param Predis $client
      */
-    public function __construct(Predis $client)
+        public function __construct(Predis $client)
     {
         $this->redis = $client;
     }

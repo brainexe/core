@@ -37,7 +37,7 @@ class CreateUserCommand extends Command
     }
 
     /**
-     * @Inject("@Register")
+     * @Inject
      * @param Register $register
      */
     public function __construct(Register $register)

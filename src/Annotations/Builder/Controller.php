@@ -2,13 +2,13 @@
 
 namespace BrainExe\Core\Annotations\Builder;
 
+use BrainExe\Annotations\Annotations\Service;
 use BrainExe\Annotations\Builder\ServiceDefinition;
 use BrainExe\Core\Annotations\Guest;
 use BrainExe\Core\Annotations\Role;
 use BrainExe\Core\Annotations\Route;
 use BrainExe\Core\DependencyInjection\CompilerPass\ControllerCompilerPass;
 use BrainExe\Core\Annotations\Controller as ControllerAnnotation;
-use Doctrine\Common\Annotations\Annotation;
 use ReflectionClass;
 use ReflectionMethod;
 use Symfony\Component\DependencyInjection\Definition;
@@ -18,15 +18,17 @@ class Controller extends ServiceDefinition
 
     /**
      * @param ReflectionClass $reflectionClass
-     * @param ControllerAnnotation|Annotation $annotation
+     * @param ControllerAnnotation|Service $annotation
+     * @param Definition $definition
      * @return array
      */
-    public function build(ReflectionClass $reflectionClass, Annotation $annotation)
+    public function build(ReflectionClass $reflectionClass, Service $annotation, Definition $definition)
     {
         /** @var Definition $definition */
         list ($serviceId, $definition) = parent::build(
             $reflectionClass,
-            $annotation
+            $annotation,
+            $definition
         );
         $serviceId = sprintf('__controller.%s', $serviceId);
 

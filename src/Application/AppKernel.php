@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
- * @Service("AppKernel", public=true)
+ * @Service(public=true)
  */
 class AppKernel implements HttpKernelInterface
 {

@@ -5,8 +5,6 @@ namespace BrainExe\Core\Annotations\Builder;
 use BrainExe\Annotations\Builder\ServiceDefinition;
 use BrainExe\Core\Annotations\Listen;
 use BrainExe\Core\DependencyInjection\CompilerPass\EventListenerCompilerPass;
-use Doctrine\Common\Annotations\Annotation;
-use ReflectionClass;
 use ReflectionMethod;
 use Symfony\Component\DependencyInjection\Definition;
 
@@ -16,15 +14,10 @@ class EventListener extends ServiceDefinition
     /**
      * {@inheritdoc}
      */
-    public function build(ReflectionClass $reflectionClass, Annotation $annotation)
+    public function setupDefinition(Definition $definition, string $serviceId)
     {
-        /** @var Definition $definition */
-        list($serviceId, $definition) = parent::build($reflectionClass, $annotation);
-
         $definition->addTag(EventListenerCompilerPass::TAG);
         $definition->setPublic(false);
-
-        return [$serviceId, $definition];
     }
 
     /**

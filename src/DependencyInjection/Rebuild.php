@@ -4,8 +4,6 @@ namespace BrainExe\Core\DependencyInjection;
 
 use BrainExe\Annotations\Annotations\Service;
 use BrainExe\Annotations\Loader;
-use BrainExe\Core\Core;
-use BrainExe\Core\DependencyInjection\CompilerPass\GlobalCompilerPass;
 use Symfony\Bridge\ProxyManager\LazyProxy\PhpDumper\ProxyDumper;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -20,23 +18,16 @@ class Rebuild
 {
 
     /**
-     * @param bool $boot
      * @return Container|ContainerBuilder
      */
-    public function rebuildDIC(bool $boot = true) : Container
+    public function buildContainer() : Container
     {
         $containerBuilder = new ContainerBuilder();
 
         $this->readAnnotations($containerBuilder);
 
-        $containerBuilder->addCompilerPass(new GlobalCompilerPass());
         $containerBuilder->compile();
         $this->dumpContainer($containerBuilder);
-
-        if ($boot) {
-            $core = new Core();
-            return $core->boot();
-        }
 
         return $containerBuilder;
     }

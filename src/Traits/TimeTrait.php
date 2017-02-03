@@ -17,6 +17,7 @@ trait TimeTrait
     private $time;
 
     /**
+     * @Inject
      * @param Time $time
      */
     public function setTime(Time $time)

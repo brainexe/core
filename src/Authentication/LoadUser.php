@@ -2,10 +2,9 @@
 
 namespace BrainExe\Core\Authentication;
 
-use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Annotations\Annotations\Service;
 use BrainExe\Core\Authentication\Exception\UserNotFoundException;
-use Predis\Client;
+use BrainExe\Core\Redis\Predis;
 
 /**
  * @api
@@ -14,15 +13,14 @@ use Predis\Client;
 class LoadUser
 {
     /**
-     * @var Client
+     * @var Predis
      */
     private $redis;
 
     /**
-     * @param Client $redis
-     * @Inject("@redis")
+     * @param Predis $redis
      */
-    public function __construct(Client $redis)
+    public function __construct(Predis $redis)
     {
         $this->redis = $redis;
     }

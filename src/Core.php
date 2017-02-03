@@ -18,16 +18,16 @@ class Core
     {
         $fileName = ROOT . 'cache/dic.php';
         /** @var Container $dic */
-        if (is_file($fileName)) {
-            $className = file_get_contents(ROOT . 'cache/dic.txt');
-            if (!class_exists($className, false)) {
-                include $fileName;
-            }
-            $dic = new $className();
-        } else {
+        if (!is_file($fileName)) {
             $rebuild = new Rebuild();
-            $dic = $rebuild->rebuildDIC(true);
+            $rebuild->buildContainer();
         }
+
+        $className = file_get_contents(ROOT . 'cache/dic.txt');
+        if (!class_exists($className, false)) {
+            include $fileName;
+        }
+        $dic = new $className();
 
         $dic->get('monolog.ErrorHandler');
 

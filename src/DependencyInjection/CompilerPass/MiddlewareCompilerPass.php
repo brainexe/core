@@ -21,7 +21,7 @@ class MiddlewareCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $appKernel   = $container->getDefinition('AppKernel');
+        $appKernel   = $container->findDefinition('AppKernel');
         $middlewares = $container->getParameter('application.middlewares');
 
         $references  = [];

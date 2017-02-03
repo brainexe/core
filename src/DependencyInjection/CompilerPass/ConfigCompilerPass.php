@@ -21,6 +21,8 @@ class ConfigCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
+        $container->setParameter('application.root', ROOT);
+
         $loader     = new XmlFileLoader($container, new FileLocator());
         $filesystem = new Filesystem();
 

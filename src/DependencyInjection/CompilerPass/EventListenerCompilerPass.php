@@ -31,12 +31,12 @@ class EventListenerCompilerPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         $this->container = $container;
-        $dispatcher = $container->getDefinition('EventDispatcher');
+        $dispatcher = $container->findDefinition('EventDispatcher');
 
         $services = $container->findTaggedServiceIds(self::TAG);
         foreach (array_keys($services) as $serviceId) {
             /** @var EventSubscriberInterface $class */
-            $class = $container->getDefinition($serviceId)->getClass();
+            $class = $container->findDefinition($serviceId)->getClass();
             if (method_exists($class, 'getSubscribedEvents')) {
                 foreach ($class::getSubscribedEvents() as $eventName => $params) {
                     $this->addEvent($dispatcher, $params, $eventName, $serviceId);

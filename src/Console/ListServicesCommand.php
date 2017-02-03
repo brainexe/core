@@ -46,7 +46,6 @@ class ListServicesCommand extends Command
     }
 
     /**
-     * @Inject("@Core.Rebuild")
      * @param Rebuild $rebuild
      */
     public function __construct(Rebuild $rebuild)
@@ -61,7 +60,7 @@ class ListServicesCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->container = $this->rebuild->rebuildDIC(false);
+        $this->container = $this->rebuild->buildContainer();
 
         $table = new Table($output);
         $table->setHeaders(['service-id', 'visibility']);

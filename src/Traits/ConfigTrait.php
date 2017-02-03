@@ -17,7 +17,7 @@ trait ConfigTrait
     private $parameterBag;
 
     /**
-     * @Inject("@Service_container")
+     * @Inject("@service_container")
      * @param Container $container
      */
     public function setContainer(Container $container)

@@ -41,7 +41,7 @@ class CompilerPass implements CompilerPassInterface
         $serviceIds = $container->getServiceIds();
         foreach ($serviceIds as $serviceId) {
             try {
-                $class = $container->getDefinition($serviceId)->getClass();
+                $class = $container->findDefinition($serviceId)->getClass();
                 $reflection = new ReflectionClass($class);
             } catch (Exception $e) {
                 continue;

@@ -18,7 +18,7 @@ class RedisCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $redis = $container->getDefinition('redis');
+        $redis = $container->findDefinition('Redis');
 
         $masterArguments = $this->getArguments($container, '');
 

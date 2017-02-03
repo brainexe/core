@@ -2,27 +2,36 @@
 
 namespace BrainExe\Core\Annotations\Builder;
 
+use BrainExe\Annotations\Annotations\Service;
 use BrainExe\Annotations\Builder\ServiceDefinition;
 use BrainExe\Core\Annotations\CompilerPass as CompilerPassAnnotation;
-use BrainExe\Core\DependencyInjection\CompilerPass\GlobalCompilerPass;
-use Doctrine\Common\Annotations\Annotation;
 use ReflectionClass;
+use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Definition;
 
 class CompilerPass extends ServiceDefinition
 {
+
     /**
      * @param ReflectionClass $reflectionClass
-     * @param Annotation|CompilerPassAnnotation $annotation
+     * @param Service|CompilerPassAnnotation $annotation
+     * @param Definition $definition
      * @return array
      */
-    public function build(ReflectionClass $reflectionClass, Annotation $annotation)
+    public function build(ReflectionClass $reflectionClass, Service $annotation, Definition $definition)
     {
         /** @var Definition $definition */
-        list($serviceId, $definition) = parent::build($reflectionClass, $annotation);
+        list($serviceId, $definition) = parent::build($reflectionClass, $annotation, $definition);
 
-        $definition->addTag(GlobalCompilerPass::TAG, ['priority' => $annotation->priority]);
         $definition->setPublic(false);
+
+        /** @var CompilerPassInterface $compilerPass */
+        $compilerPass = $this->container->get($definition->getClass());
+        $this->container->addCompilerPass(
+            $compilerPass,
+            $annotation->type,
+            $annotation->priority
+        );
 
         return [$serviceId, $definition];
     }

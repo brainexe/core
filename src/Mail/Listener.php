@@ -19,6 +19,7 @@ class Listener implements EventSubscriberInterface
     private $mailer;
 
     /**
+     * @Inject("@Mailer")
      * @param PHPMailer $mailer
      */
     public function __construct(PHPMailer $mailer)
