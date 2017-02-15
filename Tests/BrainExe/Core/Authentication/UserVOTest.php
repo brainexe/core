@@ -6,7 +6,7 @@ use BrainExe\Core\Authentication\UserVO;
 use PHPUnit_Framework_TestCase as TestCase;
 
 /**
- * @covers BrainExe\Core\Authentication\UserVO
+ * @covers \BrainExe\Core\Authentication\UserVO
  */
 class UserVOTest extends TestCase
 {

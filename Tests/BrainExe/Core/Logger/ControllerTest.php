@@ -10,7 +10,7 @@ use Psr\Log\LogLevel;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @covers BrainExe\Core\Logger\Controller
+ * @covers \BrainExe\Core\Logger\Controller
  */
 class ControllerTest extends TestCase
 {

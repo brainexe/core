@@ -4,7 +4,7 @@ namespace BrainExe\Core\MessageQueue;
 
 use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Annotations\Annotations\Service;
-use BrainExe\Core\Cron\CronDefinition;
+
 use BrainExe\Core\Cron\Expression;
 use BrainExe\Core\EventDispatcher\AbstractEvent;
 use BrainExe\Core\EventDispatcher\CronEvent;
@@ -12,7 +12,7 @@ use BrainExe\Core\EventDispatcher\JobEvent;
 use BrainExe\Core\Traits\EventDispatcherTrait;
 use BrainExe\Core\Traits\LoggerTrait;
 use BrainExe\Core\Traits\TimeTrait;
-use Cron\CronExpression;
+
 use Throwable;
 
 /**

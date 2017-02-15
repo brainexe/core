@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @covers BrainExe\Core\Application\ControllerResolver
+ * @covers \BrainExe\Core\Application\ControllerResolver
  */
 class ControllerResolverTest extends TestCase
 {

@@ -10,7 +10,7 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Exception\ParameterNotFoundException;
 
 /**
- * @covers BrainExe\Core\DependencyInjection\CompilerPass\RedisCompilerPass
+ * @covers \BrainExe\Core\DependencyInjection\CompilerPass\RedisCompilerPass
  */
 class RedisCompilerPassTest extends TestCase
 {
@@ -39,8 +39,8 @@ class RedisCompilerPassTest extends TestCase
 
         $this->container
             ->expects($this->at(0))
-            ->method('getDefinition')
-            ->with('redis')
+            ->method('findDefinition')
+            ->with('Redis')
             ->willReturn($redis);
         $this->container
             ->expects($this->at(1))

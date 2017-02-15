@@ -7,7 +7,7 @@ use BrainExe\Annotations\Annotations\Service;
 use BrainExe\Core\Redis\Predis;
 
 /**
- * @Service("User.Settings.Gateway", public=false)
+ * @Service("User.Settings.Gateway")
  */
 class Gateway
 {
@@ -23,7 +23,7 @@ class Gateway
      * @Inject("@Redis")
      * @param Predis $client
      */
-        public function __construct(Predis $client)
+    public function __construct(Predis $client)
     {
         $this->redis = $client;
     }

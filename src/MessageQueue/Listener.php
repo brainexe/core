@@ -2,7 +2,6 @@
 
 namespace BrainExe\Core\MessageQueue;
 
-use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Core\Annotations\EventListener;
 use BrainExe\Core\EventDispatcher\BackgroundEvent;
 use BrainExe\Core\EventDispatcher\DelayedEvent;

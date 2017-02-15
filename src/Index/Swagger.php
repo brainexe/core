@@ -3,7 +3,7 @@
 namespace BrainExe\Core\Index;
 
 use BrainExe\Core\Annotations\Controller as ControllerAnnotation;
-use BrainExe\Core\Annotations\Guest;
+
 use BrainExe\Core\Annotations\Route;
 use BrainExe\Core\EventDispatcher\Events\ConsoleEvent;
 use BrainExe\Core\Traits\EventDispatcherTrait;

@@ -10,7 +10,7 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
- * @covers BrainExe\Core\Authentication\Command\CreateToken
+ * @covers \BrainExe\Core\Authentication\Command\CreateToken
  */
 class CreateTokenTest extends TestCase
 {

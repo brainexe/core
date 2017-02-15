@@ -8,7 +8,7 @@ use BrainExe\Core\Annotations\Route;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @ControllerAnnotation("Core.Index.Controller")
+ * @ControllerAnnotation
  */
 class Controller
 {

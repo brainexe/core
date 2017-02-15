@@ -8,7 +8,7 @@ use BrainExe\Core\Redis\Predis;
 
 /**
  * @api
- * @Service("Core.Authentication.LoadUser", public=false)
+ * @Service("Core.Authentication.LoadUser")
  */
 class LoadUser
 {

@@ -9,7 +9,7 @@ use PHPUnit_Framework_TestCase as TestCase;
 use BrainExe\Core\Redis\Predis;
 
 /**
- * @covers BrainExe\Core\Application\SessionHandler
+ * @covers \BrainExe\Core\Application\SessionHandler
  */
 class SessionHandlerTest extends TestCase
 {

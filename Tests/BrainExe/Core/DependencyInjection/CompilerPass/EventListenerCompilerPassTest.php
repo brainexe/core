@@ -64,7 +64,7 @@ class EventListenerCompilerPassTest extends TestCase
 
         $this->container
             ->expects($this->at(0))
-            ->method('getDefinition')
+            ->method('findDefinition')
             ->with('EventDispatcher')
             ->willReturn($this->dispatcher);
 
@@ -81,28 +81,28 @@ class EventListenerCompilerPassTest extends TestCase
             ->willReturn(TestEventDispatcher::class);
         $this->container
             ->expects($this->at(2))
-            ->method('getDefinition')
+            ->method('findDefinition')
             ->with($serviceId)
             ->willReturn($definition);
         $this->container
             ->expects($this->at(3))
-            ->method('getDefinition')
+            ->method('findDefinition')
             ->with($serviceId)
             ->willReturn($definition);
         $this->container
             ->expects($this->at(4))
-            ->method('getDefinition')
+            ->method('findDefinition')
             ->with($serviceId)
             ->willReturn($definition);
         $this->container
             ->expects($this->at(5))
-            ->method('getDefinition')
+            ->method('findDefinition')
             ->with($serviceId)
             ->willReturn($definition);
 
         $this->container
             ->expects($this->at(6))
-            ->method('getDefinition')
+            ->method('findDefinition')
             ->with($serviceId)
             ->willReturn($definition);
 

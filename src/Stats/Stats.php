@@ -2,7 +2,7 @@
 
 namespace BrainExe\Core\Stats;
 
-use BrainExe\Annotations\Annotations\Inject;
+
 use BrainExe\Annotations\Annotations\Service;
 
 /**

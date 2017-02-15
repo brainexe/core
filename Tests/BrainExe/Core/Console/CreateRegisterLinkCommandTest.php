@@ -10,7 +10,7 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
- * @covers BrainExe\Core\Console\CreateRegisterLinkCommand
+ * @covers \BrainExe\Core\Console\CreateRegisterLinkCommand
  */
 class CreateRegisterLinkCommandTest extends PHPUnit_Framework_TestCase
 {

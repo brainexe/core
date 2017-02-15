@@ -11,7 +11,7 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
- * @covers BrainExe\Core\Console\ClearCacheCommand
+ * @covers \BrainExe\Core\Console\ClearCacheCommand
  */
 class ClearCacheCommandTest extends TestCase
 {
@@ -52,8 +52,7 @@ class ClearCacheCommandTest extends TestCase
 
         $this->rebuild
             ->expects($this->once())
-            ->method('rebuildDIC')
-            ->with(true);
+            ->method('buildContainer');
 
         $commandTester->execute([]);
         $output = $commandTester->getDisplay();

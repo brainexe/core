@@ -11,7 +11,7 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
- * @covers BrainExe\Core\Console\ClearSessionsCommand
+ * @covers \BrainExe\Core\Console\ClearSessionsCommand
  */
 class ClearSessionsCommandTest extends TestCase
 {

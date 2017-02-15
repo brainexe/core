@@ -11,7 +11,7 @@ use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase as TestCase;
 
 /**
- * @covers BrainExe\Core\Websockets\Listener
+ * @covers \BrainExe\Core\Websockets\Listener
  */
 class ListenerTest extends TestCase
 {
@@ -32,8 +32,9 @@ class ListenerTest extends TestCase
     {
         $this->redis = $this->getRedisMock();
 
-        $this->subject = new Listener();
-        $this->subject->setRedis($this->redis);
+        $this->subject = new Listener(
+            $this->redis
+        );
     }
 
     public function testGetSubscribedEvents()

@@ -10,7 +10,7 @@ use PHPUnit_Framework_TestCase as TestCase;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @covers BrainExe\Core\MessageQueue\Controller
+ * @covers \BrainExe\Core\MessageQueue\Controller
  */
 class ControllerTest extends TestCase
 {

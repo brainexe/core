@@ -40,7 +40,7 @@ class SwaggerDumpCommand extends Command
     }
 
     /**
-     * @Inject("@Core.RouteCollection")
+     * @Inject
      * @param SerializedRouteCollection $rebuild
      */
     public function __construct(SerializedRouteCollection $rebuild)

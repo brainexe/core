@@ -30,6 +30,6 @@ class MiddlewareCompilerPass implements CompilerPassInterface
         }
 
         $appKernel->addArgument($references);
-        $container->setParameter('application.middlewares', []);
+        $container->getParameterBag()->remove('application.middlewares');
     }
 }

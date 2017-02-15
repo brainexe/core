@@ -2,19 +2,17 @@
 
 namespace BrainExe\Core\Authentication\Controller;
 
-use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Core\Annotations\Controller;
 use BrainExe\Core\Annotations\Guest;
 use BrainExe\Core\Annotations\Route;
 use BrainExe\Core\Application\UserException;
 use BrainExe\Core\Authentication\Login;
 use BrainExe\Core\Authentication\UserVO;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @Controller("Authentication.LoginController")
+ * @Controller
  */
 class LoginController
 {

@@ -7,7 +7,7 @@ use BrainExe\Annotations\Annotations\Service;
 use BrainExe\Core\Application\UserException;
 use BrainExe\Core\Authentication\Event\AuthenticateUserEvent;
 use BrainExe\Core\Authentication\Exception\UserNotFoundException;
-use BrainExe\Core\Traits\EventDispatcherTrait;
+use BrainExe\Core\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
@@ -16,8 +16,6 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 class Login
 {
     const TOKEN_LOGIN = 'login';
-
-    use EventDispatcherTrait;
 
     /**
      * @var LoadUser
@@ -35,23 +33,28 @@ class Login
     private $passwordHasher;
 
     /**
-     * @Inject({
-     *     "@Core.Authentication.LoadUser",
-     *     "@Core.Authentication.Token",
-     *     "@Core.Authentication.PasswordHasher"
-     * })
+     * @var EventDispatcher
+     */
+    private $eventDispatcher;
+
+    /**
+     * @Inject
+     *
      * @param LoadUser $userProvider
      * @param Token $token
      * @param PasswordHasher $passwordHasher
+     * @param EventDispatcher $eventDispatcher
      */
     public function __construct(
         LoadUser $userProvider,
         Token $token,
-        PasswordHasher $passwordHasher
+        PasswordHasher $passwordHasher,
+        EventDispatcher $eventDispatcher
     ) {
-        $this->loadUser       = $userProvider;
-        $this->token          = $token;
-        $this->passwordHasher = $passwordHasher;
+        $this->loadUser        = $userProvider;
+        $this->token           = $token;
+        $this->passwordHasher  = $passwordHasher;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -131,7 +134,7 @@ class Login
         UserVO $userVo
     ) {
         $event = new AuthenticateUserEvent($authenticationVo, AuthenticateUserEvent::CHECK);
-        $this->dispatchEvent($event);
+        $this->eventDispatcher->dispatchEvent($event);
 
         $session->set('user_id', $userVo->id);
 
@@ -143,6 +146,6 @@ class Login
             AuthenticateUserEvent::AUTHENTICATED
         );
 
-        $this->dispatchEvent($event);
+        $this->eventDispatcher->dispatchEvent($event);
     }
 }

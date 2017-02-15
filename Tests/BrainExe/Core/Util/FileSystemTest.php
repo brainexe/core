@@ -6,7 +6,7 @@ use BrainExe\Core\Util\FileSystem;
 use PHPUnit_Framework_TestCase as TestCase;
 
 /**
- * @covers BrainExe\Core\Util\FileSystem
+ * @covers \BrainExe\Core\Util\FileSystem
  */
 class FileSystemTest extends TestCase
 {

@@ -6,5 +6,4 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 define('ROOT', realpath(__DIR__ . '/..') . '/');
 
-$core = new Core();
-return $core->boot();
+return (new Core())->boot();

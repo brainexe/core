@@ -7,7 +7,7 @@ use PHPUnit_Framework_TestCase as TestCase;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @covers BrainExe\Core\Application\UrlMatcher
+ * @covers \BrainExe\Core\Application\UrlMatcher
  */
 class UrlMatcherTest extends TestCase
 {

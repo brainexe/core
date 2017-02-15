@@ -12,7 +12,7 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
 /**
- * @Service("Core.Rebuild", public=false, shared=false)
+ * @Service(shared=false)
  */
 class Rebuild
 {

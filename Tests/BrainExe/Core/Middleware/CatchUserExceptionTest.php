@@ -9,7 +9,6 @@ use Monolog\Logger;
 use ParseError;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase as TestCase;
-use Symfony\Component\HttpFoundation\HeaderBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
@@ -37,8 +36,9 @@ class CatchUserExceptionTest extends TestCase
     {
         $this->logger = $this->createMock(Logger::class);
 
-        $this->subject = new CatchUserException();
-        $this->subject->setLogger($this->logger);
+        $this->subject = new CatchUserException(
+            $this->logger
+        );
     }
 
     /**

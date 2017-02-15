@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 /**
- * @covers BrainExe\Core\Authentication\Controller\RegisterController
+ * @covers \BrainExe\Core\Authentication\Controller\RegisterController
  */
 class RegisterControllerTest extends TestCase
 {

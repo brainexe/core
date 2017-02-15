@@ -13,7 +13,7 @@ use Predis\ClientException;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @covers BrainExe\Core\Stats\Controller
+ * @covers \BrainExe\Core\Stats\Controller
  */
 class ControllerTest extends TestCase
 {

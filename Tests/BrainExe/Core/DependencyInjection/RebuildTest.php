@@ -14,17 +14,8 @@ class RebuildTest extends TestCase
     {
         $subject = new Rebuild();
 
-        $actualResult = $subject->rebuildDIC(false);
+        $actualResult = $subject->buildContainer();
 
         $this->assertInstanceOf(ContainerBuilder::class, $actualResult);
-    }
-
-    public function testRebuildWithBootContainer()
-    {
-        $subject = new Rebuild();
-
-        $actualResult = $subject->rebuildDIC(true);
-
-        $this->assertInstanceOf(Container::class, $actualResult);
     }
 }

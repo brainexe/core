@@ -9,7 +9,7 @@ use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase as TestCase;
 
 /**
- * @covers BrainExe\Core\Index\Swagger
+ * @covers \BrainExe\Core\Index\Swagger
  */
 class SwaggerTest extends TestCase
 {

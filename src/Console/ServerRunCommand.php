@@ -12,7 +12,8 @@ use Symfony\Component\Process\ProcessBuilder;
 use BrainExe\Core\Annotations\Command as CommandAnnotation;
 
 /**
- * @CommandAnnotation
+ * @todo matze
+ * CommandAnnotation
  */
 class ServerRunCommand extends Command
 {
@@ -28,11 +29,14 @@ class ServerRunCommand extends Command
     private $processBuilder;
 
     /**
-     * @Inject({"@ProcessBuilder", "%server.host%"})
+     * @Inject({
+     *     "processBuilder" = "@ProcessBuilder",
+     *     "address" = "%server.host%"
+     * })
      * @param ProcessBuilder $processBuilder
      * @param string $address
      */
-    public function __construct(ProcessBuilder $processBuilder, $address)
+    public function __construct(ProcessBuilder $processBuilder, string $address)
     {
         $this->serverAddress  = $address;
         $this->processBuilder = $processBuilder;

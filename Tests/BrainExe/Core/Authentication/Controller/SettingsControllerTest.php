@@ -9,7 +9,7 @@ use PHPUnit_Framework_TestCase as TestCase;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @covers BrainExe\Core\Authentication\Controller\SettingsController
+ * @covers \BrainExe\Core\Authentication\Controller\SettingsController
  */
 class SettingsControllerTest extends TestCase
 {

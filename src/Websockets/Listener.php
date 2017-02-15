@@ -3,6 +3,7 @@
 namespace BrainExe\Core\Websockets;
 
 use BrainExe\Core\Annotations\EventListener;
+use BrainExe\Core\Redis\Predis;
 use BrainExe\Core\Traits\RedisTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -14,7 +15,19 @@ class Listener implements EventSubscriberInterface
 
     const CHANNEL = 'websocket:push';
 
-    use RedisTrait;
+    /**
+     * @var Predis
+     */
+    private $redis;
+
+    /**
+     * @param Predis $client
+     */
+    public function __construct(Predis $client)
+    {
+        $this->redis = $client;
+    }
+
 
     /**
      * {@inheritdoc}
@@ -31,7 +44,6 @@ class Listener implements EventSubscriberInterface
      */
     public function handlePushEvent(WebSocketEvent $event)
     {
-        $redis = $this->getRedis();
-        $redis->publish(self::CHANNEL, json_encode($event->getPayload()));
+        $this->redis->publish(self::CHANNEL, json_encode($event->getPayload()));
     }
 }

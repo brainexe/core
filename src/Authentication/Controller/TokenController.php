@@ -9,7 +9,7 @@ use BrainExe\Core\Authentication\Token;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @Controller("Authentication.Controller.TokenController")
+ * @Controller
  */
 class TokenController
 {

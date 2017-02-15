@@ -30,8 +30,9 @@ class GentimeTest extends TestCase
     {
         $this->logger = $this->createMock(Logger::class);
 
-        $this->subject = new Gentime();
-        $this->subject->setLogger($this->logger);
+        $this->subject = new Gentime(
+            $this->logger
+        );
     }
 
     public function testProcessResponse()
@@ -41,8 +42,8 @@ class GentimeTest extends TestCase
 
         $this->logger
             ->expects($this->once())
-            ->method('log')
-            ->with('info', $this->isType('string'), $this->isType('array'));
+            ->method('info')
+            ->with($this->isType('string'), $this->isType('array'));
 
         $this->subject->processResponse($request, $response);
     }
@@ -57,8 +58,8 @@ class GentimeTest extends TestCase
 
         $this->logger
             ->expects($this->once())
-            ->method('log')
-            ->with('info', $this->isType('string'), $this->isType('array'));
+            ->method('info')
+            ->with($this->isType('string'), $this->isType('array'));
 
         $this->subject->processResponse($request, $response);
     }

@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 /**
- * @covers BrainExe\Core\Authentication\Login
+ * @covers \BrainExe\Core\Authentication\Login
  */
 class LoginTest extends TestCase
 {
@@ -54,8 +54,12 @@ class LoginTest extends TestCase
         $this->token          = $this->createMock(Token::class);
         $this->passwordHasher = $this->createMock(PasswordHasher::class);
 
-        $this->subject = new Login($this->loadUser, $this->token, $this->passwordHasher);
-        $this->subject->setEventDispatcher($this->dispatcher);
+        $this->subject = new Login(
+            $this->loadUser,
+            $this->token,
+            $this->passwordHasher,
+            $this->dispatcher
+        );
     }
 
     /**

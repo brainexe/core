@@ -9,7 +9,7 @@ use BrainExe\Core\Authentication\AnonymusUserVO;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @Controller("Authentication.LogoutController")
+ * @Controller
  */
 class LogoutController
 {

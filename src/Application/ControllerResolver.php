@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
 
 /**
- * @Service(public=false)
+ * @Service
  */
 class ControllerResolver implements ControllerResolverInterface
 {

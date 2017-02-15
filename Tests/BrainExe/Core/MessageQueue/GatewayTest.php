@@ -19,7 +19,7 @@ class TestEvent extends AbstractEvent
 }
 
 /**
- * @Covers BrainExe\Core\MessageQueue\Gateway
+ * @covers \BrainExe\Core\MessageQueue\Gateway
  */
 class GatewayTest extends TestCase
 {

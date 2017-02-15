@@ -42,8 +42,7 @@ class AppKernel implements HttpKernelInterface
      * @Inject({
      *     "@ControllerResolver",
      *     "@Core.RouteCollection",
-     *     "@UrlMatcher",
-     *     {}
+     *     "@UrlMatcher"
      * })
      * @param ControllerResolver $resolver
      * @param SerializedRouteCollection $routes
@@ -68,7 +67,6 @@ class AppKernel implements HttpKernelInterface
     public function handle(Request $request, $type = self::MASTER_REQUEST, $catch = true)
     {
         $response = null;
-
         try {
             $response = $this->handleRequest($request);
         } catch (Throwable $exception) {

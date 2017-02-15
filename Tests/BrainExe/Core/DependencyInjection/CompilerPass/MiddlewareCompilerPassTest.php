@@ -7,10 +7,11 @@ use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase as TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * @covers BrainExe\Core\DependencyInjection\CompilerPass\MiddlewareCompilerPass
+ * @covers \BrainExe\Core\DependencyInjection\CompilerPass\MiddlewareCompilerPass
  */
 class MiddlewareCompilerPassTest extends TestCase
 {
@@ -45,7 +46,7 @@ class MiddlewareCompilerPassTest extends TestCase
 
         $this->container
             ->expects($this->once())
-            ->method('getDefinition')
+            ->method('findDefinition')
             ->with('AppKernel')
             ->willReturn($appKernel);
 
@@ -56,8 +57,8 @@ class MiddlewareCompilerPassTest extends TestCase
 
         $this->container
             ->expects($this->once())
-            ->method('setParameter')
-            ->with('application.middlewares', []);
+            ->method('getParameterBag')
+            ->willReturn(new ParameterBag());
 
         $this->subject->process($this->container);
     }

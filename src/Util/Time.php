@@ -5,7 +5,7 @@ namespace BrainExe\Core\Util;
 use BrainExe\Annotations\Annotations\Service;
 
 /**
- * @Service(public=false)
+ * @Service
  * @api
  */
 class Time

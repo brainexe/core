@@ -30,15 +30,15 @@
     "symfony/routing": "~3.2",
     "symfony/proxy-manager-bridge": "~3.2",
     "ocramius/proxy-manager": "2.0.*",
-    "brainexe/annotations": "~1.0.11",
-    "monolog/monolog": "~1.21.0",
-    "predis/predis": "~1.0",
+    "brainexe/annotations": "dev-master",
+    "monolog/monolog": "~1.22.0",
+    "predis/predis": "~1.1",
     "mtdowling/cron-expression": "1.1.*",
     "phpmailer/phpmailer": "~5.2",
-    "guzzlehttp/guzzle": "~6.0"
+    "guzzlehttp/guzzle": "~6.2"
   },
   "require-dev": {
-    "phpunit/phpunit": "~5.4"
+    "phpunit/phpunit": "~5.0"
   },
   "suggest": {
     "johnkary/phpunit-speedtrap": "~1.0@dev",

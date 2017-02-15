@@ -7,7 +7,7 @@ use BrainExe\Core\Authentication\Event\AuthenticateUserEvent;
 use PHPUnit_Framework_TestCase as TestCase;
 
 /**
- * @covers BrainExe\Core\Authentication\Event\AuthenticateUserEvent
+ * @covers \BrainExe\Core\Authentication\Event\AuthenticateUserEvent
  */
 class AuthenticateUserEventTest extends TestCase
 {

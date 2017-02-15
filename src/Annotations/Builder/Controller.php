@@ -30,7 +30,7 @@ class Controller extends ServiceDefinition
             $annotation,
             $definition
         );
-        $serviceId = sprintf('__controller.%s', $serviceId);
+        $serviceId = $reflectionClass->getName();
 
         $definition->addTag(ControllerCompilerPass::CONTROLLER_TAG);
         $definition->setPublic(true);

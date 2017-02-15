@@ -2,12 +2,12 @@
 
 namespace BrainExe\Core\EventDispatcher;
 
-use BrainExe\Annotations\Annotations\Inject;
+
 use BrainExe\Annotations\Annotations\Service;
 use BrainExe\Core\MessageQueue\Job;
 use BrainExe\Core\Websockets\WebSocketEvent;
 use RuntimeException;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+
 use Symfony\Component\EventDispatcher\EventDispatcher as SymfonyEventDispatcher;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -56,6 +56,7 @@ class EventDispatcher extends SymfonyEventDispatcher
     public function dispatchEvent(AbstractEvent $event)
     {
         $this->dispatch($event->getEventName(), $event);
+
         if ($event instanceof PushViaWebsocket) {
             /** @var AbstractEvent $event */
             $this->dispatchAsWebsocketEvent($event);

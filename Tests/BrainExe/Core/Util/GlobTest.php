@@ -7,7 +7,7 @@ use BrainExe\Core\Util\Glob;
 use PHPUnit_Framework_TestCase as TestCase;
 
 /**
- * @covers BrainExe\Core\Util\Glob
+ * @covers \BrainExe\Core\Util\Glob
  */
 class GlobTest extends TestCase
 {

@@ -8,7 +8,7 @@ use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase as TestCase;
 
 /**
- * @covers BrainExe\Core\Authentication\Settings\Settings
+ * @covers \BrainExe\Core\Authentication\Settings\Settings
  */
 class SettingsTest extends TestCase
 {

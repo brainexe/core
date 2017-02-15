@@ -7,7 +7,7 @@ use BrainExe\Core\Websockets\WebSocketEvent;
 use PHPUnit_Framework_TestCase as TestCase;
 
 /**
- * @covers BrainExe\Core\Websockets\WebSocketEvent
+ * @covers \BrainExe\Core\Websockets\WebSocketEvent
  */
 class WebSocketEventTest extends TestCase
 {

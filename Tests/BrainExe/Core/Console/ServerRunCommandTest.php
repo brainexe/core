@@ -11,7 +11,7 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Process\ProcessBuilder;
 
 /**
- * @covers BrainExe\Core\Console\ServerRunCommand
+ * @covers \BrainExe\Core\Console\ServerRunCommand
  */
 class ServerRunCommandTest extends PHPUnit_Framework_TestCase
 {

@@ -2,10 +2,12 @@
 
 namespace BrainExe\Core\Middleware;
 
+use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Core\Annotations\Middleware;
 use BrainExe\Core\Application\UserException;
 use BrainExe\Core\Traits\LoggerTrait;
 use BrainExe\Core\Translation\TranslationTrait;
+use Monolog\Logger;
 use Throwable;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,8 +21,22 @@ class CatchUserException extends AbstractMiddleware
 {
 
     const ERROR_NOT_AUTHORIZED = 'NotAuthorized';
-    use LoggerTrait;
+
     use TranslationTrait;
+
+    /**
+     * @var Logger
+     */
+    private $logger;
+
+    /**
+     * @Inject("@logger")
+     * @param Logger $logger
+     */
+    public function __construct(Logger $logger)
+    {
+        $this->logger = $logger;
+    }
 
     /**
      * {@inheritdoc}
@@ -56,8 +72,8 @@ class CatchUserException extends AbstractMiddleware
             $response  = new Response('', 500);
         }
 
-        $this->error($exception->getMessage());
-        $this->error($exception->getTraceAsString());
+        $this->logger->error($exception->getMessage());
+        $this->logger->error($exception->getTraceAsString());
 
         $this->setMessage($exception, $request, $response);
 

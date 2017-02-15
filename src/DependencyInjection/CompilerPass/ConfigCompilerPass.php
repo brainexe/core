@@ -8,7 +8,7 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
-use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 /**
  * @CompilerPass(priority=10)
@@ -23,16 +23,16 @@ class ConfigCompilerPass implements CompilerPassInterface
     {
         $container->setParameter('application.root', ROOT);
 
-        $loader     = new XmlFileLoader($container, new FileLocator());
-        $filesystem = new Filesystem();
+        $locator = new FileLocator([
+            ROOT,
+            ROOT . 'app/',
+        ]);
 
-        if ($filesystem->exists(ROOT . 'app/container.xml')) {
-            $loader->load(ROOT . 'app/container.xml');
-        } elseif ($filesystem->exists(ROOT . '/container.xml')) {
-            $loader->load(ROOT . '/container.xml');
-        }
+        $xmlLoader = new XmlFileLoader($container, $locator);
+        $xmlLoader->import('container.xml');
 
-        $container->setParameter('dicId', uniqid());
+        $ymlLoader = new YamlFileLoader($container, $locator);
+        $ymlLoader->import('config.yml', null, true);
 
         $environment = $container->getParameter('environment');
         $container->setParameter('debug', $environment !== Environment::PRODUCTION);

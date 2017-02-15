@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 /**
- * @covers BrainExe\Core\Authentication\Controller\LoginController
+ * @covers \BrainExe\Core\Authentication\Controller\LoginController
  */
 class LoginControllerTest extends TestCase
 {

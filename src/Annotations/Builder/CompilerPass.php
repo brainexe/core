@@ -24,9 +24,10 @@ class CompilerPass extends ServiceDefinition
         list($serviceId, $definition) = parent::build($reflectionClass, $annotation, $definition);
 
         $definition->setPublic(false);
+        $this->container->setDefinition($serviceId, $definition);
 
         /** @var CompilerPassInterface $compilerPass */
-        $compilerPass = $this->container->get($definition->getClass());
+        $compilerPass = $this->container->get($serviceId);
         $this->container->addCompilerPass(
             $compilerPass,
             $annotation->type,

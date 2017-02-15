@@ -3,10 +3,10 @@
 namespace BrainExe\Core\Util;
 
 use BrainExe\Annotations\Annotations\Service;
-use BrainExe\Core\Traits\RedisTrait;
+use BrainExe\Core\Redis\Predis;
 
 /**
- * @Service(public=false)
+ * @Service
  * @api
  */
 class IdGenerator
@@ -16,7 +16,18 @@ class IdGenerator
     const KEY          = 'idgenerator:%s';
     const DEFAULT_TYPE = 'lastid';
 
-    use RedisTrait;
+    /**
+     * @var Predis
+     */
+    private $redis;
+
+    /**
+     * @param Predis $client
+     */
+    public function __construct(Predis $client)
+    {
+        $this->redis = $client;
+    }
 
     /**
      * @param string $type
@@ -24,7 +35,7 @@ class IdGenerator
      */
     public function generateUniqueId(string $type = self::DEFAULT_TYPE) : int
     {
-        return (int)$this->getRedis()->incr(sprintf(self::KEY, $type));
+        return (int)$this->redis->incr(sprintf(self::KEY, $type));
     }
 
     /**

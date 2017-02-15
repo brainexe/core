@@ -11,7 +11,6 @@ class FileSystem extends SymfonyFilesystem
 {
 
     /**
-     * @deprecated use Process component
      * @param string $fileName
      * @param integer|null $flags
      * @return string

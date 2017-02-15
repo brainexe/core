@@ -6,7 +6,7 @@ use PHPUnit_Framework_TestCase as TestCase;
 use BrainExe\Core\Index\Controller;
 
 /**
- * @covers BrainExe\Core\Index\Controller
+ * @covers \BrainExe\Core\Index\Controller
  */
 class ControllerTest extends TestCase
 {

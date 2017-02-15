@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
 /**
- * @covers BrainExe\Core\Console\ListServicesCommand
+ * @covers \BrainExe\Core\Console\ListServicesCommand
  */
 class ListServicesCommandTest extends TestCase
 {
@@ -103,8 +103,7 @@ class ListServicesCommandTest extends TestCase
 
         $this->rebuild
             ->expects($this->once())
-            ->method('rebuildDIC')
-            ->with(false)
+            ->method('buildContainer')
             ->willReturn($containerBuilder);
 
         $serviceIds = [

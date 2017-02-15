@@ -2,10 +2,11 @@
 
 namespace BrainExe\Core\Middleware;
 
+use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Core\Annotations\Middleware;
 use BrainExe\Core\Authentication\AnonymusUserVO;
 use BrainExe\Core\Authentication\UserVO;
-use BrainExe\Core\Traits\LoggerTrait;
+use Monolog\Logger;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -15,7 +16,19 @@ use Symfony\Component\HttpFoundation\Response;
 class Gentime extends AbstractMiddleware
 {
 
-    use LoggerTrait;
+    /**
+     * @var Logger
+     */
+    private $logger;
+
+    /**
+     * @Inject("@logger")
+     * @param Logger $logger
+     */
+    public function __construct(Logger $logger)
+    {
+        $this->logger = $logger;
+    }
 
     /**
      * {@inheritdoc}
@@ -27,7 +40,7 @@ class Gentime extends AbstractMiddleware
         $username  = $this->getUsername($user);
 
         $diff = microtime(true) - $startTime;
-        $this->info(
+        $this->logger->info(
             sprintf(
                 '%0.2fms - %s',
                 $diff * 1000,

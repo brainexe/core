@@ -6,7 +6,7 @@ use PHPUnit_Framework_TestCase as TestCase;
 use BrainExe\Core\Index\Config;
 
 /**
- * @covers BrainExe\Core\Index\Config
+ * @covers \BrainExe\Core\Index\Config
  */
 class ConfigTest extends TestCase
 {

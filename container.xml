@@ -104,7 +104,7 @@
 		<service id="DoctrineCache" class="Doctrine\Common\Cache\PredisCache" public="false">
 			<argument type="service" id="redis"/>
 			<call method="setNamespace">
-				<argument>cache:%dicId%</argument>
+				<argument>cache:%application.name%</argument>
 			</call>
 		</service>
 		<service id="Cache" class="Symfony\Component\Cache\Adapte" public="false">

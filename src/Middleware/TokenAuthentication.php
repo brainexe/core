@@ -4,16 +4,16 @@ namespace BrainExe\Core\Middleware;
 
 use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Core\Annotations\Middleware;
-use BrainExe\Core\Application\UserException;
+
 use BrainExe\Core\Authentication\AnonymusUserVO;
 use BrainExe\Core\Authentication\Exception\UserNotFoundException;
 use BrainExe\Core\Authentication\LoadUser;
 use BrainExe\Core\Authentication\Token;
 use BrainExe\Core\Authentication\UserVO;
 use BrainExe\Core\Translation\TranslationTrait;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Route;
 

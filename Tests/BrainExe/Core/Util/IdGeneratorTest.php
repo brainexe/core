@@ -9,7 +9,7 @@ use BrainExe\Core\Redis\Predis;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 
 /**
- * @covers BrainExe\Core\Util\IdGenerator
+ * @covers \BrainExe\Core\Util\IdGenerator
  */
 class IdGeneratorTest extends TestCase
 {
@@ -30,8 +30,9 @@ class IdGeneratorTest extends TestCase
     {
         $this->redis = $this->getRedisMock();
 
-        $this->subject = new IdGenerator();
-        $this->subject->setRedis($this->redis);
+        $this->subject = new IdGenerator(
+            $this->redis
+        );
     }
 
     public function testGenerateUniqueId()

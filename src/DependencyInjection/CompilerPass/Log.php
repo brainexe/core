@@ -23,8 +23,7 @@ class Log implements CompilerPassInterface
 
         $logLevels = [
             'error.log' => Logger::ERROR,
-            'info.log' => Logger::INFO,
-            'info2.log' => Logger::INFO,
+            'info.log'  => Logger::INFO,
         ];
 
         if ($container->getParameter('debug')) {

@@ -7,7 +7,7 @@ use BrainExe\Core\Authentication\UserVO;
 use PHPUnit_Framework_TestCase as TestCase;
 
 /**
- * @covers BrainExe\Core\Authentication\Event\DeleteUserEvent
+ * @covers \BrainExe\Core\Authentication\Event\DeleteUserEvent
  */
 class DeleteUserEventTest extends TestCase
 {

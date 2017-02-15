@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
 /**
- * @Service("Core.RouteCollection", public=false, shared=false)
+ * @Service("Core.RouteCollection", shared=false)
  */
 class SerializedRouteCollection extends RouteCollection
 {

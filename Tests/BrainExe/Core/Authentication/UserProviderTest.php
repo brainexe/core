@@ -15,7 +15,7 @@ use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase as TestCase;
 
 /**
- * @covers BrainExe\Core\Authentication\UserProvider
+ * @covers \BrainExe\Core\Authentication\UserProvider
  */
 class UserProviderTest extends TestCase
 {

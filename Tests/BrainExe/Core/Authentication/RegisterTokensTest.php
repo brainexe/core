@@ -10,7 +10,7 @@ use PHPUnit_Framework_TestCase as TestCase;
 use BrainExe\Core\Redis\Predis;
 
 /**
- * @covers BrainExe\Core\Authentication\RegisterTokens
+ * @covers \BrainExe\Core\Authentication\RegisterTokens
  */
 class RegisterTokensTest extends TestCase
 {

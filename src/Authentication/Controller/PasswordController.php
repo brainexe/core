@@ -12,7 +12,7 @@ use BrainExe\Core\Authentication\UserVO;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @Controller("Authentication.PasswordController")
+ * @Controller
  */
 class PasswordController
 {

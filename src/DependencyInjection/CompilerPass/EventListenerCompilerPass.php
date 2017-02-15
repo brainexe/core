@@ -8,7 +8,6 @@ use Symfony\Component\DependencyInjection\Argument\ClosureProxyArgument;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -90,7 +89,7 @@ class EventListenerCompilerPass implements CompilerPassInterface
     {
         $parameters = [$eventName, new ClosureProxyArgument($serviceId, $method), $priority];
 
-        $class = $this->container->getDefinition($serviceId)->getClass();
+        $class = $this->container->findDefinition($serviceId)->getClass();
         if (!method_exists($class, $method)) {
             throw new Exception(sprintf('Invalid event dispatcher method: %s::%s()', $serviceId, $method));
         }
