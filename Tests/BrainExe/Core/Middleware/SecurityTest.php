@@ -6,7 +6,7 @@ use BrainExe\Core\Application\Locale as LocaleModel;
 use BrainExe\Core\Middleware\Locale;
 use BrainExe\Core\Middleware\Security;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;

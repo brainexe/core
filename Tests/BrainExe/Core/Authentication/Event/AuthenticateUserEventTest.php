@@ -4,7 +4,7 @@ namespace Tests\BrainExe\Core\Authentication;
 
 use BrainExe\Core\Authentication\AuthenticationDataVO;
 use BrainExe\Core\Authentication\Event\AuthenticateUserEvent;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \BrainExe\Core\Authentication\Event\AuthenticateUserEvent

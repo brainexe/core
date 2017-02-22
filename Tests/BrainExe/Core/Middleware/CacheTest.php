@@ -5,7 +5,7 @@ namespace Tests\BrainExe\Core\Middleware;
 use BrainExe\Core\Middleware\Cache;
 use Monolog\Logger;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Component\Cache\CacheItem;
 use Symfony\Component\HttpFoundation\ParameterBag;

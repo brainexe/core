@@ -6,7 +6,7 @@ use BrainExe\Core\MessageQueue\Command\ExecuteJob;
 use BrainExe\Core\MessageQueue\Job;
 use BrainExe\Core\MessageQueue\Worker;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 

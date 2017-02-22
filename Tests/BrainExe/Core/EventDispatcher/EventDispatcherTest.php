@@ -10,7 +10,7 @@ use BrainExe\Core\EventDispatcher\PushViaWebsocket;
 use BrainExe\Core\Traits\JsonSerializableTrait;
 use BrainExe\Core\Websockets\WebSocketEvent;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 
 class TestEvent extends AbstractEvent
 {

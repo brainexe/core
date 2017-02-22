@@ -6,7 +6,7 @@ use BrainExe\Core\EventDispatcher\EventDispatcher;
 use BrainExe\Core\EventDispatcher\Events\ConsoleEvent;
 use BrainExe\Core\Index\Swagger;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \BrainExe\Core\Index\Swagger

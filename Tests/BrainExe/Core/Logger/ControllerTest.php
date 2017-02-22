@@ -4,7 +4,7 @@ namespace BrainExe\Tests\Logger\Index;
 
 use Monolog\Logger;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use BrainExe\Core\Logger\Controller;
 use Psr\Log\LogLevel;
 use Symfony\Component\HttpFoundation\Request;

@@ -7,7 +7,7 @@ use BrainExe\Core\Stats\Controller;
 use BrainExe\Core\Stats\Stats;
 use BrainExe\Tests\RedisMockTrait;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Predis\Client;
 use Predis\ClientException;
 use Symfony\Component\HttpFoundation\Request;

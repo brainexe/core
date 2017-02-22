@@ -13,7 +13,7 @@ use BrainExe\Core\Util\Time;
 use Exception;
 use Monolog\Logger;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 
 class WorkerTest extends TestCase
 {

@@ -3,7 +3,7 @@
 namespace Tests\BrainExe\Core\Application;
 
 use BrainExe\Core\Application\SerializedRouteCollection;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Routing\Route;
 
 class SerializedRouteCollectionTest extends TestCase

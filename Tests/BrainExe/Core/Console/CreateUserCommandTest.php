@@ -5,8 +5,8 @@ namespace Tests\BrainExe\Core\Console;
 use BrainExe\Core\Authentication\Register;
 use BrainExe\Core\Authentication\UserVO;
 use BrainExe\Core\Console\CreateUserCommand;
+use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 /**
  * @covers \BrainExe\Core\Console\CreateUserCommand
  */
-class CreateUserCommandTest extends PHPUnit_Framework_TestCase
+class CreateUserCommandTest extends TestCase
 {
 
     /**

@@ -5,7 +5,7 @@ namespace BrainExe\Tests\Core\DependencyInjection\CompilerPass;
 use BrainExe\Core\Console\ProxyCommand;
 use BrainExe\Core\DependencyInjection\CompilerPass\ConsoleCompilerPass;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

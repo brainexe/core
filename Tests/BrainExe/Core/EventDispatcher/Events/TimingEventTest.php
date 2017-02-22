@@ -3,7 +3,7 @@
 namespace Tests\BrainExe\Core\EventDispatcher\Events;
 
 use BrainExe\Core\EventDispatcher\Events\TimingEvent;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 
 class TimingEventTest extends TestCase
 {

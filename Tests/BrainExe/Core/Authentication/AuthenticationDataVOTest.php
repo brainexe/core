@@ -4,7 +4,7 @@ namespace Tests\BrainExe\Core\Authentication;
 
 use BrainExe\Core\Authentication\AuthenticationDataVO;
 use BrainExe\Core\Authentication\UserVO;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 
 class AuthenticationDataVOTest extends TestCase
 {

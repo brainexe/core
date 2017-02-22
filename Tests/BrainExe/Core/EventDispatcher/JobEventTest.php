@@ -4,7 +4,7 @@ namespace Tests\BrainExe\Core\EventDispatcher;
 
 use BrainExe\Core\EventDispatcher\JobEvent;
 use BrainExe\Core\MessageQueue\Job;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 
 class JobEventTest extends TestCase
 {

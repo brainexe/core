@@ -6,7 +6,7 @@ use BrainExe\Core\Annotations\Route;
 use BrainExe\Core\Application\ControllerResolver;
 use BrainExe\Core\DependencyInjection\CompilerPass\ControllerCompilerPass;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 

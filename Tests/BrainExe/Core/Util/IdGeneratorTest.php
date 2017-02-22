@@ -4,7 +4,7 @@ namespace Tests\BrainExe\Core\Util;
 
 use BrainExe\Core\Util\IdGenerator;
 use BrainExe\Tests\RedisMockTrait;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use BrainExe\Core\Redis\Predis;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 

@@ -5,7 +5,7 @@ namespace Tests\BrainExe\Core\Application;
 use BrainExe\Core\Application\SessionHandler;
 use BrainExe\Tests\RedisMockTrait;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use BrainExe\Core\Redis\Predis;
 
 /**

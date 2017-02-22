@@ -5,7 +5,7 @@ namespace Tests\BrainExe\Core\Stats;
 use BrainExe\Core\Stats\Gateway;
 use BrainExe\Core\Stats\Stats;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \BrainExe\Core\Stats\Stats

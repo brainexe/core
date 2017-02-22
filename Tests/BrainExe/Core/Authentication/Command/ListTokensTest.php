@@ -5,7 +5,7 @@ namespace Tests\BrainExe\Core\Authentication\Command;
 use BrainExe\Core\Authentication\Command\ListTokens;
 use BrainExe\Core\Authentication\Token;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 

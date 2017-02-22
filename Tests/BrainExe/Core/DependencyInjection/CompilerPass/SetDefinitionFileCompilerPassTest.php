@@ -4,7 +4,7 @@ namespace BrainExe\Tests\Core\DependencyInjection\CompilerPass;
 
 use BrainExe\Core\DependencyInjection\CompilerPass\SetDefinitionFileCompilerPass;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 

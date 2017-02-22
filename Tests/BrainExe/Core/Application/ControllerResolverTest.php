@@ -4,8 +4,7 @@ namespace Tests\BrainExe\Core\Application;
 
 use BrainExe\Core\Application\ControllerResolver;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase as TestCase;
-use Symfony\Component\DependencyInjection\Container;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\HttpFoundation\Request;
 

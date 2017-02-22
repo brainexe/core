@@ -3,7 +3,7 @@
 namespace BrainExe\Tests;
 
 use BrainExe\Core\Core;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\Container;
 
 class CoreTest extends TestCase

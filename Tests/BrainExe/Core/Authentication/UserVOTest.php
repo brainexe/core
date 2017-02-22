@@ -3,7 +3,7 @@
 namespace Tests\BrainExe\Core\Authentication;
 
 use BrainExe\Core\Authentication\UserVO;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \BrainExe\Core\Authentication\UserVO

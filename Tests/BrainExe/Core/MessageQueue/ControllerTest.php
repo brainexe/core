@@ -6,7 +6,7 @@ use BrainExe\Core\MessageQueue\Controller;
 use BrainExe\Core\MessageQueue\Gateway as MessageQueueGateway;
 use BrainExe\Core\Util\Time;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 
 /**

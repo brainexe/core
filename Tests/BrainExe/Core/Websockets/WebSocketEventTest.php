@@ -4,7 +4,7 @@ namespace Tests\BrainExe\Core\Websockets;
 
 use BrainExe\Core\EventDispatcher\AbstractEvent;
 use BrainExe\Core\Websockets\WebSocketEvent;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \BrainExe\Core\Websockets\WebSocketEvent

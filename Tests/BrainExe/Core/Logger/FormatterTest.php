@@ -3,12 +3,12 @@
 namespace BrainExe\Tests\Core\Logger;
 
 use BrainExe\Core\Logger\Formatter;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \BrainExe\Core\Logger\Formatter
  */
-class FormatterTest extends PHPUnit_Framework_TestCase
+class FormatterTest extends TestCase
 {
 
     /**

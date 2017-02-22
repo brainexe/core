@@ -4,7 +4,7 @@ namespace Tests\BrainExe\Core\EventDispatcher;
 
 use BrainExe\Core\EventDispatcher\AbstractEvent;
 use BrainExe\Core\EventDispatcher\DelayedEvent;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 
 class DelayedEventTest extends TestCase
 {

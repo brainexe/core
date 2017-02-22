@@ -5,7 +5,7 @@ namespace Tests\BrainExe\Core\Authentication\Settings;
 use BrainExe\Core\Authentication\Settings\Gateway;
 use BrainExe\Core\Authentication\Settings\Settings;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \BrainExe\Core\Authentication\Settings\Settings

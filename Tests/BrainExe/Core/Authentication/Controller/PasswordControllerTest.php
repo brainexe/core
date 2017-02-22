@@ -7,7 +7,7 @@ use BrainExe\Core\Authentication\PasswordHasher;
 use BrainExe\Core\Authentication\UserProvider;
 use BrainExe\Core\Authentication\UserVO;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 
 /**

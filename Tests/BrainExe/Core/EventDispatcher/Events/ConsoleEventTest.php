@@ -3,7 +3,7 @@
 namespace Tests\BrainExe\Core\EventDispatcher\Events;
 
 use BrainExe\Core\EventDispatcher\Events\ConsoleEvent;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\BufferedOutput;
 
 class ConsoleEventTest extends TestCase

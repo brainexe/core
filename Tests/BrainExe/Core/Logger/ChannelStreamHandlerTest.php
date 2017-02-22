@@ -4,9 +4,9 @@ namespace BrainExe\Tests\Core\Logger;
 
 use BrainExe\Core\Logger\ChannelStreamHandler;
 use Monolog\Logger;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class ChannelStreamHandlerTest extends PHPUnit_Framework_TestCase
+class ChannelStreamHandlerTest extends TestCase
 {
 
     /**

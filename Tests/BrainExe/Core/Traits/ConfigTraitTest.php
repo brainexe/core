@@ -4,7 +4,7 @@ namespace BrainExe\Tests\Core\Traits;
 
 use BrainExe\Core\Traits\ConfigTrait;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 
 class ConfigTest

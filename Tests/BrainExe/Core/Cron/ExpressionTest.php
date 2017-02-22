@@ -3,7 +3,7 @@
 namespace BrainExe\Tests\Core\Cron;
 
 use BrainExe\Core\Cron\Expression;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 
 class ExpressionTest extends TestCase
 {

@@ -7,7 +7,7 @@ use BrainExe\Core\Stats\Listener;
 use BrainExe\Core\Stats\MultiEvent;
 use BrainExe\Core\Stats\Stats;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 
 class ListenerTest extends TestCase
 {

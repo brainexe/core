@@ -6,7 +6,7 @@ use BrainExe\Core\Middleware\Csrf;
 use BrainExe\Core\Util\IdGenerator;
 use BrainExe\Core\Util\Time;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

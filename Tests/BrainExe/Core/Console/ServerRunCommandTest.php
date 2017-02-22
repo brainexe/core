@@ -3,8 +3,8 @@
 namespace Tests\BrainExe\Core\Console;
 
 use BrainExe\Core\Console\ServerRunCommand;
+use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Process\Process;
@@ -13,7 +13,7 @@ use Symfony\Component\Process\ProcessBuilder;
 /**
  * @covers \BrainExe\Core\Console\ServerRunCommand
  */
-class ServerRunCommandTest extends PHPUnit_Framework_TestCase
+class ServerRunCommandTest extends TestCase
 {
 
     /**

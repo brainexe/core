@@ -8,7 +8,7 @@ use BrainExe\Core\Authentication\UserVO;
 use BrainExe\Core\Middleware\Authentication;
 use Exception;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

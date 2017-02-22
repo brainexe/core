@@ -7,7 +7,7 @@ use BrainExe\Core\Authentication\Token;
 use BrainExe\Core\Authentication\UserVO;
 use BrainExe\Core\Middleware\TokenAuthentication;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Route;

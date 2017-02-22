@@ -59,6 +59,9 @@ class ClearCacheCommand extends Command
         $event = new ClearCacheEvent();
         $this->dispatcher->dispatchEvent($event);
 
+        @mkdir(ROOT . 'logs', 0744);
+        @mkdir(ROOT . 'cache', 0744);
+
         $output->writeln('<info>done</info>');
     }
 }

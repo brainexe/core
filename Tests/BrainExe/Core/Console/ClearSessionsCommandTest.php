@@ -5,7 +5,7 @@ namespace Tests\BrainExe\Core\Console\CreateRegisterLinkCommand;
 use BrainExe\Core\Console\ClearSessionsCommand;
 use BrainExe\Tests\RedisMockTrait;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Redis;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;

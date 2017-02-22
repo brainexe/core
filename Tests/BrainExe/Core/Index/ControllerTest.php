@@ -2,7 +2,7 @@
 
 namespace BrainExe\Tests\Core\Index;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use BrainExe\Core\Index\Controller;
 
 /**

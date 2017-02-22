@@ -3,7 +3,7 @@
 namespace Tests\BrainExe\Core\Util;
 
 use BrainExe\Core\Util\FileSystem;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \BrainExe\Core\Util\FileSystem

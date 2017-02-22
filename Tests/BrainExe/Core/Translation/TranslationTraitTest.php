@@ -6,7 +6,7 @@ use BrainExe\Core\Traits\TimeTrait;
 use BrainExe\Core\Translation\TranslationTrait;
 use BrainExe\Core\Util\Time;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 
 class TranslationTraitTest extends TestCase
 {

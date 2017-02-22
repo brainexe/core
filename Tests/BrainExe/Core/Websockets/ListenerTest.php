@@ -8,7 +8,7 @@ use BrainExe\Core\Websockets\WebSocketEvent;
 use BrainExe\Core\Websockets\Listener;
 use BrainExe\Tests\RedisMockTrait;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \BrainExe\Core\Websockets\Listener

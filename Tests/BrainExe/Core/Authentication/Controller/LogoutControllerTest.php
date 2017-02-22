@@ -5,7 +5,7 @@ namespace Tests\BrainExe\Core\Authentication\Controller;
 use BrainExe\Core\Authentication\AnonymusUserVO;
 use BrainExe\Core\Authentication\Controller\LogoutController;
 use BrainExe\Core\Authentication\UserVO;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;

@@ -9,7 +9,7 @@ use BrainExe\Core\EventDispatcher\CronEvent;
 use BrainExe\Core\MessageQueue\Listener;
 use BrainExe\Core\MessageQueue\Gateway;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 
 class ListenerTest extends TestCase
 {

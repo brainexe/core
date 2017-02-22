@@ -5,7 +5,7 @@ namespace Tests\BrainExe\Core\Console;
 use BrainExe\Core\Console\Listener;
 use BrainExe\Core\EventDispatcher\Events\ConsoleEvent;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\BufferedOutput;

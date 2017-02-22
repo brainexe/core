@@ -6,7 +6,7 @@ use BrainExe\Core\EventDispatcher\AbstractEvent;
 use BrainExe\Core\EventDispatcher\EventDispatcher;
 use BrainExe\Core\Traits\EventDispatcherTrait;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 
 class TestEvent extends AbstractEvent
 {

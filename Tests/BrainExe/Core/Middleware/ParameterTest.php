@@ -3,7 +3,7 @@
 namespace Tests\BrainExe\Core\Middleware;
 
 use BrainExe\Core\Middleware\Parameter;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Route;
 
