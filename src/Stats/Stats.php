@@ -3,10 +3,10 @@
 namespace BrainExe\Core\Stats;
 
 
-use BrainExe\Annotations\Annotations\Service;
+use BrainExe\Core\Annotations\Service;
 
 /**
- * @Service("Stats.Stats", public=false)
+ * @Service("Stats.Stats")
  */
 class Stats
 {

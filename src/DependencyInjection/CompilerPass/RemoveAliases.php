@@ -18,9 +18,7 @@ class RemoveAliases implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         foreach ($container->getAliases() as $key => $value) {
-            $container->removeAlias($value);
-            $container->removeAlias($key);
+            $value->setPublic(false);
         }
     }
-
 }

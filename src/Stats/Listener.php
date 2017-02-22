@@ -2,7 +2,6 @@
 
 namespace BrainExe\Core\Stats;
 
-
 use BrainExe\Core\Annotations\EventListener;
 use BrainExe\Core\Annotations\Listen;
 

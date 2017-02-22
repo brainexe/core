@@ -2,7 +2,7 @@
 
 namespace BrainExe\Core\Middleware;
 
-use BrainExe\Annotations\Annotations\Inject;
+use BrainExe\Core\Annotations\Inject;
 use BrainExe\Core\Annotations\Middleware;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

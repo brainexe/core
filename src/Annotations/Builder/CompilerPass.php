@@ -2,8 +2,8 @@
 
 namespace BrainExe\Core\Annotations\Builder;
 
-use BrainExe\Annotations\Annotations\Service;
-use BrainExe\Annotations\Builder\ServiceDefinition;
+use BrainExe\Core\Annotations\Service;
+use BrainExe\Core\Annotations\Builder\ServiceDefinition;
 use BrainExe\Core\Annotations\CompilerPass as CompilerPassAnnotation;
 use ReflectionClass;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;

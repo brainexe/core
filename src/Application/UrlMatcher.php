@@ -2,13 +2,13 @@
 
 namespace BrainExe\Core\Application;
 
-use BrainExe\Annotations\Annotations\Service;
+use BrainExe\Core\Annotations\Service;
 use ProjectUrlMatcher;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RequestContext;
 
 /**
- * @Service(public=false)
+ * @Service
  */
 class UrlMatcher
 {

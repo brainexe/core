@@ -34,6 +34,7 @@ class Csrf extends AbstractMiddleware
 
     /**
      * {@inheritdoc}
+     * @throws MethodNotAllowedException
      */
     public function processRequest(Request $request, Route $route)
     {
@@ -65,7 +66,15 @@ class Csrf extends AbstractMiddleware
             $session->set(self::CSRF, $this->newToken);
             $session->set('csrf_timestamp', $this->now());
             $response->headers->setCookie(
-                new Cookie(self::COOKIE, $this->newToken, 0, '/', null, false, false)
+                new Cookie(
+                    self::COOKIE,
+                    $this->newToken,
+                    0,
+                    '/',
+                    null,
+                    false,
+                    false
+                )
             );
             $this->newToken = null;
         }

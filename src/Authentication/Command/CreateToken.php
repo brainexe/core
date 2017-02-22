@@ -2,7 +2,7 @@
 
 namespace BrainExe\Core\Authentication\Command;
 
-use BrainExe\Annotations\Annotations\Inject;
+use BrainExe\Core\Annotations\Inject;
 use BrainExe\Core\Annotations\Command as CommandAnnotation;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -32,7 +32,6 @@ class CreateToken extends Command
     }
 
     /**
-     * @Inject
      * @param TokenModel $token
      */
     public function __construct(TokenModel $token)

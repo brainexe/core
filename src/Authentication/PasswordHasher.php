@@ -2,11 +2,11 @@
 
 namespace BrainExe\Core\Authentication;
 
-use BrainExe\Annotations\Annotations\Inject;
-use BrainExe\Annotations\Annotations\Service;
+use BrainExe\Core\Annotations\Inject;
+use BrainExe\Core\Annotations\Service;
 
 /**
- * @Service("Core.Authentication.PasswordHasher", public=false)
+ * @Service("Core.Authentication.PasswordHasher")
  */
 class PasswordHasher
 {

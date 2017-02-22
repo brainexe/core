@@ -2,10 +2,10 @@
 
 namespace BrainExe\Core\Util;
 
-use BrainExe\Annotations\Annotations\Service;
+use BrainExe\Core\Annotations\Service;
 
 /**
- * @Service("Glob", public=false)
+ * @Service("Glob")
  * @api
  */
 class Glob

@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 	<parameters>
+		<parameter key="application.root" type="constant">ROOT</parameter>
 		<parameter key="cache.enabled">true</parameter>
 		<parameter key="server.host">%application.name%</parameter>
 		<parameter key="server.user">www-data</parameter>
-
-		<!-- This value in filled during container build process -->
-		<parameter key="locales" type="collection"/>
 
 		<parameter key="session.lifetime">604800</parameter>
 
@@ -34,7 +32,7 @@
 	</parameters>
 
     <services>
-		<service id="monolog.ErrorHandler" class="Monolog\ErrorHandler">
+		<service id="monolog.ErrorHandler" class="Monolog\ErrorHandler" public="true">
 			<argument type="service" id="logger"/>
 			<call method="registerErrorHandler"/>
 			<call method="registerExceptionHandler"/>
@@ -73,7 +71,11 @@
 			</call>
         </service>
 
-		<service id="Console" class="Symfony\Component\Console\Application"/>
+		<service id="Console" class="Symfony\Component\Console\Application">
+			<call method="setDispatcher">
+				<argument type="service" id="EventDispatcher"></argument>
+			</call>
+		</service>
 
 		<service id="RedisSession" class="Symfony\Component\HttpFoundation\Session\Session" public="false">
 			<argument type="service">
@@ -93,8 +95,6 @@
 				</service>
 			</argument>
 		</service>
-
-		<service id="service_container" class="Symfony\Component\DependencyInjection\Container" public="false"/>
 
 		<service id="ProcessBuilder" class="Symfony\Component\Process\ProcessBuilder" public="false"/>
 		<service id="FileSystem" class="BrainExe\Core\Util\FileSystem" public="false"/>

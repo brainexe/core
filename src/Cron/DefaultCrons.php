@@ -2,7 +2,7 @@
 
 namespace BrainExe\Core\Cron;
 
-use BrainExe\Annotations\Annotations\Service;
+use BrainExe\Core\Annotations\Service;
 
 /**
  * @Service("Crons.Default", public=false, tags={{"name"="cron"}})

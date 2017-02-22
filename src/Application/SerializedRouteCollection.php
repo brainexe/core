@@ -3,7 +3,7 @@
 namespace BrainExe\Core\Application;
 
 use ArrayIterator;
-use BrainExe\Annotations\Annotations\Service;
+use BrainExe\Core\Annotations\Service;
 use BrainExe\Core\Traits\FileCacheTrait;
 use Psr\Log\InvalidArgumentException;
 use RuntimeException;

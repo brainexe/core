@@ -2,7 +2,7 @@
 
 namespace BrainExe\Core\Annotations;
 
-use BrainExe\Annotations\Annotations\Service;
+use BrainExe\Core\Annotations\Service;
 use BrainExe\Core\Annotations\Builder\Command as Builder;
 use Doctrine\Common\Annotations\Annotation;
 use Doctrine\Common\Annotations\Reader;

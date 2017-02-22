@@ -2,10 +2,9 @@
 
 namespace BrainExe\Core\Middleware;
 
-use BrainExe\Annotations\Annotations\Inject;
+use BrainExe\Core\Annotations\Inject;
 use BrainExe\Core\Annotations\Middleware;
 use BrainExe\Core\Application\UserException;
-use BrainExe\Core\Traits\LoggerTrait;
 use BrainExe\Core\Translation\TranslationTrait;
 use Monolog\Logger;
 use Throwable;

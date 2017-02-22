@@ -2,8 +2,8 @@
 
 namespace BrainExe\Core\Annotations\Builder;
 
-use BrainExe\Annotations\Annotations\Service;
-use BrainExe\Annotations\Builder\ServiceDefinition;
+use BrainExe\Core\Annotations\Service;
+use BrainExe\Core\Annotations\Builder\ServiceDefinition;
 use BrainExe\Core\Annotations\Guest;
 use BrainExe\Core\Annotations\Role;
 use BrainExe\Core\Annotations\Route;
@@ -33,7 +33,7 @@ class Controller extends ServiceDefinition
         $serviceId = $reflectionClass->getName();
 
         $definition->addTag(ControllerCompilerPass::CONTROLLER_TAG);
-        $definition->setPublic(true);
+        $definition->setPublic(false);
         $definition->setShared(false);
 
         foreach ($reflectionClass->getMethods() as $method) {

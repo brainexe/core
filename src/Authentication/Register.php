@@ -2,15 +2,15 @@
 
 namespace BrainExe\Core\Authentication;
 
-use BrainExe\Annotations\Annotations\Inject;
-use BrainExe\Annotations\Annotations\Service;
+use BrainExe\Core\Annotations\Inject;
+use BrainExe\Core\Annotations\Service;
 use BrainExe\Core\Application\UserException;
 use BrainExe\Core\Authentication\Exception\UserNotFoundException;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
- * @Service(public=false)
+ * @Service
  */
 class Register
 {

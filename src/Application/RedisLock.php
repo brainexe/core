@@ -2,11 +2,11 @@
 
 namespace BrainExe\Core\Application;
 
-use BrainExe\Annotations\Annotations\Service;
+use BrainExe\Core\Annotations\Service;
 use BrainExe\Core\Traits\RedisTrait;
 
 /**
- * @Service(public=false)
+ * @Service
  * @api
  */
 class RedisLock

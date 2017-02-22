@@ -2,11 +2,11 @@
 
 namespace BrainExe\Core\Stats;
 
-use BrainExe\Annotations\Annotations\Service;
+use BrainExe\Core\Annotations\Service;
 use BrainExe\Core\Traits\RedisTrait;
 
 /**
- * @Service("Stats.Gateway", public=false)
+ * @Service("Stats.Gateway")
  */
 class Gateway
 {

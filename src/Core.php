@@ -23,11 +23,9 @@ class Core
             $rebuild->buildContainer();
         }
 
-        $className = file_get_contents(ROOT . 'cache/dic.txt');
-        if (!class_exists($className, false)) {
-            include $fileName;
-        }
-        $dic = new $className();
+        include_once $fileName;
+
+        $dic = new \DumpedContainer();
 
         $dic->get('monolog.ErrorHandler');
 

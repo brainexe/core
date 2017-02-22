@@ -2,13 +2,13 @@
 
 namespace BrainExe\Core\Authentication;
 
-use BrainExe\Annotations\Annotations\Service;
+use BrainExe\Core\Annotations\Service;
 use BrainExe\Core\Authentication\Exception\UserNotFoundException;
 use BrainExe\Core\Redis\Predis;
 
 /**
  * @api
- * @Service("Core.Authentication.LoadUser")
+ * @Service
  */
 class LoadUser
 {

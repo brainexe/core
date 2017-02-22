@@ -2,7 +2,7 @@
 
 namespace BrainExe\Core\MessageQueue;
 
-use BrainExe\Annotations\Annotations\Service;
+use BrainExe\Core\Annotations\Service;
 use BrainExe\Core\EventDispatcher\AbstractEvent;
 use BrainExe\Core\Traits\IdGeneratorTrait;
 use BrainExe\Core\Traits\RedisTrait;
@@ -11,7 +11,7 @@ use Generator;
 
 /**
  * @api
- * @Service("MessageQueue.Gateway", public=false)
+ * @Service("MessageQueue.Gateway")
  */
 class Gateway
 {

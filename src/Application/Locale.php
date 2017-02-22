@@ -2,12 +2,12 @@
 
 namespace BrainExe\Core\Application;
 
-use BrainExe\Annotations\Annotations\Inject;
-use BrainExe\Annotations\Annotations\Service;
+use BrainExe\Core\Annotations\Inject;
+use BrainExe\Core\Annotations\Service;
 use BrainExe\Core\Translation\ServiceTranslationProvider;
 
 /**
- * @Service("Core.Locale", public=true)
+ * @Service
  */
 class Locale implements ServiceTranslationProvider
 {
@@ -21,7 +21,10 @@ class Locale implements ServiceTranslationProvider
     private $locales;
 
     /**
-     * @Inject({"%locales%", "%application.defaultLocale%"});
+     * @Inject({
+     *     "%locales%",
+     *     "%application.defaultLocale%"
+     * });
      * @param string[] $locales
      * @param string $defaultLocale
      */

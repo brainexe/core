@@ -2,10 +2,9 @@
 
 namespace BrainExe\Core\Console;
 
-use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Core\DependencyInjection\Rebuild;
+use BrainExe\Core\EventDispatcher\EventDispatcher;
 use BrainExe\Core\EventDispatcher\Events\ClearCacheEvent;
-use BrainExe\Core\Traits\EventDispatcherTrait;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -17,12 +16,15 @@ use BrainExe\Core\Annotations\Command as CommandAnnotation;
 class ClearCacheCommand extends Command
 {
 
-    use EventDispatcherTrait;
-
     /**
      * @var Rebuild
      */
     private $rebuild;
+
+    /**
+     * @var EventDispatcher
+     */
+    private $dispatcher;
 
     /**
      * {@inheritdoc}
@@ -35,14 +37,15 @@ class ClearCacheCommand extends Command
     }
 
     /**
-     * @Inject
      * @param Rebuild $rebuild
+     * @param EventDispatcher $dispatcher
      */
-    public function __construct(Rebuild $rebuild)
+    public function __construct(Rebuild $rebuild, EventDispatcher $dispatcher)
     {
-        $this->rebuild = $rebuild;
-
         parent::__construct();
+
+        $this->rebuild    = $rebuild;
+        $this->dispatcher = $dispatcher;
     }
 
     /**
@@ -54,7 +57,7 @@ class ClearCacheCommand extends Command
         $this->rebuild->buildContainer();
 
         $event = new ClearCacheEvent();
-        $this->dispatchEvent($event);
+        $this->dispatcher->dispatchEvent($event);
 
         $output->writeln('<info>done</info>');
     }

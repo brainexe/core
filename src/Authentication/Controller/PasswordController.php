@@ -2,7 +2,7 @@
 
 namespace BrainExe\Core\Authentication\Controller;
 
-use BrainExe\Annotations\Annotations\Inject;
+use BrainExe\Core\Annotations\Inject;
 use BrainExe\Core\Annotations\Controller;
 use BrainExe\Core\Annotations\Route;
 use BrainExe\Core\Application\UserException;

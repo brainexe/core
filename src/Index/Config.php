@@ -2,7 +2,7 @@
 
 namespace BrainExe\Core\Index;
 
-use BrainExe\Annotations\Annotations\Inject;
+use BrainExe\Core\Annotations\Inject;
 use BrainExe\Core\Annotations\Controller as ControllerAnnotation;
 use BrainExe\Core\Annotations\Guest;
 use BrainExe\Core\Annotations\Route;

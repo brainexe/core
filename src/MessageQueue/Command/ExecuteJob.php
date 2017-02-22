@@ -10,7 +10,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use BrainExe\Core\Annotations\Command as CommandAnnotation;
-use BrainExe\Annotations\Annotations\Inject;
+use BrainExe\Core\Annotations\Inject;
 
 /**
  * @CommandAnnotation("MessageQueue.Command.ExecuteJob")
@@ -24,7 +24,6 @@ class ExecuteJob extends Command
     private $worker;
 
     /**
-     * @Inject
      * @param Worker $worker
      */
     public function __construct(Worker $worker)

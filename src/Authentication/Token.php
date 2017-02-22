@@ -2,13 +2,13 @@
 
 namespace BrainExe\Core\Authentication;
 
-use BrainExe\Annotations\Annotations\Service;
+use BrainExe\Core\Annotations\Service;
 use BrainExe\Core\Traits\IdGeneratorTrait;
 use BrainExe\Core\Traits\RedisTrait;
 use Generator;
 
 /**
- * @Service("Core.Authentication.Token", public=false)
+ * @Service
  */
 class Token
 {

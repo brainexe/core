@@ -2,7 +2,7 @@
 
 namespace BrainExe\Core\Middleware;
 
-use BrainExe\Annotations\Annotations\Inject;
+use BrainExe\Core\Annotations\Inject;
 use BrainExe\Core\Annotations\Middleware;
 use BrainExe\Core\Application\UserException;
 use BrainExe\Core\Authentication\AnonymusUserVO;
@@ -30,9 +30,6 @@ class Authentication extends AbstractMiddleware
     private $loadUser;
 
     /**
-     * @Inject({
-     *  "@Core.Authentication.LoadUser",
-     * })
      * @param LoadUser $loadUser
      */
     public function __construct(LoadUser $loadUser)

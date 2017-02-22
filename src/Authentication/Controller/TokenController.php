@@ -2,7 +2,7 @@
 
 namespace BrainExe\Core\Authentication\Controller;
 
-use BrainExe\Annotations\Annotations\Inject;
+use BrainExe\Core\Annotations\Inject;
 use BrainExe\Core\Annotations\Controller;
 use BrainExe\Core\Annotations\Route;
 use BrainExe\Core\Authentication\Token;
@@ -20,7 +20,6 @@ class TokenController
     private $token;
 
     /**
-     * @Inject
      * @param Token $token
      */
     public function __construct(Token $token)

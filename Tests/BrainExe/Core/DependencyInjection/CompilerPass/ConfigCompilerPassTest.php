@@ -39,7 +39,7 @@ class ConfigCompilerPassTest extends TestCase
             ->with('environment')
             ->willReturn(Environment::DEVELOPMENT);
         $this->container
-            ->expects($this->exactly(2))
+            ->expects($this->exactly(1))
             ->method('setParameter');
 
         $this->subject->process($this->container);

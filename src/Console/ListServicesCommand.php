@@ -63,7 +63,7 @@ class ListServicesCommand extends Command
         $this->container = $this->rebuild->buildContainer();
 
         $table = new Table($output);
-        $table->setHeaders(['service-id', 'visibility']);
+        $table->setHeaders(['service-id', 'tags', 'visibility']);
 
         $ids = $this->container->getServiceIds();
 
@@ -103,6 +103,7 @@ class ListServicesCommand extends Command
         if (!$restrictedVisibility || $restrictedVisibility == $currentVisibility) {
             $table->addRow([
                 $id,
+                implode(', ', array_keys($definition->getTags())),
                 "<$color>$currentVisibility</$color>"
             ]);
         }

@@ -2,7 +2,7 @@
 
 namespace BrainExe\Core\Middleware;
 
-use BrainExe\Annotations\Annotations\Inject;
+use BrainExe\Core\Annotations\Inject;
 use BrainExe\Core\Annotations\Middleware;
 
 use BrainExe\Core\Authentication\AnonymusUserVO;
@@ -35,7 +35,6 @@ class TokenAuthentication extends AbstractMiddleware
     private $token;
 
     /**
-     * @Inject
      * @param LoadUser $loadUser
      * @param Token $token
      */
@@ -76,7 +75,7 @@ class TokenAuthentication extends AbstractMiddleware
     {
         if ($route->hasDefault('_role')) {
             $role = $route->getDefault('_role');
-            if (!in_array($role, $user->roles)) {
+            if (!in_array($role, $user->roles, true)) {
                 throw new MethodNotAllowedException([], sprintf('Need role %s', $role));
             }
         }

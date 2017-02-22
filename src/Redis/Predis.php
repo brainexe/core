@@ -2,12 +2,12 @@
 
 namespace BrainExe\Core\Redis;
 
-use BrainExe\Annotations\Annotations\Service;
+use BrainExe\Core\Annotations\Service;
 use Predis\Client;
 
 /**
  * @api
- * @Service("Redis", public=false)
+ * @Service("Redis")
  */
 class Predis extends Client
 {

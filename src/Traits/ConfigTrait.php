@@ -2,7 +2,7 @@
 
 namespace BrainExe\Core\Traits;
 
-use BrainExe\Annotations\Annotations\Inject;
+use BrainExe\Core\Annotations\Inject;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 
@@ -17,12 +17,12 @@ trait ConfigTrait
     private $parameterBag;
 
     /**
-     * @Inject("@service_container")
-     * @param Container $container
+     * @Inject("=container.getParameterBag()")
+     * @param ParameterBag $parameterBag
      */
-    public function setContainer(Container $container)
+    public function setParameterBag(ParameterBag $parameterBag)
     {
-        $this->parameterBag = $container->getParameterBag();
+        $this->parameterBag = $parameterBag;
     }
 
     /**

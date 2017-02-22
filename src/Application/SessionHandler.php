@@ -2,13 +2,13 @@
 
 namespace BrainExe\Core\Application;
 
-use BrainExe\Annotations\Annotations\Inject;
-use BrainExe\Annotations\Annotations\Service;
+use BrainExe\Core\Annotations\Inject;
+use BrainExe\Core\Annotations\Service;
 use Predis\ClientInterface;
 use Predis\Session\Handler;
 
 /**
- * @Service("Core.Application.SessionHandler", public=false)
+ * @Service("Core.Application.SessionHandler")
  */
 class SessionHandler extends Handler
 {

@@ -36,8 +36,10 @@ class ClearCacheCommandTest extends TestCase
         $this->rebuild    = $this->createMock(Rebuild::class);
         $this->dispatcher = $this->createMock(EventDispatcher::class);
 
-        $this->subject = new ClearCacheCommand($this->rebuild);
-        $this->subject->setEventDispatcher($this->dispatcher);
+        $this->subject = new ClearCacheCommand(
+            $this->rebuild,
+            $this->dispatcher
+        );
     }
 
     public function testExecute()

@@ -20,8 +20,8 @@ class ChannelStreamHandler extends StreamHandler
      * @param bool $bubble
      */
     public function __construct(
-        $stream,
-        $level = Logger::DEBUG,
+        string $stream,
+        int $level = Logger::DEBUG,
         $channel = null,
         $bubble = true
     ) {

@@ -2,18 +2,16 @@
 
 namespace BrainExe\Core\EventDispatcher;
 
-
-use BrainExe\Annotations\Annotations\Service;
+use BrainExe\Core\Annotations\Service;
 use BrainExe\Core\MessageQueue\Job;
 use BrainExe\Core\Websockets\WebSocketEvent;
 use RuntimeException;
-
 use Symfony\Component\EventDispatcher\EventDispatcher as SymfonyEventDispatcher;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
- * @Service("EventDispatcher", public=false)
+ * @Service("EventDispatcher")
  * @api
  */
 class EventDispatcher extends SymfonyEventDispatcher
@@ -36,15 +34,18 @@ class EventDispatcher extends SymfonyEventDispatcher
      * @param string $eventName
      * @param Event $event
      * @return Event
+     * @throws RuntimeException
      */
     public function dispatch($eventName, Event $event = null)
     {
-        if (empty($event)) {
+        if (null === $event) {
             throw new RuntimeException('You have to pass an Event into EventDispatcher::dispatch');
         }
 
-        foreach ($this->catchall as $dispatcher) {
-            $dispatcher->dispatch($eventName, $event);
+        if ($event instanceof AbstractEvent) {
+            foreach ($this->catchall as $dispatcher) {
+                $dispatcher->dispatch($eventName, $event);
+            }
         }
 
         return parent::dispatch($eventName, $event);
@@ -83,6 +84,7 @@ class EventDispatcher extends SymfonyEventDispatcher
 
     /**
      * @param AbstractEvent $event
+     * @throws RuntimeException
      */
     private function dispatchAsWebsocketEvent(AbstractEvent $event)
     {

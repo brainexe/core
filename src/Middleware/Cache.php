@@ -2,7 +2,6 @@
 
 namespace BrainExe\Core\Middleware;
 
-use BrainExe\Annotations\Annotations\Inject;
 use BrainExe\Core\Annotations\Middleware;
 use BrainExe\Core\Traits\CacheTrait;
 use BrainExe\Core\Traits\LoggerTrait;
@@ -25,25 +24,11 @@ class Cache extends AbstractMiddleware
     const PREFIX = 'cache:';
 
     /**
-     * @var bool
-     */
-    private $enabled;
-
-    /**
-     * @Inject("%cache.enabled%")
-     * @param bool $cacheEnabled
-     */
-    public function __construct(bool $cacheEnabled)
-    {
-        $this->enabled = $cacheEnabled;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function processRequest(Request $request, Route $route)
     {
-        if (!$this->enabled || !$route->hasOption('cache') || !$request->isMethod('GET')) {
+        if (!$route->hasOption('cache') || !$request->isMethod('GET')) {
             return null;
         }
 

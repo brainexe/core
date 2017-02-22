@@ -2,7 +2,7 @@
 
 namespace BrainExe\Core\Console;
 
-use BrainExe\Annotations\Annotations\Inject;
+use BrainExe\Core\Annotations\Inject;
 use BrainExe\Core\Application\SerializedRouteCollection;
 
 use BrainExe\Core\Traits\ConfigTrait;
@@ -40,7 +40,6 @@ class SwaggerDumpCommand extends Command
     }
 
     /**
-     * @Inject
      * @param SerializedRouteCollection $rebuild
      */
     public function __construct(SerializedRouteCollection $rebuild)

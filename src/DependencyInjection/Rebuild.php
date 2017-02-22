@@ -2,8 +2,8 @@
 
 namespace BrainExe\Core\DependencyInjection;
 
-use BrainExe\Annotations\Annotations\Service;
-use BrainExe\Annotations\Loader;
+use BrainExe\Core\AnnotationLoader;
+use BrainExe\Core\Annotations\Service;
 use Symfony\Bridge\ProxyManager\LazyProxy\PhpDumper\ProxyDumper;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -37,15 +37,18 @@ class Rebuild
      */
     protected function readAnnotations(ContainerBuilder $container)
     {
-        $annotationLoader = new Loader($container);
+        $annotationLoader = new AnnotationLoader($container);
+        $annotationLoader->load(ROOT . 'src');
+
+        if (!is_dir(ROOT . 'vendor/brainexe/')) {
+            return;
+        }
 
         $appFinder = new Finder();
         $appFinder->directories()
             ->in([ROOT . 'vendor/brainexe/'])
-            ->depth("<=1")
+            ->depth('<=1')
             ->name('src');
-
-        $annotationLoader->load(ROOT . 'src');
 
         foreach ($appFinder as $dir) {
             /** @var SplFileInfo $dir */
@@ -59,22 +62,18 @@ class Rebuild
     protected function dumpContainer(ContainerBuilder $container)
     {
         $debug         = $container->getParameter('debug');
-        $randomId      = mt_rand();
-        $className     = sprintf('dic_%d', $randomId);
         $containerFile = ROOT . 'cache/dic.php';
-        $versionFile   = ROOT . 'cache/dic.txt';
         $configFile    = ROOT . 'cache/config.json';
 
         $dumper = new PhpDumper($container);
         $dumper->setProxyDumper(new ProxyDumper());
 
         $containerContent = $dumper->dump([
-            'class' => $className,
+            'class' => 'DumpedContainer',
             'debug' => $debug
         ]);
 
         file_put_contents($containerFile, $containerContent);
-        file_put_contents($versionFile, $className);
         file_put_contents(
             $configFile,
             json_encode(
@@ -82,9 +81,5 @@ class Rebuild
                 JSON_PRETTY_PRINT
             )
         );
-
-        @chmod($containerFile, 0777);
-        @chmod($versionFile, 0777);
-        @chmod($configFile, 0777);
     }
 }

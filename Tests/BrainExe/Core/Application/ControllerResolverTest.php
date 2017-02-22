@@ -6,6 +6,7 @@ use BrainExe\Core\Application\ControllerResolver;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase as TestCase;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -20,15 +21,15 @@ class ControllerResolverTest extends TestCase
     private $subject;
 
     /**
-     * @var Container|MockObject
+     * @var ServiceLocator|MockObject
      */
-    private $container;
+    private $serviceLocator;
 
     public function setUp()
     {
-        $this->container = $this->createMock(Container::class);
+        $this->serviceLocator = $this->createMock(ServiceLocator::class);
 
-        $this->subject = new ControllerResolver($this->container);
+        $this->subject = new ControllerResolver($this->serviceLocator);
     }
 
     public function testGetController()

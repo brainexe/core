@@ -2,7 +2,7 @@
 
 namespace BrainExe\Core\Console;
 
-use BrainExe\Annotations\Annotations\Inject;
+use BrainExe\Core\Annotations\Inject;
 use BrainExe\Core\Annotations\EventListener;
 use BrainExe\Core\Annotations\Listen;
 use BrainExe\Core\EventDispatcher\Events\ConsoleEvent;
@@ -11,7 +11,7 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\StringInput;
 
 /**
- * @EventListener("Core.Console.Listener")
+ * @EventListener
  */
 class Listener
 {

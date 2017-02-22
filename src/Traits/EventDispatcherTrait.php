@@ -2,7 +2,7 @@
 
 namespace BrainExe\Core\Traits;
 
-use BrainExe\Annotations\Annotations\Inject;
+use BrainExe\Core\Annotations\Inject;
 use BrainExe\Core\EventDispatcher\AbstractEvent;
 use BrainExe\Core\EventDispatcher\EventDispatcher;
 use BrainExe\Core\MessageQueue\Job;

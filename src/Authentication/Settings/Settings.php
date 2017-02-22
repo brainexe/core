@@ -2,11 +2,11 @@
 
 namespace BrainExe\Core\Authentication\Settings;
 
-use BrainExe\Annotations\Annotations\Service;
+use BrainExe\Core\Annotations\Service;
 
 /**
  * @api
- * @Service("User.Settings")
+ * @Service
  */
 class Settings
 {

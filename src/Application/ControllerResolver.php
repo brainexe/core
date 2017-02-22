@@ -2,9 +2,8 @@
 
 namespace BrainExe\Core\Application;
 
-use BrainExe\Annotations\Annotations\Inject;
-use BrainExe\Annotations\Annotations\Service;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use BrainExe\Core\Annotations\Service;
+use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
 
@@ -14,17 +13,16 @@ use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
 class ControllerResolver implements ControllerResolverInterface
 {
     /**
-     * @var ContainerInterface
+     * @var ServiceLocator
      */
-    private $container;
+    private $controllers;
 
     /**
-     * @Inject("@service_container")
-     * @param ContainerInterface $container
+     * @param ServiceLocator $controllers
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(ServiceLocator $controllers)
     {
-        $this->container = $container;
+        $this->controllers = $controllers;
     }
 
     /**
@@ -34,7 +32,7 @@ class ControllerResolver implements ControllerResolverInterface
     {
         list($serviceId, $method) = $request->attributes->get('_controller');
 
-        $service = $this->container->get($serviceId);
+        $service = $this->controllers->get($serviceId);
 
         return [$service, $method];
     }

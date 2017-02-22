@@ -49,13 +49,13 @@ class ListServicesCommandTest extends TestCase
         $commandTester->execute([]);
         $output = $commandTester->getDisplay();
 
-        $this->assertEquals("+-------------+------------+
-| service-id  | visibility |
-+-------------+------------+
-| __service_4 | protected  |
-| service_1   | public     |
-| service_2   | private    |
-+-------------+------------+\n", $output);
+        $this->assertEquals("+-------------+------+------------+
+| service-id  | tags | visibility |
++-------------+------+------------+
+| __service_4 |      | protected  |
+| service_1   |      | public     |
+| service_2   |      | private    |
++-------------+------+------------+\n", $output);
     }
 
     public function testExecuteFilterPublic()
@@ -65,11 +65,11 @@ class ListServicesCommandTest extends TestCase
         $commandTester->execute(['visibility' => 'public']);
         $output = $commandTester->getDisplay();
 
-        $this->assertEquals("+------------+------------+
-| service-id | visibility |
-+------------+------------+
-| service_1  | public     |
-+------------+------------+\n", $output);
+        $this->assertEquals("+------------+------+------------+
+| service-id | tags | visibility |
++------------+------+------------+
+| service_1  |      | public     |
++------------+------+------------+\n", $output);
     }
 
     public function testExecuteFilterPrivate()
@@ -79,11 +79,11 @@ class ListServicesCommandTest extends TestCase
         $commandTester->execute(['visibility' => 'private']);
         $output = $commandTester->getDisplay();
 
-        $this->assertEquals("+------------+------------+
-| service-id | visibility |
-+------------+------------+
-| service_2  | private    |
-+------------+------------+\n", $output);
+        $this->assertEquals("+------------+------+------------+
+| service-id | tags | visibility |
++------------+------+------------+
+| service_2  |      | private    |
++------------+------+------------+\n", $output);
     }
 
     /**
@@ -158,14 +158,26 @@ class ListServicesCommandTest extends TestCase
             ->expects($this->once())
             ->method('isPublic')
             ->willReturn(true);
+        $definition1
+            ->expects($this->any())
+            ->method('getTags')
+            ->willReturn([]);
         $definition2
             ->expects($this->once())
             ->method('isPublic')
             ->willReturn(false);
+        $definition2
+            ->expects($this->any())
+            ->method('getTags')
+            ->willReturn([]);
         $definition4
             ->expects($this->once())
             ->method('isPublic')
             ->willReturn(true);
+        $definition4
+            ->expects($this->any())
+            ->method('getTags')
+            ->willReturn([]);
 
         return $commandTester;
     }

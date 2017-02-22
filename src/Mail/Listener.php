@@ -2,7 +2,7 @@
 
 namespace BrainExe\Core\Mail;
 
-use BrainExe\Annotations\Annotations\Inject;
+use BrainExe\Core\Annotations\Inject;
 use BrainExe\Core\Annotations\EventListener;
 use PHPMailer;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

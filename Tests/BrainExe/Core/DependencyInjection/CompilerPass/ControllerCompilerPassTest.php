@@ -3,6 +3,7 @@
 namespace BrainExe\Tests\Core\DependencyInjection\CompilerPass;
 
 use BrainExe\Core\Annotations\Route;
+use BrainExe\Core\Application\ControllerResolver;
 use BrainExe\Core\DependencyInjection\CompilerPass\ControllerCompilerPass;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase as TestCase;
@@ -44,6 +45,7 @@ class ControllerCompilerPassTest extends TestCase
         $route1->setCsrf(true);
 
         $service = $this->createMock(Definition::class);
+        $controllerResolver = $this->createMock(Definition::class);
         $serviceIds = [
             $serviceId = 'service_id' => [
                 [$route1],
@@ -62,6 +64,12 @@ class ControllerCompilerPassTest extends TestCase
             ->method('getDefinition')
             ->with($serviceId)
             ->willReturn($service);
+
+        $this->container
+            ->expects($this->at(2))
+            ->method('getDefinition')
+            ->with(ControllerResolver::class)
+            ->willReturn($controllerResolver);
 
         $service
             ->expects($this->once())

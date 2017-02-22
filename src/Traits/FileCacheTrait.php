@@ -31,7 +31,6 @@ trait FileCacheTrait
         $fileName = $this->getCacheFileName($name);
 
         file_put_contents($fileName, "<?php \n//@codingStandardsIgnoreFile" . PHP_EOL . $content);
-        @chmod($fileName, 0777);
     }
 
     /**

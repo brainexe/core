@@ -2,8 +2,8 @@
 
 namespace BrainExe\Core\MessageQueue;
 
-use BrainExe\Annotations\Annotations\Inject;
-use BrainExe\Annotations\Annotations\Service;
+use BrainExe\Core\Annotations\Inject;
+use BrainExe\Core\Annotations\Service;
 
 use BrainExe\Core\Cron\Expression;
 use BrainExe\Core\EventDispatcher\AbstractEvent;
@@ -16,7 +16,7 @@ use BrainExe\Core\Traits\TimeTrait;
 use Throwable;
 
 /**
- * @Service("MessageQueue.Worker", public=false)
+ * @Service("MessageQueue.Worker")
  */
 class Worker
 {
@@ -36,10 +36,6 @@ class Worker
     private $cron;
 
     /**
-     * @Inject({
-     *     "@MessageQueue.Gateway",
-     *     "@Core.Cron.Expression"
-     * })
      * @param Gateway $gateway
      * @param Expression $cron
      */

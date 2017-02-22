@@ -2,11 +2,11 @@
 
 namespace BrainExe\Core\Cron;
 
-use BrainExe\Annotations\Annotations\Service;
+use BrainExe\Core\Annotations\Service;
 use Cron\CronExpression;
 
 /**
- * @Service("Core.Cron.Expression", public=false)
+ * @Service("Core.Cron.Expression")
  */
 class Expression
 {
