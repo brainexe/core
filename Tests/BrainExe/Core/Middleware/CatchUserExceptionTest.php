@@ -65,8 +65,11 @@ class CatchUserExceptionTest extends TestCase
      * @param Throwable $exception
      * @param int $expectedStatusCode
      */
-    public function testProcessExceptionWithoutAjax(Throwable $exception, int $expectedStatusCode, string $expectedMessage = '')
-    {
+    public function testProcessExceptionWithoutAjax(
+        Throwable $exception,
+        int $expectedStatusCode,
+        string $expectedMessage = ''
+    ) {
         /** @var Request|MockObject $request */
         $request = $this->createMock(Request::class);
 
@@ -91,15 +94,6 @@ class CatchUserExceptionTest extends TestCase
 
         $this->assertEquals(404, $actualResult->getStatusCode());
         $this->assertEquals('Page not found: ', $actualResult->getContent());
-    }
-
-    public function testProcessRequest()
-    {
-        /** @var Route|MockObject $route */
-        $route      = $this->createMock(Route::class);
-        $request    = new Request();
-
-        $this->subject->processRequest($request, $route);
     }
 
     public function provideExceptions()

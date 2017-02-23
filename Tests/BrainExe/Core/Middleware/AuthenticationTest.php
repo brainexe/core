@@ -6,12 +6,10 @@ use BrainExe\Core\Authentication\AnonymusUserVO;
 use BrainExe\Core\Authentication\LoadUser;
 use BrainExe\Core\Authentication\UserVO;
 use BrainExe\Core\Middleware\Authentication;
-use Exception;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\Routing\Route;
@@ -39,13 +37,6 @@ class AuthenticationTest extends TestCase
         $this->subject = new Authentication(
             $this->loadUser
         );
-    }
-
-    public function testProcessResponse()
-    {
-        $request  = new Request();
-        $response = new Response();
-        $this->subject->processResponse($request, $response);
     }
 
     public function testProcessRequestForGuestRoutes()
@@ -99,14 +90,6 @@ class AuthenticationTest extends TestCase
         $this->assertInstanceOf(RedirectResponse::class, $actualResult);
         $this->assertEquals($userId, $request->attributes->get('user_id'));
         $this->assertEquals($user, $request->attributes->get('user'));
-    }
-
-    public function testProcessException()
-    {
-        $request   = new Request();
-        $exception = new Exception("exception");
-
-        $this->subject->processException($request, $exception);
     }
 
     public function testProcessRequest()

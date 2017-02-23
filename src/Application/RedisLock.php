@@ -11,7 +11,7 @@ use BrainExe\Core\Traits\RedisTrait;
  */
 class RedisLock
 {
-    const PREFIX = 'lock:';
+    private const PREFIX = 'lock:';
 
     use RedisTrait;
 
@@ -20,11 +20,11 @@ class RedisLock
      * @param int $lockTime
      * @return bool $got_lock
      */
-    public function lock(string $name, int $lockTime)
+    public function lock(string $name, int $lockTime) : bool
     {
         $redis = $this->getRedis();
 
-        return $redis->set(self::PREFIX . $name, '1', 'EX', $lockTime, 'NX');
+        return (bool)$redis->set(self::PREFIX . $name, '1', 'EX', $lockTime, 'NX');
     }
 
     /**

@@ -72,7 +72,7 @@ class Authentication extends AbstractMiddleware
      * @param UserVO $user
      * @throws MethodNotAllowedException
      */
-    protected function checkForRole(Route $route, UserVO $user)
+    protected function checkForRole(Route $route, UserVO $user) : void
     {
         if ($route->hasDefault('_role')) {
             $role = $route->getDefault('_role');
@@ -103,7 +103,7 @@ class Authentication extends AbstractMiddleware
      * @return RedirectResponse
      * @throws UserException
      */
-    private function handleNotAuthenticatedRequest(Request $request)
+    private function handleNotAuthenticatedRequest(Request $request) : RedirectResponse
     {
         if ($request->isXmlHttpRequest()) {
             throw new MethodNotAllowedException([]);

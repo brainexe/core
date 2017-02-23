@@ -9,7 +9,6 @@ use BrainExe\Core\Middleware\TokenAuthentication;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Route;
 
 /**
@@ -42,14 +41,6 @@ class TokenAuthenticationTest extends TestCase
             $this->loadUser,
             $this->token
         );
-    }
-
-    public function testProcessResponse()
-    {
-        $request  = new Request();
-        $response = new Response();
-
-        $this->subject->processResponse($request, $response);
     }
 
     public function testNoToken()

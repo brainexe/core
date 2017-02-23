@@ -34,7 +34,9 @@ class ControllerResolverTest extends TestCase
     public function testGetController()
     {
         $request = new Request();
-        $this->subject->getController($request);
+        $actual = $this->subject->getController($request);
+
+        $this->assertEquals(2, count($actual));
     }
 
     public function testGetArguments()

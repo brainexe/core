@@ -129,7 +129,7 @@ class AppKernel implements HttpKernelInterface
      * @param Request $request
      * @param Response $response
      */
-    protected function applyResponseMiddleware(Request $request, Response $response)
+    protected function applyResponseMiddleware(Request $request, Response $response) : void
     {
         $middlewareIdx = count($this->middlewares) - 1;
         for ($i = $middlewareIdx; $i >= 0; $i--) {
@@ -143,7 +143,7 @@ class AppKernel implements HttpKernelInterface
      * @param Throwable $exception
      * @return Response|null
      */
-    protected function applyExceptionMiddleware(Request $request, Throwable $exception)
+    protected function applyExceptionMiddleware(Request $request, Throwable $exception) : ?Response
     {
         foreach ($this->middlewares as $middleware) {
             $response = $middleware->processException($request, $exception);

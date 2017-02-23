@@ -30,7 +30,6 @@ class CreateRegisterLinkCommand extends Command
     private $registerTokens;
 
     /**
-     * @Inject("@RegisterTokens")
      * @param RegisterTokens $registerTokens
      */
     public function __construct(RegisterTokens $registerTokens)

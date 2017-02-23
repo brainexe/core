@@ -26,7 +26,7 @@ trait FileCacheTrait
      * @param string $name
      * @param string $content
      */
-    protected function dumpCacheFile(string $name, string $content)
+    protected function dumpCacheFile(string $name, string $content) : void
     {
         $fileName = $this->getCacheFileName($name);
 
@@ -46,7 +46,7 @@ trait FileCacheTrait
      * @param string $name
      * @return string
      */
-    private function getCacheFileName($name)
+    private function getCacheFileName(string $name) : string
     {
         return ROOT . 'cache/' . basename($name, '.php')  . '.php';
     }

@@ -14,9 +14,9 @@ class TimeParser
 {
 
     /**
-     * @var integer[]
+     * @var int[]
      */
-    private $timeModifier = [
+    private const TIME_MODIFIERS = [
         's' => 1,
         'm' => 60,
         'h' => 3600,
@@ -57,13 +57,13 @@ class TimeParser
      * @return int
      * @throws UserException
      */
-    protected function withModifier(array $matches, int $now)
+    private function withModifier(array $matches, int $now) : int
     {
         $modifier = strtolower($matches[2]);
-        if (empty($this->timeModifier[$modifier])) {
+        if (empty(self::TIME_MODIFIERS[$modifier])) {
             throw new UserException(sprintf('Invalid time modifier %s', $modifier));
         }
 
-        return $now + $matches[1] * $this->timeModifier[$modifier];
+        return $now + (int)$matches[1] * self::TIME_MODIFIERS[$modifier];
     }
 }

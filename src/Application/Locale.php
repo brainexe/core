@@ -49,7 +49,7 @@ class Locale implements ServiceTranslationProvider
      * @param string $locale
      * @codeCoverageIgnore
      */
-    public function setLocale(string $locale)
+    public function setLocale(string $locale) : void
     {
         putenv(sprintf('LANG=%s.UTF-8', $locale));
         setlocale(LC_MESSAGES, sprintf('%s.UTF-8', $locale));

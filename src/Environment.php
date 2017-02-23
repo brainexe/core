@@ -4,7 +4,7 @@ namespace BrainExe\Core;
 
 class Environment
 {
-    const PRODUCTION  = 'production';
-    const DEVELOPMENT = 'development';
-    const TESTING     = 'testing';
+    public const PRODUCTION  = 'production';
+    public const DEVELOPMENT = 'development';
+    public const TESTING     = 'testing';
 }

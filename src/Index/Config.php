@@ -8,7 +8,7 @@ use BrainExe\Core\Annotations\Guest;
 use BrainExe\Core\Annotations\Route;
 
 /**
- * @ControllerAnnotation("Core.Index.Config")
+ * @ControllerAnnotation
  */
 class Config
 {

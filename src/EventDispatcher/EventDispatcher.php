@@ -25,7 +25,7 @@ class EventDispatcher extends SymfonyEventDispatcher
     /**
      * @param EventDispatcherInterface $dispatcher
      */
-    public function addCatchall(EventDispatcherInterface $dispatcher)
+    public function addCatchall(EventDispatcherInterface $dispatcher) : void
     {
         $this->catchall[] = $dispatcher;
     }
@@ -54,7 +54,7 @@ class EventDispatcher extends SymfonyEventDispatcher
     /**
      * @param AbstractEvent $event
      */
-    public function dispatchEvent(AbstractEvent $event)
+    public function dispatchEvent(AbstractEvent $event) : void
     {
         $this->dispatch($event->getEventName(), $event);
 

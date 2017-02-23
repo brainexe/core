@@ -13,7 +13,7 @@ use Predis\Session\Handler;
 class SessionHandler extends Handler
 {
 
-    const KEY = 'sessions:';
+    private const KEY = 'sessions:';
 
     /**
      * @Inject({

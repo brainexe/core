@@ -24,6 +24,7 @@ class DelayedEvent extends MessageQueueEvent
     public function __construct(AbstractEvent $event, int $timestamp)
     {
         parent::__construct(self::DELAYED);
+
         $this->event      = $event;
         $this->timestamp  = $timestamp;
     }

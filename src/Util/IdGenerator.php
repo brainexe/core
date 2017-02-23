@@ -13,8 +13,8 @@ class IdGenerator
 {
 
     const ID_LENGTH    = 10;
-    const KEY          = 'idgenerator:%s';
     const DEFAULT_TYPE = 'lastid';
+    private const KEY  = 'idgenerator:%s';
 
     /**
      * @var Predis
@@ -42,7 +42,7 @@ class IdGenerator
      * @param int $length
      * @return string
      */
-    public function generateRandomId(int$length = self::ID_LENGTH) : string
+    public function generateRandomId(int $length = self::ID_LENGTH) : string
     {
         $randomId = md5(microtime() . mt_rand()) . mt_rand();
 

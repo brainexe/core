@@ -18,6 +18,7 @@ class BackgroundEvent extends MessageQueueEvent
     public function __construct(AbstractEvent $event)
     {
         parent::__construct(self::BACKGROUND);
+
         $this->event = $event;
     }
 }

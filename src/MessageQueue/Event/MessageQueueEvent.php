@@ -32,7 +32,7 @@ abstract class MessageQueueEvent extends AbstractEvent
     /**
      * @return Job
      */
-    public function getJob()
+    public function getJob() : ?Job
     {
         return $this->job;
     }

@@ -75,7 +75,7 @@ class Register
      * @param UserVO $user
      * @throws UserException
      */
-    protected function checkInput(UserVO $user)
+    protected function checkInput(UserVO $user) : void
     {
         if (mb_strlen($user->username) <= 1) {
             throw new UserException('Username must not be empty');

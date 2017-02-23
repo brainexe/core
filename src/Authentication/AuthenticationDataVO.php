@@ -42,7 +42,7 @@ class AuthenticationDataVO
     /**
      * @return string
      */
-    public function getOneTimeToken()
+    public function getOneTimeToken() : ?string
     {
         return $this->oneTimeToken;
     }
@@ -50,7 +50,7 @@ class AuthenticationDataVO
     /**
      * @return string
      */
-    public function getPassword()
+    public function getPassword() : ?string
     {
         return $this->password;
     }

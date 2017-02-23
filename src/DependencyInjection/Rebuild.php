@@ -35,7 +35,7 @@ class Rebuild
     /**
      * @param ContainerBuilder $container
      */
-    protected function readAnnotations(ContainerBuilder $container)
+    protected function readAnnotations(ContainerBuilder $container) : void
     {
         $annotationLoader = new AnnotationLoader($container);
         $annotationLoader->load(ROOT . 'src');
@@ -59,7 +59,7 @@ class Rebuild
     /**
      * @param ContainerBuilder $container
      */
-    protected function dumpContainer(ContainerBuilder $container)
+    protected function dumpContainer(ContainerBuilder $container) : void
     {
         $debug         = $container->getParameter('debug');
         $containerFile = ROOT . 'cache/dic.php';

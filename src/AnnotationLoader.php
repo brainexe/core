@@ -68,7 +68,7 @@ class AnnotationLoader extends ConfigLoader
      * @param ReflectionClass $reflection
      * @return array
      */
-    private function loadDefinition(ReflectionClass $reflection)
+    private function loadDefinition(ReflectionClass $reflection) : array
     {
         $annotation = $this->reader->getClassAnnotation($reflection, Service::class);
         $definitions = [];
@@ -122,7 +122,7 @@ class AnnotationLoader extends ConfigLoader
     /**
      * @param string[] $includedFiles
      */
-    private function processFiles(array $includedFiles)
+    private function processFiles(array $includedFiles) : void
     {
         $declaredClasses = get_declared_classes();
         foreach ($declaredClasses as $className) {
@@ -139,7 +139,7 @@ class AnnotationLoader extends ConfigLoader
      * @param SplFileInfo $fileInfo
      * @return string
      */
-    private function includeFile(SplFileInfo $fileInfo)
+    private function includeFile(SplFileInfo $fileInfo) : string
     {
         $sourceFile = $fileInfo->getRealPath();
 

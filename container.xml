@@ -15,7 +15,7 @@
 		<parameter key="cache.dir">%application.root%cache/</parameter>
 		<parameter key="logger.dir">%application.root%logs/</parameter>
 
-		<parameter key="application.name" on-invalid="exception"/>
+		<parameter key="application.name">Core-Application</parameter>
 		<parameter key="application.registration_enabled">true</parameter>
 		<parameter key="application.url">http://%server.host%</parameter>
 		<parameter key="application.passwordhasher.cost">12</parameter>
@@ -29,6 +29,11 @@
 		</parameter>
 
 		<parameter key="application.middlewares" type="collection"/>
+
+		<parameter key="totp.label">%application.name%</parameter>
+		<parameter key="totp.interval">30</parameter>
+		<parameter key="totp.digits">6</parameter>
+		<parameter key="totp.digest">sha1</parameter>
 	</parameters>
 
     <services>

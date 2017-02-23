@@ -87,6 +87,10 @@ class LocaleTest extends TestCase
         $request->setSession($session);
 
         $this->subject->processRequest($request, $route);
+
+        $actual = $request->attributes->get('locale');
+
+        $this->assertNull($actual);
     }
 
     public function testProcessResponse()

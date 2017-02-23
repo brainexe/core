@@ -9,9 +9,9 @@ use BrainExe\Core\Annotations\Service;
  */
 class DefaultCrons implements CronDefinition
 {
-    const MINUTE = 'minute';
-    const HOURLY = 'hourly';
-    const DAILY  = 'daily';
+    private const MINUTE = 'minute';
+    private const HOURLY = 'hourly';
+    private const DAILY  = 'daily';
 
     /**
      * @return string[]
