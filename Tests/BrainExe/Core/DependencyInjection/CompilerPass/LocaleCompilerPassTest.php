@@ -44,7 +44,7 @@ class LocaleCompilerPassTest extends TestCase
         $this->container
             ->expects($this->once())
             ->method('get')
-            ->with('Glob')
+            ->with(Glob::class)
             ->willReturn($glob);
 
         $this->container

@@ -34,6 +34,7 @@
 		<parameter key="totp.interval">30</parameter>
 		<parameter key="totp.digits">6</parameter>
 		<parameter key="totp.digest">sha1</parameter>
+		<parameter key="locales" type="collection"></parameter>
 	</parameters>
 
     <services>

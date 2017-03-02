@@ -5,6 +5,7 @@ namespace BrainExe\Core\Annotations\Builder;
 use BrainExe\Core\Annotations\Service;
 use BrainExe\Core\Annotations\Builder\ServiceDefinition;
 use BrainExe\Core\Annotations\CompilerPass as CompilerPassAnnotation;
+use Exception;
 use ReflectionClass;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Definition;
@@ -17,11 +18,13 @@ class CompilerPass extends ServiceDefinition
      * @param Service|CompilerPassAnnotation $annotation
      * @param Definition $definition
      * @return array
+     *
+     * @throws Exception
      */
     public function build(ReflectionClass $reflectionClass, Service $annotation, Definition $definition)
     {
         /** @var Definition $definition */
-        list($serviceId, $definition) = parent::build($reflectionClass, $annotation, $definition);
+        [$serviceId, $definition] = parent::build($reflectionClass, $annotation, $definition);
 
         $definition->setPublic(false);
         $this->container->setDefinition($serviceId, $definition);

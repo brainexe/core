@@ -2,7 +2,6 @@
 
 namespace BrainExe\Core\Authentication\TOTP\Login;
 
-use BrainExe\Core\Annotations\Inject;
 use BrainExe\Core\Annotations\EventListener;
 use BrainExe\Core\Application\UserException;
 use BrainExe\Core\Authentication\Event\AuthenticateUserEvent;
@@ -31,7 +30,6 @@ class LoginListener implements EventSubscriberInterface
 
     /**
      * @param OneTimePassword $otp
-     * @Inject("@OneTimePassword")
      */
     public function __construct(OneTimePassword $otp)
     {

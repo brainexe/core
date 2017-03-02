@@ -3,7 +3,7 @@
 namespace BrainExe\Core\DependencyInjection\CompilerPass;
 
 use BrainExe\Core\Annotations\CompilerPass;
-
+use BrainExe\Core\Application\AppKernel;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
@@ -21,7 +21,7 @@ class MiddlewareCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $appKernel   = $container->findDefinition('AppKernel');
+        $appKernel   = $container->findDefinition(AppKernel::class);
         $middlewares = $container->getParameter('application.middlewares');
 
         $references  = [];

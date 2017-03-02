@@ -4,7 +4,6 @@ namespace BrainExe\Core\Annotations\Builder;
 
 use BrainExe\Core\Annotations\Inject;
 use BrainExe\Core\Annotations\Service;
-use BrainExe\Core\Annotations\ServiceIdGenerator;
 use Doctrine\Common\Annotations\Reader;
 use InvalidArgumentException;
 use ReflectionClass;
@@ -26,11 +25,6 @@ class ServiceDefinition
     protected $reader;
 
     /**
-     * @var ServiceIdGenerator
-     */
-    private $serviceIdGenerator;
-
-    /**
      * @var ContainerBuilder
      */
     protected $container;
@@ -42,7 +36,6 @@ class ServiceDefinition
     public function __construct(ContainerBuilder $container, Reader $reader)
     {
         $this->reader = $reader;
-        $this->serviceIdGenerator = new ServiceIdGenerator();
         $this->container = $container;
     }
 
@@ -63,10 +56,7 @@ class ServiceDefinition
         $this->processMethods($reflectionClass->getMethods(ReflectionMethod::IS_PUBLIC), $definition);
         $this->processTags($reflectionClass, $annotation, $definition);
 
-        $serviceId = $annotation->value ?: $annotation->name;
-        if (empty($serviceId)) {
-            $serviceId = $this->serviceIdGenerator->generate($reflectionClass->getName());
-        }
+        $serviceId = $annotation->value ?: $annotation->name ?: $reflectionClass->getName();
 
         return [$this->setupDefinition($definition, $serviceId) ?? $serviceId, $definition];
     }

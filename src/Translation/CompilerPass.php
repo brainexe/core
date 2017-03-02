@@ -12,7 +12,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Translation\Token;
 
 /**
- * @CompilerPassAnnotation("Core.Translation.CompilerPass")
+ * @CompilerPassAnnotation
  */
 class CompilerPass implements CompilerPassInterface
 {

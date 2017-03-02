@@ -6,7 +6,6 @@ use BrainExe\Core\Annotations\Inject;
 use BrainExe\Core\Annotations\EventListener;
 use BrainExe\Core\Annotations\Listen;
 use RuntimeException;
-use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\Console\ConsoleEvents;
 
 /**
@@ -33,9 +32,8 @@ class SystemUserListener
 
     /**
      * @Listen(ConsoleEvents::COMMAND)
-     * @throws RuntimeException
      */
-    public function handleCommand(ConsoleCommandEvent $event)
+    public function handleCommand()
     {
         $currentUser = $this->getCurrentUser();
 

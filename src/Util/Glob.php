@@ -5,7 +5,7 @@ namespace BrainExe\Core\Util;
 use BrainExe\Core\Annotations\Service;
 
 /**
- * @Service("Glob")
+ * @Service
  * @api
  */
 class Glob

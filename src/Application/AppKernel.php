@@ -39,11 +39,6 @@ class AppKernel implements HttpKernelInterface
     private $middlewares;
 
     /**
-     * @Inject({
-     *     "@ControllerResolver",
-     *     "@Core.RouteCollection",
-     *     "@UrlMatcher"
-     * })
      * @param ControllerResolver $resolver
      * @param SerializedRouteCollection $routes
      * @param UrlMatcher $urlMatcher

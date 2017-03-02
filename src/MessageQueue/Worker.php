@@ -16,7 +16,7 @@ use BrainExe\Core\Traits\TimeTrait;
 use Throwable;
 
 /**
- * @Service("MessageQueue.Worker")
+ * @Service
  */
 class Worker
 {

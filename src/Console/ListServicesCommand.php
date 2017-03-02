@@ -100,7 +100,7 @@ class ListServicesCommand extends Command
             $color = 'info';
         }
 
-        if (!$restrictedVisibility || $restrictedVisibility == $currentVisibility) {
+        if (!$restrictedVisibility || $restrictedVisibility === $currentVisibility) {
             $table->addRow([
                 $id,
                 implode(', ', array_keys($definition->getTags())),

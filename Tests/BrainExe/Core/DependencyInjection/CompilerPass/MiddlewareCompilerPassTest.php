@@ -2,6 +2,7 @@
 
 namespace Tests\BrainExe\Core\DependencyInjection\CompilerPass;
 
+use BrainExe\Core\Application\AppKernel;
 use BrainExe\Core\DependencyInjection\CompilerPass\MiddlewareCompilerPass;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit\Framework\TestCase;
@@ -47,7 +48,7 @@ class MiddlewareCompilerPassTest extends TestCase
         $this->container
             ->expects($this->once())
             ->method('findDefinition')
-            ->with('AppKernel')
+            ->with(AppKernel::class)
             ->willReturn($appKernel);
 
         $appKernel
