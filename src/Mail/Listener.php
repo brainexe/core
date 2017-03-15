@@ -8,7 +8,7 @@ use PHPMailer;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * @EventListener("Mail.Listener")
+ * @EventListener
  */
 class Listener implements EventSubscriberInterface
 {

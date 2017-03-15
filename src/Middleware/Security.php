@@ -31,7 +31,7 @@ class Security extends AbstractMiddleware
     public function __construct(array $allowedUrls, bool $debug)
     {
         $this->allowedUrls = $allowedUrls;
-        $this->debug = $debug;
+        $this->debug       = $debug;
     }
 
     /**
@@ -57,8 +57,8 @@ class Security extends AbstractMiddleware
      */
     protected function getContentSecurityPolicy(Request $request) : string
     {
-        $allowed = [];
-        $allowed[] = "'self'";
+        $connectSrc = [];
+        $connectSrc[] = "'self'";
 
         foreach ($this->allowedUrls as $url) {
             $port = parse_url($url, PHP_URL_PORT);
@@ -67,14 +67,14 @@ class Security extends AbstractMiddleware
             if ($port) {
                 $host .= ':' . $port;
             }
-            $allowed[] = $host;
+            $connectSrc[] = $host;
         }
 
         $parts = [
             sprintf('default-src \'self\''),
             'img-src *',
             'style-src \'self\' \'unsafe-inline\'',
-            sprintf('connect-src \'self\' %s', implode(' ', $allowed)),
+            sprintf('connect-src %s', implode(' ', $connectSrc)),
         ];
 
         if ($this->debug) {

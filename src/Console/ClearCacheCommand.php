@@ -11,7 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use BrainExe\Core\Annotations\Command as CommandAnnotation;
 
 /**
- * @CommandAnnotation("ClearCacheCommand")
+ * @CommandAnnotation
  */
 class ClearCacheCommand extends Command
 {

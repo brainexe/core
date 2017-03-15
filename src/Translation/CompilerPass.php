@@ -97,7 +97,7 @@ class CompilerPass implements CompilerPassInterface
             return sprintf('_("%s")', addslashes($token->token));
         }, $tokens)));
 
-        $contentHtml = sprintf("%s", implode("\n", array_map(function (Token $token) {
+        $contentHtml = sprintf('%s', implode("\n", array_map(function (Token $token) {
             return sprintf('<span translate>%s</span>', addslashes($token->token));
         }, $tokens)));
 

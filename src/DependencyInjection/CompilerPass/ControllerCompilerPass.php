@@ -95,7 +95,7 @@ class ControllerCompilerPass implements CompilerPassInterface
         $this->dumpVariableToCache(SerializedRouteCollection::CACHE_FILE, $routes);
 
         /** @var SerializedRouteCollection $routerCollection */
-        $routerCollection = $container->get('Core.RouteCollection');
+        $routerCollection = $container->get(SerializedRouteCollection::class);
 
         $routerFile  = sprintf('%scache/router_matcher.php', ROOT);
         $routeDumper = new PhpMatcherDumper($routerCollection);

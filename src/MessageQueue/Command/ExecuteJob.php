@@ -10,10 +10,9 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use BrainExe\Core\Annotations\Command as CommandAnnotation;
-use BrainExe\Core\Annotations\Inject;
 
 /**
- * @CommandAnnotation("MessageQueue.Command.ExecuteJob")
+ * @CommandAnnotation
  */
 class ExecuteJob extends Command
 {

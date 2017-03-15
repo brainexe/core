@@ -60,7 +60,7 @@ class UserController
      */
     public function setAvatars(Request $request, $avatar) : UserVO
     {
-        if (!in_array($avatar, UserVO::AVATARS)) {
+        if (!in_array($avatar, UserVO::AVATARS, true)) {
             throw new UserException($this->translate('Invalid avatar: %s', $avatar));
         }
 

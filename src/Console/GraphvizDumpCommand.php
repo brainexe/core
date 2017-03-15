@@ -2,7 +2,6 @@
 
 namespace BrainExe\Core\Console;
 
-
 use BrainExe\Core\DependencyInjection\Rebuild;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

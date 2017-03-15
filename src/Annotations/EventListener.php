@@ -2,7 +2,6 @@
 
 namespace BrainExe\Core\Annotations;
 
-use BrainExe\Core\Annotations\Service;
 use BrainExe\Core\Annotations\Builder\EventListener as Builder;
 use Doctrine\Common\Annotations\Annotation;
 use Doctrine\Common\Annotations\Reader;

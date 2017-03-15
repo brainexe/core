@@ -11,7 +11,7 @@ use Generator;
 
 /**
  * @api
- * @Service("MessageQueue.Gateway")
+ * @Service
  */
 class Gateway
 {
@@ -120,7 +120,7 @@ class Gateway
 
         $keys = [];
         foreach ($resultRaw as $jobId => $timestamp) {
-            if (empty($eventType) || strpos($jobId, $eventType . ":") === 0) {
+            if (empty($eventType) || strpos($jobId, $eventType . ':') === 0) {
                 $keys[$jobId] = $timestamp;
             }
         }
@@ -177,7 +177,7 @@ class Gateway
         $immediate = $this->getRedis()->lrange(self::QUEUE_IMMEDIATE, 0, 100);
         foreach ($immediate as $rawJob) {
             list($jobId, $rawJob) = explode('#', $rawJob, 2);
-            if (empty($eventType) || strpos($jobId, $eventType . ":") === 0) {
+            if (empty($eventType) || strpos($jobId, $eventType . ':') === 0) {
                 /** @var Job $job */
                 $job = unserialize(base64_decode($rawJob));
                 yield $job->jobId => $job;

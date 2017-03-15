@@ -11,7 +11,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * @CommandAnnotation("Redis.Command.Import")
+ * @CommandAnnotation
  * @codeCoverageIgnore
  */
 class Import extends SymfonyCommand

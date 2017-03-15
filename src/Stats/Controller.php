@@ -2,7 +2,6 @@
 
 namespace BrainExe\Core\Stats;
 
-
 use BrainExe\Core\Annotations\Controller as ControllerAnnotation;
 use BrainExe\Core\Annotations\Route;
 use BrainExe\Core\MessageQueue\Gateway as MessageQueueGateway;
@@ -11,7 +10,7 @@ use Predis\PredisException;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @ControllerAnnotation("Stats.Controller")
+ * @ControllerAnnotation
  */
 class Controller
 {

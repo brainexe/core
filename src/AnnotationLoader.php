@@ -13,7 +13,6 @@ use ReflectionClass;
 use SplFileInfo;
 use Symfony\Component\Config\Loader\Loader as ConfigLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
 
 class AnnotationLoader extends ConfigLoader
 {

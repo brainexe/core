@@ -6,7 +6,7 @@ use BrainExe\Core\Annotations\Inject;
 use BrainExe\Core\Annotations\Service;
 
 /**
- * @Service("Core.Authentication.PasswordHasher")
+ * @Service
  */
 class PasswordHasher
 {

@@ -2,11 +2,10 @@
 
 namespace BrainExe\Core\Stats;
 
-
 use BrainExe\Core\Annotations\Service;
 
 /**
- * @Service("Stats.Stats")
+ * @Service
  */
 class Stats
 {

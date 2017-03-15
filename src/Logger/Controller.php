@@ -9,7 +9,7 @@ use BrainExe\Core\Traits\LoggerTrait;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @ControllerAnnotation("Core.Logger.Controller")
+ * @ControllerAnnotation
  */
 class Controller
 {

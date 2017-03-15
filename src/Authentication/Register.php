@@ -31,7 +31,9 @@ class Register
     private $registrationEnabled;
 
     /**
-     * @Inject({"@Core.Authentication.UserProvider", "@RegisterTokens", "%application.registration_enabled%"})
+     * @Inject({
+     *     "registrationEnabled" = "%application.registration_enabled%"
+     * })
      * @param UserProvider $userProvider
      * @param RegisterTokens $tokens
      * @param bool $registrationEnabled

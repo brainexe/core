@@ -52,5 +52,4 @@ class SystemUserListener
     {
         return posix_getpwuid(posix_geteuid())['name'];
     }
-
 }

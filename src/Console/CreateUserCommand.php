@@ -2,7 +2,6 @@
 
 namespace BrainExe\Core\Console;
 
-use BrainExe\Core\Annotations\Inject;
 use BrainExe\Core\Authentication\Register;
 use BrainExe\Core\Authentication\UserVO;
 use Symfony\Component\Console\Command\Command;
@@ -63,6 +62,6 @@ class CreateUserCommand extends Command
         $session = new Session(new MockArraySessionStorage());
         $userId  = $this->register->registerUser($user, $session, null);
 
-        $output->writeln(sprintf("New user-id: <info>%d</info>", $userId));
+        $output->writeln(sprintf('New user-id: <info>%d</info>', $userId));
     }
 }

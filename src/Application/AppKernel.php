@@ -2,7 +2,6 @@
 
 namespace BrainExe\Core\Application;
 
-use BrainExe\Core\Annotations\Inject;
 use BrainExe\Core\Annotations\Service;
 use BrainExe\Core\Middleware\MiddlewareInterface;
 use Iterator;

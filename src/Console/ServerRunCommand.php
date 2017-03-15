@@ -13,7 +13,7 @@ use BrainExe\Core\Annotations\Command as CommandAnnotation;
 
 /**
  * @todo matze
- * CommandAnnotation
+ * @CommandAnnotation
  */
 class ServerRunCommand extends Command
 {
@@ -54,7 +54,6 @@ class ServerRunCommand extends Command
             ->addOption('quiet', 'q', InputOption::VALUE_NONE)
             ->setName('server:run')
             ->setDescription('Runs PHP built-in web server');
-        ;
     }
 
     /**

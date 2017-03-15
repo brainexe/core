@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
 /**
- * @Service("Core.RouteCollection", shared=false)
+ * @Service(shared=false)
  */
 class SerializedRouteCollection extends RouteCollection
 {
@@ -22,7 +22,7 @@ class SerializedRouteCollection extends RouteCollection
     /**
      * @var string[]
      */
-    private $serializedRoutes = null;
+    private $serializedRoutes;
 
     /**
      * @var Route[]
@@ -32,6 +32,7 @@ class SerializedRouteCollection extends RouteCollection
     /**
      * @param string $name
      * @return Route
+     * @throws InvalidArgumentException
      */
     public function get($name)
     {
@@ -45,7 +46,12 @@ class SerializedRouteCollection extends RouteCollection
             throw new InvalidArgumentException(sprintf('invalid route: %s', $name));
         }
 
-        return $this->cache[$name] = unserialize($this->serializedRoutes[$name]);
+        return $this->cache[$name] = unserialize(
+            $this->serializedRoutes[$name],
+            [
+                'allowed_classes' => [Route::class]
+            ]
+        );
     }
 
     public function all()
@@ -94,6 +100,7 @@ class SerializedRouteCollection extends RouteCollection
 
     /**
      * @param array|string $name
+     * @throws RuntimeException
      */
     public function remove($name)
     {
@@ -110,7 +117,7 @@ class SerializedRouteCollection extends RouteCollection
 
     private function loadFromCache()
     {
-        if ($this->serializedRoutes == null) {
+        if (null === $this->serializedRoutes) {
             $this->serializedRoutes = $this->includeFile(self::CACHE_FILE);
         }
     }

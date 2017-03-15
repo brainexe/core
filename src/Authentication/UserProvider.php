@@ -2,7 +2,6 @@
 
 namespace BrainExe\Core\Authentication;
 
-use BrainExe\Core\Annotations\Inject;
 use BrainExe\Core\Annotations\Service;
 use BrainExe\Core\Authentication\Event\DeleteUserEvent;
 use BrainExe\Core\Authentication\Exception\UserNotFoundException;
@@ -11,8 +10,7 @@ use BrainExe\Core\Traits\IdGeneratorTrait;
 use BrainExe\Core\Traits\RedisTrait;
 
 /**
- * @api
- * @Service("Core.Authentication.UserProvider")
+ * @Service
  */
 class UserProvider
 {

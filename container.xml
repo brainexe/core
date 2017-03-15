@@ -113,7 +113,7 @@
 				<argument>cache:%application.name%</argument>
 			</call>
 		</service>
-		<service id="Cache" class="Symfony\Component\Cache\Adapte" public="false">
+		<service id="Cache" class="Symfony\Component\Cache\Adapter" public="false">
 			<argument type="service" id="redis"/>
 			<argument>cache</argument>
 		</service>

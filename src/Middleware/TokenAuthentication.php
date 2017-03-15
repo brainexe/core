@@ -2,18 +2,14 @@
 
 namespace BrainExe\Core\Middleware;
 
-use BrainExe\Core\Annotations\Inject;
 use BrainExe\Core\Annotations\Middleware;
-
 use BrainExe\Core\Authentication\AnonymusUserVO;
 use BrainExe\Core\Authentication\Exception\UserNotFoundException;
 use BrainExe\Core\Authentication\LoadUser;
 use BrainExe\Core\Authentication\Token;
 use BrainExe\Core\Authentication\UserVO;
 use BrainExe\Core\Translation\TranslationTrait;
-
 use Symfony\Component\HttpFoundation\Request;
-
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Route;
 
@@ -51,12 +47,12 @@ class TokenAuthentication extends AbstractMiddleware
     {
         $token = $request->get('accessToken');
 
-        if (empty($token)) {
+        if (null === $token) {
             return null;
         }
 
         $userId = $this->token->hasUserForRole($token);
-        if (empty($userId)) {
+        if (null === $userId) {
             return null;
         }
 

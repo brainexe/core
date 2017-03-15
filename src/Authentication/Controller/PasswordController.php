@@ -2,7 +2,6 @@
 
 namespace BrainExe\Core\Authentication\Controller;
 
-use BrainExe\Core\Annotations\Inject;
 use BrainExe\Core\Annotations\Controller;
 use BrainExe\Core\Annotations\Route;
 use BrainExe\Core\Application\UserException;
@@ -27,10 +26,6 @@ class PasswordController
     private $passwordHasher;
 
     /**
-     * @Inject({
-     *     "@Core.Authentication.UserProvider",
-     *     "@Core.Authentication.PasswordHasher"
-     * })
      * @param UserProvider $userProvider
      * @param PasswordHasher $passwordHasher
      */

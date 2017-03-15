@@ -5,7 +5,7 @@ namespace BrainExe\Core\MessageQueue;
 use BrainExe\Core\EventDispatcher\AbstractEvent;
 
 /**
- * @api can be used by other components
+ * @api
  */
 class Job
 {

@@ -6,7 +6,7 @@ use BrainExe\Core\Annotations\EventListener;
 use BrainExe\Core\Annotations\Listen;
 
 /**
- * @EventListener("Stats.Listener")
+ * @EventListener
  */
 class Listener
 {

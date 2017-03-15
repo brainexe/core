@@ -31,6 +31,10 @@ class Locale extends AbstractMiddleware
      */
     public function processRequest(Request $request, Route $route)
     {
+        if ($request->attributes->has('locale')) {
+            return;
+        }
+
         $session = $request->getSession();
 
         if ($request->query->has('locale')) {

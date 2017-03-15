@@ -2,7 +2,6 @@
 
 namespace BrainExe\Core\Authentication;
 
-use BrainExe\Core\Annotations\Inject;
 use BrainExe\Core\Annotations\Service;
 use BrainExe\Core\Application\UserException;
 use BrainExe\Core\Authentication\Event\AuthenticateUserEvent;
@@ -92,7 +91,7 @@ class Login
     {
         $tokenData = $this->token->getToken($token);
 
-        if (empty($tokenData) || !in_array(self::TOKEN_LOGIN, $tokenData['roles'])) {
+        if (empty($tokenData) || !in_array(self::TOKEN_LOGIN, $tokenData['roles'], true)) {
             throw new UserException('Invalid Token');
         }
 
@@ -124,7 +123,6 @@ class Login
      * @param SessionInterface $session
      * @param AuthenticationDataVO $authenticationVo
      * @param UserVO $userVo
-     * @return AuthenticateUserEvent
      */
     private function handleLogin(
         SessionInterface $session,

@@ -2,7 +2,6 @@
 
 namespace BrainExe\Core\Cron;
 
-
 use BrainExe\Core\Annotations\EventListener;
 use BrainExe\Core\Annotations\Listen;
 use BrainExe\Core\DependencyInjection\CompilerPass\Cron;
@@ -15,7 +14,7 @@ use BrainExe\Core\MessageQueue\Gateway;
 use BrainExe\Core\EventDispatcher\Events\ClearCacheEvent;
 
 /**
- * @EventListener("Crons.CacheListener")
+ * @EventListener
  */
 class CacheListener
 {

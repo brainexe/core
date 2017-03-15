@@ -3,7 +3,6 @@
 namespace BrainExe\Core\Annotations\Builder;
 
 use BrainExe\Core\Annotations\Service;
-use BrainExe\Core\Annotations\Builder\ServiceDefinition;
 use BrainExe\Core\Annotations\CompilerPass as CompilerPassAnnotation;
 use Exception;
 use ReflectionClass;

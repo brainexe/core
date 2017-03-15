@@ -11,7 +11,7 @@ use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @ControllerAnnotation("Core.Index.Swagger")
+ * @ControllerAnnotation
  */
 class Swagger
 {

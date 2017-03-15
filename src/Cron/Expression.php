@@ -6,7 +6,7 @@ use BrainExe\Core\Annotations\Service;
 use Cron\CronExpression;
 
 /**
- * @Service("Core.Cron.Expression")
+ * @Service
  */
 class Expression
 {

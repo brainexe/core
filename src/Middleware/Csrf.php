@@ -30,7 +30,7 @@ class Csrf extends AbstractMiddleware
     /**
      * @var string
      */
-    private $newToken = null;
+    private $newToken;
 
     /**
      * {@inheritdoc}

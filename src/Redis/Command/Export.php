@@ -11,7 +11,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * @CommandAnnotation("Redis.Command.Export")
+ * @CommandAnnotation
  * @codeCoverageIgnore
  */
 class Export extends SymfonyCommand
@@ -36,7 +36,7 @@ class Export extends SymfonyCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $keys = $this->redis->keys("*");
+        $keys = $this->redis->keys('*');
 
         $parts = [];
         foreach ($keys as $key) {

@@ -99,7 +99,7 @@ class UserVO implements JsonSerializable
     {
         if (in_array($role, $this->roles)) {
             return true;
-        };
+        }
 
         if (!empty(self::ROLE_MAP[$role])) {
             foreach (self::ROLE_MAP[$role] as $slaveRole) {

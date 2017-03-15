@@ -2,9 +2,7 @@
 
 namespace BrainExe\Core\MessageQueue;
 
-use BrainExe\Core\Annotations\Inject;
 use BrainExe\Core\Annotations\Service;
-
 use BrainExe\Core\Cron\Expression;
 use BrainExe\Core\EventDispatcher\AbstractEvent;
 use BrainExe\Core\EventDispatcher\CronEvent;

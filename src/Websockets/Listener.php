@@ -7,7 +7,7 @@ use BrainExe\Core\Redis\Predis;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * @EventListener("Websocket.Listener")
+ * @EventListener
  */
 class Listener implements EventSubscriberInterface
 {
@@ -26,7 +26,6 @@ class Listener implements EventSubscriberInterface
     {
         $this->redis = $client;
     }
-
 
     /**
      * {@inheritdoc}

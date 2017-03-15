@@ -2,7 +2,6 @@
 
 namespace BrainExe\Core\Authentication\Controller;
 
-use BrainExe\Core\Annotations\Inject;
 use BrainExe\Core\Annotations\Controller;
 use BrainExe\Core\Annotations\Route;
 use BrainExe\Core\Authentication\Token;

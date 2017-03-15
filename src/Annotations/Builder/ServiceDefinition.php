@@ -63,6 +63,7 @@ class ServiceDefinition
 
     /**
      * @param Definition $definition
+     * @param string $serviceId
      * @return string null
      */
     public function setupDefinition(Definition $definition, string $serviceId)

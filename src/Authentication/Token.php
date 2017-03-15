@@ -75,14 +75,14 @@ class Token
      * @param string|null $role
      * @return int|null
      */
-    public function hasUserForRole(string $token, string $role = null)
+    public function hasUserForRole(string $token, string $role = null) : ?int
     {
         $tokenData = $this->getToken($token);
         if (empty($tokenData)) {
             return null;
         }
 
-        if ($role && !in_array($role, $tokenData['roles'])) {
+        if ($role && !in_array($role, $tokenData['roles'], true)) {
             return null;
         }
 

@@ -2,7 +2,6 @@
 
 namespace BrainExe\Core\Console;
 
-
 use BrainExe\Core\Annotations\Command as CommandAnnotation;
 use BrainExe\Core\DependencyInjection\Rebuild;
 use BrainExe\Core\Traits\EventDispatcherTrait;

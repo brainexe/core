@@ -22,16 +22,12 @@ class Listen
     public $priority;
 
     /**
-     * @param string $event
+     * @param string|array $event
      * @param int|null $priority
      */
     public function __construct($event, $priority = null)
     {
-        if (is_array($event)) {
-            $this->event = $event['value'];
-        } else {
-            $this->event = $event;
-        }
+        $this->event    = is_array($event) ? $event['value'] : $event;
         $this->priority = $priority;
     }
 }

@@ -40,7 +40,7 @@ class SecurityTest extends TestCase
 
         $this->subject->processResponse($request, $response);
 
-        $expectedCSP = "default-src 'self'; img-src *; style-src 'self' 'unsafe-inline'; connect-src 'self' 'self' socket.localhost:8080";
+        $expectedCSP = "default-src 'self'; img-src *; style-src 'self' 'unsafe-inline'; connect-src 'self' socket.localhost:8080";
         $this->assertEquals($expectedCSP, $response->headers->get('Content-Security-Policy'));
         $this->assertTrue($response->headers->has('X-Frame-Options'));
         $this->assertTrue($response->headers->has('Strict-Transport-Security'));
@@ -58,7 +58,7 @@ class SecurityTest extends TestCase
 
         $this->subject->processResponse($request, $response);
 
-        $expectedCSP = "default-src 'self'; img-src *; style-src 'self' 'unsafe-inline'; connect-src 'self' 'self' my.host.de";
+        $expectedCSP = "default-src 'self'; img-src *; style-src 'self' 'unsafe-inline'; connect-src 'self' my.host.de";
         $this->assertEquals($expectedCSP, $response->headers->get('Content-Security-Policy'));
     }
 

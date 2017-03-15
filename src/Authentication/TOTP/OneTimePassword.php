@@ -94,11 +94,11 @@ class OneTimePassword
     public function verifyOneTimePassword(UserVO $userVo, $givenToken)
     {
         if (empty($userVo->one_time_secret)) {
-            throw new UserException(_("No one time secret requested"));
+            throw new UserException(_('No one time secret requested'));
         }
 
         if (empty($givenToken)) {
-            throw new UserException(_("No one time token given"));
+            throw new UserException(_('No one time token given'));
         }
 
         $verified = $this->totp->verify($userVo->one_time_secret, $givenToken);

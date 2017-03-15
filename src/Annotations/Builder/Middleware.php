@@ -2,7 +2,6 @@
 
 namespace BrainExe\Core\Annotations\Builder;
 
-use BrainExe\Core\Annotations\Builder\ServiceDefinition;
 use BrainExe\Core\DependencyInjection\CompilerPass\MiddlewareCompilerPass;
 use Symfony\Component\DependencyInjection\Definition;
 

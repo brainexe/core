@@ -2,15 +2,12 @@
 
 namespace BrainExe\Core\Console;
 
-use BrainExe\Core\Annotations\Inject;
 use BrainExe\Core\Application\SerializedRouteCollection;
-
 use BrainExe\Core\Traits\ConfigTrait;
 use Generator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-
 use BrainExe\Core\Annotations\Command as CommandAnnotation;
 use Symfony\Component\Routing\CompiledRoute;
 use Symfony\Component\Routing\Route;

@@ -3,7 +3,6 @@
 namespace BrainExe\Core\Annotations\Builder;
 
 use BrainExe\Core\Annotations\Service;
-use BrainExe\Core\Annotations\Builder\ServiceDefinition;
 use BrainExe\Core\Annotations\Guest;
 use BrainExe\Core\Annotations\Role;
 use BrainExe\Core\Annotations\Route;
@@ -25,7 +24,7 @@ class Controller extends ServiceDefinition
     public function build(ReflectionClass $reflectionClass, Service $annotation, Definition $definition)
     {
         /** @var Definition $definition */
-        list ($serviceId, $definition) = parent::build(
+        [, $definition] = parent::build(
             $reflectionClass,
             $annotation,
             $definition

@@ -3,7 +3,7 @@
 namespace BrainExe\Core\Traits;
 
 use BrainExe\Core\Annotations\Inject;
-use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\DependencyInjection\Exception\ParameterNotFoundException;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 
 /**
@@ -28,6 +28,7 @@ trait ConfigTrait
     /**
      * @param string $parameterId
      * @return mixed
+     * @throws ParameterNotFoundException
      */
     protected function getParameter(string $parameterId)
     {

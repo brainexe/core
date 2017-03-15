@@ -10,7 +10,7 @@ use Cron\CronExpression;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * @EventListener(name="MessageQueue.Listener")
+ * @EventListener
  */
 class Listener implements EventSubscriberInterface
 {

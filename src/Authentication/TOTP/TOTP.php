@@ -105,11 +105,11 @@ class TOTP
         $opt['secret']    = trim(Base32::encode($secret), '=');
         $opt['period']    = $this->interval;
 
-        ksort($opt);
+        ksort($opt, SORT_STRING);
 
         $params = str_replace(['+', '%7E'], ['%20', '~'], http_build_query($opt));
 
-        return "otpauth://totp/" . rawurlencode($this->label) . "?$params";
+        return 'otpauth://totp/' . rawurlencode($this->label) . "?$params";
     }
 
     /**
@@ -151,7 +151,7 @@ class TOTP
      */
     private function timecode($timestamp)
     {
-        return (int)((((int)$timestamp * 1000) / ($this->interval * 1000)));
+        return (int)(((int)$timestamp * 1000) / ($this->interval * 1000));
     }
 
     /**

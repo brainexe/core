@@ -2,7 +2,6 @@
 
 namespace BrainExe\Core\MessageQueue;
 
-
 use BrainExe\Core\Annotations\Controller as ControllerAnnotation;
 use BrainExe\Core\Annotations\Route;
 use BrainExe\Core\MessageQueue\Gateway as MessageQueueGateway;
@@ -10,7 +9,7 @@ use BrainExe\Core\Traits\TimeTrait;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @ControllerAnnotation("MessageQueue.Controller")
+ * @ControllerAnnotation
  */
 class Controller
 {
