@@ -15,7 +15,7 @@ use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\ExpressionLanguage\Expression;
 
 /**
- * @author Matthias Dötsch <matze@mdoetsch.de>
+ * @todo matze complexity
  */
 class ServiceDefinition
 {
@@ -116,7 +116,7 @@ class ServiceDefinition
      * @param ReflectionMethod[] $methods
      * @param Definition $definition
      */
-    protected function processMethods(array $methods, Definition $definition)
+    protected function processMethods(array $methods, Definition $definition) : void
     {
         foreach ($methods as $method) {
             if ($method->isConstructor()) {
@@ -179,7 +179,7 @@ class ServiceDefinition
      * @param Service $annotation
      * @param Definition $definition
      */
-    private function processService(Service $annotation, Definition $definition)
+    private function processService(Service $annotation, Definition $definition) : void
     {
         $definition->setAutowired(true);
         $definition->setPublic($annotation->public);
@@ -189,7 +189,7 @@ class ServiceDefinition
         $definition->setAbstract($annotation->abstract);
         $this->processConfigurator($annotation, $definition);
 
-        if (isset($annotation->factory)) {
+        if (null === $annotation->factory) {
             $definition->setFactory($annotation->factory);
         }
     }
@@ -229,7 +229,7 @@ class ServiceDefinition
      * @param string $value
      * @return Reference
      */
-    private function getValueReference($value) : Reference
+    private function getValueReference(string $value) : Reference
     {
         if (0 === strpos($value, '@?')) {
             $value           = substr($value, 2);
@@ -240,7 +240,7 @@ class ServiceDefinition
         }
 
         // mark reference as strict
-        if ('=' === substr($value, -1)) {
+        if ('=' === $value[-1]) {
             $value  = substr($value, 0, -1);
             $strict = false;
         } else {
@@ -254,9 +254,9 @@ class ServiceDefinition
      * @param Service $annotation
      * @param Definition $definition
      */
-    private function processConfigurator(Service $annotation, Definition $definition)
+    private function processConfigurator(Service $annotation, Definition $definition) : void
     {
-        if (!isset($annotation->configurator)) {
+        if (null === $annotation->configurator) {
             return;
         }
 
@@ -274,7 +274,7 @@ class ServiceDefinition
      * @param Definition $definition
      * @param ReflectionMethod $method
      */
-    protected function processMethod(Definition $definition, ReflectionMethod $method)
+    protected function processMethod(Definition $definition, ReflectionMethod $method) : void
     {
         /** @var Inject $annotation */
         $annotation = $this->reader->getMethodAnnotation($method, Inject::class);

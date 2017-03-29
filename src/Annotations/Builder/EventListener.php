@@ -22,7 +22,7 @@ class EventListener extends ServiceDefinition
     /**
      * {@inheritdoc}
      */
-    public function processMethod(Definition $definition, ReflectionMethod $method)
+    public function processMethod(Definition $definition, ReflectionMethod $method) : void
     {
         parent::processMethod($definition, $method);
 

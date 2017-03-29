@@ -8,10 +8,12 @@ use BrainExe\Core\Application\ControllerResolver;
 use BrainExe\Core\Application\SerializedRouteCollection;
 use BrainExe\Core\Traits\FileCacheTrait;
 use Exception;
-use Symfony\Component\DependencyInjection\Argument\ServiceLocatorArgument;
+use Symfony\Component\DependencyInjection\Argument\ServiceClosureArgument;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\Routing\Matcher\Dumper\PhpMatcherDumper;
 use Symfony\Component\Routing\Route;
 
@@ -33,7 +35,7 @@ class ControllerCompilerPass implements CompilerPassInterface
         $controllers = $container->findTaggedServiceIds(self::ROUTE_TAG);
 
         $serialized = [];
-        $controllerLocator = [];
+        $consollers = [];
         foreach ($controllers as $controllerId => $tag) {
             foreach ($tag as $routeRaw) {
                 /** @var RouteAnnotation $route */
@@ -51,13 +53,16 @@ class ControllerCompilerPass implements CompilerPassInterface
 
             $controller = $container->getDefinition($controllerId);
             $controller->clearTag(self::ROUTE_TAG);
-            $controllerLocator[$controllerId] = new Reference($controllerId);
+            $consollers[$controllerId] = new ServiceClosureArgument(
+                new Reference($controllerId)
+            );
         }
 
         $controllerResolver = $container->getDefinition(ControllerResolver::class);
-        $controllerResolver->setArguments([
-            new ServiceLocatorArgument($controllerLocator)
-        ]);
+        $controllerResolver->setArguments([new Definition(
+            ServiceLocator::class,
+            [$consollers]
+        )]);
         $this->dumpMatcher($container, $serialized);
     }
 
