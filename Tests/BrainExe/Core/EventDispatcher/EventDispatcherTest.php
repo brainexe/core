@@ -87,12 +87,12 @@ class EventDispatcherTest extends TestCase
         $this->subject
             ->expects($this->at(0))
             ->method('dispatch')
-            ->with(TestWebsocketEvent::TYPE, $event);
+            ->with(WebSocketEvent::PUSH, $wrappedEvent);
 
         $this->subject
             ->expects($this->at(1))
             ->method('dispatch')
-            ->with(WebSocketEvent::PUSH, $wrappedEvent);
+            ->with(TestWebsocketEvent::TYPE, $event);
 
         $this->subject->dispatchEvent($event);
     }
