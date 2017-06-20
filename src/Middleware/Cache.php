@@ -21,7 +21,7 @@ class Cache extends AbstractMiddleware
     use LoggerTrait;
 
     const DEFAULT_TTL = 60;
-    const PREFIX = 'cache:';
+    const PREFIX = 'cache#';
 
     /**
      * {@inheritdoc}
@@ -29,7 +29,7 @@ class Cache extends AbstractMiddleware
     public function processRequest(Request $request, Route $route)
     {
         if (!$route->hasOption('cache') || !$request->isMethod('GET')) {
-            return null;
+           // return null;
         }
 
         $cacheKey = $this->generateCacheKey($request);
@@ -112,6 +112,6 @@ class Cache extends AbstractMiddleware
      */
     private function generateCacheKey(Request $request) : string
     {
-        return self::PREFIX . $request->getRequestUri();
+        return self::PREFIX . str_replace('/', '#', $request->getRequestUri());
     }
 }

@@ -7,6 +7,7 @@ use BrainExe\Core\Application\AppKernel;
 use BrainExe\Core\Application\ControllerResolver;
 use BrainExe\Core\Application\SerializedRouteCollection;
 use BrainExe\Core\Application\UrlMatcher;
+use BrainExe\Core\EventDispatcher\EventDispatcher;
 use BrainExe\Core\Middleware\MiddlewareInterface;
 use Exception;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
@@ -47,17 +48,24 @@ class AppKernelTest extends TestCase
      */
     private $urlMatcher;
 
+    /**
+     * @var EventDispatcher|MockObject
+     */
+    private $dispatcher;
+
     public function setUp()
     {
         $this->controllerResolver = $this->createMock(ControllerResolver::class);
         $this->routeCollection    = $this->createMock(SerializedRouteCollection::class);
         $this->middleWare         = $this->createMock(MiddlewareInterface::class);
         $this->urlMatcher         = $this->createMock(UrlMatcher::class);
+        $this->dispatcher         = $this->createMock(EventDispatcher::class);
 
         $this->subject = new AppKernel(
             $this->controllerResolver,
             $this->routeCollection,
             $this->urlMatcher,
+            $this->dispatcher,
             [$this->middleWare]
         );
     }

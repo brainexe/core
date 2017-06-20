@@ -4,10 +4,11 @@ namespace BrainExe\Core\DependencyInjection\CompilerPass;
 
 use BrainExe\Core\Annotations\CompilerPass;
 use Exception;
-use Symfony\Component\DependencyInjection\Argument\ClosureProxyArgument;
+use Symfony\Component\DependencyInjection\Argument\ServiceClosureArgument;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -87,7 +88,11 @@ class EventListenerCompilerPass implements CompilerPassInterface
      */
     private function addListener(Definition $dispatcher, $eventName, $serviceId, $method, $priority = 0)
     {
-        $parameters = [$eventName, new ClosureProxyArgument($serviceId, $method), $priority];
+        $parameters = [
+            $eventName,
+            new ServiceClosureArgument(new Reference($serviceId), $method),
+            $priority
+        ];
 
         $class = $this->container->findDefinition($serviceId)->getClass();
         if (!method_exists($class, $method)) {

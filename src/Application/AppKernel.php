@@ -3,8 +3,11 @@
 namespace BrainExe\Core\Application;
 
 use BrainExe\Core\Annotations\Service;
+use BrainExe\Core\EventDispatcher\DelayedCallable;
+use BrainExe\Core\EventDispatcher\EventDispatcher;
 use BrainExe\Core\Middleware\MiddlewareInterface;
 use Iterator;
+use Symfony\Component\HttpKernel\Event\FinishRequestEvent;
 use Throwable;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,23 +39,30 @@ class AppKernel implements HttpKernelInterface
      * @var MiddlewareInterface[]
      */
     private $middlewares;
+    /**
+     * @var EventDispatcher
+     */
+    private $dispatcher;
 
     /**
      * @param ControllerResolver $resolver
      * @param SerializedRouteCollection $routes
      * @param UrlMatcher $urlMatcher
+     * @param EventDispatcher $dispatcher
      * @param MiddlewareInterface[] $middlewares
      */
     public function __construct(
         ControllerResolver $resolver,
         SerializedRouteCollection $routes,
         UrlMatcher $urlMatcher,
+        EventDispatcher $dispatcher,
         array $middlewares
     ) {
         $this->resolver    = $resolver;
         $this->routes      = $routes;
         $this->urlMatcher  = $urlMatcher;
         $this->middlewares = $middlewares;
+        $this->dispatcher  = $dispatcher;
     }
 
     /**
@@ -70,6 +80,17 @@ class AppKernel implements HttpKernelInterface
         $response = $this->prepareResponse($response);
 
         $this->applyResponseMiddleware($request, $response);
+
+        $response->send();
+
+        $this->dispatcher->dispatch(
+            DelayedCallable::FINISHED_EVENT,
+            new FinishRequestEvent(
+                $this,
+                $request,
+                HttpKernelInterface::MASTER_REQUEST
+            )
+        );
 
         return $response;
     }
