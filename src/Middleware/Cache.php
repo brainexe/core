@@ -29,7 +29,7 @@ class Cache extends AbstractMiddleware
     public function processRequest(Request $request, Route $route)
     {
         if (!$route->hasOption('cache') || !$request->isMethod('GET')) {
-           // return null;
+            return null;
         }
 
         $cacheKey = $this->generateCacheKey($request);
