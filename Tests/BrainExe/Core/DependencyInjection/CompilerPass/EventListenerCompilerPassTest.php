@@ -5,9 +5,10 @@ namespace BrainExe\Tests\Core\DependencyInjection\CompilerPass;
 use BrainExe\Core\DependencyInjection\CompilerPass\EventListenerCompilerPass;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\DependencyInjection\Argument\ClosureProxyArgument;
+use Symfony\Component\DependencyInjection\Argument\ServiceClosureArgument;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class TestEventDispatcher implements EventSubscriberInterface
@@ -109,17 +110,25 @@ class EventListenerCompilerPassTest extends TestCase
         $this->dispatcher
             ->expects($this->at(0))
             ->method('addMethodCall')
-            ->with('addListener', ['foo_event', new ClosureProxyArgument($serviceId, 'fooMethod'), 0]);
+            ->with('addListener', [
+                'foo_event',
+                new ServiceClosureArgument(new Reference($serviceId), 'fooMethod'),
+                0
+            ]);
 
         $this->dispatcher
             ->expects($this->at(1))
             ->method('addMethodCall')
-            ->with('addListener', ['foo_event2', new ClosureProxyArgument($serviceId, 'fooMethod2'), 10]);
+            ->with('addListener', [
+                'foo_event2',
+                new ServiceClosureArgument(new Reference($serviceId), 'fooMethod2'),
+                10
+            ]);
 
         $this->dispatcher
             ->expects($this->at(2))
             ->method('addMethodCall')
-            ->with('addListener', ['foo_event3', new ClosureProxyArgument($serviceId, 'fooMethod3'), 0]);
+            ->with('addListener', ['foo_event3', new ServiceClosureArgument(new Reference($serviceId), 'fooMethod3'), 0]);
 
         $this->subject->process($this->container);
     }

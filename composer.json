@@ -2,7 +2,7 @@
   "name": "brainexe/core",
   "description": "Framework core - used for brainexe/homie",
   "homepage": "https://mdoetsch.de",
-  "minimum-stability": "dev",
+  "minimum-stability": "beta",
   "license": "MIT",
   "authors": [
     {

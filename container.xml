@@ -113,9 +113,10 @@
 				<argument>cache:%application.name%</argument>
 			</call>
 		</service>
-		<service id="Cache" class="Symfony\Component\Cache\Adapter" public="false">
-			<argument type="service" id="redis"/>
+		<service id="Cache" class="Symfony\Component\Cache\Adapter\PhpFilesAdapter" public="false">
 			<argument>cache</argument>
+			<argument>0</argument>
+			<argument>%cache.dir%appcache</argument>
 		</service>
 
 		<service id="Mailer" class="PHPMailer" public="false"/>
