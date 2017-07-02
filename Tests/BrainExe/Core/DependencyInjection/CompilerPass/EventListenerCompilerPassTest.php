@@ -112,7 +112,7 @@ class EventListenerCompilerPassTest extends TestCase
             ->method('addMethodCall')
             ->with('addListener', [
                 'foo_event',
-                new ServiceClosureArgument(new Reference($serviceId), 'fooMethod'),
+                [new ServiceClosureArgument(new Reference($serviceId)), 'fooMethod'],
                 0
             ]);
 
@@ -121,14 +121,18 @@ class EventListenerCompilerPassTest extends TestCase
             ->method('addMethodCall')
             ->with('addListener', [
                 'foo_event2',
-                new ServiceClosureArgument(new Reference($serviceId), 'fooMethod2'),
+                [new ServiceClosureArgument(new Reference($serviceId)), 'fooMethod2'],
                 10
             ]);
 
         $this->dispatcher
             ->expects($this->at(2))
             ->method('addMethodCall')
-            ->with('addListener', ['foo_event3', new ServiceClosureArgument(new Reference($serviceId), 'fooMethod3'), 0]);
+            ->with('addListener', [
+                'foo_event3',
+                [new ServiceClosureArgument(new Reference($serviceId)), 'fooMethod3'],
+                0
+            ]);
 
         $this->subject->process($this->container);
     }

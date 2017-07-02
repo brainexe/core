@@ -90,7 +90,7 @@ class EventListenerCompilerPass implements CompilerPassInterface
     {
         $parameters = [
             $eventName,
-            new ServiceClosureArgument(new Reference($serviceId), $method),
+            [new ServiceClosureArgument(new Reference($serviceId)), $method],
             $priority
         ];
 

@@ -40,7 +40,7 @@ abstract class MessageQueueEvent extends AbstractEvent
     /**
      * @param Job $job
      */
-    public function setJob(Job $job)
+    public function setJob(Job $job): void
     {
         $this->job = $job;
     }
